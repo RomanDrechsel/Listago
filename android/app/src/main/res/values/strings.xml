@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Listago</string>
+    <string name="title_activity_main">Listago</string>
+    <string name="package_name">de.romandrechsel.listago</string>
+    <string name="custom_url_scheme">de.romandrechsel.listago</string>
+</resources>
