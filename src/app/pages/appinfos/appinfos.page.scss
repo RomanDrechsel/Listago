@@ -1,0 +1,95 @@
+ion-content {
+    .flex {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .list {
+        flex: 1;
+
+        ion-list {
+            ion-item {
+                --padding-top: 16px;
+                --padding-bottom: 16px;
+
+                div {
+                    width: 100%;
+                }
+
+                ion-note,
+                ion-grid {
+                    width: 100%;
+                    font-size: 0.9em;
+                    color: var(--ion-color-medium);
+                }
+
+                ion-note {
+                    display: block;
+                }
+
+                ion-grid {
+                    padding: 0;
+                    width: 100%;
+
+                    ion-col {
+                        &:first-of-type {
+                            flex-grow: 2;
+                            text-align: end;
+                        }
+
+                        &:last-of-type {
+                            flex-grow: 3;
+                            text-align: end;
+                            max-width: 150px;
+                            min-width: 150px;
+                            padding-inline-end: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .support {
+        padding: 5%;
+        font-size: 0.9em;
+        color: var(--ion-color-medium);
+        align-self: center;
+        margin-bottom: 5%;
+
+        ion-text {
+            text-align: center;
+        }
+
+        ion-img {
+            margin-block: 1em;
+            margin-inline: auto;
+            max-width: 265px;
+
+            &.paypal {
+                max-width: 200px;
+            }
+        }
+
+        .review {
+            margin-block: 16px;
+            font-size: 1em;
+
+            > div {
+                margin-bottom: 10px;
+            }
+        }
+
+        .my-website {
+            margin-block: 2em;
+            text-align: center;
+
+            .link {
+                margin-block-start: 1em;
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+        }
+    }
+}

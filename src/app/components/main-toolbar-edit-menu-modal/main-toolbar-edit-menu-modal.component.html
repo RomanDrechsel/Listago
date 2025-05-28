@@ -1,0 +1,6 @@
+<ion-list>
+    <ion-item [button]="true" (click)="onClick(method.click)" lines="full" *ngFor="let method of Methods">
+        <ion-icon [src]="method.icon"></ion-icon>
+        <ion-label>{{ method.text }}</ion-label>
+    </ion-item>
+</ion-list>

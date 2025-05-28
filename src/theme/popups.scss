@@ -1,0 +1,195 @@
+ion-toast.toast {
+    --box-shadow: 3px 3px 10px 0 rgba(var(--color-shadow-rgb), 0.1);
+    --border-style: none;
+    --border-radius: 8px;
+    --padding: 8px, 20px, 8px, 16px;
+
+    &::part(button) {
+        font-weight: bold;
+    }
+
+    &.error {
+        --background: var(--ion-color-danger-tint);
+        --color: var(--ion-color-danger);
+
+        &::part(button) {
+            color: var(--ion-color-danger);
+        }
+    }
+
+    &.success {
+        --background: var(--ion-color-success-tint);
+        --color: var(--ion-color-success);
+
+        &::part(button) {
+            color: var(--ion-color-success);
+        }
+    }
+
+    &.notice {
+        --background: var(--color-notice-tint);
+        --color: var(--color-notice);
+
+        &::part(button) {
+            color: var(--color-notice);
+        }
+    }
+}
+
+ion-loading.loading-overlay {
+    --backdrop-opacity: 0.8;
+    --min-height: 100px;
+    --min-width: 80%;
+}
+
+ion-modal.autosize-modal {
+    --height: auto;
+    backdrop-filter: blur(6px);
+
+    &.bottom {
+        align-items: flex-end;
+    }
+
+    &::part(content) {
+        max-width: 90%;
+        max-height: 100%;
+        box-shadow: 0 0 24px rgba(var(--color-shadow-rgb), 0.6);
+    }
+
+    &::part(backdrop) {
+        background-color: var(--color-backdrop);
+        --backdrop-opacity: 0.35;
+    }
+
+    .ion-page {
+        position: relative;
+        display: block;
+        contain: content;
+
+        .inner-content {
+            max-height: 80vh;
+            overflow: auto;
+            padding: 10px;
+        }
+    }
+}
+
+ion-modal.bottom-modal {
+    align-items: flex-end;
+    --height: auto;
+}
+
+ion-alert.alert {
+    --ion-text-color: var(--color-text);
+
+    &.info {
+        .alert-message {
+            font-size: 1.1em;
+            font-style: italic;
+        }
+    }
+
+    .alert-radio-label {
+        color: var(--color-text) !important;
+    }
+
+    .alert-message {
+        color: var(--color-text) !important;
+    }
+
+    button.alert-button {
+        color: var(--color-highlight) !important;
+    }
+
+    .alert-checkbox-group {
+        border: 0;
+
+        .alert-checkbox-label {
+            padding-inline-start: 40px;
+        }
+    }
+}
+
+ion-datetime {
+    --background: var(--ion-background-color);
+    --wheel-highlight-background: var(--background);
+    color: var(--color-text);
+
+    &::part(calendar-day) {
+        color: var(--color-text);
+    }
+
+    &::part(month-year-button) {
+        color: var(--color-text);
+    }
+
+    &::part(days-of-week) {
+        color: var(--color-text);
+    }
+
+    &::part(calender-next-prev-button) {
+        color: var(--color-text);
+    }
+
+    &::part(header) {
+        background: var(--color-toolbar);
+    }
+
+    &::part(calendar-day active) {
+        background: var(--ion-color-secondary);
+        border-color: var(--ion-color-secondary);
+        color: var(--color-text-contrast);
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    &::part(calendar-day today) {
+        border-color: var(--ion-color-secondary);
+    }
+
+    &::part(picker) {
+        --ion-color-base: var(--ion-color-primary);
+        --ion-background-color-rgb: var(--color-background-tint-rgb);
+        background: var(--color-control-background);
+    }
+
+    ion-buttons {
+        ion-button.button:not(.button-solid) {
+            --color: var(--color-text) !important;
+            --ion-color-base: var(--color) !important;
+        }
+    }
+}
+
+/** ion-select with action sheet as interface */
+.select-action-sheet .action-sheet-container {
+    max-height: calc(80dvh - (var(--ion-safe-area-top, 0) + var(--ion-safe-area-bottom, 0)));
+    box-shadow: 0px -50px 50px 0px var(--color-menu-shadow);
+    --color: var(--color-text-tint);
+    --background: var(--color-popup-background);
+    --button-color: var(--color);
+    --button-color-hover: var(--color-text);
+    --button-color-selected: var(--text-color);
+
+    .action-sheet-title {
+        border-bottom: solid 2px var(--color-control-border);
+    }
+
+    .action-sheet-selected {
+        background: var(--color-control-selected-background);
+    }
+
+    .action-sheet-cancel {
+        border-top: solid 1px var(--color-control-border);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    ion-datetime {
+        &::part(calendar-day active) {
+            color: var(--color-text);
+        }
+    }
+}

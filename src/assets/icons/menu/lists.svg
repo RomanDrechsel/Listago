@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1e3 1e3" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <path transform="matrix(.79458 0 0 .34034 110.78 559.7)" d="m269.6-777.76v205.68h440.48v-205.68zm0 470.12v205.68h440.48v-205.68zm0 470.12v205.68h440.48v-205.68zm-70.23-1587.6c-43.743 0-87.413 89.009-87.413 224.66v2050c0 135.65 43.672 224.66 87.413 224.66h580.99c43.743 0 87.413-89.009 87.413-224.66v-2050c0-135.65-43.672-224.66-87.413-224.66zm0 243.65h580.99c0.38768 0 0.40415 0 0.68739 0.023v2012c-0.28324 0.0188-0.29971 0.0226-0.68739 0.0226h-580.99c-0.38767 0-0.40415-2e-3 -0.68739-0.0226v-2012c0.28324-0.019 0.29972-0.023 0.68739-0.023z"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

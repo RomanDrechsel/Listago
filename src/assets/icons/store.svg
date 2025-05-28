@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:date>2024-04-11</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+        <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <path transform="rotate(-45 744.34 434.58)" d="m749.32 20.297c-25.096-25.096-66.828-25.096-91.924 0l-147.72 147.72-42.562-42.562c-11.752-11.752-29.097-13.329-38.891-3.5355-0.9402 0.9402-1.7432 1.9678-2.4749 3.0356-6.6171 5.4943-10.821 13.786-10.821 23.098v240c0 16.62 13.381 30.001 30.001 30.001 0.41764 0 0.82266-0.04541 1.236-0.06215l239.96-0.00138c9.7628 0 18.382-4.6353 23.854-11.814 0.44869-0.37965 0.90134-0.75217 1.3231-1.1739 9.7934-9.7934 8.2166-27.139-3.5355-38.891l-49.602-49.602 147.72-147.72c25.096-25.096 25.096-66.828 0-91.924l-56.569-56.569zm-17.098 52.041 21.92 21.92c11.752 11.752 11.752 30.674 0 42.426l-1.3493 1.3493c0.00793 0.00875 0.01584 0.01719 0.02348 0.02624l-153.82 153.82c-0.14241 0.13478-0.29841 0.24869-0.4378 0.38808-9.7934 9.7934-8.2166 27.139 3.5355 38.891l26.838 26.838h-154.01l-0.00138-154.01 20.472 20.472c11.752 11.752 29.097 13.329 38.891 3.5355 0.25546-0.25547 0.47123-0.5369 0.71125-0.8024l13.713-13.713c0.16293-0.17 0.30352-0.35324 0.47094-0.52066l140.61-140.61c11.752-11.752 30.674-11.752 42.426 0zm-425.31-36.565c-54.379-54.379-136.35-51.797-184.04-4.099l-102.9 102.9c-47.698 47.698-50.281 129.67 4.0976 184.05l490.68 490.68c54.379 54.379 136.35 51.796 184.05 4.0976l102.9-102.9c47.698-47.698 50.28-129.66-4.099-184.04l-68.563-68.563-38.525 38.525 68.563 68.563c23.968 23.968 26.551 68.149-4.0976 98.797l-102.9 102.9c-30.649 30.649-74.829 28.066-98.797 4.0976l-490.68-490.68c-23.968-23.968-26.55-68.147 4.099-98.796l102.9-102.9c30.649-30.649 74.828-28.067 98.796-4.099l68.563 68.563 38.525-38.525-68.563-68.563z" stroke-linecap="square" stroke-width="60" style="paint-order:markers fill stroke"/>
+</svg>

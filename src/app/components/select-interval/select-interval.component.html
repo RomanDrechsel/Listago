@@ -1,0 +1,38 @@
+<div class="content">
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-button (click)="cancel()" [ariaLabel]="'cancel' | translate">{{ "cancel" | translate }}</ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+                <ion-button (click)="select()" [ariaLabel]="'select' | translate">{{ "select" | translate }}</ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+    <div>
+        <div *ngIf="Params.interval == 'monthly'">
+            <ion-picker>
+                <ion-picker-column *ngIf="Params.interval == 'monthly'" #pickerDay>
+                    <ion-picker-column-option *ngFor="let d of Days" [value]="d.v">{{ d.s }}</ion-picker-column-option>
+                    <span slot="suffix" class="no-padding">{{ "comp-select-interval.ofmonth" | translate }}</span>
+                </ion-picker-column>
+            </ion-picker>
+            <div class="devider"></div>
+        </div>
+        <ion-picker>
+            <ion-picker-column *ngIf="Params.interval == 'weekly'" #pickerWeekday>
+                <ion-picker-column-option *ngFor="let d of Weekdays" [value]="d.v">{{ d.s }}</ion-picker-column-option>
+            </ion-picker-column>
+
+            <ion-picker-column #pickerHour>
+                <ion-picker-column-option *ngFor="let h of Hours" [value]="h.v">{{ h.s }}</ion-picker-column-option>
+                <span slot="suffix" class="no-padding">:</span>
+            </ion-picker-column>
+
+            <ion-picker-column #pickerMinute>
+                <ion-picker-column-option *ngFor="let m of Minutes" [value]="m.v">{{ m.s }}</ion-picker-column-option>
+                <span *ngIf="Locale.CurrentLanguage.h24" slot="suffix">{{ "comp-select-interval.oclock" | translate }}</span>
+            </ion-picker-column>
+        </ion-picker>
+    </div>
+</div>

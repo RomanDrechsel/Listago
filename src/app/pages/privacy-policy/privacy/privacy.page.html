@@ -1,0 +1,20 @@
+<app-main-toolbar back="/lists">{{'page_privacy.page_title'|translate}}</app-main-toolbar>
+
+<ion-content>
+    <ion-list>
+        <ion-item lines="full" button="true" (click)="admob_consent_form()">
+            <ion-label>
+                <div class="text" [innerHTML]="'page_privacy.admob_consent'|translate"></div>
+                <ion-note [innerHTML]="'page_privacy.admob_consent_note'|translate"></ion-note>
+            </ion-label>
+            <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
+        </ion-item>
+        <ion-item lines="full" button="true" routerDirection="forward" [routerLink]="['/privacy-policy/policy']">
+            <ion-label>
+                <div class="text" [innerHTML]="'page_privacy.policy'|translate"></div>
+                <ion-note [innerHTML]="'page_privacy.policy_note'|translate"></ion-note>
+            </ion-label>
+            <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
+        </ion-item>
+    </ion-list>
+</ion-content>

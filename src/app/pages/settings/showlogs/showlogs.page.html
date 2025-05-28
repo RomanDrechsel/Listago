@@ -1,0 +1,44 @@
+<app-main-toolbar back="/settings/logging">{{'page_settings_showlogs.page_title'|translate}}</app-main-toolbar>
+
+<ion-content [ngClass]="{ 'disabled': runningAnimation?.isRunning }" scrollEvents="true" scrollX="false" (ionScroll)="onScroll($event)" #mainContent>
+    <div class="select">
+        <ion-icon src="./assets/icons/calendar.svg" class="calendar" (click)="openCalendar()"></ion-icon>
+        <ion-select interface="action-sheet" [interfaceOptions]="{header: 'page_settings_showlogs.select_logs'|translate}" [value]="currentLogfile?.Filename" [cancelText]="'cancel'|translate" [disabled]="!LogfilesAvailable" (ionChange)="onChangeLogfile($event)">
+            <ion-text slot="label">{{currentLogfile?.Filename ?? 'page_settings_showlogs.no_log'|translate}}</ion-text>
+            <ion-select-option *ngFor="let file of availableLogfiles" [value]="file.name" (selected)="currentLogfile?.Path == file.uri">{{formatLogfile(file)}}</ion-select-option>
+        </ion-select>
+    </div>
+    <div id="logtext" *ngIf="currentLogfile; else nologfile" class="list-content" #logContent>{{currentLogfile.Content}}</div>
+    <ng-template #nologfile>
+        <app-page-empty>
+            <div slot="image">
+                <ion-icon src="./assets/icons/file.svg"></ion-icon>
+            </div>
+            <div slot="text">
+                <ion-text>{{'page_settings_showlogs.no_log_note'|translate: {date: SelectedDayString} }}</ion-text>
+            </div>
+        </app-page-empty>
+    </ng-template>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button [disabled]="!currentLogfile || !currentLogfile.Exists" #fabButton>
+            <ion-icon src="./assets/icons/list_menu.svg"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="top">
+            <ion-fab-button [attr.data-label]="'page_settings_showlogs.btn_save'|translate" (click)="onSave()" [disabled]="!currentLogfile || !currentLogfile.Exists" #saveLogsButton>
+                <ion-icon src="./assets/icons/store.svg"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button [attr.data-label]="'page_settings_showlogs.btn_delete'|translate" (click)="onDelete()" [disabled]="!currentLogfile || !currentLogfile.Exists">
+                <ion-icon src="./assets/icons/trash.svg"></ion-icon>
+            </ion-fab-button>
+        </ion-fab-list>
+    </ion-fab>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="ShowScrollButtons">
+        <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
+            <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="ScrollToBottom(false)" [disabled]="DisableScrollToBottom">
+            <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

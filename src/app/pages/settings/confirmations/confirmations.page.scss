@@ -1,0 +1,14 @@
+ion-item {
+    &:not(:first-of-type) {
+        margin-top: 40px;
+    }
+
+    ion-toggle {
+
+        .text,
+        ion-note {
+            white-space: pre-line;
+        }
+    }
+
+}

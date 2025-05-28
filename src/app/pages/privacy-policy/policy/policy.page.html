@@ -1,0 +1,11 @@
+<app-main-toolbar back="/lists">{{'page_policy.page_title'|translate}}</app-main-toolbar>
+
+<ion-content class="privacy-policy">
+    <div class="select-language">
+        <ion-select interface="action-sheet" justify="end" [okText]="'change'|translate" [cancelText]="'cancel'|translate" [value]="this.SelectedCulture" (ionChange)="onSelectLanguage($event.target.value)">
+            <ion-img *ngIf="SelectedCulture?.Icon" slot="start" [src]="this.SelectedCulture!.Icon"></ion-img>
+            <ion-select-option *ngFor="let lang of this.Languages" [value]="lang">{{lang.LocalizedString}}</ion-select-option>
+        </ion-select>
+    </div>
+    <div class="policy" #policy></div>
+</ion-content>

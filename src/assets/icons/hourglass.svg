@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1e3 1e3" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <title>Hourglass</title>
+  <path transform="matrix(-.86822 0 0 -.89621 875.4 1502.6)" d="m737.61 1640.2c22.333 0 40.312-17.418 40.312-39.053v-33.474c0-21.636-17.979-39.053-40.312-39.053h-8.7036c0.0371-0.8218 2.0992-46.799 0.45891-103.66-1.6551-57.37-6.3678-124.99-23.045-172.82-17.042-48.88-56.837-86.17-91.454-112.4-10.937-8.2878-21.232-15.261-30.387-21.1 9.3586-5.9709 19.453-12.714 30.387-21 34.617-26.232 74.412-63.523 91.454-112.4 16.677-47.832 21.39-115.45 23.045-172.82 1.6403-56.857-0.42176-102.84-0.45891-103.66h8.7036c22.333 0 40.312-17.418 40.312-39.053v-33.474c0-21.636-17.979-39.053-40.312-39.053h-610.45c-22.333 0-40.312 17.418-40.312 39.053v33.474c0 21.636 17.979 39.053 40.312 39.053h8.7036c-0.0371 0.82176-2.0992 46.799-0.45891 103.66 1.6551 57.37 6.3678 124.99 23.045 172.82 17.042 48.88 56.837 86.17 91.454 112.4 10.95 8.2974 21.057 15.048 30.426 21.024-9.216 5.8619-19.357 12.689-30.426 21.076-34.617 26.232-74.412 63.523-91.454 112.4-16.677 47.832-21.39 115.45-23.045 172.82-1.6403 56.858 0.42176 102.84 0.45891 103.66h-8.7036c-22.333 0-40.312 17.418-40.312 39.053v33.474c0 21.636 17.979 39.053 40.312 39.053zm-92.516-111.58h-425.47a23.038 22.318 0 0 0 0.0855-0.449s-0.85404-41.234 1.352-92.244c2.206-51.01 8.0148-112.3 19.038-147.35 22.136-70.374 120.78-119.28 120.78-119.28a23.038 22.318 0 0 0 6.4518-4.9143c17.253-8.2773 28.205-26.826 28.205-46.164 0-20.331-12.131-39.742-30.938-47.308a23.038 22.318 0 0 0-3.7186-2.8331s-98.642-48.905-120.78-119.28c-11.023-35.045-16.832-96.336-19.038-147.35-2.206-51.01-1.352-92.244-1.352-92.244a23.038 22.318 0 0 0-0.0855-0.44894h40.636c3.1252 31.279 18.631 70.126 46.249 117.24 89.716 153.06 165.75 152.56 253.45-1.665 26.358-46.354 41.23-84.645 44.449-115.58h40.69a23.038 22.318 0 0 0-0.0247 0.44894s0.85403 41.234-1.352 92.244c-2.206 51.01-8.0148 112.3-19.038 147.35-22.136 70.374-120.78 119.28-120.78 119.28a23.038 22.318 0 0 0-0.97631 0.571c-2e-3 3e-4 -3e-3 0-4e-3 0-22.812 5.073-38.013 26.779-38.013 49.568 0 21.804 13.921 42.608 35.102 48.81a23.038 22.318 0 0 0 3.8918 2.2686s98.642 48.905 120.78 119.28c11.023 35.045 16.832 96.336 19.038 147.35 2.206 51.01 1.352 92.244 1.352 92.244a23.038 22.318 0 0 0 0.0247 0.449zm-79.374-188.82a23.038 22.318 0 0 0 22.257-28.072c-18.785-68.177-82.714-115.82-155.55-115.93a23.038 22.318 0 0 0-0.0697 0c-72.84 0.1042-136.77 47.748-155.56 115.93a23.038 22.318 0 0 0 22.255 28.072z" stroke-linecap="square" stroke-linejoin="round" stroke-width="40" style="paint-order:fill markers stroke"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://roman-drechsel.de</dc:source>
+        <dc:date>2025-02-01</dc:date>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+        <dc:title>Hourglass</dc:title>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+        <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

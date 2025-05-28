@@ -34,4 +34,69 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+@import "@ionic/angular/css/palettes/dark.system.css";
+
+/*
+    Roboto font
+*/
+@font-face {
+  font-family: "Roboto";
+  src: url("/assets/fonts/roboto/roboto-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/assets/fonts/roboto/roboto-italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/assets/fonts/roboto/roboto-bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/assets/fonts/roboto/roboto-bold-italic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+/*
+    Roboto Mono
+*/
+@font-face {
+  font-family: "RobotoMono";
+  src: url("/assets/fonts/roboto-mono/roboto-mono-regular.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "RobotoMono";
+  src: url("/assets/fonts/roboto-mono/roboto-mono-italic.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "RobotoMono";
+  src: url("/assets/fonts/roboto-mono/roboto-mono-bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "RobotoMono";
+  src: url("/assets/fonts/roboto-mono/roboto-mono-bold-italic.ttf")
+    format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}

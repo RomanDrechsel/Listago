@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <path transform="matrix(1.16 0 0 .75748 -12.683 234.03)" d="m110.07-193c-18.731 0-34.483 18.092-34.483 39.605v118.82c0 21.513 15.752 39.605 34.483 39.605h30.055c-0.07976 1.7311-0.14582 3.4688-0.04378 5.2549l48.838 854.85c1.0406 18.215 11.454 31.597 23.348 30.003 0.45482-0.06094 0.86977-0.27938 1.315-0.38161 1.1758 0.22217 2.3457 0.47186 3.5695 0.47186h268.22v-66.008h-255.23l-47.085-824.19h517.82l-18.922 331.21h43.268l18.634-326.15c0.09805-1.7162 0.02793-3.3854-0.04209-5.0512h30.053c18.731 0 34.483-18.092 34.483-39.605v-118.82c0-21.513-15.752-39.605-34.483-39.605h-663.79zm8.6207 49.506h646.55v99.013h-646.55v-99.013zm222.7 353.7c-7.7126 0-15.426 4.5253-21.336 13.576-11.82 18.101-11.82 47.245 0 65.346l79.245 121.36-79.245 121.36c-11.82 18.101-11.82 47.245 0 65.346 11.82 18.101 30.851 18.101 42.671 0l79.245-121.36 43.403 66.467v-130.69l-0.73242-1.1216 0.73242-1.1216v-20.326c0-29.255 15.379-52.807 34.483-52.807h13.273l30.757-47.101c11.82-18.101 11.82-47.245 0-65.346-11.82-18.101-30.851-18.101-42.671 0l-79.245 121.36-79.245-121.36c-5.9098-9.0503-13.622-13.576-21.335-13.576zm205 174.98c-15.996 0-31.966 21.35-31.966 53.89v491.76c0 32.54 15.97 53.89 31.966 53.89h212.46c15.996 0 31.966-21.35 31.966-53.89v-491.76c0-32.54-15.97-53.89-31.966-53.89h-212.46zm0 58.446h212.46c0.14177 0 0.1473 2.9e-4 0.25088 0.00516v482.64c-0.10358 0.0045-0.10911 0.00515-0.25088 0.00515h-212.46c-0.14177 0-0.1473-2.8e-4 -0.25088-0.00515v-482.64c0.10358-0.00451 0.10911-0.00516 0.25088-0.00516zm23.69 75.118v49.336h161.08v-49.336h-161.08zm3.1957 128.68v49.334h161.08v-49.334h-161.08zm0.79977 125v49.336h161.08v-49.336h-161.08z" stroke-width="86.852"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:date>2024-04-12</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+        <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

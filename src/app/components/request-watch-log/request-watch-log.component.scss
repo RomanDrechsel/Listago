@@ -1,0 +1,16 @@
+:host {
+    display: block;
+    max-height: 80%;
+
+    .buttons {
+        display: flex;
+        justify-content: right;
+        flex-direction: row;
+        padding: 0 6px 6px 0;
+        gap: 1em;
+
+        ion-button {
+            max-width: 45%;
+        }
+    }
+}

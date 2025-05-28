@@ -1,0 +1,10 @@
+ion-item {
+    &:not(:first-of-type) {
+        margin-top: 40px;
+    }
+
+    .text,
+    ion-note {
+        white-space: pre-line;
+    }
+}

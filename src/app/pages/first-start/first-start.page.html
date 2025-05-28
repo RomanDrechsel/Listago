@@ -1,0 +1,80 @@
+<ion-content class="page">
+    <div class="container">
+        <ion-segment-view>
+            <ion-segment-content id="language">
+                <div class="content">
+                    <ion-img class="logo" src="/assets/img/applogo.png"></ion-img>
+
+                    <div class="text welcome">{{'page_firststart.welcome'|translate}}</div>
+                    <div class="text language1" [innerHTML]="'page_firststart.language1'|translate"></div>
+
+                    <ion-img class="language-icon" *ngIf="Locale.CurrentLanguage?.Icon" [src]="Locale.CurrentLanguage!.Icon" (click)="changeLanguage()"></ion-img>
+                    <ion-select class="select-language" interface="action-sheet" fill="outline" value="{{Locale.CurrentLanguage.locale}}" [okText]="'change'|translate" [cancelText]="'cancel'|translate" (ionChange)="onChangeLanguage($event)" #selLanguage>
+                        <ion-select-option *ngFor="let details of Locale.AvailableTranslations" value="{{details.locale}}" (selected)="Locale.CurrentLanguage.locale == details.locale"> {{details.LocalizedString}} </ion-select-option>
+                    </ion-select>
+
+                    <div class="text language2" [innerHTML]="'page_firststart.language2'|translate"></div>
+                </div>
+                <div class="buttons">
+                    <ion-button (click)="nextLanguage()">{{'next' | translate}}</ion-button>
+                </div>
+            </ion-segment-content>
+            <ion-segment-content id="garmin">
+                <div class="content">
+                    <ion-img class="logo" src="/assets/img/garmin-connect-iq.svg"></ion-img>
+
+                    <ion-toggle checked="true" labelPlacement="start" (ionChange)="onGarminChange($event.target.checked)">
+                        <ion-text class="text garmin1">{{'page_firststart.garmin1'|translate}}</ion-text>
+                    </ion-toggle>
+
+                    <div class="text garmin2">
+                        <span [innerHTML]="'page_firststart.garmin2'|translate"></span>
+                    </div>
+                </div>
+
+                <div class="buttons multiple">
+                    <ion-button (click)="openApp()" fill="outline"> {{'page_firststart.garmin_btn'|translate}} </ion-button>
+                    <ion-button (click)="nextGarmin()">{{'next' | translate}}</ion-button>
+                </div>
+            </ion-segment-content>
+            <ion-segment-content id="garmin-hint" *ngIf="GarminActive">
+                <div class="content">
+                    <ion-img src="/assets/icons/info.svg" class="logo garmin-hint"></ion-img>
+                    <div class="text garmin-hint1" [innerHTML]="'page_firststart.garmin-hint1'|translate"></div>
+                    <div class="text" [innerHTML]="'page_firststart.garmin-hint2'|translate"></div>
+                </div>
+                <div class="buttons">
+                    <ion-button (click)="nextGarminHint()">{{'next' | translate}}</ion-button>
+                </div>
+            </ion-segment-content>
+            <ion-segment-content id="finish">
+                <div class="content">
+                    <div class="text finish1" [innerHTML]="'page_firststart.finish1'|translate"></div>
+                    <div class="text" [innerHTML]="'page_firststart.finish2'|translate"></div>
+                    <div class="text link" [innerHTML]="HomepageLink" (click)="openHomepage()"></div>
+                    <div class="text" [innerHTML]="'page_firststart.finish3'|translate"></div>
+                    <div class="text havefun" [innerHTML]="'page_firststart.finish4'|translate"></div>
+                </div>
+                <div class="buttons">
+                    <ion-button (click)="Finish()">{{'page_firststart.finish_btn'|translate}}</ion-button>
+                </div>
+            </ion-segment-content>
+        </ion-segment-view>
+        <div class="fixed-bottom">
+            <ion-segment value="language">
+                <ion-segment-button value="language" content-id="language" #segbtnLanguage>
+                    <ion-icon src="/assets/icons/language.svg"></ion-icon>
+                </ion-segment-button>
+                <ion-segment-button value="garmin" content-id="garmin" #segbtnGarmin>
+                    <ion-icon src="/assets/icons/menu/devices.svg"></ion-icon>
+                </ion-segment-button>
+                <ion-segment-button value="garmin-hint" content-id="garmin-hint" [disabled]="!GarminActive" #segbtnGarminHint>
+                    <ion-icon src="/assets/icons/info.svg"></ion-icon>
+                </ion-segment-button>
+                <ion-segment-button value="finish" content-id="finish" #segbtnFinish>
+                    <ion-icon src="/assets/icons/finish.svg"></ion-icon>
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+    </div>
+</ion-content>

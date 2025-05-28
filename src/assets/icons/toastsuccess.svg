@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <title>Checkmark</title>
+  <path transform="translate(-67.475 -30.07)" d="m567.48 30.07c-132.59 1e-6 -259.8 52.69-353.55 146.45-93.757 93.757-146.45 220.96-146.45 353.55 0 132.59 52.69 259.8 146.45 353.55 93.757 93.757 220.96 146.45 353.55 146.45s259.8-52.69 353.55-146.45c93.757-93.757 146.45-220.96 146.45-353.55 0-132.59-52.688-259.8-146.45-353.55s-220.96-146.45-353.55-146.45zm0 80c111.41 0 218.21 44.239 296.99 123.02 78.776 78.776 123.01 185.58 123.01 296.98 0 111.41-44.238 218.21-123.01 296.98-78.776 78.776-185.58 123.02-296.99 123.02s-218.21-44.239-296.98-123.02c-78.776-78.776-123.02-185.58-123.02-296.98 0-111.41 44.239-218.21 123.02-296.98 78.776-78.776 185.58-123.02 296.98-123.02zm207.71 200.86c-12.454 0.39446-24.039 6.573-30.396 17.562l-213.21 368.57-136.67-114.84c-14.542-12.219-37.701-8.4217-51.926 8.5137-14.225 16.935-13.97 40.406 0.57226 52.625l170.54 143.29c1.304 1.2369 2.6828 2.4184 4.1719 3.5078l2.4746 2.0781c9.1226 7.6652 21.635 9.0208 33.207 4.791 8.7114-2.4533 16.339-7.9237 21.064-16.092l1.3398-2.3144c0.66789-1.0546 1.2865-2.1231 1.8555-3.207l235.49-407.08c10.172-17.583 2.9943-40.624-16.092-51.662-7.1573-4.1391-14.942-5.9847-22.414-5.748z"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:date>2025-02-10</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+        <dc:title>Checkmark</dc:title>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+        <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

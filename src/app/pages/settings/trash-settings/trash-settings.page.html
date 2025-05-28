@@ -1,0 +1,29 @@
+<app-main-toolbar back="/settings">{{'page_settings_trash.page_title'|translate}}</app-main-toolbar>
+
+<ion-content>
+    <ion-list>
+        <ion-item lines="full">
+            <ion-toggle label-placement="start" [checked]="UseTrash" (ionChange)="onUseTrashChanged($event.target.checked)">
+                <div class="text" [innerHTML]="'page_settings_trash.use_trash'|translate"></div>
+                <ion-note [innerHTML]="'page_settings_trash.use_trash_note'|translate"></ion-note>
+            </ion-toggle>
+        </ion-item>
+        <ion-item lines="full">
+            <ion-toggle label-placement="start" [checked]="UseTrashListitems" (ionChange)="onUseTrashListitemsChanged($event.target.checked)">
+                <div class="text" [innerHTML]="'page_settings_trash.use_trash_listitem'|translate"></div>
+                <ion-note [innerHTML]="'page_settings_trash.use_trash_listitem_note'|translate"></ion-note>
+            </ion-toggle>
+        </ion-item>
+        <ion-item lines="full">
+            <div class="fullwidth">
+                <ion-select [label]="'page_settings_trash.instock'|translate" label-placement="stacked" [okText]="'change'|translate" [value]="KeepInStock" [cancelText]="'cancel'|translate" (ionChange)="onInStockChanged($event.detail.value)">
+                    <ion-select-option [value]="GetKeepInStock('day')" (selected)="KeepInStock == GetKeepInStock('day')">{{'page_settings_trash.instock_oneday'|translate}}</ion-select-option>
+                    <ion-select-option [value]="GetKeepInStock('week')" (selected)="KeepInStock == GetKeepInStock('week')">{{'page_settings_trash.instock_oneweek'|translate}}</ion-select-option>
+                    <ion-select-option [value]="GetKeepInStock('month')" (selected)="KeepInStock == GetKeepInStock('month')">{{'page_settings_trash.instock_onemonth'|translate}}</ion-select-option>
+                    <ion-select-option [value]="GetKeepInStock('entries')" (selected)="KeepInStock == GetKeepInStock('entries')">{{'page_settings_trash.instock_hundredentries'|translate}}</ion-select-option>
+                </ion-select>
+                <ion-note [innerHTML]="'page_settings_trash.instock_note'|translate"></ion-note>
+            </div>
+        </ion-item>
+    </ion-list>
+</ion-content>

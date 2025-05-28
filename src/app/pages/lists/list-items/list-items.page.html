@@ -1,0 +1,102 @@
+<app-main-toolbar back="/lists" [displayCustomMenu]="true" [displayMenu]="false">
+    {{PageTitle}}
+    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
+</app-main-toolbar>
+
+<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" *ngIf="List !== undefined && ItemsInitialized; else error" #mainContent>
+    <div class="content" *ngIf="List && List.Items.length > 0; else noItems" #listContent>
+        <ion-list id="animated-list" #itemsList>
+            <ion-reorder-group [disabled]="List.Items.length <= 1" (ionItemReorder)="HandleReorder($any($event))" [disabled]="!EditMode">
+                <ion-item-sliding *ngFor="let item of List.Items" [disabled]="EditMode || !InitialAnimationDone">
+                    <ion-item lines="none" [button]="true" (click)="clickOnItem($event, item)" [ngClass]="{'selected-item': EditMode && isItemSelected(item)}">
+                        <ion-label class="animated-item" [ngClass]="{'pre-animation-state': !InitialAnimationDone}">
+                            <div class="details" [ngClass]="{'hidden': item.Hidden}">
+                                <div class="listpoint-indicator-wrapper">
+                                    <div class="listpoint-indicator" *ngIf="!item.Locked"></div>
+                                    <ion-icon src="./assets/icons/pin_solid.svg" *ngIf="item.Locked"></ion-icon>
+                                </div>
+                                <div class="text">
+                                    <div class="item">{{item.Item}}</div>
+                                    <div color="medium" class="note" *ngIf="item.Note">{{item.Note}}</div>
+                                </div>
+                            </div>
+                        </ion-label>
+                        <div class="editmode" [ngClass]="{'show': EditMode}">
+                            <ion-checkbox checked="true" [checked]="isItemSelected(item)" (click)="$event.preventDefault()"></ion-checkbox>
+                            <ion-reorder>
+                                <ion-icon src="/assets/icons/reorder.svg"></ion-icon>
+                            </ion-reorder>
+                        </div>
+                    </ion-item>
+                    <ion-item-options side="start" (ionSwipe)="onSwipeRight(item)">
+                        <ion-item-option color="danger" expandable="true" (click)="DeleteItem(item)">
+                            <ion-icon slot="start" src="./assets/icons/trash_solid.svg"></ion-icon>
+                            {{'delete'|translate}}
+                        </ion-item-option>
+                    </ion-item-options>
+                    <ion-item-options side="end" (ionSwipe)="onSwipeLeft(item)">
+                        <ion-item-option color="secondary" (click)="PinItem(item)">
+                            <ion-icon slot="end" [src]="item.Locked ? './assets/icons/pin_off.svg' : './assets/icons/pin.svg'"></ion-icon>
+                            {{(item.Locked ? 'page_listitems.unlock' : 'page_listitems.lock')|translate}}
+                        </ion-item-option>
+                        <ion-item-option color="secondary" expandable="true" (click)="HideItem(item)">
+                            <ion-icon slot="end" [src]="item.Hidden ? './assets/icons/eye.svg' : './assets/icons/eye_off.svg'"></ion-icon>
+                            {{(item.Hidden ? 'page_listitems.show' : 'page_listitems.hide')|translate}}
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ion-reorder-group>
+        </ion-list>
+        <ion-item lines="none" class="quick-add" [ngClass]="{'visible': InitialAnimationDone && !EditMode}">
+            <ion-textarea placeholder="{{'page_listitems.quickadd'|translate}}" autoGrow="true" inputmode="text" spellcheck="true" maxlength="250" autocapitalize="sentence" rows="2" [disabled]="!InitialAnimationDone || EditMode" #quickAdd>
+                <ion-button fill="outline" color="medium" [ariaLabel]="'add'|translate" size="small" slot="end" (click)="QuickAddItem($event)" [disabled]="!InitialAnimationDone || EditMode || !quickAdd?.value?.length">
+                    <ion-icon slot="start" src="./assets/icons/add.svg"></ion-icon>
+                    {{'add'|translate}}
+                </ion-button>
+            </ion-textarea>
+        </ion-item>
+    </div>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="ShowAddButton">
+        <ion-fab-button (click)="AddItem()" [ariaLabel]="'add'|translate">
+            <ion-icon src="./assets/icons/add.svg"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="List && List.Items.length > 0 && ShowScrollButtons">
+        <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
+            <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="ScrollToBottom(false)" [disabled]="DisableScrollToBottom">
+            <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+    <ng-template #noItems>
+        <app-page-add-new *ngIf="List; else notInit"> {{'page_listitems.add_new_hint'|translate}} </app-page-add-new>
+    </ng-template>
+</ion-content>
+
+<ng-template #error>
+    <div class="nolist" *ngIf="ItemsInitialized; else notInit">
+        <app-page-empty>
+            <div slot="image">
+                <ion-img src="./assets/icons/nolist.svg"></ion-img>
+            </div>
+            <div slot="text">
+                <div [innerHTML]="'page_listitems.nolist'|translate"></div>
+            </div>
+        </app-page-empty>
+    </div>
+</ng-template>
+
+<ng-template #notInit>
+    <app-page-empty>
+        <div slot="image">
+            <ion-img src="./assets/icons/hourglass.svg"></ion-img>
+        </div>
+        <div slot="text">
+            <div [innerHTML]="'page_listitems.loading'|translate"></div>
+        </div>
+    </app-page-empty>
+</ng-template>

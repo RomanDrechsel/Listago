@@ -1,0 +1,58 @@
+:host {
+    display: block;
+    max-height: 80%;
+
+    ion-header {
+        ion-toolbar {
+            ion-title {
+                font-size: 1.2em;
+            }
+        }
+    }
+
+    .inner-content {
+        ion-select {
+            margin-top: 20px;
+
+            &::part(container) {
+                margin-inline: auto;
+            }
+        }
+
+        ion-button {
+            margin-top: 20px;
+            float: right;
+        }
+
+        ion-accordion-group {
+            ion-accordion {
+                ion-item {
+                    --background-hover: #ffffff;
+                    --padding-start: 6px;
+                }
+
+                ion-list {
+                    ion-item {
+                        --background-hover: #ffffff;
+
+                        .meta_note {
+                            margin-inline-start: 28px;
+                            position: relative;
+                            top: -12px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .attach-watchlog {
+            --padding-start: 6px;
+        }
+    }
+
+    .button {
+        display: flex;
+        justify-content: right;
+        padding: 0 6px 6px 0;
+    }
+}

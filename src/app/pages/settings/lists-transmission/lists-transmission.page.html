@@ -1,0 +1,37 @@
+<app-main-toolbar back="/settings">{{'page_lists_transmission.page_title'|translate}}</app-main-toolbar>
+<ion-content>
+    <ion-list>
+        <!-- garmin connect iq support -->
+        <ion-item lines="full">
+            <ion-toggle label-placement="start" [checked]="SupportGarminConnectIQ" (ionChange)="onSupportGarminConnectIQChanged($event.target.checked)">
+                <div class="text" [innerHTML]="'page_lists_transmission.garminconnectiq'|translate"></div>
+                <ion-note [innerHTML]="'page_lists_transmission.garminconnectiq_note'|translate"></ion-note>
+            </ion-toggle>
+        </ion-item>
+
+        <!-- open app on transmitting list -->
+        <ion-item lines="full">
+            <ion-toggle label-placement="start" [checked]="OpenAppOnTransmit" [disabled]="!SupportGarminConnectIQ" (ionChange)="onOpenAppOnTransmitChanged($event.target.checked)">
+                <div class="text" [innerHTML]="'page_lists_transmission.openontransmit'|translate"></div>
+                <ion-note [innerHTML]="'page_lists_transmission.openontransmit_note'|translate"></ion-note>
+            </ion-toggle>
+        </ion-item>
+
+        <!-- delete list on device when deleting on phone -->
+        <ion-item lines="full">
+            <ion-toggle label-placement="start" [checked]="DeleteListOnDevice" [disabled]="!SupportGarminConnectIQ" (ionChange)="onDeleteListOnDeviceChanged($event.target.checked)">
+                <div class="text" [innerHTML]="'page_lists_transmission.deletelist'|translate"></div>
+                <ion-note [innerHTML]="'page_lists_transmission.deletelist_note'|translate"></ion-note>
+            </ion-toggle>
+        </ion-item>
+
+        <!-- synchronize lists -->
+        <ion-item lines="full">
+            <ion-toggle label-placement="start" [checked]="SyncListOnDevice" [disabled]="!SupportGarminConnectIQ" (ionChange)="onSyncListOnDeviceChanged($event.target.checked)">
+                <div class="text" [innerHTML]="'page_lists_transmission.synclist'|translate"></div>
+                <ion-note [innerHTML]="'page_lists_transmission.synclist_note'|translate"></ion-note><br />
+                <ion-note [innerHTML]="'page_lists_transmission.synclist_warning'|translate"></ion-note>
+            </ion-toggle>
+        </ion-item>
+    </ion-list>
+</ion-content>

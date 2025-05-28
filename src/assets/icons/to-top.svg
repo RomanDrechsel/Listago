@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <title>scroll-to-top</title>
+  <path transform="rotate(40 686.24 -249.77)" d="m746.31 113.76c-8.1651 6.7973-13.974 15.555-16.353 25.371-1.3971 3.8518-2.5018 7.9028-3.2478 12.133l-92.013 521.83c-5.778 32.768 11.531 63.021 38.81 67.831 27.279 4.8101 53.894-17.698 59.672-50.466l86.629-491.31 498.89 0.0023c33.274 0 60.061-22.302 60.061-50.002s-26.788-49.999-60.062-49.999l-529.88 0.001077c-4.2958 0-8.4771 0.38449-12.513 1.0915-10.525 0.66725-20.537 5.2587-28.864 12.665-0.36918 0.2921-0.77106 0.55504-1.1312 0.85484zm256.82 306.06c-8.1651 6.7973-13.974 15.555-16.353 25.371-1.3971 3.8518-2.5031 7.9013-3.249 12.132l-92.012 521.83c-5.778 32.768 11.531 63.021 38.81 67.831 27.279 4.81 53.893-17.699 59.671-50.468l86.63-491.31 498.89 8e-4c33.274 0 60.062-22.301 60.062-50.001s-26.788-49.999-60.062-49.999l-529.88-4.2e-4c-4.2959 0-8.4759 0.38599-12.512 1.093-10.525 0.66725-20.536 5.2586-28.864 12.665-0.3691 0.2921-0.771 0.55504-1.1312 0.85484z" stroke-width="109.6"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://roman-drechsel.de</dc:source>
+        <dc:date>2024-12-23</dc:date>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+        <dc:title>scroll-to-top</dc:title>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+        <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

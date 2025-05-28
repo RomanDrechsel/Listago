@@ -1,0 +1,71 @@
+<app-main-toolbar back="/lists" [displayCustomMenu]="true" [displayMenu]="false">
+    {{'page_trash.page_title'|translate}}
+    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
+</app-main-toolbar>
+
+<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
+    <div *ngIf="Lists.length > 0; else empty" class="list-content" #listContent>
+        <ion-list id="animated-list" #itemsList>
+            <ion-item-sliding *ngFor="let list of Lists" [disabled]="EditMode || !InitialAnimationDone">
+                <ion-item lines="none" [button]="true" (click)="clickOnItem($event, list)" [ngClass]="{'selected-item': EditMode && isListSelected(list)}">
+                    <ion-label class="animated-item" [ngClass]="{'pre-animation-state': !InitialAnimationDone}">
+                        <div class="details">
+                            <div class="listname">{{list.Name}}</div>
+                            <ion-note color="medium" class="date">{{DeletedString(list)}}</ion-note>
+                        </div>
+                        <div class="icons" [ngClass]="{'hide': EditMode}">
+                            <div class="itemcount">
+                                <div class="count">{{list.ItemsCount}}</div>
+                            </div>
+                        </div>
+                    </ion-label>
+
+                    <div class="editmode small" [ngClass]="{'show': EditMode}">
+                        <ion-checkbox checked="true" [checked]="isListSelected(list)" (click)="$event.preventDefault()"></ion-checkbox>
+                    </div>
+                </ion-item>
+                <ion-item-options side="start" (ionSwipe)="onSwipeRight(list)">
+                    <ion-item-option color="danger" expandable="true" (click)="deleteList(list)">
+                        <ion-icon slot="start" src="./assets/icons/trash_solid.svg"></ion-icon>
+                        {{'page_trash.erase'|translate}}
+                    </ion-item-option>
+                </ion-item-options>
+                <ion-item-options side="end" (ionSwipe)="onSwipeLeft(list)">
+                    <ion-item-option color="secondary" expandable="true" (click)="restoreList(list)">
+                        <ion-icon slot="end" src="./assets/icons/undo.svg"></ion-icon>
+                        {{'page_trash.restore'|translate}}
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
+    </div>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="ShowScrollButtons">
+        <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
+            <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="ScrollToBottom(false)" [disabled]="DisableScrollToBottom">
+            <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>
+<ng-template #empty>
+    <app-page-empty *ngIf="ItemsInitialized; else notInit">
+        <div slot="image">
+            <ion-icon src="./assets/icons/menu/trash.svg"></ion-icon>
+        </div>
+        <div slot="text">
+            <ion-text>{{'page_trash.empty'|translate}}</ion-text>
+        </div>
+    </app-page-empty>
+</ng-template>
+
+<ng-template #notInit>
+    <app-page-empty>
+        <div slot="image">
+            <ion-img src="./assets/icons/hourglass.svg"></ion-img>
+        </div>
+        <div slot="text">
+            <div [innerHTML]="'page_trash.loading'|translate"></div>
+        </div>
+    </app-page-empty>
+</ng-template>

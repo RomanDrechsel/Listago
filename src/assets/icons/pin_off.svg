@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <title>Pin Icon-Off</title>
+ <path transform="rotate(45)" d="m492.51-295.19c-6.3595 6.4094-10.399 16.121-10.399 27.028 0 19.39 12.771 34.999 28.635 34.999h20.534l-0.00138 60.674h70.004l-0.00138-60.674h211.66l-0.00139 60.674h70.004l-0.00139-60.674h20.534c15.865 0 28.635-15.609 28.635-34.999s-12.772-35-28.636-35h-392.73c-6.9407 0-13.291 2.9879-18.237 7.9729zm-185.53 198.07c-6.3262 5.4427-10.228 12.972-10.228 21.313l-0.00138 9.7766c0 16.682 15.61 30.111 35 30.111h780c19.39 0 35-13.429 35-30.111l0.0014-9.7766c0-16.682-15.61-30.111-35-30.111l-780-0.00138c-9.695 0-18.445 3.3574-24.771 8.8002zm129.27 124.63c-20.549 30.988-33.956 58.251-33.128 89.21a35 35 0 0 0 0.06215 0.33007l-0.00139 4.8158c0 16.682 16.472 30.111 36.931 30.111h232v311.59c0 16.682 15.609 30.113 34.999 30.113s35-13.429 35-30.111l-0.00139-311.59h232c20.459 0 36.93-13.431 36.93-30.113v-4.8089a35 35 0 0 0 0.0621-0.3356c0.8289-30.959-12.579-58.222-33.128-89.21h-87.261c8.6424 10.469 16.711 20.748 23.364 30.404 5.9131 8.5835 10.574 16.683 14.376 24.062h-442.68c3.8014-7.3795 8.4625-15.479 14.376-24.062 6.6521-9.6562 14.721-19.935 23.364-30.404h-87.261z" stroke-width="70"/>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:date>2024-07-18</dc:date>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Roman Drechsel</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:rights>
+     <cc:Agent>
+      <dc:title>Roman Drechsel</dc:title>
+     </cc:Agent>
+    </dc:rights>
+    <dc:publisher>
+     <cc:Agent>
+      <dc:title>Roman Drechsel</dc:title>
+     </cc:Agent>
+    </dc:publisher>
+    <dc:title>Pin Icon-Off</dc:title>
+    <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+   </cc:Work>
+   <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+    <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+    <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+    <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+   </cc:License>
+  </rdf:RDF>
+ </metadata>
+</svg>

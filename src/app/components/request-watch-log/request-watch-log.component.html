@@ -1,0 +1,17 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ "comp-watchlogs.title" | translate }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="cancel()" [ariaLabel]="'cancel' | translate">
+                <ion-icon src="./assets/icons/close.svg" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<div class="inner-content ion-padding ion-text-center">
+    <div [innerHTML]="'comp-watchlogs.text' | translate : { name: Params.device.Name }"></div>
+</div>
+<div class="buttons">
+    <ion-button (click)="openApp()">{{ "comp-watchlogs.openApp" | translate }}</ion-button>
+    <ion-button (click)="proceedWithoutLogs()">{{ "comp-watchlogs.withoutlogs" | translate }}</ion-button>
+</div>

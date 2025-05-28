@@ -2,8 +2,12 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { ConnectIQDevice } from "../app/services/connectiq/connect-iq-device";
+import { ConnectIQService } from "../app/services/connectiq/connect-iq.service";
+
 export const environment = {
-  production: false
+    production: false,
+    publicRelease: false,
 };
 
 /*
@@ -14,3 +18,7 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+
+export const DebugDevices = function (service: ConnectIQService): ConnectIQDevice[] {
+    return [];
+};

@@ -1,0 +1,17 @@
+ion-list {
+    ion-item {
+        &:not(:first-of-type) {
+            margin-top: 40px;
+        }
+
+        .fullwidth {
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        .text,
+        ion-note {
+            white-space: pre-line;
+        }
+    }
+}

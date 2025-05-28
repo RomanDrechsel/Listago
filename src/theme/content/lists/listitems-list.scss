@@ -1,0 +1,60 @@
+@use "src/theme/content/lists/list.scss";
+
+ion-list {
+    ion-item-sliding {
+        ion-item {
+            ion-label {
+                align-items: center;
+
+                .details {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 0.2em;
+
+                    .listpoint-indicator-wrapper {
+                        width: 1em;
+                        max-width: 1em;
+                        display: flex;
+                        align-items: start;
+                        justify-content: center;
+
+                        .listpoint-indicator {
+                            position: relative;
+                            top: 0.4em;
+                            background: var(--color-text);
+                            width: 0.5em;
+                            height: 0.5em;
+                            border-radius: 100%;
+                        }
+
+                        ion-icon {
+                            position: relative;
+                            top: 0.2em;
+                            width: 100%;
+                            fill: var(--color-text);
+                        }
+                    }
+
+                    .text {
+                        flex: 1;
+
+                        .item {
+                            font-size: 1.3em;
+                            white-space: pre-line;
+                        }
+
+                        .note {
+                            --padding-top: 0;
+                            white-space: pre-line;
+                            color: var(--ion-color-medium);
+                        }
+                    }
+
+                    &.hidden {
+                        opacity: 0.3;
+                    }
+                }
+            }
+        }
+    }
+}

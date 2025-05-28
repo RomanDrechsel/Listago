@@ -1,0 +1,68 @@
+<app-main-toolbar back="/lists">{{'page_appinfos.page_title'|translate}}</app-main-toolbar>
+
+<ion-content>
+    <div class="flex">
+        <div class="list">
+            <ion-list>
+                <ion-item class="ion-align-items-start" lines="full">
+                    <div>
+                        <ion-text>{{'page_appinfos.package'|translate}}</ion-text>
+                        <ion-note class="ion-text-end">{{BundleId}}</ion-note>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.version'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{Appversion}}</ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.build'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{Build}}</ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.platform'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{Platform}}</ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </ion-item>
+                <ion-item lines="full">
+                    <div>
+                        <ion-text>{{'page_appinfos.stats'|translate}}</ion-text>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.database_lists'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{DatabaseSizeLists}}</ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.database_trash'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{DatabaseSizeTrash}}</ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.database_logs'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{LogsSize}}</ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.memory'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{MemoryUsage}}</ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </ion-item>
+            </ion-list>
+        </div>
+        <div class="support">
+            <div [innerHTML]="'page_appinfos.support'|translate" class="ion-text-center"></div>
+            <ion-img [src]="isDarkmode ? './assets/img/bmc_dark.png' : './assets/img/bmc.png'" (click)="bmc()" />
+            <div [innerHTML]="'page_appinfos.support2'|translate" class="ion-text-center"></div>
+            <ion-img src="/assets/img/de-pp-logo-200px.png" class="paypal" (click)="paypal()" />
+            <div class="review">
+                <div [innerHTML]="'page_appinfos.review'|translate" class="ion-text-center" (click)="writeReviewIQ()"></div>
+                <div [innerHTML]="'page_appinfos.review_google'|translate" class="ion-text-center" (click)="writeReviewGoogle()"></div>
+            </div>
+            <div [innerHTML]="'page_appinfos.thanks'|translate" class="ion-text-center"></div>
+            <div class="my-website" (click)="mywebsite()">
+                <div [innerHTML]="'page_appinfos.website'|translate" class="ion-text-center"></div>
+                <div class="link">{{Homepage}}</div>
+            </div>
+        </div>
+    </div>
+</ion-content>

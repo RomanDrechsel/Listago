@@ -1,0 +1,16 @@
+:host {
+    .content {
+        ion-picker {
+            .no-padding {
+                padding-inline: 0;
+            }
+        }
+
+        .devider {
+            width: 80%;
+            height: 1px;
+            margin-inline: auto;
+            background-color: var(--color-control-border);
+        }
+    }
+}

@@ -1,0 +1,10 @@
+<ion-datetime locale="{{LocaleString}}" [showDefaultButtons]="false" [firstDayOfWeek]="FirstDayOfWeek" presentation="date" [min]="Params?.minimumDate?.toISOString() ?? undefined" [max]="Params?.maximumDate?.toISOString() ?? undefined" [value]="Params?.selectedDate?.toISOString() ?? undefined"
+              [formatOptions]="{ date: { day: '2-digit', month: 'long' }}"
+              (ionChange)="onChange($event.detail.value)" #datetime>
+    <span *ngIf="Params?.title" slot="title">{{Params!.title}}</span>
+    <ion-buttons slot="buttons">
+        <ion-button color="secondary" (click)="selectToday()">{{'date.today'|translate}}</ion-button>
+        <ion-button color="secondary" (click)="cancel()">{{'cancel'|translate}}</ion-button>
+        <ion-button color="secondary" fill="solid" (click)="datetime.confirm()">{{'select'|translate}}</ion-button>
+    </ion-buttons>
+</ion-datetime>

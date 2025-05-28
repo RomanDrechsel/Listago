@@ -1,0 +1,51 @@
+:host {
+    .addnew {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+
+        .text {
+            text-align: center;
+            width: 100%;
+            color: var(--ion-color-success-contrast);
+            opacity: 0.5;
+            margin-block-end: 36px;
+            font-size: 1.8em;
+            font-weight: bold;
+            padding-bottom: 64px;
+            padding-inline: 32px;
+        }
+
+        .arrow {
+            animation: bounce 10s ease-in-out infinite;
+            margin-bottom: 80px;
+            margin-right: 70px;
+
+            ion-img {
+                width: 130px;
+            }
+        }
+    }
+
+    @keyframes bounce {
+
+        0%,
+        20%,
+        26%,
+        32%,
+        100% {
+            transform: translate(0, 0) rotateZ(-10deg);
+        }
+
+        23% {
+            transform: translate(-18px, -36px) rotateZ(-10deg);
+        }
+
+        29% {
+            transform: translate(-14px, -28px) rotateZ(-10deg);
+        }
+    }
+}

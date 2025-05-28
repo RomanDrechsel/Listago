@@ -1,0 +1,176 @@
+.list-content {
+    padding-bottom: 90px;
+}
+
+ion-list {
+    contain: none;
+
+    ion-item-sliding {
+        overflow: visible;
+
+        ion-item {
+            --padding-top: 0;
+            --padding-bottom: 0;
+            --padding-start: 0;
+            --inner-padding-end: 0;
+            --ripple-color: var(--ion-color-primary);
+            --min-height: 3.5em;
+            --background-color: var(--color-item-background);
+            display: flex;
+            align-items: start;
+            overflow: visible;
+
+            &.selected-item {
+                --background-color: rgba(var(--ion-color-primary-rgb), 0.07);
+
+                .editmode {
+                    background-color: var(--color-item-selected-shade);
+                }
+            }
+
+            ion-label {
+                margin-top: 0;
+                margin-bottom: 0;
+                flex: 1;
+                width: 100%;
+                max-width: 100%;
+                min-height: 4em;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: start;
+                background-color: var(--background-color);
+                border-bottom: solid 1px var(--color-control-border);
+                padding: 0.5em 0.5em;
+                word-break: break-word;
+
+                .details {
+                    width: 100%;
+
+                    .date {
+                        color: var(--ion-color-medium);
+                        font-size: 0.9em;
+                    }
+                }
+            }
+
+            .icons,
+            .editmode {
+                display: flex;
+                justify-content: end;
+                align-items: start;
+                flex-wrap: nowrap;
+                flex-direction: row;
+                gap: 0.5em;
+                padding-inline-start: 0.5em;
+                margin-inline-start: 0;
+            }
+
+            .icons {
+                flex: 0;
+                opacity: 1;
+                transition: opacity 400ms ease-in-out;
+                height: 100%;
+                min-height: 100%;
+
+                &.hide {
+                    opacity: 0;
+                }
+
+                ion-icon {
+                    width: 1.5em;
+                    min-width: 1.5em;
+                    height: 1.5em;
+                }
+            }
+
+            .editmode {
+                position: absolute;
+                width: 5em;
+                right: -5em;
+                min-height: 3em;
+                top: 0.35em;
+                z-index: 10;
+                transition: right 500ms ease-in-out, opacity 500ms ease-in-out, background-color 300ms ease-in-out;
+                padding: 0.5em 0 0.5em 0.5em;
+                backdrop-filter: blur(1px);
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: end;
+                gap: 0.5em;
+                opacity: 0;
+                background-color: var(--color-item-background);
+                border: solid 1px var(--color-control-border);
+                border-inline-end: 0;
+                border-radius: 1em 0 0 1em;
+
+                &.show {
+                    right: 0 !important;
+                    opacity: 1 !important;
+                }
+
+                &.small {
+                    width: 3.5em;
+                    right: -3.5em;
+                    padding-inline-end: 0.8em;
+                }
+
+                ion-checkbox {
+                    max-width: 1.5em;
+                    --size: 1.5em;
+                    --checkbox-background-checked: var(--ion-card-background);
+                    --border-color-checked: var(--border-color);
+                    --checkmark-color: var(--ion-color-medium);
+                    --checkmark-width: 3px;
+                    --border-radius: 20%;
+
+                    &::part(container) {
+                        top: -0.2em;
+                    }
+                }
+
+                ion-reorder {
+                    padding-inline-end: 0.3em;
+
+                    ion-icon {
+                        width: 1.5em;
+                        height: 2em;
+                    }
+                }
+            }
+        }
+    }
+
+    &#animated-list {
+        .animated-item {
+            opacity: 1;
+
+            &.pre-animation-state {
+                opacity: 0;
+            }
+        }
+    }
+}
+
+ion-fab {
+    flex-direction: row;
+    gap: 1em;
+    display: flex;
+
+    ion-fab-button {
+        &.clicked[data-label]::after {
+            background-color: var(--ion-color-secondary);
+            transition: background-color 0.5s ease-in;
+            color: var(--ion-color-secondary-contrast);
+        }
+
+        ion-icon {
+            &.to-bottom {
+                rotate: 180deg;
+            }
+        }
+    }
+}

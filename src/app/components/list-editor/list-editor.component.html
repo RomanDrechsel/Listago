@@ -1,0 +1,68 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            <div class="ion-text-wrap">
+                {{ Title }}
+            </div>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="cancel()" [ariaLabel]="'cancel' | translate">
+                <ion-icon src="./assets/icons/close.svg" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<div class="inner-content ion-padding">
+    <form (ngSubmit)="onSubmit()" [formGroup]="Form">
+        <ion-input [label]="'comp-listeditor.listname' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="100" autocapitalize="sentence" spellcheck="true" enterkeyhint="enter" required="true" formControlName="listname" #listname></ion-input>
+        <ion-accordion-group *ngIf="ConnectIQInitialized">
+            <ion-accordion class="list-settings">
+                <ion-item slot="header">
+                    <ion-label>{{ "comp-listeditor.settings" | translate }}</ion-label>
+                </ion-item>
+                <div slot="content">
+                    <ion-accordion-group [value]="ResetActive ? 'reset' : undefined" #resetAccordion>
+                        <ion-accordion toggleIcon="none" value="reset">
+                            <div slot="header">
+                                <ion-item lines="none">
+                                    <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (ionChange)="toggleReset($event)" #reset>
+                                        <ion-text>{{ "comp-listeditor.reset" | translate }}</ion-text>
+                                    </ion-checkbox>
+                                    <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
+                                </ion-item>
+                            </div>
+                            <ion-list slot="content">
+                                <ion-item lines="none">
+                                    <ion-select [label]="'comp-listeditor.reset_interval' | translate" label-placement="stacked" [value]="ResetInteval" (ionChange)="onResetIntervalChanged($event.target.value)" #resetinterval>
+                                        <ion-select-option value="daily">{{ "comp-listeditor.reset_daily" | translate }}</ion-select-option>
+                                        <ion-select-option value="weekly">{{ "comp-listeditor.reset_weekly" | translate }}</ion-select-option>
+                                        <ion-select-option value="monthly">{{ "comp-listeditor.reset_monthly" | translate }}</ion-select-option>
+                                    </ion-select>
+                                </ion-item>
+                                <ion-item (click)="selectResetDate()" class="select-resetdate">
+                                    <ion-text>{{ ResetString }}</ion-text>
+                                </ion-item>
+                            </ion-list>
+                        </ion-accordion>
+                    </ion-accordion-group>
+
+                    <ion-item lines="none">
+                        <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (ionChange)="toggleSync($event)" #sync>
+                            <ion-text>{{ "comp-listeditor.sync" | translate }}</ion-text>
+                        </ion-checkbox>
+                        <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>
+                    </ion-item>
+                </div>
+            </ion-accordion>
+        </ion-accordion-group>
+
+        <div class="buttons">
+            <ion-button *ngIf="Params?.list" class="ion-float-end" fill="outline" (click)="onDelete()">
+                {{ "comp-listeditor.delete" | translate }}
+            </ion-button>
+            <ion-button class="ion-float-end" [disabled]="!Form.valid" (click)="onSubmit()">
+                {{ Confirm }}
+            </ion-button>
+        </div>
+    </form>
+</div>

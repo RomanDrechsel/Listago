@@ -1,0 +1,17 @@
+:host {
+    display: block;
+}
+
+::ng-deep {
+    ion-modal.edit-menu-modal {
+        align-items: flex-start;
+        top: 56px;
+        backdrop-filter: blur(2px);
+
+        &::part(content) {
+            height: auto;
+            -webkit-box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.5);
+        }
+    }
+}
