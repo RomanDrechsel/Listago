@@ -1,5 +1,4 @@
 {
-    "appname": "Garmin手表列表管理器",
     "ok": "确定",
     "yes": "是",
     "no": "否",
@@ -16,7 +15,6 @@
         "date_add": "",
         "today": "今天",
         "yesterday": "昨天",
-        "sec_short": "秒",
         "min_short": "分",
         "hour_short": "小时",
         "hours_short": "小时",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "无法保存列表！",
-        "store_listitem_error": "无法保存条目！",
         "delete_confirm": "确定要删除列表<strong>{{name}}</strong>吗？",
         "delete_confirm_plural": "确定要删除这些列表吗？",
         "delete_confirm_watch": "也在手表上删除列表",
         "delete_error": "无法删除列表！",
         "delete_error_plural": "无法删除这些列表！",
-        "delete_error_partial": "并非所有列表都能删除！",
         "delete_success": "列表已删除。",
         "delete_success_plural": "列表已被删除。",
         "delete_item_confirm": "确定要删除条目<strong>{{name}}</strong>吗？",
@@ -93,7 +89,6 @@
         "restore_success_plural": "列表已恢复。",
         "restore_error": "无法恢复列表！",
         "restore_error_plural": "无法恢复这些列表！",
-        "restore_error_partial": "并非所有列表都能恢复！",
         "restore_item_confirm": "确定要恢复条目<strong>{{name}}</strong>吗？",
         "restore_item_confirm_plural": "确定要恢复这些条目吗？",
         "restore_item_success": "条目已恢复。",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "保存日志",
         "text": "你想如何保存日志<br /><strong>{{filename}}</strong><br />？",
-        "text_web": "日志<strong>{{filename}}</strong>将保存在你的计算机上。",
         "store": "保存到Documents",
         "share": "分享",
         "email": "通过电子邮件发送给开发人员",
@@ -272,7 +266,6 @@
         "page_title": "我的设备",
         "known_devices": "已知设备",
         "install_app": "你需要先在手表上安装列表应用。<br /><strong>点击这里</strong> 前往 Garmin Connect IQ 商店。",
-        "reload_btn": "重新加载设备",
         "toggle": "始终发送到该设备",
         "select_btn": "选择设备",
         "device_state": {
@@ -327,15 +320,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "日志",
-        "log_onemore": "一个更多日志",
-        "log_more": "{{count}} 更多日志",
-        "log_empty": "无法加载日志。",
         "btn_delete": "删除日志",
         "btn_save": "保存日志",
         "confirm_delete": "确定要删除日志 <strong>{{filename}}</strong>？",
         "toast_deleted": "日志已删除。",
         "select_logs": "选择日志文件：",
-        "logfile": "日志文件",
         "select_logday_title": "选择日志文件日期：",
         "no_log": "未找到日志文件！",
         "no_log_note": "未找到 {{date}} 的日志文件。"
@@ -395,9 +384,6 @@
         "instock_onemonth": "一个月",
         "instock_hundredentries": "最后 100 条记录",
         "instock_note": "旧列表或列表项在回收站中保留多长时间？",
-        "confirm_cleartrash": "是否清空回收站？<br /><br /><strong>警告：</strong> 此操作无法撤销！",
-        "confirm_cleartrash_ok": "清空回收站",
-        "confirm_cleartrash_cancel": "不清空回收站",
         "confirm_clearitemstrash": "是否清空所有回收站？<br /><br /><strong>警告：</strong> 此操作无法撤销！",
         "confirm_clearitemstrash_ok": "清空所有回收站",
         "confirm_clearitemstrash_cancel": "不清空所有回收站"

@@ -1,5 +1,4 @@
 {
-    "appname": "Lists Manager for Garmin devices",
     "ok": "Ok",
     "yes": "Yes",
     "no": "No",
@@ -16,7 +15,6 @@
         "date_add": "",
         "today": "Today",
         "yesterday": "Yesterday",
-        "sec_short": "sec",
         "min_short": "min",
         "hour_short": "hr",
         "hours_short": "hrs",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "The list could not be saved!",
-        "store_listitem_error": "the item could not be saved!",
         "delete_confirm": "Do you really want to delete the list <strong>{{name}}</strong>?",
         "delete_confirm_plural": "Do you really want to delete these lists?",
         "delete_confirm_watch": "Delete list on the watch too",
         "delete_error": "The list could not be deleted!",
         "delete_error_plural": "The lists could not be deleted!",
-        "delete_error_partial": "Not all lists could be deleted!",
         "delete_success": "The list was deleted.",
         "delete_success_plural": "The lists were deleted.",
         "delete_item_confirm": "Do you really want to delete the item <strong>{{name}}</strong>?",
@@ -93,7 +89,6 @@
         "restore_success_plural": "The lists were restored.",
         "restore_error": "The list could not be restored!",
         "restore_error_plural": "The lists could not be restored!",
-        "restore_error_partial": "Not all lists could be restored!",
         "restore_item_confirm": "Do you really want to restore the item <strong>{{name}}</strong>?",
         "restore_item_confirm_plural": "Do you really want to restore these items?",
         "restore_item_success": "The item was restored.",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "Store log",
         "text": "How do you want to store the logfile <br /><strong>{{filename}}</strong>?",
-        "text_web": "The logfile <strong>{{filename}}</strong> will be stored on your disk.",
         "store": "Store in Documents on your device",
         "share": "Share",
         "email": "Send as e-mail to developer",
@@ -272,7 +266,6 @@
         "page_title": "My devices",
         "known_devices": "Known devices",
         "install_app": "You need to install the Lists app on your device first.<br /><strong>Click here</strong> to get to the Garmin ConnectIQ Store.",
-        "reload_btn": "Reload devices",
         "toggle": "Always send to this device",
         "select_btn": "Select device",
         "device_state": {
@@ -327,15 +320,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "Logs",
-        "log_onemore": "One more log",
-        "log_more": "{{count}} more logs",
-        "log_empty": "The log could not be loaded.",
         "btn_delete": "Delete log",
         "btn_save": "Store log",
         "confirm_delete": "Should the log <strong>{{filename}}</strong> be deleted?",
         "toast_deleted": "The log was deleted.",
         "select_logs": "Select log file:",
-        "logfile": "log file",
         "select_logday_title": "Show log files of a certain day:",
         "no_log": "No log files found!",
         "no_log_note": "No log files were found for {{date}}"
@@ -395,9 +384,6 @@
         "instock_onemonth": "one month",
         "instock_hundredentries": "last 100 entries",
         "instock_note": "How long should old lists or list items be kept in the trash?",
-        "confirm_cleartrash": "Should the trash be emptied?<br /><br /><strong>Warning:</strong> The action can not be undone!",
-        "confirm_cleartrash_ok": "Empty trash",
-        "confirm_cleartrash_cancel": "Don't empty trash",
         "confirm_clearitemstrash": "Should the trashes be emptied?<br /><br /><strong>Warning:</strong> The action can not be undone!",
         "confirm_clearitemstrash_ok": "Empty trashes",
         "confirm_clearitemstrash_cancel": "Don't empty trashes"

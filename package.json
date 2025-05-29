@@ -48,6 +48,7 @@
         "capacitor-email-composer": "^7.0.0",
         "capacitor-plugin-webview-cache": "^4.0.0",
         "globalthis": "^1.0.4",
+        "ngx-translate-lint": "^1.22.0",
         "patch-package": "^8.0.0",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",

@@ -1,5 +1,4 @@
 {
-    "appname": "Listen-Manager für Garmin Uhren",
     "ok": "Ok",
     "yes": "Ja",
     "no": "Nein",
@@ -16,7 +15,6 @@
         "date_add": " Uhr",
         "today": "Heute",
         "yesterday": "Gestern",
-        "sec_short": "Sek.",
         "min_short": "Min.",
         "hour_short": "Std.",
         "hours_short": "Std.",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "Die Liste konnte nicht gespeichert werden!",
-        "store_listitem_error": "Der Punkt konnte nicht gespeichert werden!",
         "delete_confirm": "Möchtest du die Liste <strong>{{name}}</strong> wirklich löschen?",
         "delete_confirm_plural": "Möchtest du die Listen wirklich löschen?",
         "delete_confirm_watch": "Liste auch auf der Uhr löschen",
         "delete_error": "Die Liste konnte nicht gelöscht werden!",
         "delete_error_plural": "Die Listen konnten nicht gelöscht werden!",
-        "delete_error_partial": "Es konnten nicht alle Listen gelöscht werden!",
         "delete_success": "Die Liste wurde gelöscht.",
         "delete_success_plural": "Die Listen wurden gelöscht.",
         "delete_item_confirm": "Möchtest du den Punkt <strong>{{name}}</strong> wirklich löschen?",
@@ -93,7 +89,6 @@
         "restore_success_plural": "Die Listen wurden wiederhergestellt.",
         "restore_error": "Die Liste konnte nicht wiederhergestellt werden!",
         "restore_error_plural": "Die Listen konnten nicht wiederhergestellt werden!",
-        "restore_error_partial": "Es konnten nicht alle Listen wiederhergestellt werden!",
         "restore_item_confirm": "Möchtest du den Punkt <strong>{{name}}</strong> wiederherstellen?",
         "restore_item_confirm_plural": "Möchtest du die Punkte wiederherstellen?",
         "restore_item_success": "Der Punkt wurde wiederhergestellt.",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "Log Speichern",
         "text": "Wie möchtest du das Log <br /><strong>{{filename}}</strong><br /> speichern?",
-        "text_web": "Das Log <strong>{{filename}}</strong> wird auf Deinem Rechner gespeichert.",
         "store": "In Documents speichern",
         "share": "Teilen",
         "email": "Per E-Mail an Entwickler senden",
@@ -272,7 +266,6 @@
         "page_title": "Meine Geräte",
         "known_devices": "Bekannte Geräte",
         "install_app": "Du musst zuerst die Listen App auf deiner Uhr installieren.<br /><strong>Klicke hier</strong> um zum Garmin ConnectIQ Store zu gelangen.",
-        "reload_btn": "Geräte neu laden",
         "toggle": "Immer an dieses Gerät senden",
         "select_btn": "Gerät auswählen",
         "device_state": {
@@ -327,15 +320,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "Logs",
-        "log_onemore": "Ein weiteres Log",
-        "log_more": "{{count}} weitere Logs",
-        "log_empty": "Das Log konnte nicht geladen werden.",
         "btn_delete": "Log löschen",
         "btn_save": "Log speichern",
         "confirm_delete": "Soll das Log <strong>{{filename}}</strong> wirklich gelöscht?",
         "toast_deleted": "Das Log wurde gelöscht.",
         "select_logs": "Log-Datei auswählen:",
-        "logfile": "Log Datei",
         "select_logday_title": "Tage der Log-Dateien auswählen:",
         "no_log": "Keine Log-Dateien gefunden!",
         "no_log_note": "Für {{date}} wurden keine Log-Dateien gefunden."
@@ -395,9 +384,6 @@
         "instock_onemonth": "einen Monat",
         "instock_hundredentries": "letzte 100 Einträge",
         "instock_note": "Wie lange sollen alte Listen bzw. Listenpunkte im Papierkorb vorrätig gehalten werden?",
-        "confirm_cleartrash": "Soll der Papierkorb geleert werden?<br /><br /><strong>Achtung:</strong> Die Aktion kann nichtmehr rückgängig gemacht werden!",
-        "confirm_cleartrash_ok": "Papierkorb leeren",
-        "confirm_cleartrash_cancel": "Papierkorb nicht leeren",
         "confirm_clearitemstrash": "Sollen die Papierkörbe geleert werden?<br /><br /><strong>Achtung:</strong> Die Aktion kann nichtmehr rückgängig gemacht werden!",
         "confirm_clearitemstrash_ok": "Papierkörbe leeren",
         "confirm_clearitemstrash_cancel": "Papierkörbe nicht leeren"

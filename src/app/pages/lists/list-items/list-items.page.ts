@@ -71,7 +71,7 @@ export class ListItemsPage extends AnimatedListPageBase {
             (async () => {
                 // no wait
                 const id = Number(this.Route.snapshot.paramMap.get("id"));
-                if (id && Number(id) != Number.NaN) {
+                if (id != Number.NaN) {
                     this._list = await this.ListsService.GetList(id);
                     this.appComponent.setAppPages(this.ModifyMainMenu());
                     if (this._list) {

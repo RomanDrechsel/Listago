@@ -1,5 +1,4 @@
 {
-    "appname": "Gestore Liste per Orologi Garmin",
     "ok": "Ok",
     "yes": "Sì",
     "no": "No",
@@ -16,7 +15,6 @@
         "date_add": "",
         "today": "Oggi",
         "yesterday": "Ieri",
-        "sec_short": "Sec.",
         "min_short": "Min.",
         "hour_short": "Ora",
         "hours_short": "Ore",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "La lista non può essere salvata!",
-        "store_listitem_error": "Il punto non può essere salvato!",
         "delete_confirm": "Vuoi davvero eliminare la lista <strong>{{name}}</strong>?",
         "delete_confirm_plural": "Vuoi davvero eliminare le liste?",
         "delete_confirm_watch": "Elimina anche dall'orologio",
         "delete_error": "La lista non può essere eliminata!",
         "delete_error_plural": "Le liste non possono essere eliminate!",
-        "delete_error_partial": "Non tutte le liste sono state eliminate!",
         "delete_success": "La lista è stata eliminata.",
         "delete_success_plural": "Le liste sono state eliminate.",
         "delete_item_confirm": "Vuoi davvero eliminare il punto <strong>{{name}}</strong>?",
@@ -93,7 +89,6 @@
         "restore_success_plural": "Le liste sono state ripristinate.",
         "restore_error": "La lista non può essere ripristinata!",
         "restore_error_plural": "Le liste non possono essere ripristinate!",
-        "restore_error_partial": "Non tutte le liste sono state ripristinate!",
         "restore_item_confirm": "Vuoi davvero ripristinare il punto <strong>{{name}}</strong>?",
         "restore_item_confirm_plural": "Vuoi davvero ripristinare i punti?",
         "restore_item_success": "Il punto è stato ripristinato.",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "Salva il log",
         "text": "Come desideri salvare il log <br /><strong>{{filename}}</strong>?",
-        "text_web": "Il log <strong>{{filename}}</strong> verrà salvato sul tuo computer.",
         "store": "Salva in Documenti",
         "share": "Condividi",
         "email": "Inviare allo sviluppatore via e-mail",
@@ -272,7 +266,6 @@
         "page_title": "I miei dispositivi",
         "known_devices": "Dispositivi noti",
         "install_app": "Devi prima installare l'app Lista sul tuo orologio.<br /><strong>Clicca qui</strong> per andare allo store Garmin Connect IQ.",
-        "reload_btn": "Carica nuovamente i dispositivi",
         "toggle": "Invia sempre a questo dispositivo",
         "select_btn": "Seleziona dispositivo",
         "device_state": {
@@ -324,15 +317,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "Logs",
-        "log_onemore": "Un altro log",
-        "log_more": "{{count}} altri log",
-        "log_empty": "Il log non è stato caricato.",
         "btn_delete": "Cancella log",
         "btn_save": "Salva log",
         "confirm_delete": "Vuoi cancellare il log <strong>{{filename}}</strong>?",
         "toast_deleted": "Il log è stato cancellato.",
         "select_logs": "Seleziona file di log:",
-        "logfile": "File di log",
         "select_logday_title": "Seleziona i giorni dei file di log:",
         "no_log": "Nessun file di log trovato!",
         "no_log_note": "Per {{date}} non sono stati trovati file di log."
@@ -341,8 +330,7 @@
         "page_title": "Log dell'orologio",
         "select_watch": "Seleziona dispositivo",
         "no_watch": "Nessun dispositivo trovato",
-        "no_log": "Nessun file di log trovato!",
-        "no_log_note": "Per {{date}} non sono stati trovati file di log."
+        "no_logs": "Nessun file di log trovato!"
     },
     "page_settings_confirm": {
         "undo_warning": "<br /><strong>Attenzione:</strong> l'azione non può essere annullata!",
@@ -375,9 +363,6 @@
         "instock_onemonth": "un mese",
         "instock_hundredentries": "ultimi 100 elementi",
         "instock_note": "Quanto tempo desideri mantenere gli elementi nel cestino prima della loro cancellazione automatica?",
-        "confirm_cleartrash": "Vuoi svuotare il cestino?<br /><br /><strong>Attenzione:</strong> Questa azione non può essere annullata!",
-        "confirm_cleartrash_ok": "Svuota cestino",
-        "confirm_cleartrash_cancel": "Non svuotare il cestino",
         "confirm_clearitemstrash": "Vuoi svuotare i cestini?<br /><br /><strong>Attenzione:</strong> Questa azione non può essere annullata!",
         "confirm_clearitemstrash_ok": "Svuota cestini",
         "confirm_clearitemstrash_cancel": "Non svuotare i cestini"

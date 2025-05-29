@@ -15,7 +15,7 @@ export const routes: Routes = [
         canActivate: [FirstStartGuard, OpenListOnStartGuard],
     },
     {
-        path: "lists/items/:uuid",
+        path: "lists/items/:id",
         loadComponent: () => import("./pages/lists/list-items/list-items.page").then(m => m.ListItemsPage),
     },
     {
@@ -23,7 +23,7 @@ export const routes: Routes = [
         loadComponent: () => import("./pages/lists/trash-lists/trash-lists.page").then(m => m.TrashListsPage),
     },
     {
-        path: "trash/items/:uuid",
+        path: "trash/items/:id",
         loadComponent: () => import("./pages/lists/trash-listitems/trash-listitems.page").then(m => m.TrashListitemsPage),
     },
     {

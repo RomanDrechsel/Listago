@@ -7,7 +7,7 @@ export class ConfigService {
     /**
      * e-mail address for app related stuff
      */
-    public readonly EMailAddress = "lists-app@roman-drechsel.de";
+    public readonly EMailAddress = "listago@roman-drechsel.de";
 
     /**
      * link to my website

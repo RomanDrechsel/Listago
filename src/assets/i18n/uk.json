@@ -1,5 +1,4 @@
 {
-    "appname": "Листинг-Менеджер для Garmin Ухер",
     "ok": "Окей",
     "yes": "Так",
     "no": "Ні",
@@ -16,7 +15,6 @@
         "date_add": "",
         "today": "Сьогодні",
         "yesterday": "Вчора",
-        "sec_short": "сек.",
         "min_short": "мін.",
         "hour_short": "год.",
         "hours_short": "год.",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "Неможливість збереження списку!",
-        "store_listitem_error": "Неможливість збереження пункту!",
         "delete_confirm": "Чи хочете ви видалити список <strong>{{name}}</strong>?",
         "delete_confirm_plural": "Чи хочете ви видалити списки?",
         "delete_confirm_watch": "Видалити також зі смарт-годинника",
         "delete_error": "Неможливість видалення списку!",
         "delete_error_plural": "Не вдалося видалити списки!",
-        "delete_error_partial": "Деякі списки не вдалося видалити!",
         "delete_success": "Список видалено.",
         "delete_success_plural": "Списки видалено.",
         "delete_item_confirm": "Чи хочете ви видалити пункт <strong>{{name}}</strong>?",
@@ -93,7 +89,6 @@
         "restore_success_plural": "Списки відновлено.",
         "restore_error": "Неможливість відновлення списку!",
         "restore_error_plural": "Неможливість відновлення списків!",
-        "restore_error_partial": "Деякі списки не вдалося відновити!",
         "restore_item_confirm": "Чи хочете ви відновити пункт <strong>{{name}}</strong>?",
         "restore_item_confirm_plural": "Чи хочете ви відновити пункти?",
         "restore_item_success": "Пункт відновлено.",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "Зберегти лог",
         "text": "Як хочеш зберегти лог <br /><strong>{{filename}}</strong><br />?",
-        "text_web": "Лог <strong>{{filename}}</strong> збережено на комп'ютері.",
         "store": "Зберігти у Документи",
         "share": "Поділитися",
         "email": "Надіслати розробнику на електронну пошту",
@@ -272,7 +266,6 @@
         "page_title": "Мої пристрої",
         "known_devices": "Знайдені пристрої",
         "install_app": "Спершу встановіть застосунок на своєму годиннику у <br /><strong>Garmin ConnectIQ Store</strong>",
-        "reload_btn": "Перезавантажити пристрій",
         "toggle": "Інформацію до цього пристрою відправляти завжди",
         "select_btn": "Вибрати пристрій",
         "device_state": {
@@ -327,15 +320,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "Логи",
-        "log_onemore": "Є ще один лог",
-        "log_more": "{{count}} більше логів",
-        "log_empty": "Лог не можна завантажити.",
         "btn_delete": "Видалити лог",
         "btn_save": "Зберегти лог",
         "confirm_delete": "Підтвердити видалення логу <strong>{{filename}}</strong>?",
         "toast_deleted": "Лог видалено.",
         "select_logs": "Виберіть файл з логами:",
-        "logfile": "Файл з логами",
         "select_logday_title": "Оберіть дати файлів з логами:",
         "no_log": "Немає файлів з логами!",
         "no_log_note": "Для {{date}} не було знайдено жодного файла з логами."
@@ -395,9 +384,6 @@
         "instock_onemonth": "1 місяць",
         "instock_hundredentries": "Останні 100 записів",
         "instock_note": "Скільки днів зберігати вміст цієї папки?",
-        "confirm_cleartrash": "Видалити вміст папки збережених?<br /><br /> <strong>Увага!</strong> Вміст буде видалено назавжди!",
-        "confirm_cleartrash_ok": "Видалити вміст",
-        "confirm_cleartrash_cancel": "Ні, нічого не видаляти",
         "confirm_clearitemstrash": "Видалити вміст окремої папки збережених?<br /><br /> <strong>Увага!</strong> Вміст буде видалено назавжди!",
         "confirm_clearitemstrash_ok": "Видалити вміст",
         "confirm_clearitemstrash_cancel": "Ні, нічого не видаляти"

@@ -1,5 +1,4 @@
 {
-    "appname": "Garminウォッチ用リストマネージャー",
     "ok": "OK",
     "yes": "はい",
     "no": "いいえ",
@@ -16,7 +15,6 @@
         "date_add": "",
         "today": "今日",
         "yesterday": "昨日",
-        "sec_short": "秒",
         "min_short": "分",
         "hour_short": "時",
         "hours_short": "時間",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "リストを保存できませんでした！",
-        "store_listitem_error": "項目を保存できませんでした！",
         "delete_confirm": "リスト <strong>{{name}}</strong> を本当に削除しますか？",
         "delete_confirm_plural": "リストを本当に削除しますか？",
         "delete_confirm_watch": "ウォッチでもリストを削除",
         "delete_error": "リストを削除できませんでした！",
         "delete_error_plural": "リストを削除できませんでした！",
-        "delete_error_partial": "一部のリストを削除できませんでした！",
         "delete_success": "リストが削除されました。",
         "delete_success_plural": "リストが削除されました。",
         "delete_item_confirm": "項目 <strong>{{name}}</strong> を本当に削除しますか？",
@@ -93,7 +89,6 @@
         "restore_success_plural": "リストが復元されました。",
         "restore_error": "リストを復元できませんでした！",
         "restore_error_plural": "リストを復元できませんでした！",
-        "restore_error_partial": "一部のリストを復元できませんでした！",
         "restore_item_confirm": "項目 <strong>{{name}}</strong> を復元しますか？",
         "restore_item_confirm_plural": "項目を復元しますか？",
         "restore_item_success": "項目が復元されました。",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "ログを保存",
         "text": "ログを<br /><strong>{{filename}}</strong><br />としてどう保存しますか？",
-        "text_web": "ログ <strong>{{filename}}</strong> はあなたのPCに保存されます。",
         "store": "ドキュメントに保存",
         "share": "共有",
         "email": "開発者に電子メールで送信する",
@@ -272,7 +266,6 @@
         "page_title": "マイデバイス",
         "known_devices": "既知のデバイス",
         "install_app": "ウォッチにリストアプリをインストールする必要があります。<br /><strong>こちらをクリック</strong>してGarmin ConnectIQストアにアクセスしてください。",
-        "reload_btn": "デバイスを再読み込み",
         "toggle": "常にこのデバイスに送信",
         "select_btn": "デバイスを選択",
         "device_state": {
@@ -327,15 +320,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "ログ",
-        "log_onemore": "もう1つのログ",
-        "log_more": "{{count}} 追加のログ",
-        "log_empty": "ログを読み込めませんでした。",
         "btn_delete": "ログを削除",
         "btn_save": "ログを保存",
         "confirm_delete": "本当にログ <strong>{{filename}}</strong> を削除しますか？",
         "toast_deleted": "ログが削除されました。",
         "select_logs": "ログファイルを選択:",
-        "logfile": "ログファイル",
         "select_logday_title": "ログファイルの日付を選択:",
         "no_log": "ログファイルが見つかりません！",
         "no_log_note": "{{date}} のログファイルが見つかりませんでした。"
@@ -395,9 +384,6 @@
         "instock_onemonth": "1ヶ月",
         "instock_hundredentries": "最新100項目",
         "instock_note": "古いリストやリスト項目をゴミ箱にどのくらいの期間保持しますか？",
-        "confirm_cleartrash": "ゴミ箱を空にしますか？<br /><br /><strong>警告:</strong> この操作は元に戻せません！",
-        "confirm_cleartrash_ok": "ゴミ箱を空にする",
-        "confirm_cleartrash_cancel": "ゴミ箱を空にしない",
         "confirm_clearitemstrash": "ゴミ箱を空にしますか？<br /><br /><strong>警告:</strong> この操作は元に戻せません！",
         "confirm_clearitemstrash_ok": "ゴミ箱を空にする",
         "confirm_clearitemstrash_cancel": "ゴミ箱を空にしない"

@@ -1,5 +1,4 @@
 {
-    "appname": "Gestionnaire de listes pour montres Garmin",
     "ok": "OK",
     "yes": "Oui",
     "no": "Non",
@@ -16,7 +15,6 @@
         "date_add": "h",
         "today": "Aujourd'hui",
         "yesterday": "Hier",
-        "sec_short": "s",
         "min_short": "min",
         "hour_short": "h",
         "hours_short": "h",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "La liste n'a pas pu être enregistrée !",
-        "store_listitem_error": "L'élément n'a pas pu être enregistré !",
         "delete_confirm": "Voulez-vous vraiment supprimer la liste <strong>{{name}}</strong> ?",
         "delete_confirm_plural": "Voulez-vous vraiment supprimer les listes ?",
         "delete_confirm_watch": "Supprimer également la liste sur la montre",
         "delete_error": "La liste n'a pas pu être supprimée !",
         "delete_error_plural": "Les listes n'ont pas pu être supprimées !",
-        "delete_error_partial": "Toutes les listes n'ont pas pu être supprimées !",
         "delete_success": "La liste a été supprimée.",
         "delete_success_plural": "Les listes ont été supprimées.",
         "delete_item_confirm": "Voulez-vous vraiment supprimer l'élément <strong>{{name}}</strong> ?",
@@ -93,7 +89,6 @@
         "restore_success_plural": "Les listes ont été restaurées.",
         "restore_error": "La liste n'a pas pu être restaurée !",
         "restore_error_plural": "Les listes n'ont pas pu être restaurées !",
-        "restore_error_partial": "Toutes les listes n'ont pas pu être restaurées !",
         "restore_item_confirm": "Voulez-vous restaurer l'élément <strong>{{name}}</strong> ?",
         "restore_item_confirm_plural": "Voulez-vous restaurer les éléments ?",
         "restore_item_success": "L'élément a été restauré.",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "Sauvegarder le journal",
         "text": "Comment voulez-vous sauvegarder le journal<br /><strong>{{filename}}</strong> ?",
-        "text_web": "Le journal <strong>{{filename}}</strong> sera sauvegardé sur votre ordinateur.",
         "store": "Sauvegarder dans Documents",
         "share": "Partager",
         "email": "Envoyer par e-mail aux développeurs",
@@ -272,7 +266,6 @@
         "page_title": "Mes appareils",
         "known_devices": "Appareils connus",
         "install_app": "Vous devez d'abord installer l'application de liste sur votre montre.<br /><strong>Cliquez ici</strong> pour accéder au Garmin ConnectIQ Store.",
-        "reload_btn": "Recharger les appareils",
         "toggle": "Toujours envoyer à cet appareil",
         "select_btn": "Sélectionner un appareil",
         "device_state": {
@@ -327,15 +320,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "Journaux",
-        "log_onemore": "Un autre journal",
-        "log_more": "{{count}} journaux supplémentaires",
-        "log_empty": "Impossible de charger le journal.",
         "btn_delete": "Supprimer le journal",
         "btn_save": "Enregistrer le journal",
         "confirm_delete": "Voulez-vous vraiment supprimer le journal <strong>{{filename}}</strong> ?",
         "toast_deleted": "Le journal a été supprimé.",
         "select_logs": "Sélectionner le fichier journal :",
-        "logfile": "Fichier journal",
         "select_logday_title": "Sélectionnez les jours des fichiers journaux :",
         "no_log": "Aucun fichier journal trouvé !",
         "no_log_note": "Aucun fichier journal trouvé pour {{date}}."
@@ -395,9 +384,6 @@
         "instock_onemonth": "un mois",
         "instock_hundredentries": "les 100 dernières entrées",
         "instock_note": "Combien de temps les anciennes listes ou éléments doivent-ils être conservés dans la corbeille ?",
-        "confirm_cleartrash": "Vider la corbeille ?<br /><br /><strong>Attention :</strong> Cette action est irréversible !",
-        "confirm_cleartrash_ok": "Vider la corbeille",
-        "confirm_cleartrash_cancel": "Ne pas vider la corbeille",
         "confirm_clearitemstrash": "Vider les corbeilles des éléments ?<br /><br /><strong>Attention :</strong> Cette action est irréversible !",
         "confirm_clearitemstrash_ok": "Vider les corbeilles",
         "confirm_clearitemstrash_cancel": "Ne pas vider les corbeilles"

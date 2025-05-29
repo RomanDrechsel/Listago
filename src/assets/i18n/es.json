@@ -1,5 +1,4 @@
 {
-    "appname": "Gestor de Listas para Relojes Garmin",
     "ok": "Ok",
     "yes": "Sí",
     "no": "No",
@@ -16,7 +15,6 @@
         "date_add": "",
         "today": "Hoy",
         "yesterday": "Ayer",
-        "sec_short": "s.",
         "min_short": "min.",
         "hour_short": "h.",
         "hours_short": "h.",
@@ -58,13 +56,11 @@
     },
     "service-lists": {
         "store_list_error": "¡No se pudo guardar la lista!",
-        "store_listitem_error": "¡No se pudo guardar el elemento de la lista!",
         "delete_confirm": "¿Realmente quieres eliminar la lista <strong>{{name}}</strong>?",
         "delete_confirm_plural": "¿Realmente quieres eliminar las listas?",
         "delete_confirm_watch": "Eliminar lista del reloj",
         "delete_error": "¡No se pudo eliminar la lista!",
         "delete_error_plural": "¡No se pudieron eliminar las listas!",
-        "delete_error_partial": "¡No se pudieron eliminar todas las listas!",
         "delete_success": "La lista fue eliminada.",
         "delete_success_plural": "Las listas fueron eliminadas.",
         "delete_item_confirm": "¿Quieres eliminar el elemento <strong>{{name}}</strong> de la lista?",
@@ -93,7 +89,6 @@
         "restore_success_plural": "Las listas fueron restauradas.",
         "restore_error": "¡No se pudo restaurar la lista!",
         "restore_error_plural": "¡No se pudieron restaurar las listas!",
-        "restore_error_partial": "¡No se pudieron restaurar todas las listas!",
         "restore_item_confirm": "¿Quieres restaurar el elemento <strong>{{name}}</strong>?",
         "restore_item_confirm_plural": "¿Quieres restaurar los elementos?",
         "restore_item_success": "El elemento fue restaurado.",
@@ -165,7 +160,6 @@
     "comp-sharelog": {
         "title": "Guardar log",
         "text": "¿Cómo quieres guardar el log <br /><strong>{{filename}}</strong><br />?",
-        "text_web": "El log <strong>{{filename}}</strong> se guardará en tu computadora.",
         "store": "Guardar en Documentos",
         "share": "Compartir",
         "email": "Enviar al promotor por e-mail",
@@ -272,7 +266,6 @@
         "page_title": "Mis dispositivos",
         "known_devices": "Dispositivos conocidos",
         "install_app": "Debes instalar primero la aplicación de listas en tu reloj.<br /><strong>Haz clic aquí</strong> para llegar al Store Garmin ConnectIQ.",
-        "reload_btn": "Cargar dispositivos nuevamente",
         "toggle": "Enviar siempre a este dispositivo",
         "select_btn": "Seleccionar dispositivo",
         "device_state": {
@@ -327,15 +320,11 @@
     },
     "page_settings_showlogs": {
         "page_title": "Registros",
-        "log_onemore": "Ver un registro más",
-        "log_more": "{{count}} registros más",
-        "log_empty": "No se pudo cargar el registro.",
         "btn_delete": "Eliminar registro",
         "btn_save": "Guardar registro",
         "confirm_delete": "¿Quieres eliminar el registro <strong>{{filename}}</strong>?",
         "toast_deleted": "El registro fue eliminado.",
         "select_logs": "Seleccione un archivo de registro:",
-        "logfile": "Archivo de registro",
         "select_logday_title": "Seleccione los días del archivo de registros:",
         "no_log": "¡No se encontraron archivos de registros!",
         "no_log_note": "Para {{date}} no se encontraron archivos de registros."
@@ -395,9 +384,6 @@
         "instock_onemonth": "Un mes",
         "instock_hundredentries": "Últimos 100 registros",
         "instock_note": "¿Cuánto tiempo guardar las listas o elementos de lista en la papelera?",
-        "confirm_cleartrash": "¿Quieres vaciar la papelera?<br /><br /><strong>Aviso:</strong> La acción no puede ser revertida!",
-        "confirm_cleartrash_ok": "Vaciar papelera",
-        "confirm_cleartrash_cancel": "No vaciar papelera",
         "confirm_clearitemstrash": "¿Quieres vaciar las papeleras?<br /><br /><strong>Aviso:</strong> La acción no puede ser revertida!",
         "confirm_clearitemstrash_ok": "Vaciar papeleras",
         "confirm_clearitemstrash_cancel": "No vaciar papeleras"
