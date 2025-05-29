@@ -4,18 +4,18 @@
 </app-main-toolbar>
 
 <ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
-    <div *ngIf="Trash && Trash.items.length > 0; else empty" class="list-content" #listContent>
+    <div *ngIf="Trash?.ItemsInTrash?.length; else empty" class="list-content" #listContent>
         <ion-list id="animated-list" #itemsList>
-            <ion-item-sliding *ngFor="let item of Trash.items" [disabled]="EditMode || !InitialAnimationDone">
+            <ion-item-sliding *ngFor="let item of Trash!.ItemsInTrash" [disabled]="EditMode || !InitialAnimationDone">
                 <ion-item lines="none" [button]="true" (click)="clickOnItem($event, item)" [ngClass]="{'selected-item': EditMode && isItemSelected(item)}">
                     <ion-label class="animated-item" [ngClass]="{'pre-animation-state': !InitialAnimationDone}">
-                        <div class="details" [ngClass]="{'hidden': item.hidden}">
+                        <div class="details" [ngClass]="{'hidden': item.Hidden}">
                             <div class="listpoint-indicator-wrapper" slot="start">
                                 <div class="listpoint-indicator"></div>
                             </div>
                             <div class="text">
-                                <div class="item">{{item.item}}</div>
-                                <div color="medium" class="note" *ngIf="item.note">{{item.note}}</div>
+                                <div class="item">{{item.Item}}</div>
+                                <div color="medium" class="note" *ngIf="item.Note">{{item.Note}}</div>
                             </div>
                         </div>
                     </ion-label>

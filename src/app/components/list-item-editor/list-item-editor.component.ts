@@ -5,11 +5,11 @@ import { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
 import { IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonItem, IonLabel, IonTextarea, IonTitle, IonToggle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
+import { ListsService } from "src/app/services/lists/lists.service";
 import { AdmobService } from "../../services/adverticing/admob.service";
 import { ConnectIQService } from "../../services/connectiq/connect-iq.service";
 import { List } from "../../services/lists/list";
 import { Listitem } from "../../services/lists/listitem";
-import { ListsService } from "../../services/lists/lists.service";
 import { PopupsService } from "../../services/popups/popups.service";
 import { EPrefProperty, PreferencesService } from "../../services/storage/preferences.service";
 import { Locale } from "./../../services/localization/locale";
@@ -128,7 +128,7 @@ export class ListItemEditorComponent implements OnInit {
             item.Hidden = hidden;
             item.Locked = locked;
         } else {
-            item = await this.ListsService.createNewListitemObj(this.Params!.list!, { item: title, note: note, hidden: hidden, locked: locked });
+            item = await this.ListsService.createNewListitem(this.Params!.list!, { item: title, note: note, hidden: hidden, locked: locked });
         }
 
         if (this.Params?.onAddItem) {

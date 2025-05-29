@@ -67,20 +67,24 @@ export class ListItemsPage extends AnimatedListPageBase {
             this._listTitle = listtitle;
         }
 
-        (async () => {
-            // no wait
-            const listid = this.Route.snapshot.paramMap.get("uuid");
-            if (listid) {
-                const uuid = Number(listid);
-                this._list = await this.ListsService.GetList(!Number.isNaN(uuid) ? uuid : listid);
-                this.appComponent.setAppPages(this.ModifyMainMenu());
-                if (this._list) {
-                    this._itemsInitialized = true;
-                    this.Preferences.Set(EPrefProperty.OpenedList, this._list.Uuid);
-                    this.onItemsChanged();
+        if (!this._list || this._list.isPeek) {
+            (async () => {
+                // no wait
+                const id = Number(this.Route.snapshot.paramMap.get("id"));
+                if (id && Number(id) != Number.NaN) {
+                    this._list = await this.ListsService.GetList(id);
+                    this.appComponent.setAppPages(this.ModifyMainMenu());
+                    if (this._list) {
+                        this._itemsInitialized = true;
+                        this.Preferences.Set(EPrefProperty.OpenedList, this._list.Id);
+                        this.onItemsChanged();
+                    }
                 }
-            }
-        })();
+            })();
+        } else {
+            this._itemsInitialized = true;
+        }
+
         this._useTrash = await this.Preferences.Get<boolean>(EPrefProperty.TrashListitems, true);
         this._preferencesSubscription = this.Preferences.onPrefChanged$.subscribe(prop => {
             if (prop.prop == EPrefProperty.TrashListitems) {
@@ -101,10 +105,10 @@ export class ListItemsPage extends AnimatedListPageBase {
             this.appComponent.setAppPages(this.ModifyMainMenu());
         });
 
-        if (this.List && this.List.Sync && this._informedSyncForNewlist != this.List.Uuid && (await this.Preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
+        if (this.List && this.List.Sync && this._informedSyncForNewlist != this.List.Id && (await this.Preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
             const new_created = this.Route.snapshot.queryParamMap.get("created");
             if (new_created) {
-                this._informedSyncForNewlist = this.List.Uuid;
+                this._informedSyncForNewlist = this.List.Id;
                 await this.informSyncSettings();
             }
         }
@@ -134,7 +138,7 @@ export class ListItemsPage extends AnimatedListPageBase {
 
     public async EmptyList(): Promise<boolean> {
         if (this.List) {
-            const del = await this.ListsService.EmptyList(this.List);
+            const del = await this.ListsService.EmptyLists(this.List, false);
             return del ?? false;
         }
         return false;
@@ -143,7 +147,7 @@ export class ListItemsPage extends AnimatedListPageBase {
     public async DeleteItem(items: Listitem | Listitem[]) {
         let success: boolean | undefined = undefined;
         if (this.List) {
-            success = await this.ListsService.DeleteListitem(this.List, items, false);
+            success = await this.ListsService.DeleteListitem(this.List, items, false, false);
             if (success) {
                 this.appComponent.setAppPages(this.ModifyMainMenu());
             }
@@ -179,17 +183,20 @@ export class ListItemsPage extends AnimatedListPageBase {
 
     public async HandleReorder(event: CustomEvent<ItemReorderEventDetail>) {
         if (!this._disableClick && this._initAnimationDone && this._list) {
-            await this.ListsService.ReorderListitems(this._list, event.detail.complete(this._list.Items) as Listitem[]);
+            this._list.ReorderItems(event.detail.complete(this._list.Items) as Listitem[]);
+            await this.ListsService.StoreList(this._list, false, true, true);
+
             this._disableClick = true;
             setTimeout(() => {
                 this._disableClick = false;
             }, 300);
         }
+        event.stopImmediatePropagation();
     }
 
     public async DeleteList(): Promise<boolean> {
         if (this.List) {
-            const del = await this.ListsService.DeleteList(this.List);
+            const del = await this.ListsService.DeleteLists(this.List);
             if (del === true) {
                 this.NavController.navigateBack("/lists");
             }
@@ -219,14 +226,14 @@ export class ListItemsPage extends AnimatedListPageBase {
                     MenuitemFactory(EMenuItemType.Devices, {
                         title_id: "page_listitems.menu_devices",
                         onClick: async () => {
-                            this.ListsService.TransferList(this.List!.Uuid);
+                            this.ListsService.TransferList(this.List!.Id);
                             return true;
                         },
                     }),
                 );
             }
             menu.push(
-                MenuitemFactory(EMenuItemType.ListitemsTrash, { url_addition: `${this.List.Uuid}`, disabled: !this._useTrash }),
+                MenuitemFactory(EMenuItemType.ListitemsTrash, { url_addition: `${this.List.Id}`, disabled: !this._useTrash }),
                 MenuitemFactory(EMenuItemType.EditList, { onClick: () => this.EditList() }),
                 MenuitemFactory(EMenuItemType.EmptyList, { onClick: () => this.EmptyList(), disabled: this.List.Items.length <= 0 }),
                 MenuitemFactory(EMenuItemType.DeleteList, { onClick: () => this.DeleteList() }),
@@ -240,9 +247,9 @@ export class ListItemsPage extends AnimatedListPageBase {
             this._disableClick = true;
             if (this._editMode) {
                 if (this.isItemSelected(item)) {
-                    this._selectedItems = this._selectedItems.filter(l => l != item.Uuid);
+                    this._selectedItems = this._selectedItems.filter(l => l != item.Id);
                 } else {
-                    this._selectedItems.push(item.Uuid);
+                    this._selectedItems.push(item.Id);
                 }
             } else {
                 this.editItem(item);
@@ -268,7 +275,7 @@ export class ListItemsPage extends AnimatedListPageBase {
     }
 
     public isItemSelected(item: Listitem): boolean {
-        return this._selectedItems.indexOf(item.Uuid) >= 0;
+        return this._selectedItems.indexOf(item.Id) >= 0;
     }
 
     private async informSyncSettings(): Promise<void> {
@@ -284,8 +291,8 @@ export class ListItemsPage extends AnimatedListPageBase {
         let pin_items = false;
         let hide_items = false;
         for (let i = 0; i < this._selectedItems.length; i++) {
-            const item_uuid = this._selectedItems[i];
-            const item = this._list!.Items.find(i => i.Uuid == item_uuid);
+            const item_id = this._selectedItems[i];
+            const item = this._list!.Items.find(i => i.Id == item_id);
             if (item) {
                 if (!item.Locked) {
                     pin_items = true;
@@ -320,7 +327,7 @@ export class ListItemsPage extends AnimatedListPageBase {
                     this.editMenu?.leaveEditMode(true);
                     if (this.List) {
                         const pin = await this.PinItem(
-                            this.List.Items.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0),
+                            this.List.Items.filter(l => this._selectedItems.indexOf(l.Id!) >= 0),
                             pin_items,
                         );
                         if (pin === true) {
@@ -338,7 +345,7 @@ export class ListItemsPage extends AnimatedListPageBase {
                     this.editMenu?.leaveEditMode(true);
                     if (this.List) {
                         const hide = await this.HideItem(
-                            this.List.Items.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0),
+                            this.List.Items.filter(l => this._selectedItems.indexOf(l.Id!) >= 0),
                             hide_items,
                         );
                         if (hide === true) {
@@ -355,7 +362,7 @@ export class ListItemsPage extends AnimatedListPageBase {
                 click: async () => {
                     this.editMenu?.leaveEditMode(true);
                     if (this.List) {
-                        const del = await this.DeleteItem(this.List.Items.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0));
+                        const del = await this.DeleteItem(this.List.Items.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                         if (del === true) {
                             this._selectedItems = [];
                         } else if (del === undefined) {

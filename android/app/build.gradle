@@ -15,11 +15,23 @@ android {
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
+        proguardFiles
     }
     buildTypes {
         release {
-            minifyEnabled false
+            manifestPlaceholders appname: '@string/app_name'
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            manifestPlaceholders appname: '@string/app_name_debug'
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-d'
         }
     }
 }
@@ -40,6 +52,9 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+
+    implementation 'com.garmin.connectiq:ciq-companion-app-sdk:2.2.0@aar'
+    implementation 'com.google.code.gson:gson:2.13.1'
 }
 
 apply from: 'capacitor.build.gradle'

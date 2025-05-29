@@ -37,7 +37,7 @@ export class ListsPage extends AnimatedListPageBase {
     public override async ionViewWillEnter(): Promise<void> {
         await super.ionViewWillEnter();
         this.ListsService.PurgeListDetails();
-        this._lists = await this.ListsService.GetLists(true);
+        this._lists = await this.ListsService.GetLists({ orderBy: "order", orderDir: "ASC" });
         this._itemsInitialized = true;
         this._listsSubscription = this.ListsService.onListsChanged$.subscribe(lists => {
             if (lists) {
@@ -73,7 +73,7 @@ export class ListsPage extends AnimatedListPageBase {
 
     public async deleteLists(lists: List | List[]): Promise<boolean | undefined> {
         this._itemsList?.closeSlidingItems();
-        const success = await this.ListsService.DeleteList(lists);
+        const success = await this.ListsService.DeleteLists(lists);
         if (success === true) {
             this.reload();
         }
@@ -82,7 +82,7 @@ export class ListsPage extends AnimatedListPageBase {
 
     public async emptyLists(lists: List | List[]): Promise<boolean | undefined> {
         this._itemsList?.closeSlidingItems();
-        const success = await this.ListsService.EmptyList(lists);
+        const success = await this.ListsService.EmptyLists(lists);
         if (success === true) {
             this.reload();
         }
@@ -114,12 +114,12 @@ export class ListsPage extends AnimatedListPageBase {
             this._disableClick = true;
             if (this._editMode) {
                 if (this.isListSelected(list)) {
-                    this._selectedItems = this._selectedItems.filter(l => l != list.Uuid);
+                    this._selectedItems = this._selectedItems.filter(l => l != list.Id);
                 } else {
-                    this._selectedItems.push(list.Uuid);
+                    this._selectedItems.push(list.Id);
                 }
             } else {
-                this.NavController.navigateForward(`/lists/items/${list.Uuid}`, { queryParams: { title: list.Name } });
+                this.NavController.navigateForward(`/lists/items/${list.Id}`, { queryParams: { title: list.Name } });
             }
             setTimeout(() => {
                 this._disableClick = false;
@@ -129,17 +129,16 @@ export class ListsPage extends AnimatedListPageBase {
     }
 
     public async handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
-        const lists = event.detail.complete(this._lists);
-        await this.ListsService.ReorderLists(lists);
+        await this.ListsService.ReorderLists(event.detail.complete(this._lists));
         event.stopImmediatePropagation();
     }
 
     public UpdatedString(list: List): string {
-        return this.Locale.getText("page_lists.updated", { date: DateUtils.formatDate(list.Updated ?? list.Created) });
+        return this.Locale.getText("page_lists.updated", { date: DateUtils.formatDate(list.Modified ?? list.Created) });
     }
 
     public isListSelected(list: List): boolean {
-        return this._selectedItems.indexOf(list.Uuid) >= 0;
+        return this._selectedItems.indexOf(list.Id) >= 0;
     }
 
     public getEditMenuActions(): EditMenuAction[] {
@@ -162,7 +161,7 @@ export class ListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/menu/devices.svg",
                 click: async () => {
                     this.editMenu?.leaveEditMode(true);
-                    const transmit = await this.transmitLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0));
+                    const transmit = await this.transmitLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (transmit === true) {
                         this._selectedItems = [];
                     } else if (transmit === undefined) {
@@ -175,7 +174,7 @@ export class ListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/menu/empty.svg",
                 click: async () => {
                     this.editMenu?.leaveEditMode(true);
-                    const empty = await this.emptyLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0));
+                    const empty = await this.emptyLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (empty === true) {
                         this._selectedItems = [];
                     } else if (empty === undefined) {
@@ -188,7 +187,7 @@ export class ListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/trash.svg",
                 click: async () => {
                     this.editMenu?.leaveEditMode(true);
-                    const del = await this.deleteLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0));
+                    const del = await this.deleteLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (del === true) {
                         this._selectedItems = [];
                     } else if (del === undefined) {

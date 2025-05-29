@@ -94,16 +94,16 @@ export class TrashListsPage extends AnimatedListPageBase {
     }
 
     public isListSelected(list: List): boolean {
-        return this._selectedItems.indexOf(list.Uuid) >= 0;
+        return this._selectedItems.indexOf(list.Id) >= 0;
     }
 
     public clickOnItem(event: MouseEvent, list: List) {
         if (!this._disableClick && this._editMode) {
             this._disableClick = true;
             if (this.isListSelected(list)) {
-                this._selectedItems = this._selectedItems.filter(l => l != list.Uuid);
+                this._selectedItems = this._selectedItems.filter(l => l != list.Id);
             } else {
-                this._selectedItems.push(list.Uuid);
+                this._selectedItems.push(list.Id);
             }
             setTimeout(() => {
                 this._disableClick = false;
@@ -129,7 +129,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 text: texts["restore"],
                 click: async () => {
                     this.editMenu?.leaveEditMode(true);
-                    const restore = await this.restoreList(this.Lists.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0));
+                    const restore = await this.restoreList(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (restore === true) {
                         this._selectedItems = [];
                     } else if (restore === undefined) {
@@ -142,7 +142,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 text: texts["delete"],
                 click: async () => {
                     this.editMenu?.leaveEditMode(true);
-                    const del = await this.deleteList(this.Lists.filter(l => this._selectedItems.indexOf(l.Uuid) >= 0));
+                    const del = await this.deleteList(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (del === true) {
                         this._selectedItems = [];
                     } else if (del === undefined) {

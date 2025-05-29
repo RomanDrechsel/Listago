@@ -5,9 +5,9 @@ import { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
 import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
+import { ListsService } from "src/app/services/lists/lists.service";
 import { ConnectIQService } from "../../services/connectiq/connect-iq.service";
 import { List, ListReset } from "../../services/lists/list";
-import { ListsService } from "../../services/lists/lists.service";
 import { LocalizationService } from "../../services/localization/localization.service";
 import { PopupsService } from "../../services/popups/popups.service";
 import { SelectTimeInterval } from "../select-interval/select-interval.component";
@@ -201,16 +201,17 @@ export class ListEditorComponent {
         if (this.Params?.list) {
             list = this.Params.list;
             list.Name = listname;
+            list.Reset = this._listReset;
+            list.Sync = this._listSync ?? false;
         } else {
-            list = await this.ListsService.createNewListObj({ name: listname });
+            list = await this.ListsService.createNewList({ name: listname, reset: this._listReset, sync: this._listSync ?? false });
         }
-        list.Reset = this._listReset;
-        list.Sync = this._listSync ?? false;
+
         return this.modalCtrl.dismiss(list, "confirm");
     }
 
     public async onDelete() {
-        if (this.Params?.list && (await this.ListsService.DeleteList(this.Params.list))) {
+        if (this.Params?.list && (await this.ListsService.DeleteLists(this.Params.list))) {
             this.cancel();
         }
     }

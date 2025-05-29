@@ -24,17 +24,31 @@
         "@angular/platform-browser": "^20.0.0",
         "@angular/platform-browser-dynamic": "^20.0.0",
         "@angular/router": "^20.0.0",
+        "@capacitor-community/admob": "^7.0.3",
+        "@capacitor-community/file-opener": "^7.0.1",
+        "@capacitor-community/in-app-review": "^7.0.1",
+        "@capacitor-community/sqlite": "^7.0.0-dev.bf54d28.1747847115",
         "@capacitor/android": "7.2.0",
         "@capacitor/app": "7.0.1",
+        "@capacitor/browser": "^7.0.1",
         "@capacitor/core": "7.2.0",
+        "@capacitor/device": "^7.0.1",
+        "@capacitor/filesystem": "^7.1.1",
         "@capacitor/haptics": "7.0.1",
         "@capacitor/keyboard": "7.0.1",
+        "@capacitor/preferences": "^7.0.1",
+        "@capacitor/share": "^7.0.1",
+        "@capacitor/splash-screen": "^7.0.1",
         "@capacitor/status-bar": "7.0.1",
+        "@capawesome/capacitor-android-edge-to-edge-support": "^7.2.2",
         "@ionic/angular": "8.5.8",
         "@ngx-translate/core": "^16.0.4",
         "@ngx-translate/http-loader": "^16.0.1",
         "array-flat-polyfill": "^1.0.1",
+        "capacitor-email-composer": "^7.0.0",
+        "capacitor-plugin-webview-cache": "^4.0.0",
         "globalthis": "^1.0.4",
+        "patch-package": "^8.0.0",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",
         "zone.js": "~0.15.0"
@@ -68,9 +82,10 @@
         "typescript": "5.8.3"
     },
     "browserslist": [
-        "ChromeAndroid >= 64",
-        "Chrome >= 64",
-        "samsung >= 12.0",
-        "Android >= 9"
+        "Chrome >= 89",
+        "ChromeAndroid >= 89",
+        "Android >= 10",
+        "not dead",
+        "not op_mini all"
     ]
 }

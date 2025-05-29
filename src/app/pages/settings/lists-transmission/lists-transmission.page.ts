@@ -5,7 +5,6 @@ import { ActivatedRoute } from "@angular/router";
 import { IonContent, IonItem, IonList, IonNote, IonToggle } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
-import { List } from "../../../services/lists/list";
 import { EPrefProperty } from "../../../services/storage/preferences.service";
 import { PageBase } from "../../page-base";
 
@@ -23,7 +22,7 @@ export class ListsTransmissionPage extends PageBase {
     private _syncListOnDevice: boolean = false;
     private _garminConnectIQ: boolean = true;
 
-    private _listToSync: List | string | null = null;
+    private _listToSync?: number = undefined;
 
     public get OpenAppOnTransmit(): boolean {
         return this._openAppOnTransfer;
@@ -75,7 +74,13 @@ export class ListsTransmissionPage extends PageBase {
         this._syncListOnDevice = await this.Preferences.Get<boolean>(EPrefProperty.SyncListOnDevice, false);
         this._garminConnectIQ = await this.Preferences.Get<boolean>(EPrefProperty.GarminConnectIQ, true);
 
-        this._listToSync = this.Route.snapshot.queryParamMap.get("syncList");
+        const synclist = this.Route.snapshot.queryParamMap.get("syncList");
+        if (synclist !== null) {
+            const id = Number(synclist);
+            if (!Number.isNaN(id)) {
+                this._listToSync = id;
+            }
+        }
 
         this.cdr.detectChanges();
     }
