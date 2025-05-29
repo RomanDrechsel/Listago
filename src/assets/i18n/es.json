@@ -292,7 +292,7 @@
         "logging_note": "Configuración y gestión de registros",
         "confirm": "Configuración de confirmación",
         "confirm_note": "Configuración para solicitar confirmación del usuario",
-        "trash": "Papelera",
+        "trash": "Configuración de la papelera",
         "trash_note": "Configuración para utilizar la papelera",
         "transmission": "Configuración de transmisión",
         "transmission_note": "Configuración para transmitir listas a tu reloj"

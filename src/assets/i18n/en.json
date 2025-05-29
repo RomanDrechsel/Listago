@@ -292,7 +292,7 @@
         "logging_note": "Settings and management of log files",
         "confirm": "Confirmation settings",
         "confirm_note": "Settings for requesting user confirmation",
-        "trash": "Trash",
+        "trash": "Trash settings" ,
         "trash_note": "Settings for usage of the trash",
         "transmission": "Transmission settings",
         "transmission_note": "Settings for transferring lists to your watch"
