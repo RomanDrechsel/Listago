@@ -215,7 +215,7 @@
         "trash-items-delete": "{{num}} 個のリスト項目を完全に削除"
     },
     "page_firststart": {
-        "welcome": "「列表」へようこそ",
+        "welcome": "Listagoへようこそ",
         "language1": "アプリの言語を選択してください:",
         "language2": "言語は後で変更することもできます。",
         "garmin1": "Garmin ConnectIQ 対応",

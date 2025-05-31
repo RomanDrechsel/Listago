@@ -215,7 +215,7 @@
         "trash-items-delete": "Permanently delete {{num}} list items"
     },
     "page_firststart": {
-        "welcome": "Welcome to Lists",
+        "welcome": "Welcome to Listago",
         "language1": "Please select your preferred language:",
         "language2": "You can change the language later if needed.",
         "garmin1": "Support for Garmin ConnectIQ",

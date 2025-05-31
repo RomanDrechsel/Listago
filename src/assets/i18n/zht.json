@@ -215,7 +215,7 @@
         "trash-items-delete": "永久刪除 {{num}} 個清單項目"
     },
     "page_firststart": {
-        "welcome": "歡迎使用列表",
+        "welcome": "歡迎使用 Listago",
         "language1": "請選擇您偏好的語言：",
         "language2": "您可以稍後更改語言。",
         "garmin1": "支援 Garmin ConnectIQ",
