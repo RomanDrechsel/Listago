@@ -10,16 +10,16 @@ const config: CapacitorConfig = {
     plugins: {
         SplashScreen: {
             launchShowDuration: 1000,
-            launchAutoHide: false,
+            launchAutoHide: true,
             launchFadeOutDuration: 500,
-            backgroundColor: "#00FFFFFF",
+            backgroundColor: "#E6F0FA",
             androidSplashResourceName: "splash",
             androidScaleType: "CENTER_CROP",
             showSpinner: false,
             splashFullScreen: true,
             splashImmersive: true,
             layoutName: "launch_screen",
-            useDialog: true,
+            useDialog: false,
         },
         StatusBar: {
             overlaysWebView: true,
@@ -31,6 +31,12 @@ const config: CapacitorConfig = {
         },
         EdgeToEdge: {
             backgroundColor: "#0077ff",
+        },
+        CapacitorSQLite: {
+            androidIsEncryption: false,
+            androidBiometric: {
+                biometricAuth: false,
+            },
         },
     },
 };
