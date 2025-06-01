@@ -18,9 +18,9 @@
                 <ion-select-option *ngFor="let device of Devices" [value]="device.Identifier" [ngClass]="{'disabled': device.State != 'Ready'}">{{device.Name}}</ion-select-option>
             </ion-select>
             <div style="clear: both"></div>
-            <ion-toggle class="ion-float-right" [checked]="AlwaysTransmitDeviceSelected" [disabled]="SelectedDevice == undefined || SelectedDevice.State == 'AppNotInstalled'" (ionChange)="onToggle($event.detail.checked)">
+            <ion-checkbox labelPlacement="end" [checked]="AlwaysTransmitDeviceSelected" [disabled]="SelectedDevice == undefined || SelectedDevice.State == 'AppNotInstalled'" (ionChange)="onToggle($event.detail.checked)">
                 <div>{{'page_devices.toggle'|translate}}</div>
-            </ion-toggle>
+            </ion-checkbox>
             <div class="deviceState" [ngClass]="{'error': SelectedDevice.Error}" *ngIf="SelectedDevice && SelectedDevice.State != 'Ready' && SelectedDevice.State != 'AppNotInstalled'">{{SelectedDevice.StateLocale}}</div>
             <div class="install ion-text-center" *ngIf="installHint">
                 <ion-text (click)="openStore()" [innerHTML]="'page_devices.install_app'|translate"></ion-text>

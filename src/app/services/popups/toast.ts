@@ -2,14 +2,13 @@ import { ToastController, ToastOptions } from "@ionic/angular/standalone";
 import { LocalizationService } from "../localization/localization.service";
 
 export class Toast {
-
     public static readonly DURATION_NORMAL = 5000;
     public static readonly DURATION_SHORT = 1500;
     public static readonly DURATION_INFINITE = 0;
 
     private static _toastQueue: HTMLIonToastElement[] = [];
 
-    public constructor(private Controller: ToastController, private Locale: LocalizationService) { }
+    public constructor(private Controller: ToastController, private Locale: LocalizationService) {}
 
     public async Error(message: string, duration: number = Toast.DURATION_NORMAL, translate: boolean = true): Promise<HTMLIonToastElement> {
         const toast = await this.Controller.create(this.getToastOptions(message, duration, "error", translate));
@@ -47,8 +46,7 @@ export class Toast {
         let icon: string | undefined = undefined;
         if (cssClass == "error") {
             icon = "/assets/icons/toasterror.svg";
-        }
-        else if (cssClass == "success") {
+        } else if (cssClass == "success") {
             icon = "/assets/icons/toastsuccess.svg";
         }
 
@@ -59,12 +57,8 @@ export class Toast {
             animated: true,
             cssClass: `toast ${cssClass}`,
             swipeGesture: "vertical",
-            buttons: [
-                {
-                    text: this.Locale.getText("ok"),
-                    role: "cancel",
-                },
-            ],
+            buttons: [{ text: this.Locale.getText("ok"), role: "cancel" }],
+            position: "bottom",
         };
     }
 }

@@ -4,23 +4,33 @@ html {
 
 ion-list {
     &.list-md {
-        background: var(--color-item-background);
+        background: var(--ion-color-light-tint);
         padding-top: 0;
         padding-bottom: 0;
     }
 
     ion-item {
-        --background: var(--color-item-background);
-        --color: var(--color-text);
-        --background-hover: var(--color-item-background);
-
         ion-icon {
-            fill: var(--color-text-tint);
+            fill: var(--ion-color-dark-tint);
         }
 
         ion-reorder {
-            --color: var(--color-text-tint);
+            --color: var(--ion-color-dark-tint);
         }
+    }
+}
+
+ion-item {
+    --background-activated: transparent;
+    --background-focused: transparent;
+    --background-hover: transparent;
+    --background-activated-opacity: 0;
+    --background-focused-opacity: 0;
+    --background-hover-opacity: 0;
+
+    ion-checkbox {
+        margin-top: 0.5em;
+        height: auto;
     }
 }
 
@@ -28,6 +38,7 @@ ion-button {
     &.button-solid {
         --background: var(--ion-color-secondary);
         --color: var(--ion-color-secondary-contrast);
+        --box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.13), 0 2px 2px 0 rgba(0, 0, 0, 0.11), 0 1px 5px 0 rgba(0, 0, 0, 0.1);
     }
 
     &.button-outline {
@@ -43,6 +54,7 @@ ion-button {
 
 ion-fab {
     margin: 12px;
+    --background: var(--ion-color-secondary-contrast);
     fill: var(--ion-color-secondary-contrast);
 
     ion-fab-button {
@@ -70,11 +82,10 @@ ion-fab {
 
         &.fab-button-disabled {
             opacity: 1;
-            --background: var(--ion-color-secondary-tint);
-            --color: var(--ion-color-secondary-contrast);
+            --background: var(--color-secondary-disabled);
 
             ion-icon {
-                fill: var(--color-text-disabled);
+                fill: var(--ion-color-secondary-contrast);
             }
         }
     }
@@ -83,31 +94,31 @@ ion-fab {
 ion-input,
 ion-textarea,
 ion-select {
-    --color: var(--color-text) !important;
-    --highlight-color-focused: var(--color-highlight) !important;
-    --highlight-color-valid: var(--color-control-border) !important;
-    --highlight-color-invalid: var(--color-control-border) !important;
-    --border-color: var(--color-control-border) !important;
+    --color: var(--ion-color-dark) !important;
+    --highlight-color-focused: var(--ion-color-primary) !important;
+    --highlight-color-valid: var(--ion-color-light-shade) !important;
+    --highlight-color-invalid: var(--ion-color-light-shade) !important;
+    --border-color: var(--ion-color-dark-tint) !important;
     color: var(--color);
 
     &.ion-touched.ion-invalid:not(.has-focus) {
-        --border-color: var(--color-control-border);
+        --border-color: var(--ion-color-light-shade);
     }
 
     &.ion-touched:not(.has-focus),
     &.ion-invalid:not(.has-focus) {
-        --border-color: var(--color-control-border) !important;
+        --border-color: var(--ion-color-light-shade) !important;
 
         .label-text-wrapper {
-            color: var(--color-text) !important;
+            color: var(--ion-color-dark) !important;
         }
     }
 
     &.has-focus {
-        --border-color: var(--color-highlight) !important;
+        --border-color: var(--ion-color-primary) !important;
 
         .label-text-wrapper {
-            color: var(--color-highlight) !important;
+            color: var(--ion-color-primary) !important;
         }
     }
 
@@ -118,17 +129,13 @@ ion-select {
     }
 }
 
-ion-toggle {
-    --handle-background: var(--color-toggle-handle-background);
-}
-
 ion-modal,
 ion-alert,
 ion-loading {
     backdrop-filter: blur(6px);
     .alert-checkbox-group {
         .alert-checkbox-label {
-            color: var(--color-text);
+            color: var(--ion-color-dark);
         }
     }
 }
@@ -137,13 +144,14 @@ ion-alert {
     &.select-alert {
         .alert-radio-label,
         [aria-checked="true"] .alert-radio-label {
-            color: var(--color-text) !important;
+            color: var(--ion-color-dark) !important;
         }
     }
 }
 
 ion-toolbar {
-    --background: var(--color-toolbar);
+    /*--background: var(--ion-color-primary);*/
+    --background: linear-gradient(to bottom, #0050d8, #003ea9);
     --color: var(--ion-color-primary-contrast);
 
     ion-buttons {
@@ -185,20 +193,19 @@ ion-action-sheet {
 
     .action-sheet-wrapper {
         .action-sheet-container {
-            --background: var(--color-action-sheet-background);
+            --background: var(--ion-color-light);
         }
     }
 
     .action-sheet-button {
         span {
-            color: var(--color-text);
+            color: var(--ion-color-dark);
         }
     }
 }
 
 ion-icon.info-icon {
-    color: var(--color-info);
-    fill: var(--color-info);
+    fill: var(--ion-color-medium-tint);
     padding: 10px 16px;
     height: 24px;
     width: 24px;
@@ -208,16 +215,18 @@ ion-icon.info-icon {
 
 ion-checkbox {
     --border-color: var(--ion-color-medium);
-    --checkbox-background: var(--color-control-background);
+    --checkbox-background: var(--ion-color-light);
 
     &::part(container) {
         position: absolute;
-        top: 14px;
+        top: 0;
         left: 0;
     }
 
     &::part(label) {
-        margin-inline-start: 28px !important;
+        margin-inline-start: 24px;
+        margin-block-start: 0;
+        text-wrap: wrap;
     }
 }
 
@@ -229,7 +238,7 @@ ion-datetime {
 }
 
 ion-picker {
-    --ion-background-color-rgb: var(--color-picker-rgb);
+    --ion-background-color-rgb: var(--ion-color-light-rgb);
 }
 
 ion-accordion {

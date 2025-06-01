@@ -40,10 +40,10 @@
         ion-accordion {
             &.list-settings {
                 ion-item[slot="header"] {
-                    --ion-color-base: var(--color-popup-background) !important;
-                    --ion-color-base-rgb: var(--color-popup-background-rgb) !important;
-                    --ion-color-shade: var(--color-popup-background) !important;
-                    --ion-color-tint: var(--color-popup-background) !important;
+                    --ion-color-base: var(--ion-color-light) !important;
+                    --ion-color-base-rgb: var(--ion-color-light-rgb) !important;
+                    --ion-color-shade: var(--ion-color-light) !important;
+                    --ion-color-tint: var(--ion-color-light) !important;
                     padding-inline-end: 4px;
                 }
 

@@ -1,10 +1,10 @@
 :host {
     ion-content.page {
-        --background: var(--ion-color-primary-tint);
+        --background: var(--color-light-background);
         --padding-top: calc(var(--ion-safe-area-top) + 5%);
-        --padding-bottom: 5%;
-        --padding-start: 5%;
-        --padding-end: 5%;
+        --padding-bottom: calc(var(--ion-safe-area-right) + 5%);
+        --padding-start: calc(var(--ion-safe-area-left) + 5%);
+        --padding-end: calc(var(--ion-safe-area-bottom) + 5%);
 
         .container {
             background: var(--ion-background-color);
@@ -45,7 +45,7 @@
                             margin: 1em auto 0;
 
                             &::part(image) {
-                                border: solid 1px var(--color-control-border);
+                                border: solid 1px var(--ion-color-light-shade);
                                 margin: 0 auto;
                                 width: 30%;
                                 height: auto;

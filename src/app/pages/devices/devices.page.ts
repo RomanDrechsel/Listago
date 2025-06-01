@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, ViewChild, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { IonButton, IonCard, IonContent, IonFab, IonFabButton, IonIcon, IonSelect, IonSelectOption, IonText, IonToggle } from "@ionic/angular/standalone";
+import { IonButton, IonCard, IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonSelect, IonSelectOption, IonText } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -14,7 +14,7 @@ import { PageBase } from "../page-base";
     templateUrl: "./devices.page.html",
     styleUrls: ["./devices.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonToggle, IonFabButton, IonIcon, IonFab, IonText, IonButton, IonCard, IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, MainToolbarComponent, TranslateModule],
+    imports: [IonCheckbox, IonFabButton, IonIcon, IonFab, IonText, IonButton, IonCard, IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, MainToolbarComponent, TranslateModule],
 })
 export class DevicesPage extends PageBase {
     @ViewChild("deviceSelect") private deviceSelect!: IonSelect;

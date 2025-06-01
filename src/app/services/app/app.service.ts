@@ -250,8 +250,8 @@ export class AppService {
             EdgeToEdge.setBackgroundColor({ color: "#002794" });
             StatusBar.setStyle({ style: Style.Dark });
         } else {
-            EdgeToEdge.setBackgroundColor({ color: "#0077ff" });
-            StatusBar.setStyle({ style: Style.Light });
+            EdgeToEdge.setBackgroundColor({ color: "#0050d8" });
+            StatusBar.setStyle({ style: Style.Dark });
         }
     }
 }

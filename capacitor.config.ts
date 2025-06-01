@@ -30,7 +30,7 @@ const config: CapacitorConfig = {
             resizeOnFullScreen: false,
         },
         EdgeToEdge: {
-            backgroundColor: "#0077ff",
+            backgroundColor: "#0050d8",
         },
         CapacitorSQLite: {
             androidIsEncryption: false,

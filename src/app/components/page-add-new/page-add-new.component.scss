@@ -10,7 +10,7 @@
         .text {
             text-align: center;
             width: 100%;
-            color: var(--ion-color-success-contrast);
+            color: var(--ion-color-primary-shade);
             opacity: 0.5;
             margin-block-end: 36px;
             font-size: 1.8em;
@@ -20,9 +20,9 @@
         }
 
         .arrow {
-            animation: bounce 10s ease-in-out infinite;
-            margin-bottom: 80px;
-            margin-right: 70px;
+            animation: bounce 7s ease-out infinite;
+            margin-bottom: 100px;
+            margin-right: 35px;
 
             ion-img {
                 width: 130px;
@@ -31,21 +31,29 @@
     }
 
     @keyframes bounce {
-
         0%,
-        20%,
-        26%,
-        32%,
-        100% {
-            transform: translate(0, 0) rotateZ(-10deg);
+        20% {
+            transform: rotate(-10deg) translateY(0);
+            opacity: 1;
         }
-
         23% {
-            transform: translate(-18px, -36px) rotateZ(-10deg);
+            transform: rotate(-10deg) translateY(0);
+            opacity: 1;
+        }
+        25%,
+        31% {
+            transform: rotate(0deg) translateY(15px);
+            opacity: 0.9;
+        }
+        28% {
+            transform: rotate(-5deg) translateY(7px);
+            opacity: 0.9;
         }
 
-        29% {
-            transform: translate(-14px, -28px) rotateZ(-10deg);
+        35%,
+        100% {
+            transform: rotate(-10deg) translateY(0);
+            opacity: 1;
         }
     }
 }

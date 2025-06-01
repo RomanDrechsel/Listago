@@ -5,8 +5,8 @@
     position: sticky;
     top: 0;
     width: 100%;
-    border-bottom: solid 1px var(--color-control-border);
-    background: var(--color-control-background);
+    border-bottom: solid 1px var(--ion-color-light-shade);
+    background: var(--ion-color-light);
     display: flex;
 
     ion-icon {
@@ -22,7 +22,7 @@
     ion-select {
         --padding-start: 6px;
         --padding-end: 6px;
-        --background: var(--color-control-background);
+        --background: var(--ion-color-light);
 
         &::part(container) {
             display: none;
@@ -35,7 +35,7 @@
     padding: 10px 6px 100px 6px;
     font-size: 0.7em;
     white-space: pre-wrap;
-    color: var(--color-text);
+    color: var(--ion-color-dark);
 }
 
 ion-fab {

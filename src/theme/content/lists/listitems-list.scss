@@ -21,7 +21,7 @@ ion-list {
                         .listpoint-indicator {
                             position: relative;
                             top: 0.4em;
-                            background: var(--color-text);
+                            background: var(--ion-color-dark);
                             width: 0.5em;
                             height: 0.5em;
                             border-radius: 100%;
@@ -31,7 +31,7 @@ ion-list {
                             position: relative;
                             top: 0.2em;
                             width: 100%;
-                            fill: var(--color-text);
+                            fill: var(--ion-color-dark);
                         }
                     }
 
