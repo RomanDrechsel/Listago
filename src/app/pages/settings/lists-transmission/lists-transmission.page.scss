@@ -1,15 +1,1 @@
-ion-list {
-    ion-item {
-        &:not(:first-of-type) {
-            padding-top: 40px;
-        }
-
-        --border-width: 0 0 1px 0;
-
-        ion-note {
-            font-size: 0.8em;
-            white-space: pre-line;
-            --color: var(--ion-color-medium);
-        }
-    }
-}
+@use "src/theme/content/settings/settings-page.scss";

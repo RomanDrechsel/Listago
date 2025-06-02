@@ -1,24 +1,33 @@
+@use "src/theme/content/settings/settings-page.scss";
+
 ion-list {
     ion-item {
-        &:not(:first-of-type) {
-            margin-top: 40px;
-        }
-
         &.no-margin {
             margin-top: 0px;
         }
 
-        ion-note {
-            font-size: 0.8em;
-            white-space: pre-line;
-            --color: var(--ion-color-medium);
-        }
+        &.logs {
+            &::part(native) {
+                flex-direction: column;
+                gap: 1em;
+            }
 
-        .info {
-            font-size: 0.9em;
-            color: var(--ion-color-medium);
-            white-space: pre-line;
-            width: 100%;
+            > div {
+                width: 100%;
+            }
+
+            .delete {
+                display: flex;
+                justify-content: end;
+                margin-top: 1em;
+            }
+
+            .info {
+                font-size: 0.9em;
+                color: var(--ion-color-medium);
+                white-space: pre-line;
+                width: 100%;
+            }
         }
 
         .buttons {

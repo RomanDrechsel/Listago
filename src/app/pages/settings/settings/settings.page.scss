@@ -1,25 +1,14 @@
+@use "src/theme/content/settings/settings-page.scss";
+
 ion-list {
     ion-item {
         &:first-child {
-            --padding-top: 0.5em;
+            --padding-bottom: 0;
+            --border-width: 0;
         }
+
         &:nth-child(2) {
             --padding-top: 0.5em;
-            --padding-bottom: 1.5em;
-        }
-        &:not(:first-child):not(:nth-child(2)) {
-            --padding-top: 1em;
-            --padding-bottom: 1em;
-        }
-
-        &:not(:first-of-type) {
-            --border-width: 0 0 1px 0;
-        }
-
-        ion-note {
-            font-size: 0.8em;
-            white-space: pre-line;
-            --color: var(--ion-color-medium);
         }
 
         ion-icon.info-icon {
@@ -41,10 +30,6 @@ ion-list {
                     object-fit: fill;
                 }
             }
-        }
-
-        .no-wrap {
-            font-weight: bold;
         }
     }
 }

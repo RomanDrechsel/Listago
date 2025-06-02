@@ -24,14 +24,13 @@
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
 
-        <ion-item *ngIf="LogsSize" lines="none" class="no-margin">
+        <ion-item *ngIf="LogsSize" lines="none" class="logs">
             <div class="info">
                 <ion-text>{{LogsSize}}</ion-text>
             </div>
-        </ion-item>
-
-        <ion-item lines="full" class="no-margin">
-            <ion-button (click)="onBtnDeleteLogs()" slot="end" size="default" fill="outline" [disabled]="Logfiles == 0">{{'page_settings_logs.deleteall'|translate}}</ion-button>
+            <div class="delete">
+                <ion-button (click)="onBtnDeleteLogs()" slot="end" size="default" fill="outline" [disabled]="Logfiles == 0">{{'page_settings_logs.deleteall'|translate}}</ion-button>
+            </div>
         </ion-item>
 
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/watch-logs']" lines="full" *ngIf="ConnectIQ.Initialized">

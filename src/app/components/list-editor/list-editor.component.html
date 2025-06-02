@@ -26,7 +26,7 @@
                             <div slot="header">
                                 <ion-item lines="none">
                                     <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (ionChange)="toggleReset($event)" #reset>
-                                        <ion-text>{{ "comp-listeditor.reset" | translate }}</ion-text>
+                                        {{ "comp-listeditor.reset" | translate }}
                                     </ion-checkbox>
                                     <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
                                 </ion-item>
@@ -48,7 +48,7 @@
 
                     <ion-item lines="none">
                         <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (ionChange)="toggleSync($event)" #sync>
-                            <ion-text>{{ "comp-listeditor.sync" | translate }}</ion-text>
+                            {{ "comp-listeditor.sync" | translate }}
                         </ion-checkbox>
                         <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>
                     </ion-item>

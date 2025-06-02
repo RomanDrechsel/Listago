@@ -11,29 +11,7 @@
     }
 
     ion-item {
-        --background-hover: #ffffff;
-        --padding-start: 2px;
         --inner-padding-end: 0;
-
-        ion-checkbox {
-            &::part(label) {
-                margin-inline-start: 24px !important;
-                margin-top: 4px;
-                align-self: start;
-            }
-
-            &::part(container) {
-                top: 4px;
-            }
-        }
-
-        ion-icon {
-            &.info-icon {
-                margin-top: -0.4em;
-                padding-block-start: 0;
-                padding-inline-end: 6px;
-            }
-        }
     }
 
     ion-accordion-group {

@@ -29,7 +29,6 @@ ion-item {
     --background-hover-opacity: 0;
 
     ion-checkbox {
-        margin-top: 0.5em;
         height: auto;
     }
 }
@@ -206,7 +205,7 @@ ion-action-sheet {
 
 ion-icon.info-icon {
     fill: var(--ion-color-medium-tint);
-    padding: 10px 16px;
+    padding: 0 16px 10px 16px;
     height: 24px;
     width: 24px;
     margin-block: 0;

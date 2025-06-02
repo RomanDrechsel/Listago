@@ -289,7 +289,7 @@
         "animations": "Animationen",
         "animations_note": "Sollen verschiedene Vorgänge animiert dargestellt werden?",
         "logging": "Logging Einstellungen",
-        "logging_note": "Einstellungen und Verwalung von Log-Einträgen",
+        "logging_note": "Einstellungen und Verwaltung von Log-Einträgen",
         "confirm": "Bestätigungs-Einstellungen",
         "confirm_note": "Einstellungen zur Abfrage von Benutzerbestätigungen",
         "trash": "Papierkorb Einstellungen",

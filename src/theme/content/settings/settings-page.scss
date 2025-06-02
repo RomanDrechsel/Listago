@@ -1,0 +1,27 @@
+ion-list {
+    ion-item {
+        --border-width: 0 0 1px 0;
+        --padding-top: 1em;
+        --padding-bottom: 1em;
+        font-size: 1.1em;
+
+        &:first-child {
+            --padding-top: 0.5em;
+        }
+
+        .fullwidth {
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        .text,
+        ion-note {
+            white-space: pre-line;
+        }
+
+        ion-note {
+            font-size: 0.85em;
+            --color: var(--ion-color-medium);
+        }
+    }
+}
