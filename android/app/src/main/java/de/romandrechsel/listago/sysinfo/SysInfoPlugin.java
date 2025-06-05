@@ -12,6 +12,11 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import java.io.File;
+
+import de.romandrechsel.listago.logging.Logger;
+import de.romandrechsel.listago.utils.FileUtils;
+
 @CapacitorPlugin(name = "SysInfo")
 public class SysInfoPlugin extends Plugin
 {
@@ -64,6 +69,20 @@ public class SysInfoPlugin extends Plugin
         }
     }
 
+    @PluginMethod
+    public void ClearAppCache(PluginCall call) {
+        File dir = getContext().getCacheDir();
+        Logger.Debug(TAG, "Clear app cache at " + dir.getAbsolutePath());
+        FileUtils.DeleteDirResult result = FileUtils.DeleteDirectory(dir);
+
+        JSObject ret = new JSObject();
+        ret.put("success", result.Success);
+        ret.put("directories", result.Directories);
+        ret.put("files", result.Files);
+        ret.put("size", result.Size);
+        call.resolve(ret);
+    }
+
     public void SetNightMode(@NonNull Boolean isNightMode)
     {
         if (this._isNightMode != isNightMode)
@@ -78,4 +97,5 @@ public class SysInfoPlugin extends Plugin
             this._isNightMode = isNightMode;
         }
     }
+
 }
