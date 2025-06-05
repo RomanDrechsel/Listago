@@ -1,11 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, ViewChild } from "@angular/core";
-import { IonBackButton, IonButtons, IonHeader, IonMenuButton, IonProgressBar, IonTitle, IonToolbar } from "@ionic/angular/standalone";
+import { IonBackButton, IonButtons, IonMenuButton, IonProgressBar, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
     selector: "app-main-toolbar",
-    imports: [IonProgressBar, CommonModule, TranslateModule, IonToolbar, IonButtons, IonMenuButton, IonBackButton, IonTitle, IonHeader],
+    imports: [IonProgressBar, CommonModule, TranslateModule, IonToolbar, IonButtons, IonMenuButton, IonBackButton, IonTitle],
     templateUrl: "./main-toolbar.component.html",
     styleUrl: "./main-toolbar.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,34 +1,30 @@
 :host {
     display: block;
 
-    ion-header {
-        ion-toolbar {
-            ion-title {
-                padding-inline: 15px;
-            }
+    ion-toolbar.main-toolbar {
+        ion-title {
+            padding-inline: 15px;
+        }
 
-            ion-progress-bar {
-                --background: var(--ion-color-primary-tint);
-                --progress-background: var(--ion-color-primary-shade);
-            }
-            ion-menu-button,
-            ion-button:last-of-type {
-                width: 3rem;
-            }
+        ion-progress-bar {
+            --background: var(--ion-color-primary-tint);
+            --progress-background: var(--ion-color-primary-shade);
+        }
+        ion-menu-button,
+        ion-button:last-of-type {
+            width: 3rem;
         }
     }
 }
 
 ::ng-deep {
-    ion-header {
-        ion-toolbar {
-            ion-buttons {
-                ion-button {
-                    --padding-end: 0 !important;
-                    --padding-start: 0 !important;
-                    width: 2rem !important;
-                    margin-inline-end: 0 !important;
-                }
+    ion-toolbar.main-toolbar {
+        ion-buttons {
+            ion-button {
+                --padding-end: 0 !important;
+                --padding-start: 0 !important;
+                width: 2rem !important;
+                margin-inline-end: 0 !important;
             }
         }
     }

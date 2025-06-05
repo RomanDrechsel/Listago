@@ -95,18 +95,18 @@ ion-textarea,
 ion-select {
     --color: var(--ion-color-dark) !important;
     --highlight-color-focused: var(--ion-color-primary) !important;
-    --highlight-color-valid: var(--ion-color-light-shade) !important;
-    --highlight-color-invalid: var(--ion-color-light-shade) !important;
+    --highlight-color-valid: var(--ion-color-dark-tint) !important;
+    --highlight-color-invalid: var(--ion-color-dark-tint) !important;
     --border-color: var(--ion-color-dark-tint) !important;
     color: var(--color);
 
     &.ion-touched.ion-invalid:not(.has-focus) {
-        --border-color: var(--ion-color-light-shade);
+        --border-color: var(--ion-color-dark-tint);
     }
 
     &.ion-touched:not(.has-focus),
     &.ion-invalid:not(.has-focus) {
-        --border-color: var(--ion-color-light-shade) !important;
+        --border-color: var(--ion-color-dark-tint) !important;
 
         .label-text-wrapper {
             color: var(--ion-color-dark) !important;
@@ -149,7 +149,6 @@ ion-alert {
 }
 
 ion-toolbar {
-    /*--background: var(--ion-color-primary);*/
     --background: linear-gradient(to bottom, #0050d8, #003ea9);
     --color: var(--ion-color-primary-contrast);
 
