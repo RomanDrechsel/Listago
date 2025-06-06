@@ -89,9 +89,13 @@ export class AppService {
         AppService.Popups = this._popups;
         await Logger.Initialize(this.Logger);
 
-        if (clear_cache?.success) {
-            Logger.Notice(`Cleared browser cache due to new app version (${last_version} -> ${build})`);
-            Logger.Notice(`Removed ${clear_cache.files ?? 0} file(s) in ${clear_cache.directories ?? 0} directory(ies), total of ${FileUtils.File.FormatSize(clear_cache.size ?? 0)}.`);
+        if (clear_cache) {
+            const text = `Removed ${clear_cache.files ?? 0} file(s) in ${clear_cache.directories ?? 0} directory(ies), total of ${FileUtils.File.FormatSize(clear_cache.size ?? 0)}.`;
+            if (clear_cache?.success) {
+                Logger.Notice(`Cleared app cache due to new app version (${last_version} -> ${build}). ${text}`);
+            } else {
+                Logger.Error(`Tryed to clear app cache due to new app version (${last_version} -> ${build}), but not everything could be deleted... ${text}`);
+            }
         }
 
         await EdgeToEdge.enable();

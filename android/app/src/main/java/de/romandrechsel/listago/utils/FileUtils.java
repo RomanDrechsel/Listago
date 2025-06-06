@@ -30,7 +30,7 @@ public class FileUtils {
         }
     }
 
-    public static DeleteDirResult DeleteDirectory(File dir) {
+    public static DeleteDirResult DeleteDirectory(File dir, boolean delete_if_empty ) {
         DeleteDirResult result = new DeleteDirResult();
         if (dir != null && dir.isDirectory()) {
             boolean deleted_all = true;
@@ -44,15 +44,18 @@ public class FileUtils {
             }
             if (children != null) {
                 for (String child : children) {
-                    DeleteDirResult del = FileUtils.DeleteDirectory(new File(dir, child));
+                    DeleteDirResult del = FileUtils.DeleteDirectory(new File(dir, child), true);
                     result.Add(del);
                     if (!del.Success) {
                         deleted_all = false;
                     }
                 }
             }
-            if (deleted_all && dir.delete()) {
-                result.Directories++;
+            if (deleted_all) {
+                if (delete_if_empty && dir.delete())
+                {
+                    result.Directories++;
+                }
             }
             else {
                 result.Success = false;

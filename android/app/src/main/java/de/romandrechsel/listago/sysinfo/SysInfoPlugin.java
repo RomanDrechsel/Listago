@@ -71,9 +71,7 @@ public class SysInfoPlugin extends Plugin
 
     @PluginMethod
     public void ClearAppCache(PluginCall call) {
-        File dir = getContext().getCacheDir();
-        Logger.Debug(TAG, "Clear app cache at " + dir.getAbsolutePath());
-        FileUtils.DeleteDirResult result = FileUtils.DeleteDirectory(dir);
+        FileUtils.DeleteDirResult result = this.DeleteCache();
 
         JSObject ret = new JSObject();
         ret.put("success", result.Success);
@@ -96,6 +94,12 @@ public class SysInfoPlugin extends Plugin
             }
             this._isNightMode = isNightMode;
         }
+    }
+
+    private FileUtils.DeleteDirResult DeleteCache() {
+        File dir = getContext().getCacheDir();
+        Logger.Debug(TAG, "Clear app cache at " + dir.getAbsolutePath());
+        return FileUtils.DeleteDirectory(dir, false);
     }
 
 }
