@@ -76,10 +76,8 @@ export class AppService {
     public async InitializeApp() {
         await this.Platform.ready();
 
-        //const last_version = await this.Preferences.Get<number>(EPrefProperty.LastVersion, -1);
-        //const build = Number((await App.getInfo()).build);
-        const last_version = 1;
-        const build = 999;
+        const last_version = await this.Preferences.Get<number>(EPrefProperty.LastVersion, -1);
+        const build = Number((await App.getInfo()).build);
         let clear_cache: ClearAppCacheEventArgs | undefined = undefined;
         if (last_version >= 0 && !Number.isNaN(build) && build > last_version) {
             clear_cache = await SysInfo.ClearAppCache();
