@@ -76,8 +76,10 @@ export class AppService {
     public async InitializeApp() {
         await this.Platform.ready();
 
-        const last_version = await this.Preferences.Get<number>(EPrefProperty.LastVersion, -1);
-        const build = Number((await App.getInfo()).build);
+        //const last_version = await this.Preferences.Get<number>(EPrefProperty.LastVersion, -1);
+        //const build = Number((await App.getInfo()).build);
+        const last_version = 1;
+        const build = 999;
         let clear_cache: ClearAppCacheEventArgs | undefined = undefined;
         if (last_version >= 0 && !Number.isNaN(build) && build > last_version) {
             clear_cache = await SysInfo.ClearAppCache();
@@ -89,7 +91,7 @@ export class AppService {
 
         if (clear_cache?.success) {
             Logger.Notice(`Cleared browser cache due to new app version (${last_version} -> ${build})`);
-            Logger.Notice(`Removed ${clear_cache.files ?? 0} file(s) in ${clear_cache.directories ?? 0} directory(ies), totaling ${FileUtils.File.FormatSize(clear_cache.size ?? 0)}.`);
+            Logger.Notice(`Removed ${clear_cache.files ?? 0} file(s) in ${clear_cache.directories ?? 0} directory(ies), total of ${FileUtils.File.FormatSize(clear_cache.size ?? 0)}.`);
         }
 
         await EdgeToEdge.enable();

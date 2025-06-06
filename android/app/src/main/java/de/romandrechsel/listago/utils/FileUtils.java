@@ -8,13 +8,13 @@ public class FileUtils {
     public static final String TAG = "FileUtils";
 
     public static class DeleteDirResult {
-        public boolean Success = false;
-        public int Directories = -1;
-        public int Files = -1;
-        public long Size = -1;
+        public boolean Success;
+        public int Directories;
+        public int Files;
+        public long Size;
 
         public DeleteDirResult() {
-            this.Success = false;
+            this.Success = true;
             this.Directories = 0;
             this.Files = 0;
             this.Size = 0;
@@ -58,9 +58,10 @@ public class FileUtils {
                 result.Success = false;
             }
         } else if (dir != null && dir.isFile()) {
-            if ( dir.delete()) {
+            long size = dir.length();
+            if (dir.delete()) {
                 result.Files++;
-                result.Size += dir.length();
+                result.Size += size;
             } else {
                 result.Success = false;
             }

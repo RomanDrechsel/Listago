@@ -49,6 +49,3 @@ project(':capawesome-capacitor-android-edge-to-edge-support').projectDir = new F
 
 include ':capacitor-email-composer'
 project(':capacitor-email-composer').projectDir = new File('../node_modules/capacitor-email-composer/android')
-
-include ':capacitor-plugin-webview-cache'
-project(':capacitor-plugin-webview-cache').projectDir = new File('../node_modules/capacitor-plugin-webview-cache/android')
