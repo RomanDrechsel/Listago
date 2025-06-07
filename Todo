@@ -1,8 +1,7 @@
-TODO: translate page_appinfos.backend / page_appinfos.database_lists_txt
-TODO: page_appinfos.stats needed?
-TODO: Darkmode color setup
+WIP: Darkmode color setup
 TODO: if activate sync settings on list editor, if it is in settings off, switch and mark the Auto-sync setting
 TODO: improve toolbar page transition animation
 TODO: Toast fadeout animation
 TODO: error-page
+BUG: editing a synced list -> no device online -> don't go to device page
 TODO: import from lists
