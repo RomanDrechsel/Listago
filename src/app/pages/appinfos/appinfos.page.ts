@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { InAppReview } from "@capacitor-community/in-app-review";
 import { Browser } from "@capacitor/browser";
@@ -8,8 +8,8 @@ import { IonCol, IonContent, IonGrid, IonImg, IonItem, IonList, IonNote, IonRow,
 import { TranslateModule } from "@ngx-translate/core";
 import { interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
+import { MainSqliteBackendService } from "src/app/services/storage/lists/main-sqlite-backend.service";
 import { FileUtils } from "../../classes/utils/file-utils";
-import { WatchLoggingService } from "../../services/logging/watch-logging.service";
 import { PageBase } from "../page-base";
 import { AppService } from "./../../services/app/app.service";
 
@@ -17,7 +17,6 @@ import { AppService } from "./../../services/app/app.service";
     selector: "app-appinfos",
     templateUrl: "./appinfos.page.html",
     styleUrls: ["./appinfos.page.scss"],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [IonImg, IonNote, MainToolbarComponent, CommonModule, FormsModule, TranslateModule, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol],
 })
 export class AppinfosPage extends PageBase {
@@ -25,13 +24,15 @@ export class AppinfosPage extends PageBase {
     public Appversion: string = "";
     public Build: string = "";
     public Platform: string = "";
-    public DatabaseSizeLists: string = "-";
-    public DatabaseSizeTrash: string = "-";
+    public DatabaseSizeLists: string = "-<br /><br />";
+    public DatabaseSizeTrash: string = "-<br /><br />";
     public MemoryUsage: string = "-";
-    public LogsSize: string = "-";
+    public LogsSize: string = "-<br /><br />";
+    public DatabaseFileSize: string = "";
 
-    private GarminLogger = inject(WatchLoggingService);
     private timerSubscription?: Subscription;
+
+    private readonly BackendService = inject(MainSqliteBackendService);
 
     public get Homepage(): string {
         return this.Config.Homepage;
@@ -39,6 +40,8 @@ export class AppinfosPage extends PageBase {
 
     public override async ionViewWillEnter() {
         super.ionViewWillEnter();
+
+        this.requestStatistics();
 
         const meta = await this.AppService.AppMetaInfo();
         this.BundleId = meta.Package?.Name ?? "-";
@@ -49,12 +52,12 @@ export class AppinfosPage extends PageBase {
         this.timerSubscription = interval(5000).subscribe(async () => {
             await this.requestStatistics();
         });
-        await this.requestStatistics();
     }
 
     public override async ionViewWillLeave() {
         super.ionViewWillLeave();
         this.timerSubscription?.unsubscribe();
+        this.timerSubscription = undefined;
     }
 
     public get isDarkmode(): boolean {
@@ -83,15 +86,59 @@ export class AppinfosPage extends PageBase {
     }
 
     private async requestStatistics() {
-        this.LogsSize = FileUtils.File.FormatSize((await this.Logger.GetLogSize()).size);
-        const database = await this.ListsService.BackendSize();
-        this.DatabaseSizeLists = FileUtils.File.FormatSize(database.lists.size);
-        this.DatabaseSizeTrash = FileUtils.File.FormatSize(database.trash.size);
+        const logs = await this.Logger.GetLogSize();
+        if (logs.files == 1) {
+            this.LogsSize = this.Locale.getText("page_appinfos.database_logs_txt2", { size: FileUtils.File.FormatSize(logs.size) });
+        } else {
+            this.LogsSize = this.Locale.getText("page_appinfos.database_logs_txt1", { size: FileUtils.File.FormatSize(logs.size), files: logs.files });
+        }
+
+        const backendsize = await this.BackendService.DatabaseSize();
+        if (backendsize > 0) {
+            this.DatabaseFileSize = FileUtils.File.FormatSize(backendsize);
+        } else {
+            this.DatabaseFileSize = "";
+        }
+
+        const numbers = await this.BackendService.DatabaseStats();
+        let txt = "";
+        if (numbers.lists.lists >= 0 && numbers.lists.items >= 0) {
+            if (numbers.lists.lists == 1) {
+                if (numbers.lists.items == 1) {
+                    txt = this.Locale.getText("page_appinfos.database_lists_txt3");
+                } else {
+                    txt = this.Locale.getText("page_appinfos.database_lists_txt2", { items: numbers.lists.items });
+                }
+            } else {
+                if (numbers.lists.items == 1) {
+                    txt = this.Locale.getText("page_appinfos.database_lists_txt4", { lists: numbers.lists.lists });
+                } else {
+                    txt = this.Locale.getText("page_appinfos.database_lists_txt1", { lists: numbers.lists.lists, items: numbers.lists.items });
+                }
+            }
+        }
+        this.DatabaseSizeLists = txt;
+        txt = "";
+        if (numbers.trash.lists >= 0 && numbers.trash.items >= 0) {
+            if (numbers.trash.lists == 1) {
+                if (numbers.trash.items == 1) {
+                    txt = this.Locale.getText("page_appinfos.database_trash_txt3");
+                } else {
+                    txt = this.Locale.getText("page_appinfos.database_trash_txt2", { items: numbers.trash.items });
+                }
+            } else {
+                if (numbers.trash.items == 1) {
+                    txt = this.Locale.getText("page_appinfos.database_trash_txt4", { lists: numbers.trash.lists });
+                } else {
+                    txt = this.Locale.getText("page_appinfos.database_trash_txt1", { lists: numbers.trash.lists, items: numbers.trash.items });
+                }
+            }
+        }
+        this.DatabaseSizeTrash = txt;
 
         const deviceinfo = await Device.getInfo();
         if (deviceinfo.memUsed) {
             this.MemoryUsage = FileUtils.File.FormatSize(deviceinfo.memUsed);
         }
-        this.cdr.detectChanges();
     }
 }

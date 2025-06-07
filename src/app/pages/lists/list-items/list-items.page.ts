@@ -46,6 +46,8 @@ export class ListItemsPage extends AnimatedListPageBase {
         if (!this._list) {
             if (this._listTitle?.length) {
                 return this._listTitle;
+            } else if (this._itemsInitialized) {
+                return Locale.getText("page_listitems.page_title");
             } else {
                 return Locale.getText("page_listitems.loading");
             }

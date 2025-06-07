@@ -26,24 +26,42 @@ ion-content {
 
                 ion-note {
                     display: block;
+
+                    &.bundle {
+                        padding-inline-end: 10px;
+                    }
                 }
 
                 ion-grid {
                     padding: 0;
                     width: 100%;
 
-                    ion-col {
-                        &:first-of-type {
-                            flex-grow: 2;
-                            text-align: end;
-                        }
+                    ion-row {
+                        margin-block-start: 0.5em;
+                        margin-block-end: 0.5em;
 
                         &:last-of-type {
-                            flex-grow: 3;
-                            text-align: end;
-                            max-width: 150px;
-                            min-width: 150px;
-                            padding-inline-end: 0;
+                            ion-col:last-of-type {
+                                border-bottom: 0;
+                            }
+                        }
+
+                        ion-col {
+                            &:first-of-type {
+                                flex-grow: 2;
+                                text-align: end;
+                            }
+
+                            &:last-of-type {
+                                margin-inline-start: 30px;
+                                flex-grow: 3;
+                                text-align: end;
+                                max-width: 160px;
+                                min-width: 160px;
+                                padding-inline-end: 10px;
+                                padding-block-end: 0.5em;
+                                border-bottom: solid 1px var(--ion-color-light-shade);
+                            }
                         }
                     }
                 }

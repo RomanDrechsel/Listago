@@ -7,7 +7,7 @@
                 <ion-item class="ion-align-items-start" lines="full">
                     <div>
                         <ion-text>{{'page_appinfos.package'|translate}}</ion-text>
-                        <ion-note class="ion-text-end">{{BundleId}}</ion-note>
+                        <ion-note class="ion-text-end bundle">{{BundleId}}</ion-note>
                         <ion-grid>
                             <ion-row>
                                 <ion-col class="ion-text-end">{{'page_appinfos.version'|translate}}</ion-col>
@@ -26,21 +26,25 @@
                 </ion-item>
                 <ion-item lines="full">
                     <div>
-                        <ion-text>{{'page_appinfos.stats'|translate}}</ion-text>
+                        <ion-text>{{'page_appinfos.backend'|translate}}</ion-text>
                         <ion-grid>
                             <ion-row>
+                                <ion-col class="ion-text-end">{{'page_appinfos.storage'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{DatabaseFileSize}}</ion-col>
+                            </ion-row>
+                            <ion-row>
                                 <ion-col class="ion-text-end">{{'page_appinfos.database_lists'|translate}}</ion-col>
-                                <ion-col class="ion-text-end">{{DatabaseSizeLists}}</ion-col>
+                                <ion-col class="ion-text-end"><div [innerHTML]="DatabaseSizeLists"></div></ion-col>
                             </ion-row>
                             <ion-row>
                                 <ion-col class="ion-text-end">{{'page_appinfos.database_trash'|translate}}</ion-col>
-                                <ion-col class="ion-text-end">{{DatabaseSizeTrash}}</ion-col>
+                                <ion-col class="ion-text-end"><div [innerHTML]="DatabaseSizeTrash"></div></ion-col>
                             </ion-row>
-                            <ion-row>
+                            <ion-row class="margin-top">
                                 <ion-col class="ion-text-end">{{'page_appinfos.database_logs'|translate}}</ion-col>
-                                <ion-col class="ion-text-end">{{LogsSize}}</ion-col>
+                                <ion-col class="ion-text-end"><div [innerHTML]="LogsSize"></div></ion-col>
                             </ion-row>
-                            <ion-row>
+                            <ion-row class="margin-top">
                                 <ion-col class="ion-text-end">{{'page_appinfos.memory'|translate}}</ion-col>
                                 <ion-col class="ion-text-end">{{MemoryUsage}}</ion-col>
                             </ion-row>

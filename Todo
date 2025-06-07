@@ -1,5 +1,6 @@
-TODO: Color of check box in editmode to secondary color
-TODO: Backend size at appinfo page
+TODO: translate page_appinfos.backend / page_appinfos.database_lists_txt
+TODO: page_appinfos.stats needed?
+TODO: Darkmode color setup
 TODO: if activate sync settings on list editor, if it is in settings off, switch and mark the Auto-sync setting
 TODO: improve toolbar page transition animation
 TODO: Toast fadeout animation

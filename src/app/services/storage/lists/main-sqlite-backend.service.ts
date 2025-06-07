@@ -1,5 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import type { SQLiteDBConnection } from "@capacitor-community/sqlite";
+import { Directory, Filesystem } from "@capacitor/filesystem";
 import { List, type ListModel } from "../../lists/list";
 import { Listitem, ListitemModel } from "../../lists/listitem";
 import { Logger } from "../../logging/logger";
@@ -196,9 +197,16 @@ export class MainSqliteBackendService {
         if (!(await this.CheckConnection())) {
             return 0;
         }
-        let query = `SELECT COUNT(*) AS \`count\` FROM \`listitems\` WHERE \`deleted\` ${args?.trash ? "IS NOT NULL" : "IS NULL"}`;
-        if (args.list !== "all") {
-            query += ` AND \`list_id\` = ?`;
+
+        let query;
+        if (args.list === "all") {
+            if (args.trash === true) {
+                query = "SELECT COUNT(*) AS `count` FROM `listitems` JOIN `lists` ON `listitems`.`list_id` = `lists`.`id` WHERE `listitems`.`deleted` IS NOT NULL OR `lists`.`deleted` IS NOT NULL";
+            } else {
+                query = "SELECT COUNT(*) AS `count` FROM `listitems` JOIN `lists` ON `listitems`.`list_id` = `lists`.`id` WHERE `listitems`.`deleted` IS NULL AND `lists`.`deleted` IS NULL";
+            }
+        } else {
+            query = `SELECT COUNT(*) AS \`count\` FROM \`listitems\` WHERE \`deleted\` ${args?.trash ? "IS NOT NULL" : "IS NULL"} AND \`list_id\` = ?`;
         }
 
         try {
@@ -754,6 +762,33 @@ export class MainSqliteBackendService {
             Logger.Error(`MainSqliteBackendService.getNextListitemOrder failed:`, e);
         }
         return 0;
+    }
+
+    /**
+     * returns the size of the database file
+     * @returns size of the database in bytes
+     */
+    public async DatabaseSize(): Promise<number> {
+        try {
+            const file = await Filesystem.stat({ path: `../databases/${MainSqliteBackendService.DatabaseNameMain}SQLite.db`, directory: Directory.Library });
+            return file.size;
+        } catch (e) {
+            Logger.Error(`Could not get database size: `, e);
+            return -1;
+        }
+    }
+
+    /**
+     * returns the number of lists and items in the backend
+     * @returns number of lists and items (in and out of trash)
+     */
+    public async DatabaseStats(): Promise<{ lists: { lists: number; items: number }; trash: { lists: number; items: number } }> {
+        const lists = await this.queryListsCount({ trash: false });
+        const items = await this.queryListitemsCount({ list: "all", trash: false });
+        const trash_lists = await this.queryListsCount({ trash: true });
+        const trash_items = await this.queryListitemsCount({ list: "all", trash: true });
+
+        return { lists: { lists: lists, items: items }, trash: { lists: trash_lists, items: trash_items } };
     }
 
     /**
