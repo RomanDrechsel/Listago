@@ -132,6 +132,8 @@ ion-modal,
 ion-alert,
 ion-loading {
     backdrop-filter: blur(6px);
+    --ion-background-color: var(--ion-color-light-tint);
+
     .alert-checkbox-group {
         .alert-checkbox-label {
             color: var(--ion-color-dark);
@@ -202,6 +204,14 @@ ion-action-sheet {
     }
 }
 
+ion-select-popover {
+    ion-radio-group {
+        ion-item {
+            --background: transparent;
+        }
+    }
+}
+
 ion-icon.info-icon {
     fill: var(--ion-color-medium-tint);
     padding: 0 16px 10px 16px;
@@ -239,12 +249,26 @@ ion-picker {
     --ion-background-color-rgb: var(--ion-color-light-rgb);
 }
 
-ion-accordion {
-    [slot="header"] {
-        ion-icon[slot="end"] {
-            color: var(--ion-color-medium);
+ion-accordion-group {
+    --background: transparent;
+
+    ion-accordion {
+        background: transparent;
+
+        [slot="header"] {
+            ion-icon[slot="end"] {
+                color: var(--ion-color-medium);
+            }
+        }
+        ion-item {
+            --background-hover: transparent;
+            --background: transparent;
         }
     }
+}
+
+ion-card {
+    --ion-background-color: var(--ion-color-light-tint);
 }
 
 .no-wrap {
@@ -252,10 +276,17 @@ ion-accordion {
 }
 
 @media (prefers-color-scheme: dark) {
-    ion-button {
-        &.button-outline {
-            --border-color: var(--ion-color-secondary);
-            --color: var(--ion-color-secondary-contrast);
-        }
+    ion-toolbar {
+        --background: linear-gradient(to bottom, #002794, #00144c);
+    }
+
+    ion-input,
+    ion-textarea,
+    ion-select {
+        --highlight-color-focused: var(--ion-color-secondary-tint) !important;
+    }
+
+    a:link {
+        color: var(--ion-color-secondary);
     }
 }

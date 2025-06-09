@@ -1,6 +1,6 @@
 <app-main-toolbar [displayCustomMenu]="true" [displayMenu]="false">
     {{'page_lists.page_title'|translate}}
-    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
+    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="Lists.length <= 0" [EditModeMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
 </app-main-toolbar>
 
 <ion-content fixed-slot-placement="before" scrollX="false" scrollEvents="true" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
@@ -72,7 +72,7 @@
 <ng-template #notInit>
     <app-page-empty>
         <div slot="image">
-            <ion-img src="./assets/icons/hourglass.svg"></ion-img>
+            <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
         </div>
         <div slot="text">
             <div [innerHTML]="'page_lists.loading'|translate"></div>

@@ -1,6 +1,6 @@
 <app-main-toolbar back="/lists" [displayCustomMenu]="true" [displayMenu]="false">
     {{'page_trash.page_title'|translate}}
-    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
+    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="Lists.length <= 0" [EditModeMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
 </app-main-toolbar>
 
 <ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>

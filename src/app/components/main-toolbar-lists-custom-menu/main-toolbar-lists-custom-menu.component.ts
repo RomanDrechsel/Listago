@@ -11,8 +11,9 @@ import { type EditMenuAction, MainToolbarEditMenuModalComponent } from "../main-
     styleUrl: "./main-toolbar-lists-custom-menu.component.scss",
 })
 export class MainToolbarListsCustomMenuComponent {
-    @Input() public EditMode: boolean = false;
-    @Input() public EditMenuDisabled: boolean = true;
+    @Input() public EditMode = false;
+    @Input() public EditMenuDisabled = true;
+    @Input() public EditModeMenuDisabled = true;
     @Input() public EditMenuActions: EditMenuAction[] = [];
 
     @Output() EditModeChange = new EventEmitter<boolean>();

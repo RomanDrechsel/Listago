@@ -49,10 +49,15 @@
             box-shadow: none;
             border-top: solid 1px var(--ion-color-medium-tint);
             margin-bottom: 1em;
+            background-color: var(--ion-background-color);
 
-            ion-item:last-of-type {
-                --border-width: 0;
-                margin-bottom: 0.5em;
+            ion-list {
+                background-color: var(--ion-background-color);
+
+                ion-item:last-of-type {
+                    --border-width: 0;
+                    margin-bottom: 0.5em;
+                }
             }
         }
 
@@ -82,6 +87,22 @@
     @media only screen and (min-width: 768px) {
         ion-menu {
             max-width: 350px;
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        ion-menu {
+            ion-list {
+                ion-item {
+                    &.selected {
+                        --color: var(--ion-color-secondary);
+
+                        ion-icon {
+                            fill: var(--ion-color-secondary);
+                        }
+                    }
+                }
+            }
         }
     }
 }

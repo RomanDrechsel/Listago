@@ -11,8 +11,8 @@
     }
 
     ion-textarea {
-        --padding-top: 6px;
-        --padding-bottom: 6px;
+        padding-top: 6px;
+        padding-bottom: 6px;
         min-height: 20px;
 
         &.note {
@@ -22,6 +22,8 @@
 
     ion-item {
         --inner-padding-end: 0;
+        --background-hover: transparent;
+        --background: transparent;
     }
 
     .buttons {

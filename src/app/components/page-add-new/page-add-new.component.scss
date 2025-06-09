@@ -11,11 +11,10 @@
             text-align: center;
             width: 100%;
             color: var(--ion-color-primary-shade);
-            opacity: 0.5;
             margin-block-end: 36px;
             font-size: 1.8em;
             font-weight: bold;
-            padding-bottom: 64px;
+            padding-bottom: 20vh;
             padding-inline: 32px;
         }
 
@@ -54,6 +53,16 @@
         100% {
             transform: rotate(-10deg) translateY(0);
             opacity: 1;
+        }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :host {
+        .addnew {
+            .text {
+                color: var(--ion-color-secondary);
+            }
         }
     }
 }

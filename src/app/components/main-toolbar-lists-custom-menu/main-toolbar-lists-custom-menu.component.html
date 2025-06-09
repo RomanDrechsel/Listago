@@ -1,6 +1,6 @@
 <div>
     <ion-buttons *ngIf="EditMode">
-        <ion-button shape="round" (click)="ToggleEditMenu()" [disabled]="EditMenuDisabled">
+        <ion-button shape="round" (click)="ToggleEditMenu()" [disabled]="EditModeMenuDisabled">
             <ion-icon src="/assets/icons/list_menu.svg" slot="icon-only"></ion-icon>
         </ion-button>
         <ion-button shape="round" (click)="leaveEditMode()">
@@ -8,7 +8,7 @@
         </ion-button>
     </ion-buttons>
     <ion-buttons *ngIf="!EditMode">
-        <ion-button shape="round" (click)="enterEditMode()">
+        <ion-button shape="round" (click)="enterEditMode()" [disabled]="EditMenuDisabled">
             <ion-icon src="/assets/icons/edit.svg" slot="icon-only"></ion-icon>
         </ion-button>
         <ion-menu-button></ion-menu-button>

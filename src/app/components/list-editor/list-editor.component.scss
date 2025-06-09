@@ -1,6 +1,7 @@
 :host {
     display: block;
     max-height: 90%;
+    background-color: var(--ion-color-light-tint);
 
     ion-header {
         ion-toolbar {
@@ -22,32 +23,23 @@
                     --ion-color-base-rgb: var(--ion-color-light-rgb) !important;
                     --ion-color-shade: var(--ion-color-light) !important;
                     --ion-color-tint: var(--ion-color-light) !important;
+                    --background: transparent;
                     padding-inline-end: 4px;
                 }
 
-                ion-list {
-                    margin-inline: 24px auto;
-
-                    ion-item {
-                        --background-hover: #ffffff;
-                        --background: var(--ion-background-color);
-                        --padding-start: 0;
-
-                        ::part(label) {
-                            margin-inline-start: 0;
-
-                            ion-note {
-                                white-space: wrap !important;
-                            }
+                ion-item {
+                    ::part(label) {
+                        ion-note {
+                            white-space: wrap !important;
                         }
+                    }
 
-                        &.select-resetdate {
-                            cursor: pointer;
-                        }
+                    &.select-resetdate {
+                        cursor: pointer;
+                    }
 
-                        ion-select {
-                            width: 100%;
-                        }
+                    ion-select {
+                        width: 100%;
                     }
                 }
             }

@@ -1,7 +1,8 @@
-WIP: Darkmode color setup
+TODO: remove Popups.Loading
 TODO: if activate sync settings on list editor, if it is in settings off, switch and mark the Auto-sync setting
 TODO: improve toolbar page transition animation
 TODO: Toast fadeout animation
+TODO: trash menu disabled, if trash is empty
 TODO: error-page
 BUG: editing a synced list -> no device online -> don't go to device page
 TODO: import from lists

@@ -75,10 +75,12 @@ ion-modal.bottom-modal {
 
 ion-alert.alert {
     --ion-text-color: var(--ion-color-dark);
+    --max-width: 80vw;
+    --max-height: 80%;
 
     &.info {
         .alert-message {
-            font-size: 1.1em;
+            font-size: 1.3em;
             font-style: italic;
         }
     }

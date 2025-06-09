@@ -1,6 +1,6 @@
 <app-main-toolbar back="/lists" [displayCustomMenu]="true" [displayMenu]="false">
     {{PageTitle}}
-    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
+    <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="!List?.Items?.length" [EditModeMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
 </app-main-toolbar>
 
 <ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" *ngIf="List !== undefined && ItemsInitialized; else error" #mainContent>
@@ -48,8 +48,8 @@
             </ion-reorder-group>
         </ion-list>
         <ion-item lines="none" class="quick-add" [ngClass]="{'visible': InitialAnimationDone && !EditMode}">
-            <ion-textarea placeholder="{{'page_listitems.quickadd'|translate}}" autoGrow="true" inputmode="text" spellcheck="true" maxlength="250" autocapitalize="sentence" rows="2" [disabled]="!InitialAnimationDone || EditMode" #quickAdd>
-                <ion-button fill="outline" color="medium" [ariaLabel]="'add'|translate" size="small" slot="end" (click)="QuickAddItem($event)" [disabled]="!InitialAnimationDone || EditMode || !quickAdd?.value?.length">
+            <ion-textarea placeholder="{{'page_listitems.quickadd'|translate}}" autoGrow="true" inputmode="text" spellcheck="true" maxlength="250" autocapitalize="sentence" rows="2" fill="solid" [disabled]="!InitialAnimationDone || EditMode" #quickAdd>
+                <ion-button fill="outline" [ariaLabel]="'add'|translate" size="small" slot="end" (click)="QuickAddItem($event)" [disabled]="!InitialAnimationDone || EditMode || !quickAdd?.value?.length">
                     <ion-icon slot="start" src="./assets/icons/add.svg"></ion-icon>
                     {{'add'|translate}}
                 </ion-button>
@@ -78,22 +78,20 @@
 </ion-content>
 
 <ng-template #error>
-    <div class="nolist" *ngIf="ItemsInitialized; else notInit">
-        <app-page-empty>
-            <div slot="image">
-                <ion-img src="./assets/icons/nolist.svg"></ion-img>
-            </div>
-            <div slot="text">
-                <div [innerHTML]="'page_listitems.nolist'|translate"></div>
-            </div>
-        </app-page-empty>
-    </div>
+    <app-page-empty *ngIf="ItemsInitialized; else notInit">
+        <div slot="image">
+            <ion-icon src="./assets/icons/nolist.svg"></ion-icon>
+        </div>
+        <div slot="text">
+            <div [innerHTML]="'page_listitems.nolist'|translate"></div>
+        </div>
+    </app-page-empty>
 </ng-template>
 
 <ng-template #notInit>
     <app-page-empty>
         <div slot="image">
-            <ion-img src="./assets/icons/hourglass.svg"></ion-img>
+            <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
         </div>
         <div slot="text">
             <div [innerHTML]="'page_listitems.loading'|translate"></div>

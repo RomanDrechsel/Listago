@@ -71,7 +71,7 @@ ion-content {
 
     .support {
         padding: 5%;
-        font-size: 0.9em;
+        font-size: 1.1em;
         color: var(--ion-color-medium);
         align-self: center;
         margin-bottom: 5%;
@@ -106,7 +106,19 @@ ion-content {
             .link {
                 margin-block-start: 1em;
                 font-weight: bold;
-                font-size: 1.2em;
+                font-size: 1.3em;
+            }
+        }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    ion-content {
+        .support {
+            .paypal {
+                background-color: #fff;
+                padding: 1em;
+                border-radius: 0.5em;
             }
         }
     }

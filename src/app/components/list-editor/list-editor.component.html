@@ -23,14 +23,14 @@
                 <div slot="content">
                     <ion-accordion-group [value]="ResetActive ? 'reset' : undefined" #resetAccordion>
                         <ion-accordion toggleIcon="none" value="reset">
-                            <div slot="header">
+                            <ion-list slot="header">
                                 <ion-item lines="none">
                                     <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (ionChange)="toggleReset($event)" #reset>
                                         {{ "comp-listeditor.reset" | translate }}
                                     </ion-checkbox>
                                     <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
                                 </ion-item>
-                            </div>
+                            </ion-list>
                             <ion-list slot="content">
                                 <ion-item lines="none">
                                     <ion-select [label]="'comp-listeditor.reset_interval' | translate" label-placement="stacked" [value]="ResetInteval" (ionChange)="onResetIntervalChanged($event.target.value)" #resetinterval>
@@ -39,7 +39,7 @@
                                         <ion-select-option value="monthly">{{ "comp-listeditor.reset_monthly" | translate }}</ion-select-option>
                                     </ion-select>
                                 </ion-item>
-                                <ion-item (click)="selectResetDate()" class="select-resetdate">
+                                <ion-item (click)="selectResetDate()" class="select-resetdate" lines="none">
                                     <ion-text>{{ ResetString }}</ion-text>
                                 </ion-item>
                             </ion-list>

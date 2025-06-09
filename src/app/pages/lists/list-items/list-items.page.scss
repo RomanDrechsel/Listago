@@ -1,42 +1,13 @@
 @use "src/theme/content/lists/listitems-list.scss";
 
-.nolist {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-
-    ion-img {
-        max-width: 300px;
-        max-height: 300px;
-        width: 50%;
-        height: auto;
-        opacity: 0.3;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    ion-text {
-        font-size: 1.4em;
-        font-weight: 600;
-        white-space: pre-line;
-    }
-
-    .icon {
-        padding-bottom: 40px;
-    }
-
-    .text {
-        margin-bottom: 15%;
-    }
-}
-
 .content {
     padding-block-end: 5em;
 
     .quick-add {
-        --inner-padding-end: 4px;
+        --inner-padding-top: 0.5em;
+        --inner-padding-end: 0.5em;
+        --padding-start: 0.5em;
+
         opacity: 0;
         transition: opacity 0.5s ease-out;
 
@@ -47,19 +18,41 @@
         ion-textarea {
             --placeholder-color: var(--ion-color-medium);
             --placeholder-font-style: italic;
-            --placeholder-opacity: 0.8;
+            --placeholder-opacity: 1;
             --padding-top: 0.7em;
             --padding-bottom: 0.7em;
             --padding-end: 0;
             --padding-start: 4px;
             --min-height: 1.5em;
-            --highlight-color-focused: var(--ion-color-primary);
             --highlight-height: 5px;
+            --border-color: var(--ion-color-light-shade) !important;
             font-size: 1.1em;
             min-height: 1.5em;
+            --background: transparent;
+
+            &.has-focus {
+                --background: transparent;
+                --border-color: var(--ion-color-light-shade) !important;
+            }
 
             ion-button[slot="end"] {
                 margin-top: -0.4em;
+                --color: var(--ion-color-medium);
+                --border-color: var(--ion-color-medium);
+            }
+        }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .content {
+        .quick-add {
+            ion-textarea {
+                --border-color: var(--ion-color-light-tint) !important;
+
+                &.has-focus {
+                    --border-color: var(--ion-color-light-tint) !important;
+                }
             }
         }
     }
