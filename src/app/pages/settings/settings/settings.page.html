@@ -18,10 +18,11 @@
 
         <!-- animations -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="UseAnimations" (ionChange)="onAnimationsChanged($event.target.checked)">
+            <ion-label (click)="onAnimationsChanged(!UseAnimations)">
                 <div class="text" [innerHTML]="'page_settings.animations'|translate"></div>
                 <ion-note [innerHTML]="'page_settings.animations_note'|translate"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="UseAnimations" (ionChange)="onAnimationsChanged($event.target.checked)" slot="end"></ion-toggle>
         </ion-item>
 
         <!-- transmission settings -->

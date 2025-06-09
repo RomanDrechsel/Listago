@@ -4,66 +4,75 @@
     <ion-list>
         <!-- transmit list-->
         <ion-item lines="full" *ngIf="ConnectIQInitialized">
-            <ion-toggle label-placement="start" [checked]="TransmitList" (ionChange)="onTransmitListChanged($event.target.checked)">
+            <ion-label (click)="onTransmitListChanged(!TransmitList)">
                 <div class="text" [innerHTML]="'page_settings_confirm.transmit_list'|translate"></div>
                 <ion-note [innerHTML]="'page_settings_confirm.transmit_list_note'|translate"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="TransmitList" (ionChange)="onTransmitListChanged($event.target.checked)" slot="end"></ion-toggle>
         </ion-item>
         <!-- delete list -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="DeleteList" (ionChange)="onDeleteListChanged($event.target.checked)">
+            <ion-label (click)="onDeleteListChanged(!DeleteList)">
                 <div class="text" [innerHTML]="'page_settings_confirm.delete_list'|translate"></div>
                 <ion-note [innerHTML]="'page_settings_confirm.delete_list_note'|translate"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="DeleteList" (ionChange)="onDeleteListChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
         <!-- delete listitem -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="DeleteListitem" (ionChange)="onDeleteListItemChanged($event.target.checked)">
+            <ion-label (click)="onDeleteListItemChanged(!DeleteListitem)">
                 <div class="text" [innerHTML]="'page_settings_confirm.delete_listitem'|translate"></div>
                 <ion-note [innerHTML]="'page_settings_confirm.delete_listitem_note'|translate"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="DeleteListitem" (ionChange)="onDeleteListItemChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
         <!-- empty list -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="EmptyList" (ionChange)="onEmptyListChanged($event.target.checked)">
+            <ion-label (click)="onEmptyListChanged(!EmptyList)">
                 <div class="text" [innerHTML]="'page_settings_confirm.empty_list'|translate"></div>
                 <ion-note [innerHTML]="'page_settings_confirm.empty_list_note'|translate"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="EmptyList" (ionChange)="onEmptyListChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
         <!-- erase list from trash -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="EraseList" (ionChange)="onEraseListChanged($event.target.checked)">
+            <ion-label (click)="onEraseListChanged(!EraseList)">
                 <div class="text" [innerHTML]="'page_settings_confirm.erase_list'|translate"></div>
                 <ion-note [innerHTML]="('page_settings_confirm.erase_list_note'|translate) + ('page_settings_confirm.undo_warning'|translate)"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="EraseList" (ionChange)="onEraseListChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
         <!-- erase listitem from trash -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="EraseListitem" (ionChange)="onEraseListitemChanged($event.target.checked)">
+            <ion-label (click)="onEraseListitemChanged(!EraseListitem)">
                 <div class="text" [innerHTML]="'page_settings_confirm.erase_listitem'|translate"></div>
                 <ion-note [innerHTML]="('page_settings_confirm.erase_listitem_note'|translate) + ('page_settings_confirm.undo_warning'|translate)"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="EraseListitem" (ionChange)="onEraseListitemChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
         <!-- restore list from trash -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="RestoreList" (ionChange)="onRestoreListChanged($event.target.checked)">
+            <ion-label (click)="onRestoreListChanged(!RestoreList)">
                 <div class="text" [innerHTML]="'page_settings_confirm.restore_list'|translate"></div>
                 <ion-note [innerHTML]="('page_settings_confirm.restore_list_note'|translate)"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="RestoreList" (ionChange)="onRestoreListChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
         <!-- restore listitem from trash -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="RestoreListitem" (ionChange)="onRestoreListitemChanged($event.target.checked)">
+            <ion-label (click)="onRestoreListitemChanged(!RestoreListitem)">
                 <div class="text" [innerHTML]="'page_settings_confirm.restore_listitem'|translate"></div>
                 <ion-note [innerHTML]="('page_settings_confirm.restore_listitem_note'|translate)"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="RestoreListitem" (ionChange)="onRestoreListitemChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
         <!-- empty trash -->
         <ion-item lines="full">
-            <ion-toggle label-placement="start" [checked]="EmptyTrash" (ionChange)="onEmptyTrashChanged($event.target.checked)">
+            <ion-label (click)="onEmptyTrashChanged(!EmptyTrash)">
                 <div class="text" [innerHTML]="'page_settings_confirm.empty_trash'|translate"></div>
                 <ion-note [innerHTML]="('page_settings_confirm.empty_trash_note'|translate) + ('page_settings_confirm.undo_warning'|translate)"></ion-note>
-            </ion-toggle>
+            </ion-label>
+            <ion-toggle [checked]="EmptyTrash" (ionChange)="onEmptyTrashChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
     </ion-list>
 </ion-content>

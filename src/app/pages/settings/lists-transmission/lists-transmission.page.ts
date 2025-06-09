@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { IonContent, IonItem, IonList, IonNote, IonToggle } from "@ionic/angular/standalone";
+import { IonContent, IonItem, IonLabel, IonList, IonNote, IonToggle } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { InteractionAnimation } from "src/app/animations/interaction.animation";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
@@ -13,7 +13,7 @@ import { PageBase } from "../../page-base";
     selector: "app-lists-transmission",
     templateUrl: "./lists-transmission.page.html",
     styleUrls: ["./lists-transmission.page.scss"],
-    imports: [IonNote, IonItem, IonToggle, IonList, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
+    imports: [IonLabel, IonNote, IonItem, IonToggle, IonList, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
 })
 export class ListsTransmissionPage extends PageBase {
     @ViewChild("content", { static: false, read: IonContent }) private readonly _content?: IonContent;
