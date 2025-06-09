@@ -1,9 +1,9 @@
 ion-toast.toast {
-    --box-shadow: 3px 3px 10px 0 rgba(var(--color-shadow-rgb), 0.1);
     --border-radius: 1em;
     --padding: 8px, 20px, 8px, 16px;
     --border-width: 1px;
     --border-style: solid;
+    box-shadow: 0 4px 16px rgba(var(--color-shadow-rgb), 0.4);
 
     &::part(button) {
         font-weight: bold;

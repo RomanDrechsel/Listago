@@ -1,12 +1,11 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from "@angular/core";
 import { AlertController, LoadingController, ToastController } from "@ionic/angular/standalone";
 import { LocalizationService } from "../localization/localization.service";
 import { Alert } from "./alert";
-import { Loading } from "./loading";
 import { Toast } from "./toast";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class PopupsService {
     private readonly Locale = inject(LocalizationService);
@@ -26,12 +25,5 @@ export class PopupsService {
      */
     public get Alert(): Alert {
         return new Alert(this.AlertCtrl, this.Locale);
-    }
-
-    /**
-     * new loading overlay object
-     */
-    public get Loading(): Loading {
-        return new Loading(this.LoadingCtrl, this.Locale);
     }
 }

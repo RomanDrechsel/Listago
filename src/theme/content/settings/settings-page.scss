@@ -9,6 +9,13 @@ ion-list {
             --padding-top: 0.5em;
         }
 
+        &.attract-attention {
+            animation: attract-attention 2s ease-out;
+            --background: var(--ion-color-success-tint);
+            --border-width: 2px 0;
+            --border-color: var(--ion-color-success);
+        }
+
         .fullwidth {
             margin-bottom: 8px;
             width: 100%;
@@ -22,6 +29,19 @@ ion-list {
         ion-note {
             font-size: 0.85em;
             --color: var(--ion-color-medium);
+        }
+    }
+
+    @keyframes attract-attention {
+        0%,
+        40%,
+        80%,
+        100% {
+            --background: var(--ion-color-success-tint);
+        }
+        20%,
+        60% {
+            --background: inhertit;
         }
     }
 }

@@ -1,9 +1,10 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { IonContent, IonItem, IonList, IonNote, IonToggle } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
+import { InteractionAnimation } from "src/app/animations/interaction.animation";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
 import { EPrefProperty } from "../../../services/storage/preferences.service";
 import { PageBase } from "../../page-base";
@@ -15,6 +16,9 @@ import { PageBase } from "../../page-base";
     imports: [IonNote, IonItem, IonToggle, IonList, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
 })
 export class ListsTransmissionPage extends PageBase {
+    @ViewChild("content", { static: false, read: IonContent }) private readonly _content?: IonContent;
+    @ViewChild("syncList", { static: false, read: ElementRef }) private readonly _syncList?: ElementRef;
+
     private readonly Route = inject(ActivatedRoute);
 
     private _openAppOnTransfer: boolean = false;
@@ -23,6 +27,7 @@ export class ListsTransmissionPage extends PageBase {
     private _garminConnectIQ: boolean = true;
 
     private _listToSync?: number = undefined;
+    private _runningAnimation?: InteractionAnimation;
 
     public get OpenAppOnTransmit(): boolean {
         return this._openAppOnTransfer;
@@ -73,16 +78,17 @@ export class ListsTransmissionPage extends PageBase {
         this._deleteListOnDevice = await this.Preferences.Get<boolean>(EPrefProperty.DeleteListOnDevice, false);
         this._syncListOnDevice = await this.Preferences.Get<boolean>(EPrefProperty.SyncListOnDevice, false);
         this._garminConnectIQ = await this.Preferences.Get<boolean>(EPrefProperty.GarminConnectIQ, true);
+    }
 
+    public override async ionViewDidEnter(): Promise<void> {
         const synclist = this.Route.snapshot.queryParamMap.get("syncList");
         if (synclist !== null) {
             const id = Number(synclist);
             if (!Number.isNaN(id)) {
                 this._listToSync = id;
+                this.attractAttention(this._syncList?.nativeElement as HTMLElement);
             }
         }
-
-        this.cdr.detectChanges();
     }
 
     public onOpenAppOnTransmitChanged(checked: boolean) {
@@ -97,6 +103,7 @@ export class ListsTransmissionPage extends PageBase {
         this.SyncListOnDevice = checked;
 
         if (checked && this._listToSync) {
+            (this._syncList?.nativeElement as HTMLElement)?.classList.remove("attract-attention");
             await this.ListsService.SyncList({ list: this._listToSync, only_if_definitive_device: true, force_if_sync_is_disabled: true });
         }
     }
@@ -108,6 +115,15 @@ export class ListsTransmissionPage extends PageBase {
     private async confirmRemoveSync() {
         if (await this.Popups.Alert.YesNo({ message: "page_lists_transmission.synclist_disable", header: "page_lists_transmission.synclist_disable_title", translate: true })) {
             await this.ListsService.PurgeAllSyncs();
+        }
+    }
+
+    private async attractAttention(ele?: HTMLElement): Promise<void> {
+        if (ele) {
+            const y = ele.offsetTop ?? 0;
+            this._content?.scrollToPoint(0, y, 1000);
+            await new Promise<void>(resolve => setTimeout(resolve, 300));
+            ele.classList.add("attract-attention");
         }
     }
 }

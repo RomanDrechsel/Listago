@@ -36,7 +36,6 @@ export abstract class PageBase {
     private _onlineDevices: number = 0;
 
     public async ionViewWillEnter() {
-        this.Popups.Loading.Hide();
         this._deviceChangedSubscription = this.ConnectIQ.onDeviceChanged$.subscribe(async () => {
             if (this._onlineDevices != this.ConnectIQ.OnlineDevices) {
                 this._onlineDevices = this.ConnectIQ.OnlineDevices;

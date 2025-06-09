@@ -37,6 +37,12 @@ export class ListsService {
     private _removeOldTrashEntriesTimer?: Subscription;
     private readonly _listIndex: Map<number, List> = new Map();
 
+    /**
+     * if automatic syncing is disabled in preferences and a list ist stored as sync list,
+     * then open a popup. But only once per list...
+     */
+    private _lastSyncInformList?: number;
+
     private onTrashItemsDatasetChangedSubject = new BehaviorSubject<List | undefined>(undefined);
     public onTrashItemsDatasetChanged$ = this.onTrashItemsDatasetChangedSubject.asObservable();
 
@@ -149,7 +155,8 @@ export class ListsService {
                 await this.addListToIndex(list);
                 await this.cleanOrderLists();
                 this.onListsChangedSubject.next(await this.GetLists());
-                this.NavController.navigateForward(`/lists/items/${list.Id}`, { queryParams: { created: true } });
+                this.NavController.navigateForward(`/lists/items/${list.Id}`);
+                this.informAboutDisabledSyncPref(list);
             } else {
                 this.Popups.Toast.Error("service-lists.store_list_error");
             }
@@ -168,6 +175,7 @@ export class ListsService {
             const store = await this.StoreList(list);
             if (store === true) {
                 Logger.Notice(`Edited list ${list.toLog()}`);
+                this.informAboutDisabledSyncPref(list);
             } else if (store === false) {
                 this.Popups.Toast.Error("service-lists.store_list_error");
             }
@@ -1323,6 +1331,19 @@ export class ListsService {
             this._removeOldTrashEntriesTimer = undefined;
             this.BackendService.MaxTrashCount = KeepInTrash.StockSize(value);
             await this.BackendService.cleanUp({ maxCount: KeepInTrash.StockSize(value) });
+        }
+    }
+
+    /**
+     * if automatic sync is disabled in preferences, but a list sould be automaticly synced, then inform the user and ask him to enable the sync preference
+     * @param list the list which should be synced automatically
+     */
+    private async informAboutDisabledSyncPref(list: List): Promise<void> {
+        if (list.Sync == true && this._lastSyncInformList != list.Id && (await this.Preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
+            if (await this.Popups.Alert.YesNo({ message: "comp-listeditor.sync_settings", translate: true })) {
+                this.NavController.navigateForward("/settings/lists-transmission", { queryParams: { syncList: list.Id } });
+            }
+            this._lastSyncInformList = list.Id;
         }
     }
 }

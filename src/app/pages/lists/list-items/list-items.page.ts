@@ -106,14 +106,6 @@ export class ListItemsPage extends AnimatedListPageBase {
         this._connectIQSubscription = this.ConnectIQ.onInitialized$.subscribe(async () => {
             this.appComponent.setAppPages(this.ModifyMainMenu());
         });
-
-        if (this.List && this.List.Sync && this._informedSyncForNewlist != this.List.Id && (await this.Preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
-            const new_created = this.Route.snapshot.queryParamMap.get("created");
-            if (new_created) {
-                this._informedSyncForNewlist = this.List.Id;
-                await this.informSyncSettings();
-            }
-        }
     }
 
     public override async ionViewWillLeave() {
@@ -210,10 +202,7 @@ export class ListItemsPage extends AnimatedListPageBase {
     public async EditList(): Promise<boolean> {
         if (this.List) {
             this.appComponent.CloseMenu();
-            const edit = await this.ListsService.EditList(this.List);
-            if (edit == true && this.List.Sync == true && (await this.Preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
-                await this.informSyncSettings();
-            }
+            await this.ListsService.EditList(this.List);
             return true;
         }
         return false;
@@ -278,12 +267,6 @@ export class ListItemsPage extends AnimatedListPageBase {
 
     public isItemSelected(item: Listitem): boolean {
         return this._selectedItems.indexOf(item.Id) >= 0;
-    }
-
-    private async informSyncSettings(): Promise<void> {
-        if (await this.Popups.Alert.YesNo({ message: "comp-listeditor.sync_settings", translate: true })) {
-            this.NavController.navigateForward("/settings/lists-transmission", { queryParams: { syncList: this.List } });
-        }
     }
 
     protected override getEditMenuActions(): EditMenuAction[] {

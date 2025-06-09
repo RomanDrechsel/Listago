@@ -1,5 +1,4 @@
-TODO: remove Popups.Loading
-TODO: if activate sync settings on list editor, if it is in settings off, switch and mark the Auto-sync setting
+TODO: settings pages, ion-toggles on top of item
 TODO: improve toolbar page transition animation
 TODO: Toast fadeout animation
 TODO: trash menu disabled, if trash is empty

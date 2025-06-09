@@ -11,7 +11,6 @@ import { List } from "src/app/services/lists/list";
 import { DateUtils } from "../../../classes/utils/date-utils";
 import { PageAddNewComponent } from "../../../components/page-add-new/page-add-new.component";
 import { PageEmptyComponent } from "../../../components/page-empty/page-empty.component";
-import { EPrefProperty } from "../../../services/storage/preferences.service";
 import { AnimatedListPageBase } from "../animated-list-page-base";
 
 @Component({
@@ -97,16 +96,6 @@ export class ListsPage extends AnimatedListPageBase {
     public async editList(event: MouseEvent, list: List) {
         event.stopImmediatePropagation();
         await this.ListsService.EditList(list);
-        if (list.Sync == true && (await this.Preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
-            if (
-                await this.Popups.Alert.YesNo({
-                    message: "comp-listeditor.sync_settings",
-                    translate: true,
-                })
-            ) {
-                this.NavController.navigateForward("/settings/lists-transmission", { queryParams: { syncList: list } });
-            }
-        }
     }
 
     public clickOnItem(event: MouseEvent, list: List) {

@@ -112,12 +112,12 @@ html {
         --ion-color-secondary-tint: #a8ccff;
 
         /** success **/
-        --ion-color-success: #48e29d;
+        --ion-color-success: #66ffb2;
         --ion-color-success-rgb: 72, 226, 157;
         --ion-color-success-contrast: #0d1f16;
         --ion-color-success-contrast-rgb: 13, 31, 22;
-        --ion-color-success-shade: #2bba7f;
-        --ion-color-success-tint: #e3fff3;
+        --ion-color-success-shade: #48e29d;
+        --ion-color-success-tint: #1a332a;
 
         /** warning **/
         --ion-color-warning: #fcd65e;
@@ -128,12 +128,12 @@ html {
         --ion-color-warning-tint: #ffeaa3;
 
         /** danger **/
-        --ion-color-danger: #ff6b6b;
+        --ion-color-danger: #ff9999;
         --ion-color-danger-rgb: 255, 107, 107;
         --ion-color-danger-contrast: #2e0d0d;
         --ion-color-danger-contrast-rgb: 46, 13, 13;
-        --ion-color-danger-shade: #d15555;
-        --ion-color-danger-tint: #ffecec;
+        --ion-color-danger-shade: #ff6b6b;
+        --ion-color-danger-tint: #331a1a;
 
         /** Neutral / Info / Medium **/
         --ion-color-medium: #a5b3c9;
@@ -165,9 +165,9 @@ html {
         --ion-card-color: var(--ion-color-dark);
 
         /** toast notice **/
-        --color-notice: #3c87ff;
-        --color-notice-tint: #1e2a40;
-        --color-notice-shade: #265bba;
+        --color-notice: #9dc6ff;
+        --color-notice-tint: #1a2333;
+        --color-notice-shade: #3c87ff;
 
         --ion-card-background: var(--ion-color-light-tint);
 

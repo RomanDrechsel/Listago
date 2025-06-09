@@ -1,5 +1,5 @@
 <app-main-toolbar back="/settings">{{'page_lists_transmission.page_title'|translate}}</app-main-toolbar>
-<ion-content>
+<ion-content #content>
     <ion-list>
         <!-- garmin connect iq support -->
         <ion-item lines="full">
@@ -26,7 +26,7 @@
         </ion-item>
 
         <!-- synchronize lists -->
-        <ion-item lines="full">
+        <ion-item lines="full" #syncList>
             <ion-toggle label-placement="start" [checked]="SyncListOnDevice" [disabled]="!SupportGarminConnectIQ" (ionChange)="onSyncListOnDeviceChanged($event.target.checked)">
                 <div class="text" [innerHTML]="'page_lists_transmission.synclist'|translate"></div>
                 <ion-note [innerHTML]="'page_lists_transmission.synclist_note'|translate"></ion-note><br />
