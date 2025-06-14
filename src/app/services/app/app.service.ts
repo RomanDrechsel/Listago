@@ -6,7 +6,6 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
-import { NavController } from "@ionic/angular/standalone";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import type { ClearAppCacheEventArgs } from "src/app/plugins/sysinfo/event-args/clear-app-cache-event-args";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
@@ -23,7 +22,6 @@ import { Logger } from "../logging/logger";
 import { LoggingService } from "../logging/logging.service";
 import { PopupsService } from "../popups/popups.service";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
-import { ConfigService } from "./../config/config.service";
 
 @Injectable({
     providedIn: "root",
@@ -31,16 +29,13 @@ import { ConfigService } from "./../config/config.service";
 export class AppService {
     public static AppToolbar?: MainToolbarComponent;
 
-    public readonly Logger = inject(LoggingService);
-    public readonly Locale = inject(LocalizationService);
-    public readonly ListsService = inject(ListsService);
-    public readonly ConnectIQ = inject(ConnectIQService);
-    public readonly Platform = inject(Platform);
-    public readonly Preferences = inject(PreferencesService);
-    public readonly Admob = inject(AdmobService);
-    public readonly NavController = inject(NavController);
-    public readonly Config = inject(ConfigService);
-
+    private readonly _logger = inject(LoggingService);
+    private readonly _locale = inject(LocalizationService);
+    private readonly _listsService = inject(ListsService);
+    private readonly _connectIQ = inject(ConnectIQService);
+    private readonly _platform = inject(Platform);
+    private readonly _preferences = inject(PreferencesService);
+    private readonly _admob = inject(AdmobService);
     private readonly _popups = inject(PopupsService);
     public static Popups: PopupsService;
 
@@ -70,22 +65,25 @@ export class AppService {
         return AppService.AppPlatform === "web";
     }
 
+    constructor() {
+        AppService.Popups = this._popups;
+    }
+
     /**
      * initialize app services
      */
     public async InitializeApp() {
-        await this.Platform.ready();
+        await this._platform.ready();
 
-        const last_version = await this.Preferences.Get<number>(EPrefProperty.LastVersion, -1);
+        const last_version = await this._preferences.Get<number>(EPrefProperty.LastVersion, -1);
         const build = Number((await App.getInfo()).build);
         let clear_cache: ClearAppCacheEventArgs | undefined = undefined;
         if (last_version >= 0 && !Number.isNaN(build) && build > last_version) {
             clear_cache = await SysInfo.ClearAppCache();
         }
-        await this.Preferences.Set(EPrefProperty.LastVersion, build);
+        await this._preferences.Set(EPrefProperty.LastVersion, build);
 
-        AppService.Popups = this._popups;
-        await Logger.Initialize(this.Logger);
+        await Logger.Initialize(this._logger);
 
         if (clear_cache) {
             const text = `Removed ${clear_cache.files ?? 0} file(s) in ${clear_cache.directories ?? 0} directory(ies), total of ${FileUtils.File.FormatSize(clear_cache.size ?? 0)}.`;
@@ -102,10 +100,10 @@ export class AppService {
             this.handleNightmode(data.isNightMode);
         });
 
-        await Locale.Initialize(this.Locale);
+        await Locale.Initialize(this._locale);
 
         try {
-            await this.ListsService.Initialize();
+            await this._listsService.Initialize();
         } catch (e) {
             Logger.Error(`Could not initialize lists service: `, e);
         }
@@ -113,12 +111,12 @@ export class AppService {
         //no await ...
         (async () => {
             try {
-                if ((await this.Preferences.Get(EPrefProperty.FirstStart, true)) == false && (await this.Preferences.Get<boolean>(EPrefProperty.GarminConnectIQ, true)) !== false) {
-                    const garmin_simulator = isDevMode() ? await this.Preferences.Get<boolean>(EPrefProperty.DebugSimulator, true) : false;
-                    const garmin_debugapp = isDevMode() ? await this.Preferences.Get<boolean>(EPrefProperty.DebugApp, false) : false;
-                    await this.ConnectIQ.Initialize({ simulator: garmin_simulator, debug_app: garmin_debugapp });
+                if ((await this._preferences.Get(EPrefProperty.FirstStart, true)) == false && (await this._preferences.Get<boolean>(EPrefProperty.GarminConnectIQ, true)) !== false) {
+                    const garmin_simulator = isDevMode() ? await this._preferences.Get<boolean>(EPrefProperty.DebugSimulator, true) : false;
+                    const garmin_debugapp = isDevMode() ? await this._preferences.Get<boolean>(EPrefProperty.DebugApp, false) : false;
+                    await this._connectIQ.Initialize({ simulator: garmin_simulator, debug_app: garmin_debugapp });
                 } else {
-                    this.Logger.Notice(`Starting without ConnectIQ support`);
+                    this._logger.Notice(`Starting without ConnectIQ support`);
                 }
             } catch (e) {
                 Logger.Error(`Could not initialize ConnectIQ service: `, e);
@@ -128,7 +126,7 @@ export class AppService {
         //no await...
         (async () => {
             try {
-                await this.Admob.Initialize();
+                await this._admob.Initialize();
             } catch (e) {
                 Logger.Error(`Could not initialize Admob service: `, e);
             }
@@ -141,14 +139,14 @@ export class AppService {
      * width of display resolution
      */
     public get DeviceWidth(): number {
-        return this.Platform.width();
+        return this._platform.width();
     }
 
     /**
      * height of display resolution
      */
     public get DeviceHeight(): number {
-        return this.Platform.height();
+        return this._platform.height();
     }
 
     /**
@@ -185,18 +183,18 @@ export class AppService {
 
         if (!query || query.settings !== false) {
             meta.Settings = {
-                LogMode: this.Logger.LogLevelShort,
-                AppLanguage: this.Locale.CurrentLanguage.locale,
+                LogMode: this._logger.LogLevelShort,
+                AppLanguage: this._locale.CurrentLanguage.locale,
                 AdmobStatus: {
-                    Initialized: this.Admob.Initialized,
-                    Status: await this.Admob.getConsentStatus(),
+                    Initialized: this._admob.Initialized,
+                    Status: await this._admob.getConsentStatus(),
                 },
             };
         }
 
         if (!query || query.storage !== false) {
-            const database = await this.ListsService.BackendSize();
-            const logs = await this.Logger.GetLogSize();
+            const database = await this._listsService.BackendSize();
+            const logs = await this._logger.GetLogSize();
             meta.Storage = {
                 Lists: {
                     Count: database.lists.files,
@@ -225,9 +223,9 @@ export class AppService {
             };
         }
 
-        if (this.ConnectIQ.Initialized) {
+        if (this._connectIQ.Initialized) {
             const devices = query?.garmin
-                ? (await this.ConnectIQ.getDevices()).map(device => {
+                ? (await this._connectIQ.getDevices()).map(device => {
                       return {
                           Identifier: device.Identifier,
                           Name: device.Name,
@@ -250,7 +248,7 @@ export class AppService {
     }
 
     private handleNightmode(isNightMode: boolean | undefined) {
-        this.Logger.Debug(`NightMode set to '${isNightMode}'`);
+        this._logger.Debug(`NightMode set to '${isNightMode}'`);
         if (isNightMode === true) {
             EdgeToEdge.setBackgroundColor({ color: "#002794" });
             StatusBar.setStyle({ style: Style.Dark });

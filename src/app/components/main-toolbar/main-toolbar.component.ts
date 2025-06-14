@@ -15,7 +15,6 @@ export class MainToolbarComponent {
     @Input("back") backButton?: string = undefined;
     @Input("displayMenu") displayMenu: boolean = true;
     @Input("displayCustomMenu") displayCustomMenu: boolean = false;
-
     @ViewChild("backbutton", { read: IonBackButton }) private backBtn?: IonBackButton;
 
     private readonly cdr = inject(ChangeDetectorRef);

@@ -1,6 +1,6 @@
-WIP: improve toolbar page transition animation
 TODO: Toast fadeout animation
 TODO: trash menu disabled, if trash is empty
 TODO: error-page
 BUG: editing a synced list -> no device online -> don't go to device page
+TODO: Preferences Cache
 TODO: import from lists

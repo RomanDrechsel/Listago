@@ -3,8 +3,8 @@
     <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="!List?.Items?.length" [EditModeMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
 </app-main-toolbar>
 
-<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" *ngIf="List !== undefined && ItemsInitialized; else error" #mainContent>
-    <div class="content" *ngIf="List && List.Items.length > 0; else noItems" #listContent>
+<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
+    <div class="content" *ngIf="List !== undefined && List.Items.length > 0; else noItems" #listContent>
         <ion-list id="animated-list" #itemsList>
             <ion-reorder-group [disabled]="List.Items.length <= 1" (ionItemReorder)="HandleReorder($any($event))" [disabled]="!EditMode">
                 <ion-item-sliding *ngFor="let item of List.Items" [disabled]="EditMode || !InitialAnimationDone">
@@ -71,30 +71,30 @@
             <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
         </ion-fab-button>
     </ion-fab>
-
-    <ng-template #noItems>
-        <app-page-add-new *ngIf="List; else notInit"> {{'page_listitems.add_new_hint'|translate}} </app-page-add-new>
-    </ng-template>
 </ion-content>
 
-<ng-template #error>
-    <app-page-empty *ngIf="ItemsInitialized; else notInit">
-        <div slot="image">
-            <ion-icon src="./assets/icons/nolist.svg"></ion-icon>
-        </div>
-        <div slot="text">
-            <div [innerHTML]="'page_listitems.nolist'|translate"></div>
-        </div>
-    </app-page-empty>
+<ng-template #noItems>
+    <app-page-add-new *ngIf="List && ItemsInitialized && List.Items.length == 0; else notInit"> {{'page_listitems.add_new_hint'|translate}} </app-page-add-new>
 </ng-template>
 
 <ng-template #notInit>
-    <app-page-empty>
+    <app-page-empty *ngIf="!List || !ItemsInitialized; else error">
         <div slot="image">
             <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
         </div>
         <div slot="text">
             <div [innerHTML]="'page_listitems.loading'|translate"></div>
+        </div>
+    </app-page-empty>
+</ng-template>
+
+<ng-template #error>
+    <app-page-empty>
+        <div slot="image">
+            <ion-icon src="./assets/icons/nolist.svg"></ion-icon>
+        </div>
+        <div slot="text">
+            <div [innerHTML]="'page_listitems.nolist'|translate"></div>
         </div>
     </app-page-empty>
 </ng-template>
