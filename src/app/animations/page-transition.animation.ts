@@ -1,10 +1,9 @@
 import { Animation, AnimationController } from "@ionic/angular/standalone";
 
-export const PageTransitionAnimationDuration = 270;
-export let UsePageTransitionAnimations = true; //TODO: preferences
-
 export const PageTransitionAnimation = (baseEl: HTMLElement, opts?: any): Animation => {
     const animationCtrl = new AnimationController();
+    const PageTransitionAnimationDuration = 270;
+    const UsePageTransitionAnimations = true; //TODO: preferences
     if (opts && UsePageTransitionAnimations) {
         const animations: Animation[] = [];
 

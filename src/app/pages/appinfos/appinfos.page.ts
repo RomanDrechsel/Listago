@@ -141,4 +141,8 @@ export class AppinfosPage extends PageBase {
             this.MemoryUsage = FileUtils.File.FormatSize(deviceinfo.memUsed);
         }
     }
+
+    public test() {
+        this.Popups.Toast.Success("TEST", -1);
+    }
 }

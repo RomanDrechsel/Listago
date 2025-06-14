@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
-import { AlertController, LoadingController, ToastController } from "@ionic/angular/standalone";
+import { AlertController, ToastController } from "@ionic/angular/standalone";
 import { LocalizationService } from "../localization/localization.service";
+import { PreferencesService } from "../storage/preferences.service";
 import { Alert } from "./alert";
 import { Toast } from "./toast";
 
@@ -11,13 +12,13 @@ export class PopupsService {
     private readonly Locale = inject(LocalizationService);
     private readonly ToastCtrl = inject(ToastController);
     private readonly AlertCtrl = inject(AlertController);
-    private readonly LoadingCtrl = inject(LoadingController);
+    private readonly Preferences = inject(PreferencesService);
 
     /**
      * new Toast object
      */
     public get Toast(): Toast {
-        return new Toast(this.ToastCtrl, this.Locale);
+        return new Toast(this.ToastCtrl, this.Locale, this.Preferences);
     }
 
     /**

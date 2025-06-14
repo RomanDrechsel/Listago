@@ -121,6 +121,10 @@ export class AppComponent implements OnInit {
         }
     }
 
+    public async MainMenuOpened() {
+        await AppService.Popups.Toast.CloseAll();
+    }
+
     private async tapBackToExit() {
         if (this.routerOutlet) {
             if (!this.routerOutlet.canGoBack()) {
