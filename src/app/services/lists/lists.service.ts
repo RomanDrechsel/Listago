@@ -30,7 +30,7 @@ export class ListsService {
     private readonly NavController = inject(NavController);
     private readonly Locale = inject(LocalizationService);
     private readonly ConnectIQ = inject(ConnectIQService);
-    private readonly BackendService = inject(MainSqliteBackendService);
+    public readonly BackendService = inject(MainSqliteBackendService);
 
     private _keepInTrashStock: KeepInTrash.Enum = KeepInTrash.Default;
     private _syncLists: boolean = false;
@@ -730,15 +730,6 @@ export class ListsService {
     }
 
     /**
-     * return the size in bytes and number of files of the lists- and trash-backends
-     * @returns object with size of the lists and trashes
-     */
-    public async BackendSize(): Promise<{ lists: { size: number; files: number }; trash: { size: number; files: number } }> {
-        //TODO: ListsService.BackendSize()
-        return { lists: { size: -1, files: -1 }, trash: { size: -1, files: -1 } };
-    }
-
-    /**
      * remove automatic synchronization from all lists
      */
     public async PurgeAllSyncs(): Promise<void> {
@@ -1163,6 +1154,7 @@ export class ListsService {
         AppService.AppToolbar?.ToggleProgressbar(true);
         const ret = await this.BackendService.deleteListitems({ list: trash, items: undefined, force: true, trash: true });
         if (ret !== false) {
+            trash.ItemsInTrash = [];
             if (trash) {
                 Logger.Notice(`Erased trash of list ${trash.toLog()}`);
             } else {

@@ -104,6 +104,7 @@ export class AppComponent implements OnInit {
                 }),
             );
         }
+
         required.push(MenuitemFactory(EMenuItemType.ListsTrash, { disabled: !this._useTrash }));
         for (let i = required.length - 1; i >= 0; i--) {
             if (!menu?.find(m => m.Id == required[i].Id)) {
@@ -121,7 +122,7 @@ export class AppComponent implements OnInit {
         }
     }
 
-    public async MainMenuOpened() {
+    public async onMainMenuOpen() {
         await AppService.Popups.Toast.CloseAll();
     }
 

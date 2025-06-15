@@ -33,7 +33,6 @@ export class ListItemsPage extends AnimatedListPageBase {
 
     private _useTrash = true;
     private _listTitle?: string = undefined;
-    private _informedSyncForNewlist: string | number | undefined = undefined;
     private _preferencesSubscription?: Subscription;
 
     private readonly Route = inject(ActivatedRoute);
@@ -72,15 +71,16 @@ export class ListItemsPage extends AnimatedListPageBase {
         if (!this._list || this._list.isPeek) {
             (async () => {
                 // no wait
+                await new Promise<void>(resolve => setTimeout(resolve, 10000));
                 const id = Number(this.Route.snapshot.paramMap.get("id"));
                 if (id != Number.NaN) {
                     this._list = await this.ListsService.GetList(id);
-                    this.appComponent.setAppPages(this.ModifyMainMenu());
                     if (this._list) {
-                        this._itemsInitialized = true;
                         this.Preferences.Set(EPrefProperty.OpenedList, this._list.Id);
                         this.onItemsChanged();
                     }
+                    this._itemsInitialized = true;
+                    this.appComponent.setAppPages(this.ModifyMainMenu());
                 }
             })();
         } else {
@@ -210,7 +210,7 @@ export class ListItemsPage extends AnimatedListPageBase {
 
     public override ModifyMainMenu(): MenuItem[] {
         const menu = [];
-        if (this.List) {
+        if (this._list) {
             menu.push(MenuitemFactory(EMenuItemType.ListsTrash, { hidden: true }));
             if (this.ConnectIQ.Initialized) {
                 menu.push(
@@ -224,9 +224,9 @@ export class ListItemsPage extends AnimatedListPageBase {
                 );
             }
             menu.push(
-                MenuitemFactory(EMenuItemType.ListitemsTrash, { url_addition: `${this.List.Id}`, disabled: !this._useTrash }),
+                MenuitemFactory(EMenuItemType.ListitemsTrash, { url_addition: `${this._list.Id}`, disabled: !this._useTrash }),
                 MenuitemFactory(EMenuItemType.EditList, { onClick: () => this.EditList() }),
-                MenuitemFactory(EMenuItemType.EmptyList, { onClick: () => this.EmptyList(), disabled: this.List.Items.length <= 0 }),
+                MenuitemFactory(EMenuItemType.EmptyList, { onClick: () => this.EmptyList(), disabled: this._list.Items.length <= 0 }),
                 MenuitemFactory(EMenuItemType.DeleteList, { onClick: () => this.DeleteList() }),
             );
         }

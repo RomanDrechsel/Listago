@@ -91,7 +91,7 @@ export class MainSqliteBackendService {
      * @param args.itemsOrderDir the direction of the ordering (default is ASC)
      * @returns list, or undefined if something went wrong
      */
-    public async queryList(args: { list: List | number; itemsTrash?: boolean; itemsOrderBy?: ListsOrder; itemsOrderDir?: ListsOrderDirection }): Promise<List | undefined> {
+    public async queryList(args: { list: List | number; itemsOrderBy?: ListsOrder; itemsOrderDir?: ListsOrderDirection }): Promise<List | undefined> {
         if (!(await this.CheckConnection())) {
             return undefined;
         }
@@ -120,7 +120,7 @@ export class MainSqliteBackendService {
             }
             let listitems: ListitemModel[] | undefined;
             try {
-                const query = `SELECT * FROM \`listitems\` WHERE \`list_id\`=? AND deleted ${!args.itemsTrash ? "IS NULL" : "IS NOT NULL"} ORDER BY \`${args.itemsOrderBy}\` ${args.itemsOrderDir}`;
+                const query = `SELECT * FROM \`listitems\` WHERE \`list_id\`=? AND deleted IS NULL ORDER BY \`${args.itemsOrderBy}\` ${args.itemsOrderDir}`;
                 listitems = (await this._database!.query(query, [list_id])).values as ListitemModel[] | undefined;
                 if (!listitems) {
                     throw "Empty result";
@@ -196,6 +196,10 @@ export class MainSqliteBackendService {
     public async queryListitemsCount(args: { list: number | List | "all"; trash?: boolean }): Promise<number> {
         if (!(await this.CheckConnection())) {
             return 0;
+        }
+
+        if (args.list instanceof List) {
+            args.list = args.list.Id;
         }
 
         let query;

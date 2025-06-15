@@ -1,6 +1,6 @@
 <ion-app>
     <ion-split-pane contentId="main-content">
-        <ion-menu contentId="main-content" type="overlay" [side]="menuSide" *ngIf="!FirstStart" (ionWillOpen)="MainMenuOpened()" #mainMenu>
+        <ion-menu contentId="main-content" type="overlay" [side]="menuSide" *ngIf="!FirstStart" (ionWillOpen)="onMainMenuOpen()" #mainMenu>
             <ion-content>
                 <div class="header">
                     <ion-img id="main-applogo" src="./assets/img/applogo.png" alt="Listago"></ion-img>

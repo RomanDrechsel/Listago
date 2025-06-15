@@ -57,7 +57,7 @@
         </ion-item>
     </div>
 
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="ShowAddButton">
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="List && ShowAddButton">
         <ion-fab-button (click)="AddItem()" [ariaLabel]="'add'|translate">
             <ion-icon src="./assets/icons/add.svg"></ion-icon>
         </ion-fab-button>
@@ -78,7 +78,7 @@
 </ng-template>
 
 <ng-template #notInit>
-    <app-page-empty *ngIf="!List || !ItemsInitialized; else error">
+    <app-page-empty *ngIf="!ItemsInitialized; else error">
         <div slot="image">
             <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
         </div>

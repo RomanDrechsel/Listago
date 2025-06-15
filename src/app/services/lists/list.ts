@@ -140,6 +140,11 @@ export class List {
         this._dirty = true;
     }
 
+    /** set the number of items in trash of this list  */
+    public set ItemsInTrashCount(count: number) {
+        this._trashItemsCount = count;
+    }
+
     /** how may items are in trash for this list */
     public get ItemsInTrashCount(): number {
         return this._trashItemsCount ?? 0;

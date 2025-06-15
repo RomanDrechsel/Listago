@@ -193,16 +193,19 @@ export class AppService {
         }
 
         if (!query || query.storage !== false) {
-            const database = await this._listsService.BackendSize();
+            const database = await this._listsService.BackendService.DatabaseStats();
             const logs = await this._logger.GetLogSize();
             meta.Storage = {
-                Lists: {
-                    Count: database.lists.files,
-                    Size: database.lists.size,
-                },
-                Trash: {
-                    Count: database.trash.files,
-                    Size: database.trash.size,
+                Backend: {
+                    Size: await this._listsService.BackendService.DatabaseSize(),
+                    Lists: {
+                        Lists: database.lists.lists,
+                        Items: database.lists.items,
+                    },
+                    Trash: {
+                        Lists: database.trash.lists,
+                        Items: database.trash.items,
+                    },
                 },
                 Logs: {
                     Count: logs.files,
@@ -284,13 +287,16 @@ export declare type AppMetaInfo = {
         WebViewVersion: string;
     };
     Storage?: {
-        Lists: {
-            Count: number;
+        Backend: {
             Size: number;
-        };
-        Trash: {
-            Count: number;
-            Size: number;
+            Lists: {
+                Lists: number;
+                Items: number;
+            };
+            Trash: {
+                Lists: number;
+                Items: number;
+            };
         };
         Logs: {
             Count: number;
