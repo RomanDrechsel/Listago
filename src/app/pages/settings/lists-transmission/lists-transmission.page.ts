@@ -104,7 +104,7 @@ export class ListsTransmissionPage extends PageBase {
 
         if (checked && this._listToSync) {
             (this._syncList?.nativeElement as HTMLElement)?.classList.remove("attract-attention");
-            await this.ListsService.SyncList({ list: this._listToSync, only_if_definitive_device: true, force_if_sync_is_disabled: true });
+            await this.ListsService.SyncList({ list: this._listToSync, force_if_sync_is_disabled: true });
         }
     }
 

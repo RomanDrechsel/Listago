@@ -14,7 +14,7 @@ export class List {
     private _trashItemsCount?: number;
     private _itemsInTrash?: Listitem[];
     private _deleted?: number;
-    private _sync: boolean = false;
+    private _syncDevices?: ListSyncDevice[];
     private _legacyUuid?: string;
     private _dirty: boolean = false;
 
@@ -27,7 +27,16 @@ export class List {
         this._created = obj.created;
         this._modified = obj.modified;
         this._deleted = obj.deleted;
-        this._sync = obj.sync === 1;
+        if (obj.sync_devices) {
+            try {
+                this._syncDevices = JSON.parse(obj.sync_devices) as ListSyncDevice[];
+            } catch {
+                this._syncDevices = undefined;
+            }
+        } else {
+            this._syncDevices = undefined;
+        }
+
         if (obj.reset !== undefined) {
             let interval: "daily" | "weekly" | "monthly";
             if (obj.reset_interval === "daily" || obj.reset_interval === "weekly" || obj.reset_interval === "monthly") {
@@ -74,7 +83,10 @@ export class List {
      * @param id unique list id
      */
     public set Id(id: number) {
-        this._id = id;
+        if (this._id != id) {
+            this._id = id;
+            this._dirty = true;
+        }
     }
 
     /** set list title */
@@ -187,7 +199,7 @@ export class List {
 
     /** set the interval, the list gets resettet automatiacally */
     public set Reset(reset: ListReset | undefined) {
-        if (this._reset != reset) {
+        if (this._reset?.active != reset?.active || this._reset?.day != reset?.day || this._reset?.hour != reset?.hour || this._reset?.minute != reset?.minute || this._reset?.interval != reset?.interval || this._reset?.weekday != reset?.weekday) {
             this._reset = reset;
             this._dirty = true;
         }
@@ -199,16 +211,21 @@ export class List {
     }
 
     /** set, if the list should be automatiacally synced to watch */
-    public set Sync(sync: boolean) {
-        if (this._sync != sync) {
-            this._sync = sync;
+    public set SyncDevices(sync: ListSyncDevice[] | undefined) {
+        if (this._syncDevices != sync) {
+            this._syncDevices = sync;
             this._dirty = true;
         }
     }
 
+    /** which devices should the list be synced with? */
+    public get SyncDevices(): ListSyncDevice[] | undefined {
+        return this._syncDevices;
+    }
+
     /** should the list be synced automatically to watch */
     public get Sync(): boolean {
-        return this._sync;
+        return this._syncDevices != undefined && this._syncDevices.length > 0;
     }
 
     /** are only peek information loaded */
@@ -346,7 +363,7 @@ export class List {
         this._created = other._created;
         this._modified = other._modified;
         this._deleted = other._deleted;
-        this._sync = other._sync;
+        this._syncDevices = other._syncDevices;
         this._reset = other._reset;
         this._legacyUuid = other._legacyUuid;
         if (other._items) {
@@ -407,7 +424,7 @@ export class List {
             ["created", this._created],
             ["modified", this._modified],
             ["deleted", this._deleted ?? null],
-            ["sync", this._sync ? 1 : 0],
+            ["sync_devices", this._syncDevices && this._syncDevices.length > 0 ? JSON.stringify(this._syncDevices) : null],
             ["reset", this._reset?.active ? 1 : 0],
             ["reset_interval", this._reset?.interval ?? null],
             ["reset_hour", this._reset?.hour ?? null],
@@ -455,7 +472,7 @@ export declare type ListModel = {
     created: number;
     modified: number;
     deleted?: number;
-    sync?: number;
+    sync_devices?: string;
     reset?: number;
     reset_interval?: string;
     reset_hour?: number;
@@ -472,4 +489,9 @@ export declare type ListReset = {
     minute: number;
     day: number;
     weekday: number;
+};
+
+export declare type ListSyncDevice = {
+    id: number;
+    name: string;
 };

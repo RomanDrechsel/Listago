@@ -15,7 +15,7 @@ export const MainUpgradeStatements = (): capSQLiteUpgradeOptions => {
                     \`created\` REAL NOT NULL,
                     \`modified\` REAL NOT NULL,
                     \`deleted\` REAL,
-                    \`sync\` INTEGER NOT NULL,
+                    \`sync_devices\` TEXT,
                     \`reset\` INTEGER NOT NULL,
                     \`reset_interval\` TEXT,
                     \`reset_hour\` INTEGER,

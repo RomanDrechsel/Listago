@@ -17,7 +17,7 @@ import { FileBackendConverter } from "../storage/lists/file-backend/file-backend
 import { type ListsOrder, type ListsOrderDirection, MainSqliteBackendService } from "../storage/lists/main-sqlite-backend.service";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
 import { KeepInTrash } from "./keep-in-trash";
-import { List, type ListReset } from "./list";
+import { List, type ListReset, type ListSyncDevice } from "./list";
 import { Listitem } from "./listitem";
 
 @Injectable({
@@ -36,6 +36,8 @@ export class ListsService {
     private _syncLists: boolean = false;
     private _removeOldTrashEntriesTimer?: Subscription;
     private readonly _listIndex: Map<number, List> = new Map();
+
+    private _informedAboutNoReadyDevice: boolean = false;
 
     /**
      * if automatic syncing is disabled in preferences and a list ist stored as sync list,
@@ -628,7 +630,7 @@ export class ListsService {
         }
 
         if (!device) {
-            device = await this.ConnectIQ.GetDefaultDevice({ btn_text: this.Locale.getText("service-lists.transmit_send_btn") });
+            device = await this.ConnectIQ.GetDefaultDevice({ select_device_if_undefined: true, btn_text: this.Locale.getText("service-lists.transmit_send_btn") });
         }
 
         if (device && device.State == "Ready") {
@@ -735,25 +737,25 @@ export class ListsService {
     public async PurgeAllSyncs(): Promise<void> {
         const lists = await this.GetLists();
         for (let i = 0; i < lists.length; i++) {
-            lists[i].Sync = false;
+            lists[i].SyncDevices = undefined;
             await this.StoreList(lists[i], false, true, false);
         }
         const trash = await this.GetTrash();
         for (let i = 0; i < trash.length; i++) {
-            trash[i].Sync = false;
+            trash[i].SyncDevices = undefined;
             await this.StoreList(trash[i], false, true, false);
         }
         Logger.Debug(`Removed automatic synchronization of all lists`);
     }
 
-    public async createNewList(args: { name: string; order?: number; sync?: boolean; reset?: ListReset }): Promise<List> {
+    public async createNewList(args: { name: string; order?: number; sync?: ListSyncDevice[]; reset?: ListReset }): Promise<List> {
         return new List(
             {
                 name: args.name,
                 order: args.order ?? (await this.BackendService.getNextListOrder()),
                 created: Date.now(),
                 modified: Date.now(),
-                sync: args.sync ? 1 : 0,
+                sync_devices: args.sync ? JSON.stringify(args.sync) : undefined,
                 reset: args.reset ? (args.reset.active ? 1 : 0) : 0,
                 reset_interval: args.reset ? args.reset.interval : "daily",
                 reset_hour: args.reset?.hour ?? 0,
@@ -785,13 +787,13 @@ export class ListsService {
      * sync a list to the watch
      * @param obj config for list sync
      */
-    public async SyncList(obj: { list: List | number; only_if_definitive_device?: boolean; force_if_sync_is_disabled?: boolean }): Promise<void> {
+    public async SyncList(obj: { list: List | number; force_if_sync_is_disabled?: boolean }): Promise<void> {
         const list_to_sync = obj.list instanceof List ? obj.list : await this.GetList(obj.list);
         if (!list_to_sync) {
             Logger.Error(`Could not sync list ${obj.list} to watch, does not exist`);
             return;
         }
-        return this.syncListToWatch(list_to_sync, obj.only_if_definitive_device, obj.force_if_sync_is_disabled);
+        return this.syncListToWatch(list_to_sync, obj.force_if_sync_is_disabled);
     }
 
     private async addListToIndex(list: List) {
@@ -808,39 +810,47 @@ export class ListsService {
     /**
      * sync changes to a list to the watch
      * @param list List to be synced
-     * @param only_if_definitive_device only sync list, if the device is unambiguous
-     * @param force_in_sync_is_disabled force sync even if list-sync is disabled
+     * @param force_if_sync_is_disabled force sync even if list-sync is disabled
      */
-    private async syncListToWatch(list: List, only_if_definitive_device: boolean = false, force_in_sync_is_disabled: boolean = false): Promise<void> {
-        if ((!this._syncLists || !list.Sync) && !force_in_sync_is_disabled) {
+    private async syncListToWatch(list: List, force_if_sync_is_disabled: boolean = false): Promise<void> {
+        if ((!this._syncLists || !list.Sync) && !force_if_sync_is_disabled) {
             return;
         }
 
-        const device = await this.ConnectIQ.GetDefaultDevice({ only_ready: true, select_device_if_undefined: !only_if_definitive_device });
-        if (device) {
-            let peek = false;
-            if (list.isPeek && list.Id) {
-                list.copyDetails(await this.GetList(list.Id));
-                peek = true;
+        const devices = (await this.ConnectIQ.getDevices()).filter(device => list.SyncDevices?.some(d => device.Identifier == d.id));
+        if (devices.length == 0) {
+            Logger.Debug(`No device only for syncing ${list.toLog()}, skipping sync`);
+            if (!this._informedAboutNoReadyDevice) {
+                //TODO: toast here...
             }
-            var payload = list.toDeviceObject();
-            if (peek) {
-                list.PurgeDetails();
-            }
+            return;
+        }
 
-            if (!payload) {
-                Logger.Error(`Could not sync new list to watch, list serialization failed`);
-                return;
-            }
-            payload = ["issync", ...payload];
+        let peek = false;
+        if (list.isPeek && list.Id) {
+            list.copyDetails(await this.GetList(list.Id));
+            peek = true;
+        }
 
+        var payload = list.toDeviceObject();
+        if (peek) {
+            list.PurgeDetails();
+        }
+
+        if (!payload) {
+            Logger.Error(`Could not sync ${list.toLog()}, list serialization failed`);
+            return;
+        }
+
+        payload = ["issync", ...payload];
+
+        for (let i = 0; i < devices.length; i++) {
+            const device = devices[i];
             if (await this.ConnectIQ.SendToDevice({ device: device, messageType: ConnectIQMessageType.List, data: payload })) {
                 Logger.Debug(`Sync list ${list.toLog()} to watch ${device.toLog()}`);
             } else {
                 Logger.Error(`Failed to sync list ${list.toLog()} to watch ${device.toLog()}`);
             }
-        } else {
-            Logger.Notice(`Could not sync list to watch, no default device`);
         }
     }
 

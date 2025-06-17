@@ -25,7 +25,7 @@
                         <ion-accordion toggleIcon="none" value="reset">
                             <ion-list slot="header">
                                 <ion-item lines="none">
-                                    <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (ionChange)="toggleReset($event)" #reset>
+                                    <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (click)="toggleReset($event)" #reset>
                                         {{ "comp-listeditor.reset" | translate }}
                                     </ion-checkbox>
                                     <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
@@ -47,8 +47,9 @@
                     </ion-accordion-group>
 
                     <ion-item lines="none">
-                        <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (ionChange)="toggleSync($event)" #sync>
+                        <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (click)="toggleSync($event)" #sync>
                             {{ "comp-listeditor.sync" | translate }}
+                            <ion-note>{{ ListSyncDevices }}</ion-note>
                         </ion-checkbox>
                         <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>
                     </ion-item>

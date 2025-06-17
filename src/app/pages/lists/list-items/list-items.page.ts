@@ -71,7 +71,6 @@ export class ListItemsPage extends AnimatedListPageBase {
         if (!this._list || this._list.isPeek) {
             (async () => {
                 // no wait
-                await new Promise<void>(resolve => setTimeout(resolve, 10000));
                 const id = Number(this.Route.snapshot.paramMap.get("id"));
                 if (id != Number.NaN) {
                     this._list = await this.ListsService.GetList(id);

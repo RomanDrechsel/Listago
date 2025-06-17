@@ -1,26 +1,27 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, type OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
-import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
+import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { ListsService } from "src/app/services/lists/lists.service";
 import { ConnectIQService } from "../../services/connectiq/connect-iq.service";
-import { List, ListReset } from "../../services/lists/list";
+import { List, ListReset, type ListSyncDevice } from "../../services/lists/list";
 import { LocalizationService } from "../../services/localization/localization.service";
 import { PopupsService } from "../../services/popups/popups.service";
+import { DeviceSelector } from "../device-select/device-select.component";
 import { SelectTimeInterval } from "../select-interval/select-interval.component";
 import { AdmobService } from "./../../services/adverticing/admob.service";
 
 @Component({
     selector: "app-list-edit",
-    imports: [IonText, IonList, IonAccordion, IonCheckbox, IonAccordionGroup, IonLabel, IonIcon, IonTitle, IonItem, IonInput, IonButton, IonButtons, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslateModule, ReactiveFormsModule, FormsModule],
+    imports: [IonNote, IonText, IonList, IonAccordion, IonCheckbox, IonAccordionGroup, IonLabel, IonIcon, IonTitle, IonItem, IonInput, IonButton, IonButtons, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslateModule, ReactiveFormsModule, FormsModule],
     templateUrl: "./list-editor.component.html",
     styleUrl: "./list-editor.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListEditorComponent {
+export class ListEditorComponent implements OnInit {
     @ViewChild("listname", { read: IonInput }) private listname?: IonInput;
     @ViewChild("resetAccordion", { read: IonAccordionGroup }) private resetAccordion?: IonAccordionGroup;
     @ViewChild("reset", { read: IonCheckbox }) private reset?: IonCheckbox;
@@ -38,7 +39,7 @@ export class ListEditorComponent {
     private readonly ConnectIQ = inject(ConnectIQService);
 
     private _listReset?: ListReset = undefined;
-    private _listSync?: boolean;
+    private _listSyncDevices?: ListSyncDevice[] = undefined;
     private _keyboardUpListerner?: PluginListenerHandle;
     private _keyboardDownListener?: PluginListenerHandle;
 
@@ -69,16 +70,23 @@ export class ListEditorComponent {
         return this._listReset?.interval ?? "weekly";
     }
 
-    public set SyncActive(active: boolean) {
-        this._listSync = active;
+    public set ListSyncDevices(devices: ListSyncDevice[] | undefined) {
+        this._listSyncDevices = devices;
         if (this.sync) {
-            this.sync.checked = active;
+            this.sync.checked = devices != undefined && devices.length > 0;
             this.cdr.detectChanges();
         }
     }
 
+    public get ListSyncDevices(): string {
+        if (this._listSyncDevices && this._listSyncDevices.length > 0) {
+            return this._listSyncDevices.map(device => device.name).join(", ");
+        }
+        return "";
+    }
+
     public get SyncActive(): boolean {
-        return this._listSync ?? false;
+        return this._listSyncDevices != undefined && this._listSyncDevices.length > 0;
     }
 
     public get ResetString(): string {
@@ -159,16 +167,18 @@ export class ListEditorComponent {
         }
     }
 
-    public async ionViewWillEnter() {
-        if (this.Params?.list?.Reset) {
-            this._listReset = this.Params.list.Reset;
-        }
-        if (!this._listReset) {
-            this._listReset = { interval: "weekly", active: false, hour: 0, minute: 0, day: 1, weekday: this.Locale.CurrentLanguage.firstDayOfWeek };
-        }
+    public ngOnInit() {
+        this._listReset = {
+            interval: this.Params?.list?.Reset?.interval ?? "weekly",
+            active: this.Params?.list?.Reset?.active ?? false,
+            hour: this.Params?.list?.Reset?.hour ?? 0,
+            minute: this.Params?.list?.Reset?.minute ?? 0,
+            day: this.Params?.list?.Reset?.day ?? 1,
+            weekday: this.Params?.list?.Reset?.weekday ?? this.Locale.CurrentLanguage.firstDayOfWeek,
+        };
         this.Form.get("listname")?.setValue(this.Params?.list?.Name);
         this.ResetActive = this._listReset.active;
-        this.SyncActive = this.Params?.list?.Sync ?? false;
+        this.ListSyncDevices = this.Params?.list?.SyncDevices ?? undefined;
     }
 
     public async ionViewDidEnter() {
@@ -202,9 +212,9 @@ export class ListEditorComponent {
             list = this.Params.list;
             list.Name = listname;
             list.Reset = this._listReset;
-            list.Sync = this._listSync ?? false;
+            list.SyncDevices = this._listSyncDevices ?? undefined;
         } else {
-            list = await this.ListsService.createNewList({ name: listname, reset: this._listReset, sync: this._listSync ?? false });
+            list = await this.ListsService.createNewList({ name: listname, reset: this._listReset, sync: this._listSyncDevices });
         }
 
         return this.modalCtrl.dismiss(list, "confirm");
@@ -221,26 +231,44 @@ export class ListEditorComponent {
     }
 
     public toggleReset(event: any) {
+        event?.stopImmediatePropagation();
+        event?.preventDefault();
+
         if (this.resetAccordion && this.reset) {
+            this.reset.checked = !this.reset.checked;
             this.resetAccordion.value = this.reset.checked ? "reset" : undefined;
             if (this._listReset) {
-                this._listReset.active = this.reset.checked ?? false;
+                this._listReset.active = this.reset.checked;
             }
         }
-        event?.stopImmediatePropagation();
     }
 
     public async resetInfo(event: any) {
         event?.stopImmediatePropagation();
-        await this.Popups.Alert.Info({
-            message: "comp-listeditor.reset_info",
-            translate: true,
-        });
+        await this.Popups.Alert.Info({ message: "comp-listeditor.reset_info", translate: true });
     }
 
-    public toggleSync(event: any) {
-        this._listSync = event?.detail.checked ?? false;
+    public async toggleSync(event: any) {
         event?.stopImmediatePropagation();
+        event?.preventDefault();
+
+        const all_devices = await this.ConnectIQ.getDevices();
+        if (all_devices.length == 1) {
+            //only toggle
+            if (this._listSyncDevices?.length) {
+                this._listSyncDevices = undefined;
+            } else {
+                this._listSyncDevices = [{ id: all_devices[0].Identifier, name: all_devices[0].Name }];
+            }
+        } else {
+            const devices = await DeviceSelector(this.modalCtrl, { only_ready: true, preselect: this._listSyncDevices, devices: all_devices });
+            if (devices) {
+                this._listSyncDevices = devices.map(device => ({ id: device.Identifier, name: device.Name }));
+            } else {
+                this._listSyncDevices = undefined;
+            }
+        }
+        this.cdr.detectChanges();
     }
 
     public async syncInfo(event: any) {

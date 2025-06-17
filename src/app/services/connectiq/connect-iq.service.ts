@@ -251,7 +251,7 @@ export class ConnectIQService {
      */
     public async openApp(device?: ConnectIQDevice, show_toast?: boolean): Promise<boolean> {
         if (!device || device.State != "Ready") {
-            device = await this.GetDefaultDevice({ btn_text: this.Locale.getText("service-connectiq.openapp_btn") });
+            device = await this.GetDefaultDevice({ select_device_if_undefined: true, btn_text: this.Locale.getText("service-connectiq.openapp_btn") });
         }
 
         if (!device || device.State != "Ready") {
@@ -273,7 +273,7 @@ export class ConnectIQService {
         if (typeof obj.device === "number") {
             obj.device = await this.GetDevice(obj.device);
         } else if (!obj.device) {
-            obj.device = await this.GetDefaultDevice();
+            obj.device = await this.GetDefaultDevice({ select_device_if_undefined: true });
         }
 
         if (!obj.device) {

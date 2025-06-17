@@ -212,6 +212,11 @@
         "trash-item-delete": "Listenpunkt entgültig löschen",
         "trash-items-delete": "{{num}} Listenpunkte endgültig löschen"
     },
+    "comp-device-select": {
+        "title": "Gerät auswählen",
+        "deactivate": "Deaktivieren",
+        "select": "Auswählen"
+    },
     "page_firststart": {
         "welcome": "Willkommen bei Listago",
         "language1": "Bitte wähle die gewünschte Sprache für die App:",

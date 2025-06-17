@@ -1,4 +1,7 @@
-TODO: error-page
-BUG: editing a synced list -> no device online -> don't go to device page
+WIP: List-Editor: select devices, the list should be synced to
+TODO: optimize garmin plugin -> check for devices
+TODO: translate comp-device-select.\*
+TODO: record, if old devices are not online for a period of time, they should be removed from the list.
 TODO: Preferences Cache
 TODO: import from lists
+TODO: SQLite on Android 15
