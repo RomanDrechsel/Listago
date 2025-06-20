@@ -21,38 +21,34 @@
                     <ion-label>{{ "comp-listeditor.settings" | translate }}</ion-label>
                 </ion-item>
                 <div slot="content">
-                    <ion-accordion-group [value]="ResetActive ? 'reset' : undefined" #resetAccordion>
-                        <ion-accordion toggleIcon="none" value="reset">
-                            <ion-list slot="header">
-                                <ion-item lines="none">
-                                    <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (click)="toggleReset($event)" #reset>
-                                        {{ "comp-listeditor.reset" | translate }}
-                                    </ion-checkbox>
-                                    <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
-                                </ion-item>
-                            </ion-list>
-                            <ion-list slot="content">
-                                <ion-item lines="none">
-                                    <ion-select [label]="'comp-listeditor.reset_interval' | translate" label-placement="stacked" [value]="ResetInteval" (ionChange)="onResetIntervalChanged($event.target.value)" #resetinterval>
-                                        <ion-select-option value="daily">{{ "comp-listeditor.reset_daily" | translate }}</ion-select-option>
-                                        <ion-select-option value="weekly">{{ "comp-listeditor.reset_weekly" | translate }}</ion-select-option>
-                                        <ion-select-option value="monthly">{{ "comp-listeditor.reset_monthly" | translate }}</ion-select-option>
-                                    </ion-select>
-                                </ion-item>
-                                <ion-item (click)="selectResetDate()" class="select-resetdate" lines="none">
-                                    <ion-text>{{ ResetString }}</ion-text>
-                                </ion-item>
-                            </ion-list>
-                        </ion-accordion>
-                    </ion-accordion-group>
+                    <ion-list>
+                        <ion-item lines="none">
+                            <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (ionChange)="toggleReset($event)" #reset>
+                                {{ "comp-listeditor.reset" | translate }}
+                            </ion-checkbox>
+                            <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
+                        </ion-item>
 
-                    <ion-item lines="none">
-                        <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (click)="toggleSync($event)" #sync>
-                            {{ "comp-listeditor.sync" | translate }}
-                            <ion-note>{{ ListSyncDevices }}</ion-note>
-                        </ion-checkbox>
-                        <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>
-                    </ion-item>
+                        <ion-item lines="none" *ngIf="ResetActive">
+                            <ion-select [label]="'comp-listeditor.reset_interval' | translate" label-placement="stacked" [value]="ResetInteval" [okText]="'ok' | translate" [cancelText]="'cancel' | translate" (ionChange)="onResetIntervalChanged($event.target.value)" #resetinterval>
+                                <ion-select-option value="daily">{{ "comp-listeditor.reset_daily" | translate }}</ion-select-option>
+                                <ion-select-option value="weekly">{{ "comp-listeditor.reset_weekly" | translate }}</ion-select-option>
+                                <ion-select-option value="monthly">{{ "comp-listeditor.reset_monthly" | translate }}</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+
+                        <ion-item (click)="selectResetDate()" class="select-resetdate" lines="none" *ngIf="ResetActive">
+                            <ion-text>{{ ResetString }}</ion-text>
+                        </ion-item>
+
+                        <ion-item lines="none">
+                            <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (click)="toggleSync($event)" #sync>
+                                {{ "comp-listeditor.sync" | translate }}
+                                <ion-note>{{ ListSyncDevices }}</ion-note>
+                            </ion-checkbox>
+                            <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>
+                        </ion-item>
+                    </ion-list>
                 </div>
             </ion-accordion>
         </ion-accordion-group>

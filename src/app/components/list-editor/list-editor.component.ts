@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, type OnInit, ViewChild } from "@angular/core";
+import { Component, inject, type OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
@@ -19,11 +19,9 @@ import { AdmobService } from "./../../services/adverticing/admob.service";
     imports: [IonNote, IonText, IonList, IonAccordion, IonCheckbox, IonAccordionGroup, IonLabel, IonIcon, IonTitle, IonItem, IonInput, IonButton, IonButtons, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslateModule, ReactiveFormsModule, FormsModule],
     templateUrl: "./list-editor.component.html",
     styleUrl: "./list-editor.component.scss",
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListEditorComponent implements OnInit {
     @ViewChild("listname", { read: IonInput }) private listname?: IonInput;
-    @ViewChild("resetAccordion", { read: IonAccordionGroup }) private resetAccordion?: IonAccordionGroup;
     @ViewChild("reset", { read: IonCheckbox }) private reset?: IonCheckbox;
     @ViewChild("resetinterval", { read: IonSelect }) private resetinterval?: IonSelect;
     @ViewChild("sync", { read: IonCheckbox }) private sync?: IonCheckbox;
@@ -33,7 +31,6 @@ export class ListEditorComponent implements OnInit {
     private readonly ListsService = inject(ListsService);
     private readonly Locale = inject(LocalizationService);
     private readonly Popups = inject(PopupsService);
-    private readonly cdr = inject(ChangeDetectorRef);
     private readonly FormBuilder = inject(FormBuilder);
     private readonly Admob = inject(AdmobService);
     private readonly ConnectIQ = inject(ConnectIQService);
@@ -58,7 +55,6 @@ export class ListEditorComponent implements OnInit {
     public set ResetActive(active: boolean) {
         if (this._listReset) {
             this._listReset.active = active;
-            this.cdr.detectChanges();
         }
     }
 
@@ -74,7 +70,6 @@ export class ListEditorComponent implements OnInit {
         this._listSyncDevices = devices;
         if (this.sync) {
             this.sync.checked = devices != undefined && devices.length > 0;
-            this.cdr.detectChanges();
         }
     }
 
@@ -232,14 +227,9 @@ export class ListEditorComponent implements OnInit {
 
     public toggleReset(event: any) {
         event?.stopImmediatePropagation();
-        event?.preventDefault();
 
-        if (this.resetAccordion && this.reset) {
-            this.reset.checked = !this.reset.checked;
-            this.resetAccordion.value = this.reset.checked ? "reset" : undefined;
-            if (this._listReset) {
-                this._listReset.active = this.reset.checked;
-            }
+        if (this._listReset) {
+            this._listReset.active = event.target.checked;
         }
     }
 
@@ -268,7 +258,6 @@ export class ListEditorComponent implements OnInit {
                 this._listSyncDevices = undefined;
             }
         }
-        this.cdr.detectChanges();
     }
 
     public async syncInfo(event: any) {
@@ -281,7 +270,6 @@ export class ListEditorComponent implements OnInit {
 
     public onResetIntervalChanged(value: string) {
         this._listReset!.interval = value as "daily" | "weekly" | "monthly";
-        this.cdr.detectChanges();
     }
 
     public async selectResetDate() {
@@ -289,7 +277,6 @@ export class ListEditorComponent implements OnInit {
             const ret = await SelectTimeInterval(this.modalCtrl, this._listReset);
             if (ret) {
                 this._listReset = ret;
-                this.cdr.detectChanges();
             }
         }
     }

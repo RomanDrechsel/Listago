@@ -844,14 +844,17 @@ export class ListsService {
 
         payload = ["issync", ...payload];
 
-        for (let i = 0; i < devices.length; i++) {
-            const device = devices[i];
-            if (await this.ConnectIQ.SendToDevice({ device: device, messageType: ConnectIQMessageType.List, data: payload })) {
-                Logger.Debug(`Sync list ${list.toLog()} to watch ${device.toLog()}`);
-            } else {
-                Logger.Error(`Failed to sync list ${list.toLog()} to watch ${device.toLog()}`);
-            }
-        }
+        const sendToDevicePromises = devices.map(device =>
+            this.ConnectIQ.SendToDevice({ device: device, messageType: ConnectIQMessageType.List, data: payload }).then(success => {
+                if (success) {
+                    Logger.Debug(`Sync list ${list.toLog()} to watch ${device.toLog()}`);
+                } else {
+                    Logger.Error(`Failed to sync list ${list.toLog()} to watch ${device.toLog()}`);
+                }
+            }),
+        );
+
+        await Promise.all(sendToDevicePromises);
     }
 
     /**

@@ -28,6 +28,8 @@
                 }
 
                 ion-item {
+                    --min-height: 36px;
+
                     ::part(label) {
                         ion-note {
                             white-space: wrap !important;
@@ -35,11 +37,12 @@
                     }
 
                     &.select-resetdate {
-                        cursor: pointer;
+                        margin-block-end: 1em;
                     }
 
                     ion-select {
                         width: 100%;
+                        min-height: 42px;
                     }
                 }
             }
