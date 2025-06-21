@@ -1,6 +1,6 @@
 import { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { Logger } from "src/app/services/logging/logger";
-import { DatabaseType, MainSqliteBackendService } from "../main-sqlite-backend.service";
+import { DatabaseType, MainSqliteBackendService } from "../../sqlite/main-sqlite-backend.service";
 import { FileBackendListModel } from "./file-backend-list-model";
 import { FileBackendListitemModel } from "./file-backend-listitem-model";
 

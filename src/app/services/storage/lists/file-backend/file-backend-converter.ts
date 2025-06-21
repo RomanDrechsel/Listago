@@ -3,7 +3,7 @@ import { ModalController } from "@ionic/angular/standalone";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { LegacyBackendImportComponent } from "src/app/components/legacy-backend-import/legacy-backend-import.component";
 import { Logger } from "../../../logging/logger";
-import { MainSqliteBackendService } from "../main-sqlite-backend.service";
+import { MainSqliteBackendService } from "../../sqlite/main-sqlite-backend.service";
 import { FileBackendListModel } from "./file-backend-list-model";
 import { FileBackendSqliteBackend } from "./file-backend-sqlite-backend";
 import { FileBackendTrashListModel } from "./file-backend-trash-list-model";

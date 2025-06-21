@@ -1,4 +1,6 @@
+WIP: Synchronize database queries
 TODO: record, if old devices are not online for a period of time, they should be removed from the list.
 TODO: Preferences Cache
 TODO: import from lists
 TODO: SQLite on Android 15
+TODO: Notes support

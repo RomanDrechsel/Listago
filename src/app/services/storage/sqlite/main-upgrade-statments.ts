@@ -1,9 +1,9 @@
 import type { capSQLiteUpgradeOptions } from "@capacitor-community/sqlite";
-import { MainSqliteBackendService } from "./main-sqlite-backend.service";
+import { SqliteService } from "./sqlite.service";
 
 export const MainUpgradeStatements = (): capSQLiteUpgradeOptions => {
     return {
-        database: MainSqliteBackendService.DatabaseNameMain,
+        database: SqliteService.DatabaseNameMain,
         upgrade: [
             {
                 toVersion: 1,

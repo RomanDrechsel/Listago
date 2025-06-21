@@ -4,16 +4,13 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import { List, type ListModel } from "../../lists/list";
 import { Listitem, ListitemModel } from "../../lists/listitem";
 import { Logger } from "../../logging/logger";
-import { SqliteService } from "../sqlite/sqlite.service";
 import { MainUpgradeStatements } from "./main-upgrade-statments";
+import { SqliteService } from "./sqlite.service";
 
 @Injectable({
     providedIn: "root",
 })
 export class MainSqliteBackendService {
-    public static readonly DatabaseNameMain = "main";
-
-    private readonly _databaseVersion = 1;
     private _database?: SQLiteDBConnection;
 
     private readonly _sqliteService = inject(SqliteService);
@@ -26,7 +23,7 @@ export class MainSqliteBackendService {
 
     public async Initialize(): Promise<boolean> {
         await this._sqliteService.addUpgradeStatement(MainUpgradeStatements());
-        this._database = await this._sqliteService.openDatabase(MainSqliteBackendService.DatabaseNameMain, false, "no-encryption", this._databaseVersion, false);
+        this._database = await this._sqliteService.openDatabase();
         if (this._database) {
             Logger.Debug(`Found ${await this.queryListsCount()} list(s) in backend`);
             return true;
@@ -774,7 +771,7 @@ export class MainSqliteBackendService {
      */
     public async DatabaseSize(): Promise<number> {
         try {
-            const file = await Filesystem.stat({ path: `../databases/${MainSqliteBackendService.DatabaseNameMain}SQLite.db`, directory: Directory.Library });
+            const file = await Filesystem.stat({ path: `../databases/${SqliteService.DatabaseNameMain}SQLite.db`, directory: Directory.Library });
             return file.size;
         } catch (e) {
             Logger.Error(`Could not get database size: `, e);
