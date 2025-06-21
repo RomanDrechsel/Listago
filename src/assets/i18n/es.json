@@ -212,6 +212,11 @@
         "trash-item-delete": "Eliminar elemento de la lista permanentemente",
         "trash-items-delete": "Eliminar {{num}} elementos de la lista permanentemente"
     },
+    "comp-device-select": {
+        "title": "Seleccionar dispositivo",
+        "deactivate": "Desactivar",
+        "select": "Seleccionar"
+    },
     "page_firststart": {
         "welcome": "Bienvenido a Listago",
         "language1": "Por favor, selecciona tu idioma preferido:",

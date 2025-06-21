@@ -212,6 +212,11 @@
         "trash-item-delete": "Остаточно видалити елемент списку",
         "trash-items-delete": "Остаточно видалити {{num}} елементів списку"
     },
+    "comp-device-select": {
+        "title": "Вибрати пристрій",
+        "deactivate": "Деактивувати",
+        "select": "Вибрати"
+    },
     "page_firststart": {
         "welcome": "Ласкаво просимо до Listago",
         "language1": "Будь ласка, виберіть бажану мову:",

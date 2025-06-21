@@ -212,6 +212,11 @@
         "trash-item-delete": "सूची आइटम को स्थायी रूप से हटाएं",
         "trash-items-delete": "{{num}} सूची आइटम को स्थायी रूप से हटाएं"
     },
+    "comp-device-select": {
+        "title": "डिवाइस चुनें",
+        "deactivate": "निष्क्रिय करें",
+        "select": "चुनें"
+    },
     "page_firststart": {
         "welcome": "लिस्टागो में आपका स्वागत है",
         "language1": "कृपया अपना पसंदीदा भाषा चुनें:",

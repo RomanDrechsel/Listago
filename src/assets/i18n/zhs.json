@@ -212,6 +212,11 @@
         "trash-item-delete": "永久删除列表项",
         "trash-items-delete": "永久删除 {{num}} 个列表项"
     },
+    "comp-device-select": {
+        "title": "选择设备",
+        "deactivate": "停用",
+        "select": "选择"
+    },
     "page_firststart": {
         "welcome": "欢迎使用 Listago",
         "language1": "请选择您偏好的语言：",

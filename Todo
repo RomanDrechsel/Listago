@@ -1,6 +1,3 @@
-WIP: List-Editor: select devices, the list should be synced to
-TODO: optimize garmin plugin -> check for devices
-TODO: translate comp-device-select.\*
 TODO: record, if old devices are not online for a period of time, they should be removed from the list.
 TODO: Preferences Cache
 TODO: import from lists

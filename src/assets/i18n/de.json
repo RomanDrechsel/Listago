@@ -397,7 +397,6 @@
         "version": "Version:",
         "build": "Build:",
         "platform": "Platform:",
-        "stats": "Statistik:",
         "backend": "Backend:",
         "storage": "Speicherplatz:",
         "database_lists": "Listen:",
