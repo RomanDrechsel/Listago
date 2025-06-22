@@ -215,7 +215,7 @@ export class MainSqliteBackendService {
 
         const backend = args.list.toBackend();
 
-        const transaction_result = await this._sqliteService.Transaction(async conn => {
+        const transaction_result = await this._sqliteService.Transaction(async (conn: SQLiteDBConnection) => {
             let list_id: number | undefined = undefined;
             if (args.list.isVirtual) {
                 backend.delete("id");
@@ -646,7 +646,7 @@ export class MainSqliteBackendService {
         const list_id = args.list instanceof List ? args.list.Id : args.list;
         const query = "SELECT `order` FROM `listitems` WHERE `list_id`=? AND `deleted` IS NULL ORDER BY `order` DESC LIMIT 1";
         if (args.transaction_conn) {
-            const ret = await args.transaction_conn.query(query, [list_id], false);
+            const ret = await args.transaction_conn.query(query, [list_id]);
             if (ret.values?.[0]?.order) {
                 return ret.values[0].order + 1;
             } else if (!ret.values) {
