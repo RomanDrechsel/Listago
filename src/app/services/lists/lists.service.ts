@@ -923,7 +923,7 @@ export class ListsService {
                 }
             } else {
                 if (lists.length == 1) {
-                    Logger.Debug(`Moved list {${lists[0].toLog()}} to trash`);
+                    Logger.Debug(`Moved list ${lists[0].toLog()} to trash`);
                 } else {
                     Logger.Debug(`Moved ${lists.length} lists to trash`);
                 }
@@ -1291,10 +1291,12 @@ export class ListsService {
             if (del.lists > 0) {
                 if (del.lists == 1) {
                     this.Popups.Toast.Success("service-lists.erase_success", undefined, true);
+                    Logger.Debug(`Erased ${lists[0].toLog()} with ${del.items} item(s) from trash`);
                 } else {
                     this.Popups.Toast.Success("service-lists.erase_success_plural", undefined, true);
+                    Logger.Debug(`Erased ${del.lists} lists with ${del.items} item(s) from trash`);
                 }
-                Logger.Debug(`Erased ${del.lists} list(s) with ${del.items} item(s) from trash`);
+
                 this.onTrashDatasetChangedSubject.next(await this.GetTrash());
             }
         } else {

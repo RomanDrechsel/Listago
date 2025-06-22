@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CapacitorSQLite, type CapacitorSQLitePlugin, type capSQLiteChanges, type capSQLiteUpgradeOptions, type DBSQLiteValues, SQLiteConnection, type SQLiteDBConnection } from "@capacitor-community/sqlite";
+import { CapacitorSQLite, type CapacitorSQLitePlugin, type capSQLiteChanges, type capSQLiteUpgradeOptions, SQLiteConnection, type SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { Mutex } from "async-mutex";
 import { Logger } from "../../logging/logger";
 
@@ -61,13 +61,13 @@ export class SqliteService {
         return this._mainDatabaseConnection;
     }
 
-    public async Query(sql: string, params?: any[]): Promise<DBSQLiteValues | undefined> {
+    public async Query(sql: string, params?: any[]): Promise<any> {
         return await this._databaseMutex.runExclusive(async () => {
             if (!(await this.CheckConnection())) {
                 return undefined;
             }
             try {
-                return await this._mainDatabaseConnection!.query(sql, params);
+                return (await this._mainDatabaseConnection!.query(sql, params)).values;
             } catch (e) {
                 Logger.Error(`Database query failed: ${sql}`, e);
             }
@@ -104,7 +104,7 @@ export class SqliteService {
     public async Transaction(callback: (connection: SQLiteDBConnection) => Promise<any>): Promise<any> {
         return await this._databaseMutex.runExclusive(async () => {
             if (!(await this.CheckConnection())) {
-                return undefined;
+                return false;
             }
             try {
                 if ((await this._mainDatabaseConnection!.isTransactionActive()).result) {
@@ -115,16 +115,16 @@ export class SqliteService {
                 await this._mainDatabaseConnection!.beginTransaction();
                 if (!(await this._mainDatabaseConnection!.isTransactionActive()).result) {
                     Logger.Error(`Could not start sql transaction in 'SqliteService.Transaction()'`);
-                    return undefined;
+                    return false;
                 }
                 const ret = await callback(this._mainDatabaseConnection!);
                 await this._mainDatabaseConnection!.commitTransaction();
                 return ret;
             } catch (e) {
-                await this._mainDatabaseConnection?.rollbackTransaction();
+                await this._mainDatabaseConnection!.rollbackTransaction();
                 Logger.Error(`Database transaction failed: `, e);
             }
-            return undefined;
+            return false;
         });
     }
 
