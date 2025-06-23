@@ -3,7 +3,7 @@ import { ModalController } from "@ionic/angular/standalone";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { LegacyBackendImportComponent } from "src/app/components/legacy-backend-import/legacy-backend-import.component";
 import { Logger } from "../../../logging/logger";
-import { MainSqliteBackendService } from "../../sqlite/main-sqlite-backend.service";
+import type { SqliteService } from "../../sqlite/sqlite.service";
 import { FileBackendListModel } from "./file-backend-list-model";
 import { FileBackendSqliteBackend } from "./file-backend-sqlite-backend";
 import { FileBackendTrashListModel } from "./file-backend-trash-list-model";
@@ -16,7 +16,7 @@ export class FileBackendConverter {
 
     private _backend?: FileBackendSqliteBackend;
 
-    constructor(private _sqliteService: MainSqliteBackendService, private _modalCtrl: ModalController) {}
+    constructor(private _sqliteService: SqliteService, private _modalCtrl: ModalController) {}
 
     /**
      * check if a legacy backend exists in storage and try to transfer it into the new sqlite backend
@@ -178,7 +178,7 @@ export class FileBackendConverter {
                 const list_id = await this._backend!.LegacyUuidToId({ legacy_uuid: model.uuid, type: "list" });
                 if (list_id) {
                     for (let j = 0; j < model.items.length; j++) {
-                        if (await this._backend!.storeListitem(model.items[j], list_id, undefined)) {
+                        if (await this._backend!.storeListitem(model.items[j], list_id)) {
                             ret.items++;
                         } else {
                             ret.errors++;

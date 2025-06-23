@@ -2,29 +2,23 @@ import { inject, Injectable } from "@angular/core";
 import type { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { Logger } from "src/app/services/logging/logger";
-import { List, type ListModel } from "../../lists/list";
-import { Listitem, ListitemModel } from "../../lists/listitem";
-import { MainUpgradeStatements } from "./main-upgrade-statments";
-import { SqliteService } from "./sqlite.service";
+import { List, type ListModel } from "../../../lists/list";
+import { Listitem, ListitemModel } from "../../../lists/listitem";
+import { MainUpgradeStatements } from "../main-upgrade-statments";
+import { SqliteService } from "../sqlite.service";
 
 @Injectable({
     providedIn: "root",
 })
-export class MainSqliteBackendService {
-    private _database?: SQLiteDBConnection;
-
+export class ListsSqliteBackendService {
     private readonly _sqliteService = inject(SqliteService);
 
     public MaxTrashCount: number | undefined = undefined;
 
-    public get Database(): SQLiteDBConnection | undefined {
-        return this._database;
-    }
-
     public async Initialize(): Promise<boolean> {
         await this._sqliteService.addUpgradeStatement(MainUpgradeStatements());
-        this._database = await this._sqliteService.openDatabase();
-        if (this._database) {
+        const db = await this._sqliteService.openDatabase();
+        if (db) {
             Logger.Debug(`Found ${await this.queryListsCount()} list(s) in backend`);
             return true;
         } else {

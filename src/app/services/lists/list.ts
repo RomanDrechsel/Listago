@@ -1,5 +1,5 @@
 import { HelperUtils } from "src/app/classes/utils/helper-utils";
-import { DatabaseType } from "../storage/sqlite/main-sqlite-backend.service";
+import { DatabaseType } from "../storage/sqlite/lists/lists-sqlite-backend.service";
 import { Listitem, ListitemModel } from "./listitem";
 
 export class List {

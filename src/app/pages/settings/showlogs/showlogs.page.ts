@@ -57,7 +57,7 @@ export class ShowlogsPage extends PageBase {
     }
 
     public get ShowScrollButtons(): boolean {
-        return (this.logContent?.nativeElement as HTMLElement)?.scrollHeight > (this.mainContentRef?.nativeElement as HTMLElement)?.clientHeight;
+        return this.isScrollable;
     }
 
     public get DisableScrollToTop(): boolean {
@@ -66,6 +66,10 @@ export class ShowlogsPage extends PageBase {
 
     public get DisableScrollToBottom(): boolean {
         return this._scrollPosition == "bottom";
+    }
+
+    public get isScrollable(): boolean {
+        return (this.logContent?.nativeElement as HTMLElement)?.scrollHeight > (this.mainContentRef?.nativeElement as HTMLElement)?.clientHeight;
     }
 
     public override async ionViewWillEnter() {
@@ -78,10 +82,15 @@ export class ShowlogsPage extends PageBase {
         this._timerSubscription = interval(2000).subscribe(async () => {
             if (this.currentLogfile) {
                 const size = this.currentLogfile?.Content?.length ?? 0;
+                const scroll_to_bottom = this._scrollPosition == "bottom" || !this.isScrollable;
                 this.currentLogfile = await this.Logger.GetLogfile(this.currentLogfile?.Filename);
                 if (size != (this.currentLogfile?.Content?.length ?? 0)) {
-                    this.ScrollToBottom(false);
                     this.cdr.detectChanges();
+                    if (scroll_to_bottom) {
+                        setTimeout(() => {
+                            this.ScrollToBottom(false);
+                        }, 1);
+                    }
                 }
             }
         });
@@ -207,11 +216,8 @@ export class ShowlogsPage extends PageBase {
             this.currentLogfile = undefined;
         }
 
-        this.cdr.detectChanges();
-        /* else, scroll buttons won't be shown */
-        await new Promise(resolve => setTimeout(resolve, 1));
-        this.cdr.detectChanges();
-
-        this.ScrollToBottom(true);
+        setTimeout(() => {
+            this.ScrollToBottom(true);
+        }, 1);
     }
 }

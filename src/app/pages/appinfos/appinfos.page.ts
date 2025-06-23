@@ -8,7 +8,7 @@ import { IonCol, IonContent, IonGrid, IonImg, IonItem, IonList, IonNote, IonRow,
 import { TranslateModule } from "@ngx-translate/core";
 import { interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
-import { MainSqliteBackendService } from "src/app/services/storage/sqlite/main-sqlite-backend.service";
+import { ListsSqliteBackendService } from "src/app/services/storage/sqlite/lists/lists-sqlite-backend.service";
 import { FileUtils } from "../../classes/utils/file-utils";
 import { PageBase } from "../page-base";
 import { AppService } from "./../../services/app/app.service";
@@ -32,7 +32,7 @@ export class AppinfosPage extends PageBase {
 
     private timerSubscription?: Subscription;
 
-    private readonly BackendService = inject(MainSqliteBackendService);
+    private readonly BackendService = inject(ListsSqliteBackendService);
 
     public get Homepage(): string {
         return this.Config.Homepage;

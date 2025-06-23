@@ -198,6 +198,10 @@ ion-action-sheet {
     }
 
     .action-sheet-button {
+        &.ion-focused::after {
+            background: var(--ion-color-light) !important;
+        }
+
         span {
             color: var(--ion-color-dark);
         }

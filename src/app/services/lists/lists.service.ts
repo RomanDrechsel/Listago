@@ -15,7 +15,8 @@ import { Logger } from "../logging/logger";
 import { PopupsService } from "../popups/popups.service";
 import { FileBackendConverter } from "../storage/lists/file-backend/file-backend-converter";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
-import { type ListsOrder, type ListsOrderDirection, MainSqliteBackendService } from "../storage/sqlite/main-sqlite-backend.service";
+import { type ListsOrder, type ListsOrderDirection, ListsSqliteBackendService } from "../storage/sqlite/lists/lists-sqlite-backend.service";
+import { SqliteService } from "./../storage/sqlite/sqlite.service";
 import { KeepInTrash } from "./keep-in-trash";
 import { List, type ListReset, type ListSyncDevice } from "./list";
 import { Listitem } from "./listitem";
@@ -30,7 +31,8 @@ export class ListsService {
     private readonly NavController = inject(NavController);
     private readonly Locale = inject(LocalizationService);
     private readonly ConnectIQ = inject(ConnectIQService);
-    public readonly BackendService = inject(MainSqliteBackendService);
+    public readonly BackendService = inject(ListsSqliteBackendService);
+    private readonly SqliteService = inject(SqliteService);
 
     private _keepInTrashStock: KeepInTrash.Enum = KeepInTrash.Default;
     private _syncLists: boolean = false;
@@ -68,7 +70,7 @@ export class ListsService {
             }
         });
         await this.removeOldTrash(await this.Preferences.Get<number>(EPrefProperty.TrashKeepinStock, this._keepInTrashStock));
-        await new FileBackendConverter(this.BackendService, this.ModalCtrl).CheckLegacyBackend(async () => {
+        await new FileBackendConverter(this.SqliteService, this.ModalCtrl).CheckLegacyBackend(async () => {
             await this.GetLists();
         });
         Logger.Debug(`Lists service initialized`);
