@@ -23,7 +23,6 @@ import { Locale } from "../localization/locale";
 import { LocalizationService } from "../localization/localization.service";
 import { PopupsService } from "../popups/popups.service";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
-import { DevicesSqliteBackendService } from "../storage/sqlite/devices/devices-sqlite-backend.service";
 import { Logger } from "./../logging/logger";
 import { ConnectIQDevice } from "./connect-iq-device";
 import { ConnectIQMessageType } from "./connect-iq-message-type";
@@ -58,7 +57,6 @@ export class ConnectIQService {
     private readonly Popup = inject(PopupsService);
     private readonly Locale = inject(LocalizationService);
     private readonly NavController = inject(NavController);
-    private readonly BackendService = inject(DevicesSqliteBackendService);
 
     public set AlwaysTransmitToDevice(device: ConnectIQDevice | undefined) {
         this.Preferences.Set(EPrefProperty.AlwaysTransmitTo, device?.Identifier);
@@ -91,7 +89,6 @@ export class ConnectIQService {
         }
         this._watchListeners.clear();
         this._onlineDevices = 0;
-        this.BackendService.Initialize();
 
         if (Capacitor.isNativePlatform()) {
             this.addListener(new PluginLogsListener(this));
@@ -120,11 +117,6 @@ export class ConnectIQService {
             return this._initialized;
         } else {
             Logger.Important(`Not on a native device, skipping initialization of ConnectIQ service`);
-        }
-
-        const old_devices = await this.BackendService.GetOldDeviceIds();
-        if (old_devices.length > 0) {
-            //WIP: show dialog...
         }
 
         return false;
@@ -415,7 +407,6 @@ export class ConnectIQService {
         await this.calcOnlineDevices();
         this.onDeviceChangedSubject.next(device);
         this.checkDeviceVersion(device_args);
-        this.storeIfDeviceReady(device);
     }
 
     private async checkDeviceVersion(device: DeviceEventArgs) {
@@ -494,11 +485,5 @@ export class ConnectIQService {
 
         this._onlineDevices = count;
         return count;
-    }
-
-    private async storeIfDeviceReady(device: ConnectIQDevice) {
-        if (device.State == "Ready") {
-            await this.BackendService.DeviceOnline(device);
-        }
     }
 }

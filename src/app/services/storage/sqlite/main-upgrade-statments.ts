@@ -37,11 +37,6 @@ export const MainUpgradeStatements = (): capSQLiteUpgradeOptions => {
                         \`deleted\` REAL,
                         \`legacy_uuid\` TEXT
                     );`,
-                    `CREATE TABLE IF NOT EXISTS \`devices\` (
-                        \`id\` INTEGER PRIMARY KEY,
-                        \`name\` TEXT NOT NULL,
-                        \`last_online\` INTEGER NOT NULL
-                    );`,
                     `CREATE INDEX IF NOT EXISTS \`idx_lists_order\` ON \`lists\` (\`order\`);`,
                     `CREATE INDEX IF NOT EXISTS \`idx_lists_deleted\` ON \`lists\` (\`deleted\`);`,
                     `CREATE INDEX IF NOT EXISTS \`idx_listitems_order\` ON \`listitems\` (\`order\`);`,
