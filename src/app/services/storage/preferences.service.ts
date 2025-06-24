@@ -41,6 +41,8 @@ export class PreferencesService {
     private onPrefChangedSubject = new BehaviorSubject<{ prop: EPrefProperty; value: any }>({ prop: EPrefProperty.LogMode, value: "" });
     public onPrefChanged$ = this.onPrefChangedSubject.asObservable();
 
+    private _prefsCache = new Map<EPrefProperty, any>();
+
     /**
      * stores a value in preferences
      * @param prop property
@@ -49,8 +51,10 @@ export class PreferencesService {
     public async Set(prop: EPrefProperty, value: any) {
         if (value != undefined && value != null) {
             await Preferences.set({ key: prop, value: JSON.stringify(value) });
+            this._prefsCache.set(prop, value);
         } else {
             await Preferences.remove({ key: prop });
+            this._prefsCache.delete(prop);
         }
         this.onPrefChangedSubject.next({ prop: prop, value: value });
     }
@@ -62,10 +66,16 @@ export class PreferencesService {
      * @returns value from preferences or default_value
      */
     public async Get<T>(prop: EPrefProperty, default_value: T): Promise<T> {
+        if (this._prefsCache.has(prop)) {
+            return this._prefsCache.get(prop) as T;
+        }
+
         let pref = await Preferences.get({ key: prop });
         if (pref.value) {
             try {
-                return JSON.parse(pref.value);
+                const parsed = JSON.parse(pref.value);
+                this._prefsCache.set(prop, parsed);
+                return parsed;
             } catch {}
         }
 
@@ -77,6 +87,7 @@ export class PreferencesService {
      * @param prop property
      */
     public async Remove(prop: EPrefProperty) {
+        this._prefsCache.delete(prop);
         await Preferences.remove({ key: prop });
     }
 }
