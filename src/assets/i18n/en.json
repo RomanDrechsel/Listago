@@ -11,6 +11,8 @@
     "select": "Select",
     "share": "Share",
     "next": "Next",
+    "back": "Back",
+    "done": "Done",
     "date": {
         "date_add": "",
         "today": "Today",

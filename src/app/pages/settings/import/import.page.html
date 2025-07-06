@@ -1,0 +1,53 @@
+<app-main-toolbar back="/settings/imexport">{{'page_settings_import.page_title'|translate}}</app-main-toolbar>
+
+<ion-content class="page">
+    <div class="container">
+        <div class="content">
+            <ion-icon src="/assets/icons/import.svg" class="icon"></ion-icon>
+
+            <div class="select-archive" *ngIf="!Archive?.length">
+                <div class="text" [innerHTML]="'page_settings_import.select_archive' | translate"></div>
+                <ion-button (click)="selectArchive()">{{'page_settings_import.btn_select_archive'|translate}}</ion-button>
+
+                <div class="text error" [innerHTML]="'page_settings_import.archive_invalid'|translate" *ngIf="ArchiveValid === false"></div>
+            </div>
+
+            <div class="select-items" *ngIf="Archive?.length && ArchiveValid && !Importer?.isRunning">
+                <div class="text" [innerHTML]="'page_settings_import.select_items' | translate"></div>
+                <ion-card>
+                    <ion-list>
+                        <ion-item lines="full" [ngClass]="['import-item', item.status]" (click)="onChangeImportItem(item)" *ngFor="let item of ImportItems">
+                            <ion-icon slot="start" [src]="item.icon"></ion-icon>
+                            <ion-label>
+                                <ion-text class="import-item-title">{{item.locale|translate}}</ion-text>
+                            </ion-label>
+                            <div slot="end">
+                                <ion-checkbox [checked]="item.status == 'enabled'"></ion-checkbox>
+                            </div>
+                        </ion-item>
+                    </ion-list>
+                </ion-card>
+            </div>
+
+            <div class="running" *ngIf="Archive?.length && ArchiveValid && Importer?.isRunning">
+                <ion-card>
+                    <ion-list>
+                        <ion-item lines="full" [ngClass]="['import-item', item.status]" *ngFor="let item of ImportItems">
+                            <ion-icon slot="start" [src]="'/assets/icons/export/item_'+item.status+'.svg'"></ion-icon>
+                            <ion-label>
+                                <ion-text class="import-item-title">{{item.locale|translate}}</ion-text>
+                                <ion-progress-bar [value]="item.done"></ion-progress-bar>
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
+                </ion-card>
+            </div>
+        </div>
+        <ion-buttons class="fixed-bottom">
+            <ion-button fill="outline" color="primary" (click)="back()"> {{'back'|translate}} </ion-button>
+            <ion-button fill="solid" color="primary" [disabled]="!Archive?.length || !SomethingEnabled"> {{'page_settings_import.btn_import'|translate}} </ion-button>
+        </ion-buttons>
+    </div>
+</ion-content>
+
+<ng-template> </ng-template>

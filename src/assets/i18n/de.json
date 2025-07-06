@@ -11,6 +11,8 @@
     "select": "Auswählen",
     "share": "Teilen",
     "next": "Weiter",
+    "back": "Zurück",
+    "done": "Fertig",
     "date": {
         "date_add": " Uhr",
         "today": "Heute",
@@ -217,6 +219,11 @@
         "deactivate": "Deaktivieren",
         "select": "Auswählen"
     },
+    "im-export": {
+        "item_lists": "Listen",
+        "item_trash": "Papierkorb",
+        "item_settings": "Einstellungen"
+    },
     "page_firststart": {
         "welcome": "Willkommen bei Listago",
         "language1": "Bitte wähle die gewünschte Sprache für die App:",
@@ -394,11 +401,20 @@
         "confirm_clearitemstrash_cancel": "Papierkörbe nicht leeren"
     },
     "page_settings_imexport": {
-        "page_title": "Import & Export",
+        "page_title": "Importieren & Sichern",
         "import": "Importieren",
         "import_note": "Eine alte Sicherung aus einer Datei importieren",
         "export": "Sichern",
         "export_note": "Listen und App-Einstellungen in eine Datei sichern"
+    },
+    "page_settings_import": {
+        "page_title": "Importieren",
+        "btn_import": "Importieren",
+        "btn_select_archive": "Archiv auswählen",
+        "select_archive": "Bitte wähle zuerst das Archiv aus:",
+        "select_archive_error": "Die Datei konnte nicht geöffnet werden!",
+        "archive_invalid": "Das Archiv enthält keine kompatible Sicherung!",
+        "select_items": "Was möchtest du aus dem Archiv importieren?"
     },
     "page_appinfos": {
         "page_title": "App Informationen",

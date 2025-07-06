@@ -1,0 +1,90 @@
+:host {
+    ion-content.page {
+        --background: var(--color-skyblue);
+        --padding-top: calc(var(--ion-safe-area-top) + 5%);
+        --padding-bottom: 5%;
+        --padding-start: 5%;
+        --padding-end: 5%;
+
+        .container {
+            background: var(--ion-background-color);
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border-radius: 5vw;
+            padding: 5vw;
+            box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-content: stretch;
+
+            .content {
+                flex-grow: 1;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: 2em;
+
+                .select-archive {
+                    ion-button {
+                        min-height: 68px;
+                        width: 70%;
+                        max-width: 240px;
+                        margin-inline: auto;
+                    }
+
+                    .text {
+                        font-size: 1.1em;
+                        margin-bottom: 1em;
+
+                        &.error {
+                            width: 90%;
+                            margin: 2em auto;
+                            padding: 0.5em;
+                            border-radius: 0.5em;
+                            background: var(--ion-color-danger-tint);
+                            color: var(--ion-color-danger);
+                            border: solid 1px var(--ion-color-danger-shade);
+                        }
+                    }
+                }
+
+                ion-icon {
+                    &.icon {
+                        width: 40%;
+                        max-width: 200px;
+                        height: auto;
+                        aspect-ratio: 1/1;
+                        margin: 5% auto;
+                        fill: var(--ion-color-medium);
+                    }
+                }
+
+                ion-list {
+                    ion-item {
+                        position: relative;
+
+                        [slot="start"] {
+                            margin-inline-end: 0.5em;
+                        }
+
+                        [slot="end"] {
+                            position: relative;
+                            margin-inline-end: 1em;
+                        }
+                    }
+                }
+            }
+
+            .fixed-bottom {
+                flex-grow: 0;
+
+                ion-button {
+                    margin-inline: 0.5em;
+                    width: calc(50% - 1em);
+                }
+            }
+        }
+    }
+}

@@ -11,6 +11,8 @@
     "select": "選択",
     "share": "共有",
     "next": "次へ",
+    "back": "戻る",
+    "done": "完了",
     "date": {
         "date_add": "",
         "today": "今日",
