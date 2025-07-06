@@ -298,7 +298,9 @@
         "trash": "Papierkorb Einstellungen",
         "trash_note": "Einstellungen zur Verwendung des Papierkorbs",
         "transmission": "Übertragungs-Einstellungen",
-        "transmission_note": "Einstellungen für das Übertragen von Listen auf deine Uhr"
+        "transmission_note": "Einstellungen für das Übertragen von Listen auf deine Uhr",
+        "im_export": "Import und Sicherung",
+        "im_export_note": "Listen und Einstellungen Importieren oder Sichern"
     },
     "page_settings_logs": {
         "page_title": "Logging",
@@ -390,6 +392,13 @@
         "confirm_clearitemstrash": "Sollen die Papierkörbe geleert werden?<br /><br /><strong>Achtung:</strong> Die Aktion kann nichtmehr rückgängig gemacht werden!",
         "confirm_clearitemstrash_ok": "Papierkörbe leeren",
         "confirm_clearitemstrash_cancel": "Papierkörbe nicht leeren"
+    },
+    "page_settings_imexport": {
+        "page_title": "Import & Export",
+        "import": "Importieren",
+        "import_note": "Eine alte Sicherung aus einer Datei importieren",
+        "export": "Sichern",
+        "export_note": "Listen und App-Einstellungen in eine Datei sichern"
     },
     "page_appinfos": {
         "page_title": "App Informationen",

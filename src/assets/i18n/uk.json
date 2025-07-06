@@ -391,6 +391,13 @@
         "confirm_clearitemstrash_ok": "Видалити вміст",
         "confirm_clearitemstrash_cancel": "Ні, нічого не видаляти"
     },
+    "page_settings_imexport": {
+        "page_title": "Імпорт та Експорт",
+        "import": "Імпортувати",
+        "import_note": "Імпортувати стару резервну копію з файлу",
+        "export": "Експортувати",
+        "export_note": "Зберегти списки та налаштування додатка у файл"
+    },
     "page_appinfos": {
         "page_title": "Інформація про додаток",
         "package": "Пакет:",

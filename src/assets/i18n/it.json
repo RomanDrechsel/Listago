@@ -370,6 +370,13 @@
         "confirm_clearitemstrash_ok": "Svuota cestini",
         "confirm_clearitemstrash_cancel": "Non svuotare i cestini"
     },
+    "page_settings_imexport": {
+        "page_title": "Importa ed Esporta",
+        "import": "Importa",
+        "import_note": "Importa un vecchio backup da un file",
+        "export": "Esporta",
+        "export_note": "Salva elenchi e impostazioni dell'app in un file"
+    },
     "page_appinfos": {
         "page_title": "Informazioni sull'app",
         "package": "Pacchetto:",

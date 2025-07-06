@@ -1,6 +1,6 @@
 BUG: preferences keys LISTS to LISTAGO
 BUG: ion-icon src soll nichtmehr genutzt weden...
-TODO: import from lists
+WIP: import from lists
 TODO: export / save
 TODO: SQLite on Android 15
 TODO: Notes support

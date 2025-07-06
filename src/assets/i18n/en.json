@@ -391,6 +391,13 @@
         "confirm_clearitemstrash_ok": "Empty trashes",
         "confirm_clearitemstrash_cancel": "Don't empty trashes"
     },
+    "page_settings_imexport": {
+        "page_title": "Import & Export",
+        "import": "Import",
+        "import_note": "Import an old backup from a file",
+        "export": "Export",
+        "export_note": "Save lists and app settings to a file"
+    },
     "page_appinfos": {
         "page_title": "App information",
         "package": "Package:",

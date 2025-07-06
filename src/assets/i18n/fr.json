@@ -391,6 +391,13 @@
         "confirm_clearitemstrash_ok": "Vider les corbeilles",
         "confirm_clearitemstrash_cancel": "Ne pas vider les corbeilles"
     },
+    "page_settings_imexport": {
+        "page_title": "Importer & Exporter",
+        "import": "Importer",
+        "import_note": "Importer une ancienne sauvegarde depuis un fichier",
+        "export": "Exporter",
+        "export_note": "Enregistrer les listes et les paramètres de l'application dans un fichier"
+    },
     "page_appinfos": {
         "page_title": "Informations sur l'application",
         "package": "Paquet :",

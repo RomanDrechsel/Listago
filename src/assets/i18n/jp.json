@@ -391,6 +391,13 @@
         "confirm_clearitemstrash_ok": "ゴミ箱を空にする",
         "confirm_clearitemstrash_cancel": "ゴミ箱を空にしない"
     },
+    "page_settings_imexport": {
+        "page_title": "インポートとエクスポート",
+        "import": "インポート",
+        "import_note": "ファイルから古いバックアップをインポートする",
+        "export": "エクスポート",
+        "export_note": "リストとアプリ設定をファイルに保存する"
+    },
     "page_appinfos": {
         "page_title": "アプリ情報",
         "package": "パッケージ:",

@@ -61,6 +61,10 @@ export const routes: Routes = [
         loadComponent: () => import("./pages/settings/lists-transmission/lists-transmission.page").then(m => m.ListsTransmissionPage),
     },
     {
+        path: "settings/im-export",
+        loadComponent: () => import("./pages/settings/im-export/im-export.page").then(m => m.ImExportPage),
+    },
+    {
         path: "appinfo",
         loadComponent: () => import("./pages/appinfos/appinfos.page").then(m => m.AppinfosPage),
     },

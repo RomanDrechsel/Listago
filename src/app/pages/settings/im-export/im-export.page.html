@@ -1,0 +1,24 @@
+<app-main-toolbar back="/settings">{{'page_settings_imexport.page_title'|translate}}</app-main-toolbar>
+
+<ion-content>
+    <ion-list>
+        <ion-item lines="none" routerDirection="forward" [routerLink]="['/settings/import']">
+            <ion-label>
+                <ion-icon src="/assets/icons/import.svg"></ion-icon>
+                <div class="text">
+                    <div class="title">{{'page_settings_imexport.import'|translate}}</div>
+                    <div class="note">{{'page_settings_imexport.import_note'|translate}}</div>
+                </div>
+            </ion-label>
+        </ion-item>
+        <ion-item lines="none" routerDirection="forward" [routerLink]="['/settings/export']">
+            <ion-label>
+                <ion-icon src="/assets/icons/export.svg"></ion-icon>
+                <div class="text">
+                    <div class="title">{{'page_settings_imexport.export'|translate}}</div>
+                    <div class="note">{{'page_settings_imexport.export_note'|translate}}</div>
+                </div>
+            </ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>

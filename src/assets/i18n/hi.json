@@ -391,6 +391,13 @@
         "confirm_clearitemstrash_ok": "सभी कचरे खाली करें",
         "confirm_clearitemstrash_cancel": "सभी कचरे खाली न करें"
     },
+    "page_settings_imexport": {
+        "page_title": "आयात और निर्यात",
+        "import": "आयात करें",
+        "import_note": "किसी फ़ाइल से पुराना बैकअप आयात करें",
+        "export": "निर्यात करें",
+        "export_note": "सूचियों और ऐप सेटिंग्स को फ़ाइल में सुरक्षित करें"
+    },
     "page_appinfos": {
         "page_title": "ऐप जानकारी",
         "package": "पैकेज:",

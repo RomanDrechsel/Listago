@@ -391,6 +391,13 @@
         "confirm_clearitemstrash_ok": "Vaciar papeleras",
         "confirm_clearitemstrash_cancel": "No vaciar papeleras"
     },
+    "page_settings_imexport": {
+        "page_title": "Importar y Exportar",
+        "import": "Importar",
+        "import_note": "Importar una copia de seguridad antigua desde un archivo",
+        "export": "Exportar",
+        "export_note": "Guardar listas y configuraciones de la app en un archivo"
+    },
     "page_appinfos": {
         "page_title": "Información de la app",
         "package": "Paquete:",
