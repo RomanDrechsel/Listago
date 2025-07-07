@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" viewBox="0 0 1000 1000" id="svg1" sodipodi:docname="item_failed.svg" inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs id="defs1" />
+  <sodipodi:namedview id="namedview1" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" inkscape:showpageshadow="2" inkscape:pageopacity="0.0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#d1d1d1" inkscape:current-layer="svg1" />
+  <title id="title1">Export item failed</title>
+  <path transform="rotate(45)" d="m353.55-353.55c-93.755 93.755-146.45 220.96-146.45 353.55-1e-5 132.59 52.691 259.8 146.45 353.55s220.96 146.45 353.55 146.45c132.59 1e-5 259.8-52.691 353.55-146.45 93.755-93.755 146.45-220.96 146.45-353.55s-52.691-259.8-146.45-353.55c-93.755-93.755-220.96-146.45-353.55-146.45-132.59-1e-5 -259.8 52.691-353.55 146.45zm70.711 70.711c75.028-75.028 176.74-117.16 282.84-117.16 106.11 1e-5 207.81 42.128 282.84 117.16 75.028 75.028 117.16 176.74 117.16 282.84 0 106.11-42.128 207.81-117.16 282.84-75.028 75.028-176.74 117.16-282.84 117.16-106.11-1e-5 -207.81-42.128-282.84-117.16s-117.16-176.74-117.16-282.84c0-106.11 42.128-207.81 117.16-282.84zm-32.951 244.07c-6.9544 6.9544-11.243 16.573-11.243 27.231v23.086c0 21.315 17.159 38.474 38.474 38.474h238.55v238.55c0 21.315 17.159 38.474 38.474 38.474h23.086c21.315 0 38.474-17.159 38.474-38.474v-238.55h238.55c21.315 0 38.474-17.159 38.474-38.474v-23.086c0-21.315-17.159-38.474-38.474-38.474h-238.55v-238.55c0-21.315-17.159-38.474-38.474-38.474h-23.086c-21.315 0-38.474 17.159-38.474 38.474v238.55h-238.55c-10.658 0-20.276 4.2889-27.231 11.243z" stroke-linecap="square" stroke-linejoin="round" stroke-width="50.592" style="paint-order:fill markers stroke" id="path1" />
+  <metadata id="metadata1">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://roman-drechsel.de</dc:source>
+        <dc:date>2025-06-26</dc:date>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/" />
+        <dc:title>Export item failed</dc:title>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

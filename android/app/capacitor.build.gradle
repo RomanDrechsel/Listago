@@ -25,6 +25,7 @@ dependencies {
     implementation project(':capacitor-status-bar')
     implementation project(':capawesome-capacitor-android-edge-to-edge-support')
     implementation project(':capawesome-capacitor-file-picker')
+    implementation project(':capa-zip')
     implementation project(':capacitor-email-composer')
 
 }

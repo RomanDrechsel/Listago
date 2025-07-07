@@ -14,21 +14,34 @@ export class ListsImporter {
     }
 
     public async ImportLists(listener: ProgressListener): Promise<boolean> {
+        this._running = true;
+        listener.Init(2);
+        listener.oneDone();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        listener.oneDone();
         return true;
     }
 
     public async ImportTrash(listener: ProgressListener): Promise<boolean> {
+        this._running = true;
+        listener.Init(2);
+        listener.oneDone();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        listener.oneDone();
         return true;
     }
 
     public async ImportSettings(preferences: PreferencesService): Promise<boolean> {
+        this._running = true;
         return true;
     }
 
-    public async CleanUp() {}
+    public async CleanUp() {
+        this._running = false;
+    }
 }
 
-export class ProgressListener {
+export abstract class ProgressListener {
     protected _total: number = -1;
     protected _done: number = 0;
     public Init(total: number) {
@@ -43,14 +56,14 @@ export class ProgressListener {
         }
     }
 
-    protected onProgress(done: number): Promise<void> {
-        return Promise.resolve();
-    }
+    protected abstract onProgress(done: number): Promise<void>;
 }
 
 export function ProgressListenerFactory(onProgressCallback: (progress: number) => void | Promise<void>): ProgressListener {
     return new (class extends ProgressListener {
         protected override async onProgress(done: number): Promise<void> {
+            console.log("DONE:", done);
+
             await onProgressCallback(done);
         }
     })();

@@ -414,7 +414,10 @@
         "select_archive": "Bitte wähle zuerst das Archiv aus:",
         "select_archive_error": "Die Datei konnte nicht geöffnet werden!",
         "archive_invalid": "Das Archiv enthält keine kompatible Sicherung!",
-        "select_items": "Was möchtest du aus dem Archiv importieren?"
+        "select_items": "Was möchtest du aus dem Archiv importieren?",
+        "btn_reset_archive": "Anderes Archiv auswählen",
+        "import_success": "Der Import wurde erfolgreich abgeschlossen.",
+        "import_error": "Der Import konnte nicht vollständig durchgeführt werden!"
     },
     "page_appinfos": {
         "page_title": "App Informationen",

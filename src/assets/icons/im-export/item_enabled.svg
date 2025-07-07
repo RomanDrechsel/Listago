@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 1e3 1e3" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <title>Export item enabled</title>
+  <path d="m804.36 152.97c-24.357-3.0052-46.634 6.1772-55.414 25.006l-235.74 505.55-283.94-198.81c-27.733-19.419-66.687-11.305-87.342 18.193-20.654 29.498-14.956 68.877 12.776 88.295l342.59 239.88c3e-3 2e-3 5e-3 5e-3 7e-3 7e-3 1.283 0.95636 2.6066 1.8837 3.9683 2.7783l3.8538 2.6977c9.7921 6.8565 20.983 10.282 32.274 10.544 24.066 2.7292 45.98-6.459 54.67-25.096l274.71-589.1c11.706-25.105-5.1423-57.566-37.778-72.785-8.159-3.8046-16.508-6.1601-24.628-7.1621z" stroke-linecap="square" stroke-linejoin="round" stroke-width="82.875" style="paint-order:fill markers stroke"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>Roman Drechsel</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:source>https://roman-drechsel.de</dc:source>
+        <dc:date>2025-06-26</dc:date>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/"/>
+        <dc:title>Export item enabled</dc:title>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Notice"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#Attribution"/>
+        <cc:prohibits rdf:resource="http://creativecommons.org/ns#CommercialUse"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:requires rdf:resource="http://creativecommons.org/ns#ShareAlike"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

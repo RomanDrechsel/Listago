@@ -50,5 +50,8 @@ project(':capawesome-capacitor-android-edge-to-edge-support').projectDir = new F
 include ':capawesome-capacitor-file-picker'
 project(':capawesome-capacitor-file-picker').projectDir = new File('../node_modules/@capawesome/capacitor-file-picker/android')
 
+include ':capa-zip'
+project(':capa-zip').projectDir = new File('../node_modules/capa-zip/android')
+
 include ':capacitor-email-composer'
 project(':capacitor-email-composer').projectDir = new File('../node_modules/capacitor-email-composer/android')

@@ -65,6 +65,63 @@
                     ion-item {
                         position: relative;
 
+                        --import-item-color: var(--color-text);
+                        --import-item-color-tint: var(--color-text-tint);
+                        --color: var(--import-item-color);
+
+                        &.success {
+                            --import-item-color: var(--ion-color-success);
+                            --import-item-color-tint: var(--ion-color-success-tint);
+                        }
+
+                        &.disabled {
+                            --import-item-color: var(--ion-color-medium-tint);
+                            --import-item-color-tint: var(--ion-color-medium-tint);
+                        }
+
+                        &.failed {
+                            --import-item-color: var(--ion-color-danger);
+                            --import-item-color-tint: var(--ion-color-danger-shade);
+                        }
+
+                        &.running {
+                            --import-item-color: var(--ion-color-primary);
+                            --import-item-color-tint: var(--ion-color-primary-tint);
+                        }
+
+                        &.success,
+                        &.failed {
+                            ion-text {
+                                font-weight: bold;
+                            }
+                        }
+
+                        ion-icon {
+                            fill: var(--import-item-color);
+                            margin-inline-end: 0.5em;
+                            --inner-padding-top: 6px;
+                        }
+
+                        ion-progress-bar {
+                            --background: var(--import-item-color-tint);
+                            --progress-background: var(--import-item-color);
+                        }
+
+                        &.disabled,
+                        &.enabled {
+                            ion-label {
+                                margin-bottom: 6px;
+                            }
+
+                            ion-progress-bar {
+                                visibility: hidden;
+                            }
+                        }
+
+                        ion-label {
+                            margin-top: 6px;
+                        }
+
                         [slot="start"] {
                             margin-inline-end: 0.5em;
                         }
@@ -74,6 +131,27 @@
                             margin-inline-end: 1em;
                         }
                     }
+                }
+            }
+
+            &.done {
+                ion-buttons {
+                    justify-content: end;
+                }
+
+                ion-icon {
+                    fill: var(--ion-color-success);
+                    width: 60%;
+                    max-width: 30vh;
+                    height: auto;
+                    aspect-ratio: 1/1;
+                    margin: 10% auto;
+                }
+
+                .text {
+                    text-align: center;
+                    margin-block: 2em;
+                    font-size: 1.2em;
                 }
             }
 

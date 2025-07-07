@@ -6,9 +6,11 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FilePicker, type PickFilesResult } from "@capawesome/capacitor-file-picker";
 import { IonButton, IonButtons, IonCard, IonCheckbox, IonContent, IonIcon, IonLabel, IonList, IonProgressBar, IonText } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
+import { FileUtils } from "src/app/classes/utils/file-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { Logger } from "src/app/services/logging/logger";
 import { ListsImporter, ProgressListenerFactory } from "src/app/services/storage/lists/import/lists-importer";
+import { environment } from "src/environments/environment";
 import { PageBase } from "../../page-base";
 
 @Component({
@@ -25,12 +27,13 @@ export class ImportPage extends PageBase {
 
     private _importer?: ListsImporter;
 
-    private _done: boolean = false;
+    private _importDone: boolean = false;
+    private _importError = false;
 
     private _archiveValid?: boolean;
 
-    public get Done(): boolean {
-        return this._done;
+    public get ImportDone(): boolean {
+        return this._importDone;
     }
 
     public get Archive(): string | undefined {
@@ -57,47 +60,56 @@ export class ImportPage extends PageBase {
         return this._importer;
     }
 
+    public get ImportError(): boolean {
+        return this._importError;
+    }
+
     public async back() {
         this._importer?.CleanUp();
         await this.NavController.navigateBack("settings/im-export");
     }
 
     public async selectArchive(): Promise<void> {
-        this._done = false;
+        this._importDone = false;
         this._archiveValid = undefined;
-
-        let files: PickFilesResult | undefined = undefined;
-        try {
-            files = await FilePicker.pickFiles({
-                limit: 1,
-                readData: true,
-                types: ["application/zip"],
-            });
-        } catch (e) {
-            if (!(e instanceof CapacitorException) || !e.message.includes("canceled")) {
-                Logger.Error(`Import: could not import archive: `, e);
-                await this.error();
-            }
-        }
-
-        if (!files?.files.length || !files.files[0].data?.length) {
-            return;
-        }
-
         this._archive = undefined;
+        this._importError = false;
 
-        try {
-            this._archive = (
-                await Filesystem.writeFile({
-                    path: "import/archive.zip",
-                    directory: Directory.Cache,
-                    data: files.files[0].data,
-                    recursive: true,
-                })
-            ).uri;
-        } catch (e) {
-            Logger.Error(`Import: could not copy archive to cache: `, e);
-            await this.error();
+        if (!environment.production && !(await this.debugArchive())) {
+            let files: PickFilesResult | undefined = undefined;
+            try {
+                files = await FilePicker.pickFiles({
+                    limit: 1,
+                    readData: true,
+                    types: ["application/zip"],
+                });
+            } catch (e) {
+                if (!(e instanceof CapacitorException) || !e.message.includes("canceled")) {
+                    Logger.Error(`Import: could not import archive: `, e);
+                    await this.error();
+                }
+            }
+
+            if (!files?.files.length || !files.files[0].data?.length) {
+                return;
+            }
+
+            this._archive = undefined;
+
+            try {
+                this._archive = (
+                    await Filesystem.writeFile({
+                        path: "import/archive.zip",
+                        directory: Directory.Cache,
+                        data: files.files[0].data,
+                        recursive: true,
+                    })
+                ).uri;
+            } catch (e) {
+                Logger.Error(`Import: could not copy archive to cache: `, e);
+                await this.error();
+                return;
+            }
         }
 
         this._importItems = new Map<string, ImportItem>();
@@ -129,6 +141,14 @@ export class ImportPage extends PageBase {
             return;
         }
 
+        this._importError = false;
+
+        this._importItems.forEach(val => {
+            if (val.status != "disabled") {
+                val.status = "enabled";
+            }
+        });
+
         const keys = Array.from(this._importItems.keys());
         for (let i = 0; i < keys.length; i++) {
             const item = this._importItems.get(keys[i]);
@@ -144,6 +164,7 @@ export class ImportPage extends PageBase {
                     result = await this._importer.ImportLists(
                         ProgressListenerFactory(done => {
                             item.done = done;
+                            this.cdr.detectChanges();
                         }),
                     );
                     break;
@@ -151,6 +172,7 @@ export class ImportPage extends PageBase {
                     result = await this._importer.ImportTrash(
                         ProgressListenerFactory(done => {
                             item.done = done;
+                            this.cdr.detectChanges();
                         }),
                     );
                     break;
@@ -161,7 +183,8 @@ export class ImportPage extends PageBase {
 
             if (!result) {
                 item.status = "failed";
-                this.error();
+                this.Popups.Toast.Error("page_settings_import.import_error");
+                this._importError = true;
                 return;
             } else {
                 item.status = "success";
@@ -170,7 +193,9 @@ export class ImportPage extends PageBase {
 
         await this._importer?.CleanUp();
         this._importer = undefined;
-        this._done = true;
+        this._archive = undefined;
+        this._importItems = undefined;
+        this._importDone = true;
     }
 
     public async onChangeImportItem(item: ImportItem) {
@@ -179,6 +204,10 @@ export class ImportPage extends PageBase {
         } else {
             item.status = "disabled";
         }
+    }
+
+    public async importDone() {
+        await this.NavController.navigateBack("lists");
     }
 
     private async error() {
@@ -191,8 +220,18 @@ export class ImportPage extends PageBase {
         this._importer = undefined;
         this._archive = undefined;
         this._importItems = undefined;
-        this._done = false;
+        this._importDone = false;
         this.Popups.Toast.Error("page_settings_import.select_archive_error", undefined, true);
+    }
+
+    private async debugArchive(): Promise<boolean> {
+        if (await FileUtils.FileExists("import/archive.zip", Directory.Cache)) {
+            try {
+                this._archive = (await Filesystem.getUri({ path: "import/archive.zip", directory: Directory.Cache })).uri;
+                return true;
+            } catch {}
+        }
+        return false;
     }
 }
 
