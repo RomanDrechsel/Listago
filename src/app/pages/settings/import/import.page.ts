@@ -225,9 +225,10 @@ export class ImportPage extends PageBase {
     }
 
     private async debugArchive(): Promise<boolean> {
-        if (await FileUtils.FileExists("import/archive.zip", Directory.Cache)) {
+        const debug_archive = "import/lists-export.zip";
+        if (await FileUtils.FileExists(debug_archive, Directory.Cache)) {
             try {
-                this._archive = (await Filesystem.getUri({ path: "import/archive.zip", directory: Directory.Cache })).uri;
+                this._archive = (await Filesystem.getUri({ path: debug_archive, directory: Directory.Cache })).uri;
                 return true;
             } catch {}
         }

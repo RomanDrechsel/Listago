@@ -158,7 +158,7 @@ export namespace FileUtils {
      * @param keep_newer_than keep files, that are newer then this timestamp
      * @returns number of deleted files
      */
-    export async function EmptyDir(path: string, dir?: Directory, keep_newer_than?: number): Promise<number> {
+    export async function EmptyDir(path: string, dir?: Directory, keep_newer_than?: number, recursive?: boolean): Promise<number> {
         let files;
         try {
             files = (await Filesystem.readdir({ path: path, directory: dir })).files;
@@ -169,7 +169,17 @@ export namespace FileUtils {
         if (files) {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                if (!keep_newer_than || file.mtime < keep_newer_than) {
+                if (recursive && file.type == "directory") {
+                    const tmppath = StringUtils.concat(path, file.name, "/");
+                    count += await EmptyDir(tmppath, dir, keep_newer_than, recursive);
+                    try {
+                        if ((await Filesystem.readdir({ path: path, directory: dir })).files.length == 0) {
+                            await Filesystem.rmdir({ path: path, directory: dir });
+                        }
+                    } catch (e) {
+                        Logger.Error(`Could not delete direcory '${file.uri}':`, e);
+                    }
+                } else if (!keep_newer_than || file.mtime < keep_newer_than) {
                     try {
                         await Filesystem.deleteFile({ path: file.uri });
                         count++;
@@ -181,6 +191,63 @@ export namespace FileUtils {
         }
 
         return count;
+    }
+
+    /**
+     * creates a direcotry
+     * @param path path to the directory
+     * @param dir type of directory
+     * @returns returns the absolute uri of the created directory, or false if something went wrong
+     */
+    export async function MkDir(path: string, dir?: Directory): Promise<string | false> {
+        if (!(await DirExists(path, dir))) {
+            try {
+                await Filesystem.mkdir({ path: path, directory: dir });
+            } catch (e) {
+                Logger.Error(`Could not create '${path}' in '${dir}':`, e);
+                return false;
+            }
+        }
+
+        if (dir) {
+            try {
+                return (await Filesystem.getUri({ path: path, directory: dir })).uri;
+            } catch (e) {
+                Logger.Error(`Could not get uri for '${path}' in '${dir}'`, e);
+                return false;
+            }
+        } else {
+            return path;
+        }
+    }
+
+    /**
+     * checks if a path is a directory or not
+     * @param path path
+     * @param dir dir
+     * @returns true if it exists and is a dir, otherwise false
+     */
+    export async function DirExists(path: string, dir?: Directory): Promise<boolean> {
+        try {
+            const stat = await Filesystem.stat({ path: path, directory: dir });
+            return stat.type === "directory";
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * returns the name of a file or directory in a path string
+     * @param path path string
+     * @returns base name of file or string
+     */
+    export function Basename(path: string, with_extension: boolean = true): string {
+        const basename = path.split("/").pop();
+        if (basename && !with_extension) {
+            return basename.split(".").slice(undefined, -1).join(".");
+        }
+
+        return basename ?? "";
     }
 
     export class File {
