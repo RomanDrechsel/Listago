@@ -325,8 +325,14 @@ export class LoggingService {
      * sets the loglevel from a string representation
      * @param logging log level
      */
-    public async SetLogLevel(logging: string) {
-        if (this.LogLevelShort != logging) {
+    public async SetLogLevel(logging: string | number) {
+        let changed = false;
+        if (typeof logging === "number") {
+            if (this.LogLevel != logging) {
+                this.LogLevel = logging as ELogType;
+                changed = true;
+            }
+        } else if (this.LogLevelShort != logging) {
             switch (logging) {
                 case "debug":
                     this.LogLevel = ELogType.Debug;
@@ -341,7 +347,10 @@ export class LoggingService {
                     this.LogLevel = ELogType.Error;
                     break;
             }
-            this.Notice(`Changed logging to ${logging} (${this.LogLevel})`);
+            changed = true;
+        }
+        if (changed) {
+            this.Notice(`Changed logging to ${this.LogLevelShort} (${this.LogLevel})`);
             this.Preferences.Set(EPrefProperty.LogMode, this.LogLevel);
         }
     }

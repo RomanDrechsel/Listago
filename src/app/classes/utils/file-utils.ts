@@ -170,7 +170,7 @@ export namespace FileUtils {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 if (recursive && file.type == "directory") {
-                    const tmppath = StringUtils.concat(path, file.name, "/");
+                    const tmppath = FileUtils.JoinPaths(path, file.name);
                     count += await EmptyDir(tmppath, dir, keep_newer_than, recursive);
                     try {
                         if ((await Filesystem.readdir({ path: path, directory: dir })).files.length == 0) {
@@ -248,6 +248,23 @@ export namespace FileUtils {
         }
 
         return basename ?? "";
+    }
+
+    /**
+     * adds different parts if a path, with no double //
+     * @param paths paths to add
+     * @returns path as string
+     */
+    export function JoinPaths(...paths: string[]): string {
+        let path: string = "";
+        for (const p of paths) {
+            if (path.length > 0) {
+                path += "/" + StringUtils.trimStart(p, "/");
+            } else {
+                path = p;
+            }
+        }
+        return path;
     }
 
     export class File {

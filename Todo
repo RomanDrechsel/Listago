@@ -1,8 +1,10 @@
 BUG: preferences keys LISTS to LISTAGO
 BUG: ion-icon src soll nichtmehr genutzt weden...
+BUG: Double click in Back button (upper left), is app is reloaded
 WIP: import from lists
 TODO: translate page_settings_import.*
 TODO: translate im-export.*
 TODO: export / save
-TODO: SQLite on Android 15
+TEST: SQLite on Android 15
+TODO: ads optional
 TODO: Notes support

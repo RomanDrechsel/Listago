@@ -1,4 +1,4 @@
-import { StringUtils } from "./utils/string-utils";
+import { FileUtils } from "./utils/file-utils";
 
 export enum EMenuItemType {
     "Lists",
@@ -19,7 +19,7 @@ export const MenuitemFactory = function (itemtype: EMenuItemType, options?: { ti
     let url: string;
     switch (itemtype) {
         case EMenuItemType.Lists:
-            url = options?.url_addition ? StringUtils.concat(["/lists", options.url_addition], "/") : "/lists";
+            url = options?.url_addition ? FileUtils.JoinPaths("/lists", options.url_addition) : "/lists";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.lists", Icon: "./assets/icons/menu/lists.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.EmptyList:
             return { Id: itemtype, TitleId: options?.title_id ?? "page_listitems.menu_empty", Icon: "./assets/icons/menu/empty.svg", Url: options?.url_addition, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
@@ -28,28 +28,28 @@ export const MenuitemFactory = function (itemtype: EMenuItemType, options?: { ti
         case EMenuItemType.EditList:
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.edit_list", Icon: "./assets/icons/menu/edit.svg", Url: options?.url_addition, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.ListsTrash:
-            url = options?.url_addition ? StringUtils.concat(["/trash", options.url_addition], "/") : "/trash";
+            url = options?.url_addition ? FileUtils.JoinPaths("/trash", options.url_addition) : "/trash";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.trash", Icon: "./assets/icons/menu/trash.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.EmptyListTrash:
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.empty_trash", Icon: "./assets/icons/menu/empty_trash.svg", Url: options?.url_addition, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.ListitemsTrash:
-            url = options?.url_addition ? StringUtils.concat(["/trash/items", options.url_addition], "/") : "/trash/items";
+            url = options?.url_addition ? FileUtils.JoinPaths("/trash/items", options.url_addition) : "/trash/items";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.trash", Icon: "./assets/icons/menu/trash_items.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.EmptyItemTrash:
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.empty_trash", Icon: "./assets/icons/menu/empty_trash.svg", Url: options?.url_addition, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.Devices:
-            url = options?.url_addition ? StringUtils.concat(["/devices", options.url_addition], "/") : "/devices";
+            url = options?.url_addition ? FileUtils.JoinPaths("/devices", options.url_addition) : "/devices";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.devices", Icon: "./assets/icons/menu/devices.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.Settings:
-            url = options?.url_addition ? StringUtils.concat(["/settings", options.url_addition], "/") : "/settings";
+            url = options?.url_addition ? FileUtils.JoinPaths("/settings", options.url_addition) : "/settings";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.settings", Icon: "./assets/icons/menu/settings.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.OpenApp:
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.openapp", Icon: "./assets/icons/menu/openapp.svg", Url: "", Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.AppInfo:
-            url = options?.url_addition ? StringUtils.concat(["/appinfo", options.url_addition], "/") : "/appinfo";
+            url = options?.url_addition ? FileUtils.JoinPaths("/appinfo", options.url_addition) : "/appinfo";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.appinfos", Icon: "./assets/icons/menu/appinfos.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
         case EMenuItemType.Privacy:
-            url = options?.url_addition ? StringUtils.concat(["/privacy-policy/privacy", options.url_addition], "/") : "/privacy-policy/privacy";
+            url = options?.url_addition ? FileUtils.JoinPaths("/privacy-policy/privacy", options.url_addition) : "/privacy-policy/privacy";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.privacy", Icon: "./assets/icons/menu/privacy.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
     }
 };

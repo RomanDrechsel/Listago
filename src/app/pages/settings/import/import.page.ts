@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CapacitorException } from "@capacitor/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
@@ -9,9 +9,10 @@ import { TranslateModule } from "@ngx-translate/core";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { Logger } from "src/app/services/logging/logger";
-import { ListsImporter, ProgressListenerFactory } from "src/app/services/storage/lists/import/lists-importer";
+import { type ImportResult, ListsImporter, ProgressListenerFactory } from "src/app/services/storage/lists/import/lists-importer";
 import { environment } from "src/environments/environment";
 import { PageBase } from "../../page-base";
+import { SqliteService } from "./../../../services/storage/sqlite/sqlite.service";
 
 @Component({
     selector: "app-import",
@@ -31,6 +32,8 @@ export class ImportPage extends PageBase {
     private _importError = false;
 
     private _archiveValid?: boolean;
+
+    private readonly _sqliteService = inject(SqliteService);
 
     public get ImportDone(): boolean {
         return this._importDone;
@@ -156,7 +159,7 @@ export class ImportPage extends PageBase {
                 continue;
             }
 
-            let result = true;
+            let result: ImportResult | undefined = undefined;
             item.status = "running";
 
             switch (keys[i]) {
@@ -164,24 +167,29 @@ export class ImportPage extends PageBase {
                     result = await this._importer.ImportLists(
                         ProgressListenerFactory(done => {
                             item.done = done;
-                            this.cdr.detectChanges();
                         }),
+                        this._sqliteService,
+                        this.ListsService,
                     );
                     break;
                 case "trash":
                     result = await this._importer.ImportTrash(
                         ProgressListenerFactory(done => {
                             item.done = done;
-                            this.cdr.detectChanges();
                         }),
                     );
                     break;
                 case "settings":
-                    result = await this._importer.ImportSettings(this.Preferences);
+                    result = await this._importer.ImportSettings(
+                        ProgressListenerFactory(done => {
+                            item.done = done;
+                        }),
+                        { preferences: this.Preferences, connectiq: this.ConnectIQ, locale: this.Locale, logger: this.Logger },
+                    );
                     break;
             }
 
-            if (!result) {
+            if (!result?.success) {
                 item.status = "failed";
                 this.Popups.Toast.Error("page_settings_import.import_error");
                 this._importError = true;

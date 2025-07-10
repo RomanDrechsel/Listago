@@ -1,37 +1,39 @@
 import { Injectable } from "@angular/core";
 import { Preferences } from "@capacitor/preferences";
 import { BehaviorSubject } from "rxjs";
+import { ProgressListener } from "src/app/services/storage/lists/import/lists-importer";
+import { Logger } from "../logging/logger";
 
 export enum EPrefProperty {
-    "FirstStart" = "LISTS_FirstStart",
-    "LastVersion" = "LISTS_LastVersion",
-    "GarminConnectIQ" = "LISTS_GarminConnectIQ",
-    "AppLanguage" = "LISTS_AppLanguage",
-    "LogMode" = "LISTS_LogMode",
-    "LogsAutoDelete" = "LISTS_LogsAutoDelete",
-    "Animations" = "LISTS_Animations",
-    "AlwaysTransmitTo" = "LISTS_AlwaysTransmitTo",
-    "ConfirmDeleteList" = "LISTS_ConfirmDeleteList",
-    "ConfirmDeleteListitem" = "LISTS_ConfirmDeleteListitem",
-    "ConfirmEmptyList" = "LISTS_ConfirmEmptyList",
-    "ConfirmTransmitList" = "LISTS_ConfirmTransmitList",
-    "ConfirmEraseList" = "LISTS_ConfirmEraseList",
-    "ConfirmEraseListitem" = "LISTS_ConfirmEraseListitem",
-    "ConfirmEmptyTrash" = "LISTS_ConfirmEmptyTrash",
-    "ConfirmRestoreList" = "LISTS_ConfirmRestoreList",
-    "ConfirmRestoreListitem" = "LISTS_ConfirmRestoreListitem",
-    "TrashLists" = "LISTS_TrashLists",
-    "TrashListitems" = "LISTS_TrashListitems",
-    "TrashKeepinStock" = "LISTS_TrashKeepInStock",
-    "OpenAppOnTransmit" = "LISTS_OpenAppOnTransmit",
-    "DeleteListOnDevice" = "LISTS_DeleteListOnDevice",
-    "SyncListOnDevice" = "LISTS_SyncListOnDevice",
-    "AddMoreItemsDialog" = "LISTS_AddMoreItemsDialog",
-    "DebugSimulator" = "LISTS_DebugSimulator",
-    "DebugApp" = "LISTS_DebugApp",
-    "OpenedList" = "LISTS_OpenedList",
-    "IgnoreWatchOutdated" = "LISTS_IgnoreWatchOutdated",
-    "AdmobBannerHeight" = "LISTS_AdmobBannerHeight",
+    FirstStart = "LISTAGO_FirstStart",
+    LastVersion = "LISTAGO_LastVersion",
+    GarminConnectIQ = "LISTAGO_GarminConnectIQ",
+    AppLanguage = "LISTAGO_AppLanguage",
+    LogMode = "LISTAGO_LogMode",
+    LogsAutoDelete = "LISTAGO_LogsAutoDelete",
+    Animations = "LISTAGO_Animations",
+    AlwaysTransmitTo = "LISTAGO_AlwaysTransmitTo",
+    ConfirmDeleteList = "LISTAGO_ConfirmDeleteList",
+    ConfirmDeleteListitem = "LISTAGO_ConfirmDeleteListitem",
+    ConfirmEmptyList = "LISTAGO_ConfirmEmptyList",
+    ConfirmTransmitList = "LISTAGO_ConfirmTransmitList",
+    ConfirmEraseList = "LISTAGO_ConfirmEraseList",
+    ConfirmEraseListitem = "LISTAGO_ConfirmEraseListitem",
+    ConfirmEmptyTrash = "LISTAGO_ConfirmEmptyTrash",
+    ConfirmRestoreList = "LISTAGO_ConfirmRestoreList",
+    ConfirmRestoreListitem = "LISTAGO_ConfirmRestoreListitem",
+    TrashLists = "LISTAGO_TrashLists",
+    TrashListitems = "LISTAGO_TrashListitems",
+    TrashKeepinStock = "LISTAGO_TrashKeepInStock",
+    OpenAppOnTransmit = "LISTAGO_OpenAppOnTransmit",
+    DeleteListOnDevice = "LISTAGO_DeleteListOnDevice",
+    SyncListOnDevice = "LISTAGO_SyncListOnDevice",
+    AddMoreItemsDialog = "LISTAGO_AddMoreItemsDialog",
+    DebugSimulator = "LISTAGO_DebugSimulator",
+    DebugApp = "LISTAGO_DebugApp",
+    OpenedList = "LISTAGO_OpenedList",
+    IgnoreWatchOutdated = "LISTAGO_IgnoreWatchOutdated",
+    AdmobBannerHeight = "LISTAGO_AdmobBannerHeight",
 }
 
 @Injectable({
@@ -89,5 +91,37 @@ export class PreferencesService {
     public async Remove(prop: EPrefProperty) {
         this._prefsCache.delete(prop);
         await Preferences.remove({ key: prop });
+    }
+
+    /**
+     * import app settings from a json object
+     * @param json json object
+     * @returns true is import was successfull, false otherwise
+     */
+    public async Import(json?: { [key: string]: any }, listener?: ProgressListener): Promise<boolean> {
+        if (json) {
+            const ignore = ["FirstStart", "LastVersion", "DebugSimulator", "DebugApp", "OpenedList"];
+
+            const json_keys = Object.keys(json);
+            listener?.Init(json_keys.length);
+
+            const imported: string[] = [];
+            const pref_keys = Object.keys(EPrefProperty);
+
+            for await (const key of Object.keys(json)) {
+                if (!ignore.includes(key) && pref_keys.includes(key)) {
+                    const val = json[key];
+                    await this.Set(EPrefProperty[key as keyof typeof EPrefProperty], val);
+                    imported.push(key);
+                }
+                listener?.oneDone();
+            }
+            if (imported.length > 0) {
+                Logger.Debug(`Imported ${imported.length} settings:`, imported);
+            }
+
+            return true;
+        }
+        return false;
     }
 }

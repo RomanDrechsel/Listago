@@ -1,8 +1,9 @@
 import { inject, Injectable } from "@angular/core";
 import type { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { Directory, Filesystem } from "@capacitor/filesystem";
+import { List } from "src/app/services/lists/list";
 import { Logger } from "src/app/services/logging/logger";
-import { List, type ListModel } from "../../../lists/list";
+import { type ListModel } from "../../../lists/list";
 import { Listitem, ListitemModel } from "../../../lists/listitem";
 import { MainUpgradeStatements } from "../main-upgrade-statments";
 import { SqliteService } from "../sqlite.service";
@@ -260,6 +261,12 @@ export class ListsSqliteBackendService {
                         item.Id = val;
                     }
                 });
+
+                //delete all old items, that are no longer is this list...
+                const item_ids = args.list.Items.map(i => i.Id);
+                const query = `DELETE FROM \`listitems\` WHERE \`list_id\`=? AND \`id\` NOT IN (${item_ids.map(id => "?").join(", ")})`;
+                await conn.run(query, [args.list.Id, ...item_ids], false);
+
                 args.list.Clean();
             } else {
                 Logger.Error(`Could not store list ${args.list.toLog()} in backend`);

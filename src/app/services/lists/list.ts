@@ -223,6 +223,10 @@ export class List {
         return this._syncDevices;
     }
 
+    public get LegacyUuid(): string | undefined {
+        return this._legacyUuid;
+    }
+
     /** should the list be synced automatically to watch */
     public get Sync(): boolean {
         return this._syncDevices != undefined && this._syncDevices.length > 0;

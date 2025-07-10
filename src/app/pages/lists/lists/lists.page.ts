@@ -43,6 +43,7 @@ export class ListsPage extends AnimatedListPageBase {
                 this._lists = lists;
                 this._itemsInitialized = true;
                 this.onItemsChanged();
+                this.cdr.detectChanges();
             }
         });
         this.onItemsChanged();
