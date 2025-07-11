@@ -9,7 +9,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { Logger } from "src/app/services/logging/logger";
-import { type ImportResult, ListsImporter, ProgressListenerFactory } from "src/app/services/storage/lists/import/lists-importer";
+import { ListsImporter, ProgressListenerFactory } from "src/app/services/storage/lists/import/lists-importer";
 import { environment } from "src/environments/environment";
 import { PageBase } from "../../page-base";
 import { SqliteService } from "./../../../services/storage/sqlite/sqlite.service";
@@ -152,6 +152,7 @@ export class ImportPage extends PageBase {
             }
         });
 
+        const reload_lists_service: ("lists" | "trash")[] = [];
         const keys = Array.from(this._importItems.keys());
         for (let i = 0; i < keys.length; i++) {
             const item = this._importItems.get(keys[i]);
@@ -159,7 +160,7 @@ export class ImportPage extends PageBase {
                 continue;
             }
 
-            let result: ImportResult | undefined = undefined;
+            let result = true;
             item.status = "running";
 
             switch (keys[i]) {
@@ -171,13 +172,17 @@ export class ImportPage extends PageBase {
                         this._sqliteService,
                         this.ListsService,
                     );
+                    reload_lists_service.push("lists");
                     break;
                 case "trash":
                     result = await this._importer.ImportTrash(
                         ProgressListenerFactory(done => {
                             item.done = done;
                         }),
+                        this._sqliteService,
+                        this.ListsService,
                     );
+                    reload_lists_service.push("lists", "trash");
                     break;
                 case "settings":
                     result = await this._importer.ImportSettings(
@@ -189,7 +194,7 @@ export class ImportPage extends PageBase {
                     break;
             }
 
-            if (!result?.success) {
+            if (!result) {
                 item.status = "failed";
                 this.Popups.Toast.Error("page_settings_import.import_error");
                 this._importError = true;
@@ -200,6 +205,11 @@ export class ImportPage extends PageBase {
         }
 
         await this._importer?.CleanUp();
+
+        if (reload_lists_service.length > 0) {
+            await this.ListsService.ReloadListsDataset(reload_lists_service.filter((v, i, a) => i == a.indexOf(v)));
+        }
+
         this._importer = undefined;
         this._archive = undefined;
         this._importItems = undefined;

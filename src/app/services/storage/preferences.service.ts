@@ -109,10 +109,15 @@ export class PreferencesService {
             const pref_keys = Object.keys(EPrefProperty);
 
             for await (const key of Object.keys(json)) {
-                if (!ignore.includes(key) && pref_keys.includes(key)) {
-                    const val = json[key];
-                    await this.Set(EPrefProperty[key as keyof typeof EPrefProperty], val);
-                    imported.push(key);
+                if (!ignore.includes(key)) {
+                    if (pref_keys.includes(key)) {
+                        const val = json[key];
+                        await this.Set(EPrefProperty[key as keyof typeof EPrefProperty], val);
+                        imported.push(key);
+                        listener?.oneSuccess();
+                    } else {
+                        listener?.oneFailed();
+                    }
                 }
                 listener?.oneDone();
             }

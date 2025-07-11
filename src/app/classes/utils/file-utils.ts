@@ -259,7 +259,7 @@ export namespace FileUtils {
         let path: string = "";
         for (const p of paths) {
             if (path.length > 0) {
-                path += "/" + StringUtils.trimStart(p, "/");
+                path = StringUtils.trimEnd(path, "/") + "/" + StringUtils.trimStart(p, "/");
             } else {
                 path = p;
             }

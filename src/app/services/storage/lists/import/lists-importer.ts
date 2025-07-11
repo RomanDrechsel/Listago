@@ -2,6 +2,7 @@ import { Directory, Encoding, type FileInfo, Filesystem } from "@capacitor/files
 import { Zip } from "capa-zip";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { HelperUtils } from "src/app/classes/utils/helper-utils";
+import { StringUtils } from "src/app/classes/utils/string-utils";
 import { AppService } from "src/app/services/app/app.service";
 import { ConnectIQService } from "src/app/services/connectiq/connect-iq.service";
 import { List } from "src/app/services/lists/list";
@@ -12,6 +13,7 @@ import { Logger } from "src/app/services/logging/logger";
 import { LoggingService } from "src/app/services/logging/logging.service";
 import { EPrefProperty, PreferencesService } from "../../preferences.service";
 import type { SqliteService } from "../../sqlite/sqlite.service";
+import type { ListitemTrashModel } from "../listitem-trash-model";
 import { ListModel } from "./../list-model";
 
 export class ListsImporter {
@@ -22,6 +24,7 @@ export class ListsImporter {
     private readonly _listsBaseDirectory = "lists";
     private readonly _listsDirectory = "lists";
     private readonly _trashDirectory = "trash";
+    private readonly _trashItemsDirectory = "items";
 
     public get isRunning(): boolean {
         return this._running;
@@ -117,9 +120,9 @@ export class ListsImporter {
         return content;
     }
 
-    public async ImportLists(listener: ProgressListener, sqlite: SqliteService, listsService: ListsService): Promise<ImportResult> {
+    public async ImportLists(listener: ProgressListener, sqlite: SqliteService, listsService: ListsService): Promise<boolean> {
         if (!this._importPath) {
-            return { success: false };
+            return false;
         }
 
         this._running = true;
@@ -129,7 +132,13 @@ export class ListsImporter {
             files = (await Filesystem.readdir({ path: basedir })).files;
         } catch (e) {
             Logger.Error(`Importer: could not read lists directory '${basedir}' in '${Directory.Cache}':`, e);
-            return { success: false };
+            return false;
+        }
+
+        const all_files = files.length;
+        files = files.filter(f => f.type == "file" && f.name.endsWith(".json") && f.size > 0);
+        if (all_files > files.length) {
+            Logger.Debug(`Importer: skipping ${all_files - files.length} invalid entries in '${basedir}' while importing lists.`);
         }
 
         listener.Init(files.length);
@@ -137,35 +146,92 @@ export class ListsImporter {
         // add the new Lists at the end
         const next_order = await listsService.BackendService.getNextListOrder();
 
-        const ret: ImportResult = { success: true, imported: 0, failed: 0 };
         for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (file.name.endsWith(".json") && file.size > 0) {
-                if (await this.importListFile(file, next_order, sqlite, listsService)) {
-                    ret.imported!++;
-                } else {
-                    ret.failed!++;
-                }
+            if (await this.importListFile({ file: files[i], order_offset: next_order, is_trash: false }, sqlite, listsService)) {
+                listener.oneSuccess();
             } else {
-                Logger.Debug(`Importer: skipping non-json list file '${file.uri}'`);
+                listener.oneFailed();
             }
             listener.oneDone();
         }
 
-        return ret;
+        return true;
     }
 
-    public async ImportTrash(listener: ProgressListener): Promise<ImportResult> {
-        this._running = true;
-        listener.Init(2);
-        listener.oneDone();
-        listener.oneDone();
-        return { success: true, imported: 0, failed: 0 };
-    }
-
-    public async ImportSettings(listener: ProgressListener, services: ServicesList): Promise<ImportResult> {
+    public async ImportTrash(listener: ProgressListener, sqlite: SqliteService, listsService: ListsService): Promise<boolean> {
         if (!this._importPath) {
-            return { success: false };
+            return false;
+        }
+
+        this._running = true;
+
+        const trash_path = FileUtils.JoinPaths(this._importPath, this._listsBaseDirectory, this._trashDirectory);
+
+        let trash_lists: FileInfo[] = [];
+        let trash_items: FileInfo[] = [];
+        let files = [];
+        try {
+            files = (await Filesystem.readdir({ path: trash_path })).files;
+        } catch (e) {
+            Logger.Error(`Importer: could not read trash directory at '${trash_path}': `, e);
+            return false;
+        }
+
+        let ignore_lists = 0;
+        let ignore_items = 0;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type == "file" && file.name.endsWith(".json") && file.size > 0) {
+                trash_lists.push(file);
+            } else if (file.type == "directory" && file.name == this._trashItemsDirectory) {
+                let item_files: FileInfo[] = [];
+                try {
+                    item_files = (await Filesystem.readdir({ path: file.uri })).files;
+                } catch (e) {
+                    Logger.Error(`Importer: could not read trash items directory at '${file.uri}': `, e);
+                }
+                trash_items = item_files.filter(f => f.type == "file" && f.name.endsWith(".json") && f.size > 0);
+                ignore_items = item_files.length - trash_items.length;
+            } else {
+                ignore_lists++;
+            }
+        }
+
+        listener.Init(trash_lists.length + trash_items.length);
+
+        if (ignore_lists > 0) {
+            Logger.Debug(`Importer: ignoring ${ignore_lists} invalid entries in '${trash_path}' while importing lists trash.`);
+        }
+        for (let i = 0; i < trash_lists.length; i++) {
+            if (await this.importListFile({ file: trash_lists[i], order_offset: 0, is_trash: true }, sqlite, listsService)) {
+                listener.oneSuccess();
+            } else {
+                listener.oneFailed();
+            }
+
+            listener.oneDone();
+        }
+
+        if (ignore_items > 0) {
+            Logger.Debug(`Importer: ignoring ${ignore_items} invalid entries in '${FileUtils.JoinPaths(trash_path, this._trashItemsDirectory)}' while importing listitems trash.`);
+        }
+
+        for (let i = 0; i < trash_items.length; i++) {
+            if (await this.importListitemTrashFile({ file: trash_items[i] }, sqlite, listsService)) {
+                listener.oneSuccess();
+            } else {
+                listener.oneFailed();
+            }
+            listener.oneDone();
+        }
+
+        return true;
+    }
+
+    public async ImportSettings(listener: ProgressListener, services: ServicesList): Promise<boolean> {
+        if (!this._importPath) {
+            return false;
         }
 
         this._running = true;
@@ -176,7 +242,7 @@ export class ListsImporter {
             settingsFile = await Filesystem.readFile({ path: settingsPath, encoding: Encoding.UTF8 });
         } catch (e) {
             Logger.Error(`Importer: could not read settings file '${settingsPath}':`, e);
-            return { success: false };
+            return false;
         }
 
         let json = undefined;
@@ -184,7 +250,7 @@ export class ListsImporter {
             json = JSON.parse(settingsFile.data.toString());
         } catch (e) {
             Logger.Error(`Importer: could not parse settings file '${settingsPath}':`, e);
-            return { success: false };
+            return false;
         }
 
         let do_subscription = false;
@@ -212,40 +278,21 @@ export class ListsImporter {
         subscription.unsubscribe();
         if (!imported) {
             Logger.Error(`Importer: could not import settings from file '${settingsPath}'`);
-            return { success: false };
+            return false;
         }
 
-        return { success: true, imported: Object.keys(json).length };
+        return true;
     }
 
     public async CleanUp() {
         this._running = false;
     }
 
-    private async importListFile(file: FileInfo, order_offset: number, sqlite: SqliteService, listsService: ListsService): Promise<boolean> {
-        let data = undefined;
-        try {
-            data = (
-                await Filesystem.readFile({
-                    path: file.uri,
-                    encoding: Encoding.UTF8,
-                })
-            ).data.toString();
-        } catch (e) {
-            Logger.Error(`Importer: could not read file '${file.uri}':`, e);
-            return false;
-        }
-
-        let json = undefined;
-        try {
-            json = JSON.parse(data) as ListModel;
-        } catch (e) {
-            Logger.Error(`Importer: could not parse file '${file.uri}':`, e);
-            return false;
-        }
+    private async importListFile(args: { file: FileInfo; order_offset: number; is_trash: boolean }, sqlite: SqliteService, listsService: ListsService): Promise<boolean> {
+        const json = await this.getFileJson<ListModel>(args.file);
 
         if (!json || !json.uuid || !json.name) {
-            Logger.Error(`Importer: invalid list file '${file.uri}'`);
+            Logger.Error(`Importer: invalid list file '${args.file.uri}'`);
             return false;
         }
 
@@ -264,7 +311,7 @@ export class ListsImporter {
             for (let i = 0; i < json.items.length; i++) {
                 const model = json.items[i];
                 let item_id = undefined;
-                const res_item = await sqlite.Query("SELECT `id` FROM `listitems` WHERE `legacy_uuid`=? LIMIT 1", [String(model.uuid)]);
+                const res_item = await sqlite.Query("SELECT `id` FROM `listitems` WHERE `legacy_uuid` = ? LIMIT 1", [String(model.uuid)]);
                 if (res_item && Array.isArray(res_item) && res_item.length > 0 && res_item[0].id) {
                     item_id = Number(res_item[0].id);
                 }
@@ -291,10 +338,10 @@ export class ListsImporter {
             {
                 id: list_id,
                 name: json.name,
-                order: json.order + order_offset,
+                order: json.order + args.order_offset,
                 created: json.created,
                 modified: json.updated ?? Date.now(),
-                deleted: json.deleted,
+                deleted: args.is_trash ? json.deleted ?? Date.now() : undefined,
                 sync_devices: undefined,
                 legacy_uuid: String(json.uuid),
                 reset: json.reset?.active === true ? 1 : json.reset?.active === false ? 0 : undefined,
@@ -314,14 +361,120 @@ export class ListsImporter {
         const store = await listsService.StoreList(list, true, true, false);
         if (store === true) {
             if (is_new) {
-                Logger.Debug(`Importer: imported new list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)`);
+                Logger.Debug(`Importer: imported new list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)` + (args.is_trash ? " in trash" : ""));
             } else {
-                Logger.Debug(`Importer: updated list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)`);
+                Logger.Debug(`Importer: updated list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)` + (args.is_trash ? " in trash" : ""));
             }
             return true;
         }
 
         return store !== false;
+    }
+
+    private async importListitemTrashFile(args: { file: FileInfo }, sqlite: SqliteService, ListsService: ListsService): Promise<boolean> {
+        const json = await this.getFileJson<ListitemTrashModel>(args.file);
+        if (!json || !json.uuid) {
+            Logger.Error(`Importer: invalid listitems trash file '${args.file.uri}'`);
+            return false;
+        }
+
+        if (json.items) {
+            const res = await sqlite.Query("SELECT `id` FROM `lists` WHERE `legacy_uuid` = ? LIMIT 1", [String(json.uuid)]);
+            if (!res || !Array.isArray(res) || res.length <= 0 || !res[0].id) {
+                Logger.Error(`Importer: could not import listitem trash for legacy_uuid '${json.uuid}' - no list found`);
+                return false;
+            }
+
+            const list_id = Number(res[0].id);
+
+            for (let i = 0; i < json.items.length; i++) {
+                const item = json.items[i];
+                //check if this listitem is already in trash...
+                const res2 = await sqlite.Query("SELECT `id` FROM `listitems` WHERE `legacy_uuid` = ? LIMIT 1", [String(item.uuid)]);
+                if (String(item.uuid) == "915002") {
+                    console.log(res2);
+                }
+                if (!res2 || !Array.isArray(res2) || res2.length <= 0 || !res2[0].id) {
+                    //insert new listitem
+                    const res3 = await sqlite.Execute("INSERT INTO `listitems` (`list_id`,`item`, `note`, `order`,`hidden`, `locked`, `created`, `modified`,`deleted`,`legacy_uuid`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+                        list_id,
+                        item.item,
+                        item.note ?? null,
+                        item.order,
+                        item.hidden ? "1" : "0",
+                        item.locked ? "1" : "0",
+                        item.created,
+                        item.updated ?? Date.now(),
+                        item.deleted ?? Date.now(),
+                        item.uuid,
+                    ]);
+                    if (res3?.changes?.lastId && res3.changes.lastId > 0) {
+                        Logger.Debug(`Importer: added new listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' to trash (id: ${res3.changes.lastId})`);
+                    } else {
+                        Logger.Error(`Importer: could not add new listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' to trash`);
+                        return false;
+                    }
+                } else {
+                    //update listitem
+                    const res3 = await sqlite.Execute(
+                        `UPDATE
+                            \`listitems\`
+                        SET
+                            \`list_id\` = ?,
+                            \`item\` = ?,
+                            \`note\` = ?,
+                            \`order\` = ?,
+                            \`hidden\` = ?,
+                            \`locked\` = ?,
+                            \`created\` = ?,
+                            \`modified\` = ?,
+                            \`deleted\` = ?,
+                            \`legacy_uuid\` = ?
+                        WHERE
+                            \`id\` = ?`,
+                        [list_id, item.item, item.note ?? null, item.order, item.hidden ? "1" : "0", item.locked ? "1" : "0", item.created, item.updated ?? Date.now(), item.deleted ?? Date.now(), String(item.uuid), Number(res2[0].id)],
+                    );
+                    if (res3?.changes) {
+                        Logger.Debug(`Importer: updated listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' in trash (id: ${res2[0].id})`);
+                    } else {
+                        Logger.Error(`Importer: could not update listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' in trash (id: ${res[0].id})`);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private async getFileJson<T>(file: FileInfo): Promise<T | undefined> {
+        let data = undefined;
+        try {
+            data = (
+                await Filesystem.readFile({
+                    path: file.uri,
+                    encoding: Encoding.UTF8,
+                })
+            ).data.toString();
+        } catch (e) {
+            Logger.Error(`Importer: could not read file '${file.uri}':`, e);
+            return undefined;
+        }
+
+        let json = undefined;
+        try {
+            json = JSON.parse(data) as T;
+        } catch (e) {
+            Logger.Error(`Importer: could not parse file '${file.uri}':`, e);
+            return undefined;
+        }
+
+        if (!json) {
+            Logger.Error(`Importer: invalid import file '${file.uri}'`);
+            return undefined;
+        }
+
+        return json;
     }
 }
 
@@ -335,6 +488,9 @@ export type ServicesList = {
 export abstract class ProgressListener {
     protected _total: number = -1;
     protected _done: number = 0;
+    protected _success: number = 0;
+    protected _failed: number = 0;
+
     public Init(total: number) {
         this._done = 0;
         this._total = total;
@@ -347,14 +503,16 @@ export abstract class ProgressListener {
         }
     }
 
+    public oneSuccess() {
+        this._success++;
+    }
+
+    public oneFailed() {
+        this._failed++;
+    }
+
     protected abstract onProgress(done: number): Promise<void>;
 }
-
-export type ImportResult = {
-    success: boolean;
-    imported?: number;
-    failed?: number;
-};
 
 export function ProgressListenerFactory(onProgressCallback: (progress: number) => void | Promise<void>): ProgressListener {
     return new (class extends ProgressListener {

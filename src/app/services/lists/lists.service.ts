@@ -792,6 +792,17 @@ export class ListsService {
         return this.syncListToWatch(list_to_sync, obj.force_if_sync_is_disabled);
     }
 
+    public async ReloadListsDataset(datasets?: ("lists" | "trash")[]): Promise<void> {
+        if (!datasets || datasets.includes("lists")) {
+            const lists = await this.GetLists();
+            this.onListsChangedSubject.next(lists);
+        }
+        if (datasets?.includes("trash")) {
+            const trash = await this.GetTrash();
+            this.onTrashDatasetChangedSubject.next(trash);
+        }
+    }
+
     private async addListToIndex(list: List) {
         if (!list.Id) {
             await this.StoreList(list, true, true, true);
