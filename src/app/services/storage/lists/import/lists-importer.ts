@@ -11,6 +11,7 @@ import type { ListsService } from "src/app/services/lists/lists.service";
 import { LocalizationService } from "src/app/services/localization/localization.service";
 import { Logger } from "src/app/services/logging/logger";
 import { LoggingService } from "src/app/services/logging/logging.service";
+import { environment } from "src/environments/environment";
 import { EPrefProperty, PreferencesService } from "../../preferences.service";
 import type { SqliteService } from "../../sqlite/sqlite.service";
 import type { ListitemTrashModel } from "../listitem-trash-model";
@@ -218,8 +219,9 @@ export class ListsImporter {
         }
 
         for (let i = 0; i < trash_items.length; i++) {
-            if (await this.importListitemTrashFile({ file: trash_items[i] }, sqlite, listsService)) {
-                listener.oneSuccess();
+            const imported = await this.importListitemTrashFile({ file: trash_items[i] }, sqlite, listsService);
+            if (imported) {
+                listener.oneSuccess(imported);
             } else {
                 listener.oneFailed();
             }
@@ -286,6 +288,14 @@ export class ListsImporter {
 
     public async CleanUp() {
         this._running = false;
+
+        if (this._importPath && environment.production) {
+            try {
+                await Filesystem.rmdir({ path: this._importPath, recursive: true });
+            } catch (e) {
+                Logger.Error(`Importer: could not clean up import directory at '${this._importPath}': `, e);
+            }
+        }
     }
 
     private async importListFile(args: { file: FileInfo; order_offset: number; is_trash: boolean }, sqlite: SqliteService, listsService: ListsService): Promise<boolean> {
@@ -371,7 +381,7 @@ export class ListsImporter {
         return store !== false;
     }
 
-    private async importListitemTrashFile(args: { file: FileInfo }, sqlite: SqliteService, ListsService: ListsService): Promise<boolean> {
+    private async importListitemTrashFile(args: { file: FileInfo }, sqlite: SqliteService, ListsService: ListsService): Promise<false | number> {
         const json = await this.getFileJson<ListitemTrashModel>(args.file);
         if (!json || !json.uuid) {
             Logger.Error(`Importer: invalid listitems trash file '${args.file.uri}'`);
@@ -442,9 +452,11 @@ export class ListsImporter {
                     }
                 }
             }
+
+            return json.items.length;
         }
 
-        return true;
+        return 0;
     }
 
     private async getFileJson<T>(file: FileInfo): Promise<T | undefined> {
@@ -491,6 +503,14 @@ export abstract class ProgressListener {
     protected _success: number = 0;
     protected _failed: number = 0;
 
+    public get Success(): number {
+        return this._success;
+    }
+
+    public get Failed(): number {
+        return this._failed;
+    }
+
     public Init(total: number) {
         this._done = 0;
         this._total = total;
@@ -503,12 +523,12 @@ export abstract class ProgressListener {
         }
     }
 
-    public oneSuccess() {
-        this._success++;
+    public oneSuccess(number: number = 1) {
+        this._success += number;
     }
 
-    public oneFailed() {
-        this._failed++;
+    public oneFailed(number: number = 1) {
+        this._failed += number;
     }
 
     protected abstract onProgress(done: number): Promise<void>;

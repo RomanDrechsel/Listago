@@ -167,14 +167,6 @@
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    :host {
-        ion-content.page {
-            --background: var(--ion-color-primary-shade);
-        }
-    }
-}
-
 @media (min-width: 1160px) {
     :host {
         ion-content.page {

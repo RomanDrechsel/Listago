@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { CapacitorException } from "@capacitor/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FilePicker, type PickFilesResult } from "@capawesome/capacitor-file-picker";
-import { IonButton, IonButtons, IonCard, IonCheckbox, IonContent, IonIcon, IonLabel, IonList, IonProgressBar, IonText } from "@ionic/angular/standalone";
+import { IonButton, IonButtons, IonCard, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonProgressBar, IonText } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -19,16 +19,16 @@ import { SqliteService } from "./../../../services/storage/sqlite/sqlite.service
     templateUrl: "./import.page.html",
     styleUrls: ["./import.page.scss"],
     standalone: true,
-    imports: [IonCheckbox, IonProgressBar, IonText, IonLabel, IonList, IonCard, IonIcon, IonButton, IonButtons, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
+    imports: [IonItem, IonCheckbox, IonProgressBar, IonText, IonLabel, IonList, IonCard, IonIcon, IonButton, IonButtons, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
 })
 export class ImportPage extends PageBase {
     private _archive?: string;
 
-    private _importItems?: Map<string, ImportItem>;
+    private _importItems?: ImportItem[];
 
     private _importer?: ListsImporter;
 
-    private _importDone: boolean = false;
+    private _importDone = false;
     private _importError = false;
 
     private _archiveValid?: boolean;
@@ -49,10 +49,14 @@ export class ImportPage extends PageBase {
 
     public get ImportItems(): ImportItem[] | undefined {
         if (this._importItems) {
-            return Array.from(this._importItems.values()).sort((a, b) => a.order - b.order);
+            return this._importItems.sort((a, b) => a.order - b.order);
         } else {
             return undefined;
         }
+    }
+
+    public get FinishedImportItems(): ImportItem[] {
+        return this._importItems?.filter(i => i.status == "success" || i.status == "failed") ?? [];
     }
 
     public get ArchiveValid(): boolean | undefined {
@@ -115,20 +119,20 @@ export class ImportPage extends PageBase {
             }
         }
 
-        this._importItems = new Map<string, ImportItem>();
+        this._importItems = [];
 
         this._importer = new ListsImporter();
         await this._importer.Initialize(this._archive!);
         const content = await this._importer.Analyse();
         if (content.length > 0) {
             if (content.includes("lists")) {
-                this._importItems.set("lists", { locale: "im-export.item_lists", status: "enabled", icon: "/assets/icons/menu/lists.svg", done: 0, order: 0 });
+                this._importItems.push({ key: "lists", locale: "im-export.item_lists", status: "enabled", icon: "/assets/icons/menu/lists.svg", done: 0, order: 0 });
             }
             if (content.includes("trash")) {
-                this._importItems.set("trash", { locale: "im-export.item_trash", status: "enabled", icon: "/assets/icons/menu/trash.svg", done: 0, order: 1 });
+                this._importItems.push({ key: "trash", locale: "im-export.item_trash", status: "enabled", icon: "/assets/icons/menu/trash.svg", done: 0, order: 1 });
             }
             if (content.includes("settings")) {
-                this._importItems.set("settings", { locale: "im-export.item_settings", status: "enabled", icon: "/assets/icons/menu/settings.svg", done: 0, order: 2 });
+                this._importItems.push({ key: "settings", locale: "im-export.item_settings", status: "enabled", icon: "/assets/icons/menu/settings.svg", done: 0, order: 2 });
             }
             this._archiveValid = true;
         } else {
@@ -154,8 +158,8 @@ export class ImportPage extends PageBase {
 
         const reload_lists_service: ("lists" | "trash")[] = [];
         const keys = Array.from(this._importItems.keys());
-        for (let i = 0; i < keys.length; i++) {
-            const item = this._importItems.get(keys[i]);
+        for (let i = 0; i < this._importItems.length; i++) {
+            const item = this._importItems[i];
             if (item?.status != "enabled") {
                 continue;
             }
@@ -163,34 +167,21 @@ export class ImportPage extends PageBase {
             let result = true;
             item.status = "running";
 
-            switch (keys[i]) {
+            const listener = ProgressListenerFactory(done => {
+                item.done = done;
+            });
+
+            switch (item.key) {
                 case "lists":
-                    result = await this._importer.ImportLists(
-                        ProgressListenerFactory(done => {
-                            item.done = done;
-                        }),
-                        this._sqliteService,
-                        this.ListsService,
-                    );
+                    result = await this._importer.ImportLists(listener, this._sqliteService, this.ListsService);
                     reload_lists_service.push("lists");
                     break;
                 case "trash":
-                    result = await this._importer.ImportTrash(
-                        ProgressListenerFactory(done => {
-                            item.done = done;
-                        }),
-                        this._sqliteService,
-                        this.ListsService,
-                    );
+                    result = await this._importer.ImportTrash(listener, this._sqliteService, this.ListsService);
                     reload_lists_service.push("lists", "trash");
                     break;
                 case "settings":
-                    result = await this._importer.ImportSettings(
-                        ProgressListenerFactory(done => {
-                            item.done = done;
-                        }),
-                        { preferences: this.Preferences, connectiq: this.ConnectIQ, locale: this.Locale, logger: this.Logger },
-                    );
+                    result = await this._importer.ImportSettings(listener, { preferences: this.Preferences, connectiq: this.ConnectIQ, locale: this.Locale, logger: this.Logger });
                     break;
             }
 
@@ -202,6 +193,9 @@ export class ImportPage extends PageBase {
             } else {
                 item.status = "success";
             }
+
+            item.success = listener.Success;
+            item.failed = listener.Failed;
         }
 
         await this._importer?.CleanUp();
@@ -212,8 +206,8 @@ export class ImportPage extends PageBase {
 
         this._importer = undefined;
         this._archive = undefined;
-        this._importItems = undefined;
         this._importDone = true;
+        this.cdr.detectChanges();
     }
 
     public async onChangeImportItem(item: ImportItem) {
@@ -226,6 +220,61 @@ export class ImportPage extends PageBase {
 
     public async importDone() {
         await this.NavController.navigateBack("lists");
+    }
+
+    public Report(item_index: ImportKey): string {
+        const item = this._importItems?.find(i => i.key == item_index);
+        let ret: string[] = [];
+
+        if (item && (item.status == "success" || item.status == "failed") && item.success !== undefined && item.failed !== undefined) {
+            if (item_index == "settings") {
+                if (item.failed == 0) {
+                    ret.push(this.Locale.getText("page_settings_import.import_report_success_settings"));
+                } else {
+                    ret.push(this.Locale.getText("page_settings_import.import_report_failed_settings"));
+                }
+            } else {
+                if (item.success == 1) {
+                    ret.push(this.Locale.getText(`page_settings_import.import_report_success_${item_index}_singular`));
+                } else if (item.success > 1) {
+                    ret.push(this.Locale.getText(`page_settings_import.import_report_success_${item_index}`, { num: item.success }));
+                }
+                if (item.failed == 1) {
+                    ret.push(this.Locale.getText(`page_settings_import.import_report_failed_${item_index}_singular`));
+                } else if (item.failed > 1) {
+                    ret.push(this.Locale.getText(`page_settings_import.import_report_failed_${item_index}`, { num: item.failed }));
+                }
+                if (ret.length <= 0) {
+                    ret.push(this.Locale.getText(`page_settings_import.import_report_success_${item_index}`, { num: 0 }));
+                }
+            }
+        }
+        return ret.join("<br />");
+    }
+
+    public ReportIcon(item_index: ImportKey): string {
+        const item = this._importItems?.find(i => i.key == item_index);
+        if (item) {
+            if (item.status == "success" && !item.failed) {
+                return "/assets/icons/im-export/item_success.svg";
+            } else if (item.status == "failed") {
+                return "/assets/icons/im-export/item_failed.svg";
+            }
+        }
+
+        return "/assets/icons/im-export/item_disabled.svg";
+    }
+
+    public ReportIconClass(item_index: ImportKey): string {
+        const item = this._importItems?.find(i => i.key == item_index);
+        if (item) {
+            if (item.status == "success" && !item.failed) {
+                return "success";
+            } else if (item.status == "failed" || (item.status == "success" && item.failed)) {
+                return "failed";
+            }
+        }
+        return "";
     }
 
     private async error() {
@@ -254,10 +303,15 @@ export class ImportPage extends PageBase {
     }
 }
 
+type ImportKey = "lists" | "trash" | "settings";
+
 type ImportItem = {
+    key: ImportKey;
     locale: string;
     status: "success" | "failed" | "running" | "disabled" | "enabled";
     icon: string;
     done: number;
+    success?: number;
+    failed?: number;
     order: number;
 };

@@ -28,7 +28,7 @@
                     </ion-list>
                 </ion-card>
                 <div class="buttons">
-                    <ion-button color="secondary" (click)="selectArchive()">{{'page_settings_import.btn_reset_archive'|translate}}</ion-button>
+                    <ion-button color="secondary" fill="outline" (click)="selectArchive()">{{'page_settings_import.btn_reset_archive'|translate}}</ion-button>
                 </div>
             </div>
 
@@ -58,10 +58,21 @@
 
 <ng-template #done>
     <div class="container done">
-        <ion-icon src="/assets/icons/done.svg"></ion-icon>
         <div class="content">
-            <div class="text" [innerHTML]="'page_settings_import.import_success' | translate"></div>
+            <div>
+                <ion-icon src="/assets/icons/done.svg" class="done"></ion-icon>
+                <div class="text" [innerHTML]="'page_settings_import.import_success' | translate"></div>
+            </div>
+            <ion-card>
+                <ion-list>
+                    <ion-item lines="full" *ngFor="let item of FinishedImportItems">
+                        <ion-label [innerHTML]="Report(item.key)"></ion-label>
+                        <ion-icon [src]="ReportIcon(item.key)" [ngClass]="[ReportIconClass(item.key)]" slot="end"></ion-icon>
+                    </ion-item>
+                </ion-list>
+            </ion-card>
         </div>
+
         <ion-buttons class="fixed-bottom">
             <ion-button fill="solid" color="secondary" (click)="importDone()">{{ 'done' | translate }}</ion-button>
         </ion-buttons>

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonNote, IonText } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { Subscription } from "rxjs";
@@ -16,7 +16,6 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     selector: "app-trash-lists",
     templateUrl: "./trash-lists.page.html",
     styleUrls: ["./trash-lists.page.scss"],
-    changeDetection: ChangeDetectionStrategy.Default,
     imports: [IonCheckbox, IonLabel, IonContent, IonText, IonNote, IonItem, IonImg, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonFab, IonFabButton, CommonModule, TranslateModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
 })
 export class TrashListsPage extends AnimatedListPageBase {
@@ -29,7 +28,14 @@ export class TrashListsPage extends AnimatedListPageBase {
     }
 
     public override async ionViewWillEnter() {
-        super.ionViewWillEnter();
+        await super.ionViewWillEnter();
+        this.Lists = (await this.ListsService.GetTrash()).sort((a: List, b: List) => b.Deleted - a.Deleted);
+        this._itemsInitialized = true;
+        this.onItemsChanged();
+    }
+
+    public override async ionViewDidEnter(): Promise<void> {
+        await super.ionViewDidEnter();
         this._trashChangedSubscription = this.ListsService.onTrashDatasetChanged$.subscribe(lists => {
             this.Lists = lists ?? [];
             if (lists) {
@@ -39,10 +45,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 this.appComponent.setAppPages(this.ModifyMainMenu());
             }
         });
-
-        this.Lists = (await this.ListsService.GetTrash()).sort((a: List, b: List) => b.Deleted - a.Deleted);
-        this._itemsInitialized = true;
-        this.onItemsChanged();
+        this.appComponent.setAppPages(this.ModifyMainMenu());
     }
 
     public override async ionViewDidLeave() {
@@ -74,9 +77,7 @@ export class TrashListsPage extends AnimatedListPageBase {
 
     public async restoreList(lists: List | List[]): Promise<boolean | undefined> {
         const success = await this.ListsService.RestoreListFromTrash(lists);
-        if (success) {
-            this._itemsList?.closeSlidingItems();
-        }
+        this._itemsList?.closeSlidingItems();
         return success;
     }
 

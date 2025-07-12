@@ -174,11 +174,12 @@ ion-datetime {
     }
 
     .action-sheet-selected {
-        background: var(--ion-color-light);
+        background: var(--ion-color-light-shade);
     }
 
     .action-sheet-cancel {
         border-top: solid 1px var(--ion-color-light-shade);
+        background: var(--ion-color-dark-contrast);
     }
 }
 
@@ -186,6 +187,12 @@ ion-datetime {
     ion-datetime {
         &::part(calendar-day active) {
             color: var(--ion-color-dark);
+        }
+    }
+
+    ion-alert {
+        button.alert-button {
+            color: var(--ion-color-primary-tint) !important;
         }
     }
 }

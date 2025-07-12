@@ -64,6 +64,7 @@
     --ion-color-dark-tint: #2e2e3f;
 
     --ion-background-color: #f4f4f4;
+    --ion-background-color-rgb: 244, 244, 244;
     --ion-card-background: #f0f0f0;
     --ion-card-color: var(--ion-color-dark);
 
@@ -79,7 +80,7 @@
     --color-light-background: #e6f0ff;
     --color-medium-tint: #a0a6b3;
     --color-secondary-disabled: #c4dbff; /* rgba(var(--ion-color-primary), 0.3) */
-    --color-skyblue: #9ad4f4; //TODO: to darkmode
+    --color-skyblue: #9ad4f4;
 }
 
 html {
@@ -102,15 +103,15 @@ html {
         --ion-color-primary-contrast: #ffffff;
         --ion-color-primary-contrast-rgb: 255, 255, 255;
         --ion-color-primary-shade: #336fdb;
-        --ion-color-primary-tint: #5397ff;
+        --ion-color-primary-tint: #73abff;
 
         /** secondary **/
-        --ion-color-secondary: #90bfff;
-        --ion-color-secondary-rgb: 144, 191, 255;
-        --ion-color-secondary-contrast: #0c1b3a;
-        --ion-color-secondary-contrast-rgb: 12, 27, 58;
-        --ion-color-secondary-shade: #7ab0f0;
-        --ion-color-secondary-tint: #a8ccff;
+        --ion-color-secondary: #1e40af;
+        --ion-color-secondary-rgb: 30, 64, 175;
+        --ion-color-secondary-contrast: #ffffff;
+        --ion-color-secondary-contrast-rgb: 255, 255, 255;
+        --ion-color-secondary-shade: #1a389b;
+        --ion-color-secondary-tint: #4760d1;
 
         /** success **/
         --ion-color-success: #66ffb2;
@@ -144,7 +145,7 @@ html {
         --ion-color-medium-shade: #8896ab;
         --ion-color-medium-tint: #c1ccdb;
 
-        /** Light (z.B. Flächen-Hintergrund) **/
+        /** Light (e.g. Background of surfaces) **/
         --ion-color-light: #2a2d3c;
         --ion-color-light-rgb: 42, 45, 60;
         --ion-color-light-contrast: #ffffff;
@@ -153,7 +154,7 @@ html {
         --ion-color-light-tint: #393d52;
         --ion-color-light-tint-rgb: 57, 61, 82;
 
-        /** Dark (Text / Kontraste) **/
+        /** Dark (Text / Contrasts) **/
         --ion-color-dark: #e4e8f0;
         --ion-color-dark-rgb: 228, 232, 240;
         --ion-color-dark-contrast: #1c1e2a;
@@ -161,8 +162,9 @@ html {
         --ion-color-dark-shade: #cfd3dc;
         --ion-color-dark-tint: #eef1f6;
 
-        /** Hintergrundfarben **/
-        --ion-background-color: #12141c;
+        /** Background colors **/
+        --ion-background-color: #3a4058;
+        --ion-background-color-rgb: 58, 64, 88;
         --ion-card-color: var(--ion-color-dark);
 
         /** toast notice **/
@@ -179,5 +181,6 @@ html {
         --color-light-background: #1b1d26;
         --color-medium-tint: #6e7286;
         --color-secondary-disabled: #2a3d66;
+        --color-skyblue: #475569;
     }
 }
