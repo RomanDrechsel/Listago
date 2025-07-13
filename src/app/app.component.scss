@@ -19,11 +19,11 @@
                 --background: var(--ion-background-color);
 
                 &.selected {
-                    --color: var(--ion-color-primary);
-                    --background: rgba(var(--ion-color-primary-rgb), 0.08);
+                    --color: var(--ion-color-secondary);
+                    --background: rgba(var(--ion-color-secondary-rgb), 0.08);
 
                     ion-icon {
-                        fill: var(--ion-color-primary);
+                        fill: var(--ion-color-secondary);
                     }
                 }
 
@@ -92,10 +92,10 @@
             ion-list {
                 ion-item {
                     &.selected {
-                        --color: var(--ion-color-primary-tint);
+                        --color: var(--ion-color-secondary-tint);
 
                         ion-icon {
-                            fill: var(--ion-color-primary-tint);
+                            fill: var(--ion-color-secondary-tint);
                         }
                     }
                 }

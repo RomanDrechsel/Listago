@@ -13,6 +13,7 @@ import { LocalizationService } from "../../services/localization/localization.se
 import { Logger } from "../../services/logging/logger";
 import { WatchLoggingService } from "../../services/logging/watch-logging.service";
 import { PopupsService } from "../../services/popups/popups.service";
+import { MainToolbarComponent } from "../main-toolbar/main-toolbar.component";
 import { AppService } from "./../../services/app/app.service";
 
 @Component({
@@ -72,9 +73,9 @@ export class StoreLogComponent {
 
                 if (this.do.value == "store") {
                     try {
-                        AppService.AppToolbar?.ToggleProgressbar(true);
+                        MainToolbarComponent.ToggleProgressbar(true);
                         const result = await Filesystem.copy({ from: this.Params.file.Path, to: `${this.Params.file.Filename}.txt`, toDirectory: Directory.Documents });
-                        AppService.AppToolbar?.ToggleProgressbar(false);
+                        MainToolbarComponent.ToggleProgressbar(false);
                         Logger.Debug(`Stored log ${this.Params.file.Filename} in DOCUMENTS`);
 
                         await FileOpener.open({ filePath: result.uri, contentType: "text/plain" });

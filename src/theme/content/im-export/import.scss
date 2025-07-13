@@ -1,0 +1,57 @@
+.done-report {
+    flex-grow: 1;
+    text-align: center;
+
+    .content {
+        justify-content: space-between;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        ion-icon.done {
+            fill: var(--ion-color-success);
+            width: 50%;
+            max-width: 200px;
+            max-height: 20vh;
+            min-height: 64px;
+            height: auto;
+            aspect-ratio: 1/1;
+            margin: 1em auto 5vh;
+        }
+
+        .text {
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        ion-card {
+            margin-top: 2em;
+
+            ion-item {
+                ion-label {
+                    font-size: 0.9em;
+                }
+
+                ion-icon {
+                    &.success {
+                        fill: var(--ion-color-success);
+                    }
+
+                    &.failed {
+                        fill: var(--ion-color-danger);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.fixed-bottom {
+    flex-grow: 0;
+    justify-content: end;
+
+    ion-button {
+        margin-inline: 0.5em;
+        width: calc(50% - 1em);
+    }
+}

@@ -6,7 +6,7 @@
                     <ion-img id="main-applogo" src="./assets/img/applogo.png" alt="Listago"></ion-img>
                 </div>
                 <ion-list id="page-list">
-                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" detail="false" *ngFor="let p of appPages">
+                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" [button]="true" detail="false" *ngFor="let p of appPages">
                         <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
                         <ion-label>{{ p.TitleId | translate }}</ion-label>
                     </ion-item>
@@ -20,7 +20,7 @@
                     <ion-item *ngIf="isDevMode" lines="full">
                         <ion-toggle labelPlacement="end" justify="start" [checked]="ConnectIQ.useGarminDebugApp" (ionChange)="onGarminDebugApp($event.target.checked)">Debug App</ion-toggle>
                     </ion-item>
-                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" detail="false" *ngFor="let p of systemPages">
+                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" detail="false" [button]="true" *ngFor="let p of systemPages">
                         <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
                         <ion-label>{{ p.TitleId | translate }}</ion-label>
                     </ion-item>

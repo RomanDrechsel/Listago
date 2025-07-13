@@ -42,7 +42,7 @@ ion-button {
 
     &.button-outline {
         --border-color: var(--ion-color-secondary);
-        --color: var(--ion-color-secondary-contrast); //WIP:
+        --color: var(--ion-color-secondary-contrast);
     }
 }
 
@@ -94,9 +94,9 @@ ion-input,
 ion-textarea,
 ion-select {
     --color: var(--ion-color-dark) !important;
-    --highlight-color-focused: var(--ion-color-primary) !important;
-    --highlight-color-valid: var(--ion-color-primary) !important;
-    --highlight-color-invalid: var(--ion-color-primary) !important;
+    --highlight-color-focused: var(--ion-color-secondary) !important;
+    --highlight-color-valid: var(--ion-color-secondary) !important;
+    --highlight-color-invalid: var(--ion-color-secondary) !important;
     --border-color: var(--ion-color-dark-tint) !important;
     color: var(--color);
 
@@ -114,10 +114,10 @@ ion-select {
     }
 
     &.has-focus {
-        --border-color: var(--ion-color-primary) !important;
+        --border-color: var(--ion-color-secondary) !important;
 
         .label-text-wrapper {
-            color: var(--ion-color-primary) !important;
+            color: var(--ion-color-secondary) !important;
         }
     }
 
@@ -228,6 +228,8 @@ ion-icon.info-icon {
 ion-checkbox {
     --border-color: var(--ion-color-medium);
     --checkbox-background: var(--ion-color-light);
+    --checkbox-background-checked: var(--ion-color-secondary);
+    --border-color-checked: var(--ion-color-secondary);
 
     &::part(container) {
         position: absolute;
@@ -240,6 +242,12 @@ ion-checkbox {
         margin-block-start: 0;
         text-wrap: wrap;
     }
+}
+
+ion-toggle {
+    --color: var(--ion-color-secondary);
+    --track-background-checked: rgba(var(--ion-color-secondary-rgb, 0, 84, 233), 0.5);
+    --handle-background-checked: var(--ion-color-secondary);
 }
 
 ion-datetime {
@@ -284,16 +292,13 @@ ion-card {
         --background: linear-gradient(to bottom, #002794, #00144c);
     }
 
-    ion-input,
-    ion-textarea,
-    ion-select {
-        --color: var(--ion-color-dark) !important;
-        --highlight-color-focused: var(--ion-color-primary-tint) !important;
-        --highlight-color-valid: var(--ion-color-primary-tint) !important;
-        --highlight-color-invalid: var(--ion-color-primary-tint) !important;
-    }
-
     a:link {
         color: var(--ion-color-secondary);
+    }
+
+    ion-button.button-outline {
+        &::part(native) {
+            color: var(--ion-color-secondary-contrast) !important;
+        }
     }
 }

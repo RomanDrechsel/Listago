@@ -4,6 +4,7 @@ import { Browser } from "@capacitor/browser";
 import { Capacitor } from "@capacitor/core";
 import { NavController } from "@ionic/angular/standalone";
 import { BehaviorSubject, interval, Subscription } from "rxjs";
+import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { DebugDevices } from "../../../environments/environment";
 import { StringUtils } from "../../classes/utils/string-utils";
 import { SelectGarminDevice } from "../../pages/devices/devices.page";
@@ -17,7 +18,6 @@ import { DeviceStateListener } from "../../plugins/connectiq/listeners/device-st
 import { PluginLogsListener } from "../../plugins/connectiq/listeners/plugin-logs-listener";
 import { TimeoutListener } from "../../plugins/connectiq/listeners/timeout-listener";
 import { TransactionListener } from "../../plugins/connectiq/listeners/transaction-listener";
-import { AppService } from "../app/app.service";
 import { ConfigService } from "../config/config.service";
 import { Locale } from "../localization/locale";
 import { LocalizationService } from "../localization/localization.service";
@@ -155,7 +155,7 @@ export class ConnectIQService {
         if (!force_load && this._devices.length > 0) {
             return this._devices;
         }
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
 
         const defaultTransmitDevice = await this.Preferences.Get<number>(EPrefProperty.AlwaysTransmitTo, -1);
         let devices: ConnectIQDevice[] = [];
@@ -195,7 +195,7 @@ export class ConnectIQService {
             Logger.Debug(`Lists will be transmited to device ${this._alwaysTransmitToDevice.toLog()} by default`);
         }
         this._devices = devices;
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return this._devices;
     }
 
@@ -285,7 +285,7 @@ export class ConnectIQService {
             obj.data = {};
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         let listener: TransactionListener | undefined;
         if (obj.response_callback) {
             let tid: number;
@@ -299,13 +299,13 @@ export class ConnectIQService {
         }
 
         if ((await ConnectIQ.SendToDevice({ device_id: String(obj.device.Identifier), type: obj.messageType, json: JSON.stringify(obj.data) })).success) {
-            AppService.AppToolbar?.ToggleProgressbar(false);
+            MainToolbarComponent.ToggleProgressbar(false);
             return listener?.TId ?? true;
         } else {
             if (listener) {
                 this.removeListener(listener);
             }
-            AppService.AppToolbar?.ToggleProgressbar(false);
+            MainToolbarComponent.ToggleProgressbar(false);
             return false;
         }
     }

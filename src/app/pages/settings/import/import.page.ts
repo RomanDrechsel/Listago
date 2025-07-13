@@ -4,9 +4,10 @@ import { FormsModule } from "@angular/forms";
 import { CapacitorException } from "@capacitor/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FilePicker, type PickFilesResult } from "@capawesome/capacitor-file-picker";
-import { IonButton, IonButtons, IonCard, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonProgressBar, IonText } from "@ionic/angular/standalone";
+import { IonButton, IonButtons, IonCard, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonProgressBar, IonText, ModalController } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { FileUtils } from "src/app/classes/utils/file-utils";
+import { ImportDonePopup } from "src/app/components/import-done/import-done.component";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { Logger } from "src/app/services/logging/logger";
 import { ListsImporter, ProgressListenerFactory } from "src/app/services/storage/lists/import/lists-importer";
@@ -33,7 +34,10 @@ export class ImportPage extends PageBase {
 
     private _archiveValid?: boolean;
 
+    private _leftPageWhileRunning = false;
+
     private readonly _sqliteService = inject(SqliteService);
+    private readonly _modalCtrl = inject(ModalController);
 
     public get ImportDone(): boolean {
         return this._importDone;
@@ -69,6 +73,13 @@ export class ImportPage extends PageBase {
 
     public get ImportError(): boolean {
         return this._importError;
+    }
+
+    public override async ionViewWillLeave(): Promise<void> {
+        await super.ionViewWillLeave();
+        if (this._importer?.isRunning) {
+            this._leftPageWhileRunning = true;
+        }
     }
 
     public async back() {
@@ -149,6 +160,7 @@ export class ImportPage extends PageBase {
         }
 
         this._importError = false;
+        MainToolbarComponent.ToggleProgressbar(true);
 
         this._importItems.forEach(val => {
             if (val.status != "disabled") {
@@ -157,7 +169,6 @@ export class ImportPage extends PageBase {
         });
 
         const reload_lists_service: ("lists" | "trash")[] = [];
-        const keys = Array.from(this._importItems.keys());
         for (let i = 0; i < this._importItems.length; i++) {
             const item = this._importItems[i];
             if (item?.status != "enabled") {
@@ -204,10 +215,16 @@ export class ImportPage extends PageBase {
             await this.ListsService.ReloadListsDataset(reload_lists_service.filter((v, i, a) => i == a.indexOf(v)));
         }
 
+        MainToolbarComponent.ToggleProgressbar(false);
+
         this._importer = undefined;
         this._archive = undefined;
         this._importDone = true;
-        this.cdr.detectChanges();
+        if (this._leftPageWhileRunning) {
+            ImportDonePopup(this._modalCtrl, { importPage: this });
+        } else {
+            this.cdr.detectChanges();
+        }
     }
 
     public async onChangeImportItem(item: ImportItem) {
@@ -303,9 +320,9 @@ export class ImportPage extends PageBase {
     }
 }
 
-type ImportKey = "lists" | "trash" | "settings";
+export type ImportKey = "lists" | "trash" | "settings";
 
-type ImportItem = {
+export type ImportItem = {
     key: ImportKey;
     locale: string;
     status: "success" | "failed" | "running" | "disabled" | "enabled";

@@ -3,7 +3,7 @@ import { Zip } from "capa-zip";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { HelperUtils } from "src/app/classes/utils/helper-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
-import { AppService } from "src/app/services/app/app.service";
+import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { ConnectIQService } from "src/app/services/connectiq/connect-iq.service";
 import { List } from "src/app/services/lists/list";
 import { ListitemModel } from "src/app/services/lists/listitem";
@@ -37,7 +37,7 @@ export class ListsImporter {
         if (await FileUtils.DirExists(archive)) {
             this._importPath = archive;
         } else if (archive.endsWith(".zip")) {
-            AppService.AppToolbar?.ToggleProgressbar(true);
+            MainToolbarComponent.ToggleProgressbar(true);
             const path = "import/unzip";
             if (await FileUtils.DirExists(path, Directory.Cache)) {
                 await FileUtils.EmptyDir(path, Directory.Cache, undefined, true);
@@ -60,7 +60,7 @@ export class ListsImporter {
             } else {
                 ret = false;
             }
-            AppService.AppToolbar?.ToggleProgressbar(false);
+            MainToolbarComponent.ToggleProgressbar(false);
         }
         if (!ret) {
             this._running = false;

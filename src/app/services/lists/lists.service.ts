@@ -6,6 +6,7 @@ import { HelperUtils } from "src/app/classes/utils/helper-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
 import { ListEditor } from "src/app/components/list-editor/list-editor.component";
 import { ListItemEditor, ListItemEditorMultiple } from "src/app/components/list-item-editor/list-item-editor.component";
+import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { AppService } from "../app/app.service";
 import type { ConnectIQDevice } from "../connectiq/connect-iq-device";
 import { ConnectIQMessageType } from "../connectiq/connect-iq-message-type";
@@ -76,7 +77,7 @@ export class ListsService {
      * @returns array of all lists
      */
     public async GetLists(args?: { orderBy?: ListsOrder; orderDir?: ListsOrderDirection }): Promise<List[]> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         const lists = await this.BackendService.queryLists({ peek: true, trash: false, orderBy: args?.orderBy, orderDir: args?.orderDir });
         lists.forEach(l => {
             const list = this._listIndex.get(l.Id!);
@@ -92,7 +93,7 @@ export class ListsService {
             }
         });
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return lists;
     }
 
@@ -101,9 +102,9 @@ export class ListsService {
      * @returns array of lists in trash
      */
     public async GetTrash(): Promise<List[]> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         const trash = await this.BackendService.queryLists({ peek: true, trash: true, orderBy: "deleted", orderDir: "DESC" });
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return trash;
     }
 
@@ -113,7 +114,7 @@ export class ListsService {
      * @returns List object
      */
     public async GetList(id: number): Promise<List | undefined> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         const list = await this.BackendService.queryList({ list: id });
         if (list) {
             const index = this._listIndex.get(list.Id);
@@ -125,7 +126,7 @@ export class ListsService {
         } else {
             this._listIndex.delete(id);
         }
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
 
         return this._listIndex.get(id);
     }
@@ -136,9 +137,9 @@ export class ListsService {
      * @returns ListitemTrashModel object
      */
     public async GetListitemTrash(id: number | List): Promise<Listitem[] | undefined> {
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         const trash = await this.BackendService.queryListitems({ list: id, trash: true, itemsOrderBy: "deleted", itemsOrderDir: "DESC" });
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return trash;
     }
 
@@ -246,12 +247,12 @@ export class ListsService {
      * @param lists
      */
     public async ReorderLists(lists: List[]): Promise<void> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         for (let i = 0; i < lists.length - 1; ++i) {
             lists[i].Order = i;
             await this.StoreList(lists[i], false, false, false);
         }
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
     }
 
     /**
@@ -566,7 +567,7 @@ export class ListsService {
      */
     public async StoreList(list: List, force: boolean = false, fire_event: boolean = true, progressbar: boolean = true): Promise<boolean | undefined> {
         if (progressbar) {
-            AppService.AppToolbar?.ToggleProgressbar(true);
+            MainToolbarComponent.ToggleProgressbar(true);
         }
         let store: boolean | undefined;
         await this.cleanOrderListitems(list, false);
@@ -594,7 +595,7 @@ export class ListsService {
         }
 
         if (progressbar) {
-            AppService.AppToolbar?.ToggleProgressbar(false);
+            MainToolbarComponent.ToggleProgressbar(false);
         }
 
         return store;
@@ -634,7 +635,7 @@ export class ListsService {
             const confirm = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmTransmitList, true);
             const locale = this.Locale.getText([text_key, "yes", "no"], { device: device.Name });
             if (!confirm || (await this.Popups.Alert.YesNo({ message: locale[text_key], button_yes: locale["yes"], button_no: locale["no"] }))) {
-                AppService.AppToolbar?.ToggleProgressbar(true);
+                MainToolbarComponent.ToggleProgressbar(true);
 
                 let errors = 0;
                 for (let i = 0; i < lists.length; ++i) {
@@ -663,7 +664,7 @@ export class ListsService {
                     Logger.Debug(`Could not transfer list ${lists[i].toLog()} to device ${device.toLog()}`);
                 }
 
-                AppService.AppToolbar?.ToggleProgressbar(false);
+                MainToolbarComponent.ToggleProgressbar(false);
 
                 if (errors > 0) {
                     if (lists.length == 1) {
@@ -915,7 +916,7 @@ export class ListsService {
             return true;
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
 
         const use_trash = await this.Preferences.Get<boolean>(EPrefProperty.TrashLists, true);
 
@@ -985,7 +986,7 @@ export class ListsService {
             }
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
 
         return deleted !== false;
     }
@@ -1004,7 +1005,7 @@ export class ListsService {
             return true;
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
 
         const use_trash = await this.Preferences.Get<boolean>(EPrefProperty.TrashListitems, true);
 
@@ -1051,7 +1052,7 @@ export class ListsService {
             this.Popups.Toast.Success("service-lists.empty_success");
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
 
         return errors == 0;
     }
@@ -1063,7 +1064,7 @@ export class ListsService {
      * @returns was the list stored successful after removal?
      */
     private async removeListitem(list: List, items: Listitem | Listitem[], keep_locked: boolean = true): Promise<boolean> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
 
         if (!Array.isArray(items)) {
             items = [items];
@@ -1099,7 +1100,7 @@ export class ListsService {
             this.Popups.Toast.Error(items.length == 1 ? "service-lists.delete_item_error" : "service-lists.delete_item_error_plural", undefined, true);
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return deleted ? deleted > 0 : false;
     }
 
@@ -1110,7 +1111,7 @@ export class ListsService {
      * @returns was the erase successful
      */
     private async eraseListitemFromTrash(trash: List, items: Listitem | Listitem[]): Promise<boolean> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         if (!Array.isArray(items)) {
             items = [items];
         }
@@ -1128,7 +1129,7 @@ export class ListsService {
             this.Popups.Toast.Error(text);
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return del ? del >= 0 : false;
     }
 
@@ -1137,7 +1138,7 @@ export class ListsService {
      * @returns number of deleted lists
      */
     private async wipeListsTrash(): Promise<number> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         const del = await this.BackendService.deleteLists({ lists: undefined, trash: true });
         if (del !== false) {
             Logger.Notice(`Erased ${del.lists} list(s) with ${del.items} item(s) from trash`);
@@ -1147,12 +1148,12 @@ export class ListsService {
             this.Popups.Toast.Error("service-lists.empty_trash_error");
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return del !== false ? del.lists : -1;
     }
 
     private async wipeListitemTrash(): Promise<number> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         const del = await this.BackendService.wipeListitems({ trash: true });
         if (del !== false) {
             Logger.Debug(`All ${del} listitem(s) in trash were erased`);
@@ -1161,7 +1162,7 @@ export class ListsService {
             Logger.Error(`Could not wipe listitems trash`);
             this.Popups.Toast.Error("service-lists.erase_item_error_plural", undefined, true);
         }
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return del ? del : -1;
     }
 
@@ -1171,7 +1172,7 @@ export class ListsService {
      * @returns was the emptying successful?
      */
     private async emptyListitemTrash(trash: List): Promise<boolean> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         const ret = await this.BackendService.deleteListitems({ list: trash, items: undefined, force: true, trash: true });
         if (ret !== false) {
             trash.ItemsInTrash = [];
@@ -1192,7 +1193,7 @@ export class ListsService {
             }
             this.Popups.Toast.Error("service-lists.empty_trash_error");
         }
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return ret !== false;
     }
 
@@ -1210,7 +1211,7 @@ export class ListsService {
             return true;
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
 
         let success = false;
         if (await this.BackendService.restoreListsFromTrash({ lists: lists })) {
@@ -1244,7 +1245,7 @@ export class ListsService {
         this.onListsChangedSubject.next(await this.GetLists());
         this.onTrashDatasetChangedSubject.next(await this.GetTrash());
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
 
         return success;
     }
@@ -1256,7 +1257,7 @@ export class ListsService {
      * @returns was the restore successful
      */
     private async restoreListitemFromTrash(list: List, items: Listitem | Listitem[]): Promise<boolean> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
 
         if (!Array.isArray(items)) {
             items = [items];
@@ -1279,7 +1280,7 @@ export class ListsService {
             this.Popups.Toast.Error(text);
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
         return restore !== false && restore >= 0;
     }
 
@@ -1288,7 +1289,7 @@ export class ListsService {
      * @param lists Lists to be erased
      */
     private async eraseListFromTrash(lists: List | List[]): Promise<boolean> {
-        AppService.AppToolbar?.ToggleProgressbar(true);
+        MainToolbarComponent.ToggleProgressbar(true);
         if (!Array.isArray(lists)) {
             lists = [lists];
         }
@@ -1316,7 +1317,7 @@ export class ListsService {
             }
         }
 
-        AppService.AppToolbar?.ToggleProgressbar(false);
+        MainToolbarComponent.ToggleProgressbar(false);
 
         return del !== false;
     }

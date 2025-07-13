@@ -1,0 +1,17 @@
+@use "src/theme/content/im-export/import.scss";
+
+:host {
+    display: block;
+
+    .container {
+        background: var(--ion-background-color);
+        box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        padding: 1em 0.5em;
+        width: 100%;
+        height: 100%;
+        max-width: 500px;
+    }
+}

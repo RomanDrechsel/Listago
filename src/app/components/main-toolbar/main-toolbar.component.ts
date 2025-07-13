@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, ViewChild } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 import { IonBackButton, IonButtons, IonMenuButton, IonProgressBar, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 
@@ -8,7 +8,6 @@ import { TranslateModule } from "@ngx-translate/core";
     imports: [IonProgressBar, CommonModule, TranslateModule, IonToolbar, IonButtons, IonMenuButton, IonBackButton, IonTitle],
     templateUrl: "./main-toolbar.component.html",
     styleUrl: "./main-toolbar.component.scss",
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainToolbarComponent {
     @Input("title") pageTitle: string = "";
@@ -17,7 +16,6 @@ export class MainToolbarComponent {
     @Input("displayCustomMenu") displayCustomMenu: boolean = false;
     @ViewChild("backbutton", { read: IonBackButton }) private backBtn?: IonBackButton;
 
-    private readonly cdr = inject(ChangeDetectorRef);
     private static _activeProgressbars: number = 0;
 
     public get ShowProgressbar(): boolean {
@@ -33,14 +31,16 @@ export class MainToolbarComponent {
                 MainToolbarComponent._activeProgressbars = 0;
             }
         }
-        this.cdr.detectChanges();
     }
 
     public get BackLink(): string | undefined {
         return this.backBtn?.defaultHref;
     }
 
-    public ToggleProgressbar(show: boolean) {
-        this.ShowProgressbar = show;
+    public static ToggleProgressbar(show: boolean) {
+        MainToolbarComponent._activeProgressbars += show ? 1 : -1;
+        if (MainToolbarComponent._activeProgressbars < 0) {
+            MainToolbarComponent._activeProgressbars = 0;
+        }
     }
 }

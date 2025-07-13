@@ -1,7 +1,7 @@
 BUG: ion-icon src soll nichtmehr genutzt weden...
 BUG: Double click in Back button (upper left), is app is reloaded
 BUG: "New List" on small display doesn't fit
-WIP: import from lists
+WIP: import from lists --> Intent
 TODO: translate page_settings_import.*
 TODO: translate im-export.*
 TODO: export / save
