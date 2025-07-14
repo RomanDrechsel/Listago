@@ -3,4 +3,8 @@
     <files-path
         name="logs"
         path="logs/" />
+
+    <cache-path
+        name="cache"
+        path="export/" />
 </paths>

@@ -1,7 +1,10 @@
 package de.romandrechsel.listago.sysinfo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -14,6 +17,9 @@ import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.Set;
 
 import de.romandrechsel.listago.logging.Logger;
 import de.romandrechsel.listago.utils.FileUtils;
@@ -100,13 +106,75 @@ public class SysInfoPlugin extends Plugin {
     public void SetNightMode(@NonNull Boolean isNightMode) {
         if (this._isNightMode != isNightMode) {
             if (this._isNightMode != null) {
-                //not at start...
                 JSObject data = new JSObject();
                 data.put("isNightMode", isNightMode);
                 this.notifyListeners("NIGHTMODE", data);
             }
             this._isNightMode = isNightMode;
         }
+    }
+
+    public void handleIntent(Intent intent) {
+        String action = intent.getAction();
+        if (action == null || action.equals(Intent.ACTION_MAIN)) {
+            return;
+        }
+        JSObject data = new JSObject();
+        data.put("action", intent.getAction());
+        data.put("type", intent.getType());
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            JSObject extrasJson = new JSObject();
+            Set<String> keys = extras.keySet();
+            for (String key : keys) {
+                Object value = extras.get(key);
+                if (key.equals("android.intent.extra.STREAM")) {
+                    Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                    if (fileUri != null && fileUri.getPath() != null) {
+                        try {
+                            Context context = this.getContext();
+                            InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
+                            if (inputStream == null) {
+                                Logger.Error(TAG, "Received file stream, but could not open it: ", fileUri.toString());
+                                continue;
+                            }
+
+                            File cacheDir = context.getCacheDir();
+                            File receivedDir = new File(cacheDir, "received");
+                            if (!receivedDir.exists()) {
+                                if (!receivedDir.mkdirs()) {
+                                    Logger.Error(TAG, "Failed to create directory '" + receivedDir.getAbsolutePath() + "'");
+                                    continue;
+                                }
+                            }
+                            String fileName = new File(fileUri.getPath()).getName();
+                            File destFile = new File(receivedDir, fileName);
+
+                            FileOutputStream outputStream = new FileOutputStream(destFile);
+                            byte[] buffer = new byte[1024];
+                            int len;
+                            while ((len = inputStream.read(buffer)) > 0) {
+                                outputStream.write(buffer, 0, len);
+                            }
+
+                            inputStream.close();
+                            outputStream.close();
+                            extrasJson.put("android.intent.extra.STREAM", destFile.getAbsolutePath());
+                        } catch (Exception e) {
+                            Logger.Error(TAG, "Failed to import file: " + fileUri, e);
+                        }
+                    } else {
+                        Logger.Error(TAG, "Failed to import file: file not found at '" + value + "'");
+                    }
+                } else if (value instanceof String || value instanceof Number || value instanceof Boolean) {
+                    extrasJson.put(key, value);
+                } else if (value != null) {
+                    extrasJson.put(key, value.toString());
+                }
+            }
+            data.put("extras", extrasJson);
+        }
+        this.notifyListeners("INTENT", data);
     }
 
     private FileUtils.DeleteDirResult DeleteCache() {

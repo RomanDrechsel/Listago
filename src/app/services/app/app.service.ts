@@ -15,6 +15,7 @@ import { StringUtils } from "../../classes/utils/string-utils";
 import { MainToolbarComponent } from "../../components/main-toolbar/main-toolbar.component";
 import { AdmobService } from "../adverticing/admob.service";
 import { ConnectIQService } from "../connectiq/connect-iq.service";
+import { IntentsService } from "../intents/intents.service";
 import { ListsService } from "../lists/lists.service";
 import { Locale } from "../localization/locale";
 import { LocalizationService } from "../localization/localization.service";
@@ -37,6 +38,7 @@ export class AppService {
     private readonly _preferences = inject(PreferencesService);
     private readonly _admob = inject(AdmobService);
     private readonly _popups = inject(PopupsService);
+    private readonly _intents = inject(IntentsService);
     public static Popups: PopupsService;
 
     /** platform as short string (android, ios, web) */
@@ -131,6 +133,8 @@ export class AppService {
                 Logger.Error(`Could not initialize Admob service: `, e);
             }
         })();
+
+        this._intents.Initialize();
 
         await SplashScreen.hide({ fadeOutDuration: 500 });
     }
