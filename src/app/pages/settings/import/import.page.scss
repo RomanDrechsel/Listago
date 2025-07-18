@@ -50,6 +50,21 @@
                                 color: var(--ion-color-danger);
                                 border: solid 1px var(--ion-color-danger-shade);
                             }
+
+                            &.analysing {
+                                margin: 2em auto;
+
+                                .analyse-text {
+                                    white-space: nowrap;
+
+                                    &:after {
+                                        text-align: start;
+                                        content: attr(data-after-content);
+                                        min-width: 1em;
+                                        display: inline-block;
+                                    }
+                                }
+                            }
                         }
                     }
 

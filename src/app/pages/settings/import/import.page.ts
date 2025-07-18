@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { CapacitorException } from "@capacitor/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FilePicker, type PickFilesResult } from "@capawesome/capacitor-file-picker";
@@ -11,9 +12,12 @@ import { ImportDonePopup } from "src/app/components/import-done/import-done.comp
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { Logger } from "src/app/services/logging/logger";
 import { ListsImporter, ProgressListenerFactory } from "src/app/services/storage/lists/import/lists-importer";
-import { environment } from "src/environments/environment";
 import { PageBase } from "../../page-base";
 import { SqliteService } from "./../../../services/storage/sqlite/sqlite.service";
+
+export type ImportPageQueryParams = {
+    importFile?: string;
+};
 
 @Component({
     selector: "app-import",
@@ -33,11 +37,13 @@ export class ImportPage extends PageBase {
     private _importError = false;
 
     private _archiveValid?: boolean;
+    private readonly _ellipsisTimeout = 500;
 
     private _leftPageWhileRunning = false;
 
     private readonly _sqliteService = inject(SqliteService);
     private readonly _modalCtrl = inject(ModalController);
+    private readonly _route = inject(ActivatedRoute);
 
     public get ImportDone(): boolean {
         return this._importDone;
@@ -75,9 +81,23 @@ export class ImportPage extends PageBase {
         return this._importError;
     }
 
+    public get AnalysingText(): string {
+        return this.Locale.getText("page_settings_import.archive_analysing", { filename: FileUtils.Basename(this._archive ?? "") });
+    }
+
+    public override async ionViewWillEnter(): Promise<void> {
+        await super.ionViewWillEnter();
+
+        const params = this._route.snapshot.queryParams;
+        if (params?.["importFile"]) {
+            const file = params["importFile"];
+            this.selectArchive(file);
+        }
+    }
+
     public override async ionViewWillLeave(): Promise<void> {
         await super.ionViewWillLeave();
-        if (this._importer?.isRunning) {
+        if (this._importer?.isImportRunning) {
             this._leftPageWhileRunning = true;
         }
     }
@@ -87,13 +107,26 @@ export class ImportPage extends PageBase {
         await this.NavController.navigateBack("settings/im-export");
     }
 
-    public async selectArchive(): Promise<void> {
+    public async selectArchive(file?: string): Promise<void> {
         this._importDone = false;
         this._archiveValid = undefined;
         this._archive = undefined;
         this._importError = false;
 
-        if (!environment.production && !(await this.debugArchive())) {
+        if (file) {
+            let found = false;
+            try {
+                await Filesystem.stat({ path: file });
+                found = true;
+            } catch (e) {
+                Logger.Error(`Import: could not find file ${file}: `, e);
+            }
+            if (!found) {
+                file = undefined;
+            }
+        }
+
+        if (!file) {
             let files: PickFilesResult | undefined = undefined;
             try {
                 files = await FilePicker.pickFiles({
@@ -128,9 +161,30 @@ export class ImportPage extends PageBase {
                 await this.error();
                 return;
             }
+        } else {
+            this._archive = file;
         }
 
         this._importItems = [];
+
+        let ellipsis = 3;
+        const animateEllipsis = (force?: boolean) => {
+            if (this._importer?.isAnalysingRunning || this._importer?.isArchiveValid === undefined || force) {
+                let repeat = ellipsis + 1;
+                if (repeat > 3) {
+                    repeat = 1;
+                }
+                ellipsis = repeat;
+                const el = document.getElementById("analysingText");
+                if (el) {
+                    el.setAttribute("data-after-content", ".".repeat(repeat));
+                }
+
+                setTimeout(animateEllipsis, this._ellipsisTimeout);
+            }
+        };
+
+        animateEllipsis(true);
 
         this._importer = new ListsImporter();
         await this._importer.Initialize(this._archive!);

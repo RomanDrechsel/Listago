@@ -8,6 +8,7 @@ import { IonCol, IonContent, IonGrid, IonImg, IonItem, IonList, IonNote, IonRow,
 import { TranslateModule } from "@ngx-translate/core";
 import { interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
+import { IntentsService } from "src/app/services/intents/intents.service";
 import { ListsSqliteBackendService } from "src/app/services/storage/sqlite/lists/lists-sqlite-backend.service";
 import { FileUtils } from "../../classes/utils/file-utils";
 import { PageBase } from "../page-base";
@@ -140,5 +141,18 @@ export class AppinfosPage extends PageBase {
         if (deviceinfo.memUsed) {
             this.MemoryUsage = FileUtils.File.FormatSize(deviceinfo.memUsed);
         }
+    }
+
+    private readonly _intents = inject(IntentsService);
+
+    public test() {
+        this._intents.onIntent({
+            action: "android.intent.action.SEND",
+            type: "application/zip",
+            extras: {
+                request: "export-from-lists",
+                "android.intent.extra.STREAM": "file:///data/data/de.romandrechsel.listago.dev/cache/received/lists-export.zip",
+            },
+        });
     }
 }

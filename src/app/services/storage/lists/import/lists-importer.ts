@@ -18,8 +18,10 @@ import type { ListitemTrashModel } from "../listitem-trash-model";
 import { ListModel } from "./../list-model";
 
 export class ListsImporter {
-    private _running: boolean = false;
+    private _importRunning: boolean = false;
+    private _analysingRunning: boolean = false;
     private _importPath?: string;
+    private _archiveValid?: boolean;
 
     private readonly _settingsFile = "settings.json";
     private readonly _listsBaseDirectory = "lists";
@@ -27,12 +29,21 @@ export class ListsImporter {
     private readonly _trashDirectory = "trash";
     private readonly _trashItemsDirectory = "items";
 
-    public get isRunning(): boolean {
-        return this._running;
+    public get isImportRunning(): boolean {
+        return this._importRunning;
+    }
+
+    public get isAnalysingRunning(): boolean {
+        return this._analysingRunning;
+    }
+
+    public get isArchiveValid(): boolean | undefined {
+        return this._archiveValid;
     }
 
     public async Initialize(archive: string): Promise<boolean> {
         let ret = true;
+        this._archiveValid = undefined;
 
         if (await FileUtils.DirExists(archive)) {
             this._importPath = archive;
@@ -62,9 +73,6 @@ export class ListsImporter {
             }
             MainToolbarComponent.ToggleProgressbar(false);
         }
-        if (!ret) {
-            this._running = false;
-        }
 
         return ret;
     }
@@ -74,6 +82,11 @@ export class ListsImporter {
             Logger.Debug(`Importer: Source directory not found at ${this._importPath}`);
             return [];
         }
+
+        this._analysingRunning = true;
+        this._archiveValid = false;
+
+        MainToolbarComponent.ToggleProgressbar(true);
 
         const content = [];
         const hasLists = async function (path: string, recursive: boolean): Promise<boolean> {
@@ -118,6 +131,10 @@ export class ListsImporter {
             //no settings file...
         }
 
+        this._analysingRunning = false;
+        this._archiveValid = content.length > 0;
+        MainToolbarComponent.ToggleProgressbar(false);
+
         return content;
     }
 
@@ -126,7 +143,7 @@ export class ListsImporter {
             return false;
         }
 
-        this._running = true;
+        this._importRunning = true;
         let files = [];
         const basedir = FileUtils.JoinPaths(this._importPath, this._listsBaseDirectory, this._listsDirectory);
         try {
@@ -164,7 +181,7 @@ export class ListsImporter {
             return false;
         }
 
-        this._running = true;
+        this._importRunning = true;
 
         const trash_path = FileUtils.JoinPaths(this._importPath, this._listsBaseDirectory, this._trashDirectory);
 
@@ -236,7 +253,7 @@ export class ListsImporter {
             return false;
         }
 
-        this._running = true;
+        this._importRunning = true;
 
         const settingsPath = FileUtils.JoinPaths(this._importPath, this._settingsFile);
         let settingsFile = undefined;
@@ -287,7 +304,7 @@ export class ListsImporter {
     }
 
     public async CleanUp() {
-        this._running = false;
+        this._importRunning = false;
 
         if (this._importPath && environment.production) {
             try {

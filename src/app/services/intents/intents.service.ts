@@ -1,5 +1,6 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
+import { NavController } from "@ionic/angular/standalone";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { Logger } from "../logging/logger";
 
@@ -7,6 +8,8 @@ import { Logger } from "../logging/logger";
     providedIn: "root",
 })
 export class IntentsService {
+    private readonly _navControler = inject(NavController);
+
     public Initialize() {
         SysInfo.addListener("INTENT", (intent: Intent) => this.onIntent(intent));
     }
@@ -46,11 +49,24 @@ export class IntentsService {
             return;
         }
 
+        let importUri = undefined;
         try {
-            await Filesystem.copy({ from: filepath, to: "import/lists-export.zip", toDirectory: Directory.Cache });
-            //TODO: remove filepath
-        } catch (error) {
-            Logger.Error(`Failed to copy file from ${intent.extras["android.intent.extra.STREAM"]} to /lists-export.zip`, error);
+            const res = await Filesystem.copy({ from: filepath, to: "import/lists-export.zip", toDirectory: Directory.Cache });
+            importUri = res.uri;
+        } catch (e) {
+            Logger.Error(`Failed to copy file from ${intent.extras["android.intent.extra.STREAM"]} to '"import/lists-export.zip"' in ''${Directory.Cache}': `, e);
+        }
+
+        try {
+            //TODO: uncomment
+            //await Filesystem.deleteFile({ path: filepath });
+        } catch (e) {
+            Logger.Error(`Failed to delete file '${filepath}' from SEND intent.`, e);
+        }
+
+        if (importUri) {
+            Logger.Notice(`Starting import from '${importUri}' due to SEND intent...`);
+            this._navControler.navigateForward("settings/import", { animated: true, queryParams: { importFile: importUri } });
         }
     }
 }

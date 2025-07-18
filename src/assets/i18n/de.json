@@ -414,6 +414,7 @@
         "select_archive": "Bitte wähle zuerst das Archiv aus:",
         "select_archive_error": "Die Datei konnte nicht geöffnet werden!",
         "archive_invalid": "Das Archiv enthält keine kompatible Sicherung!",
+        "archive_analysing": "Das Archiv<br /><br /><strong>{{filename}}</strong><br /><br />wird geprüft",
         "select_items": "Was möchtest du aus dem Archiv importieren?",
         "btn_reset_archive": "Anderes Archiv auswählen",
         "import_success": "Der Import wurde abgeschlossen.",

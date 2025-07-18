@@ -6,13 +6,17 @@
             <ion-icon src="/assets/icons/import.svg" class="icon"></ion-icon>
 
             <div class="select-archive" *ngIf="!Archive?.length || !ArchiveValid">
-                <div class="text" [innerHTML]="'page_settings_import.select_archive' | translate"></div>
-                <ion-button (click)="selectArchive()">{{'page_settings_import.btn_select_archive'|translate}}</ion-button>
+                <div *ngIf="!Importer?.isAnalysingRunning">
+                    <div class="text" [innerHTML]="'page_settings_import.select_archive' | translate"></div>
+                    <ion-button (click)="selectArchive()">{{'page_settings_import.btn_select_archive'|translate}}</ion-button>
+                </div>
+
+                <div class="text analysing" *ngIf="Importer?.isAnalysingRunning"><span class="analyse-text" [innerHTML]="AnalysingText" id="analysingText" data-after-content="..."></span></div>
 
                 <div class="text error" [innerHTML]="'page_settings_import.archive_invalid'|translate" *ngIf="ArchiveValid === false"></div>
             </div>
 
-            <div class="select-items" *ngIf="Archive?.length && ArchiveValid && !Importer?.isRunning">
+            <div class="select-items" *ngIf="Archive?.length && ArchiveValid && !Importer?.isImportRunning">
                 <div class="text" [innerHTML]="'page_settings_import.select_items' | translate"></div>
                 <ion-card>
                     <ion-list>
@@ -32,7 +36,7 @@
                 </div>
             </div>
 
-            <div class="running" *ngIf="Archive?.length && ArchiveValid && Importer?.isRunning">
+            <div class="running" *ngIf="Archive?.length && ArchiveValid && Importer?.isImportRunning">
                 <ion-card>
                     <ion-list>
                         <ion-item lines="full" [ngClass]="['import-item', item.status]" *ngFor="let item of ImportItems">
@@ -51,7 +55,7 @@
         </div>
         <ion-buttons class="fixed-bottom">
             <ion-button fill="outline" color="secondary" (click)="back()"> {{'back'|translate}} </ion-button>
-            <ion-button fill="solid" color="secondary" [disabled]="!Archive?.length || !SomethingEnabled || ImportError || Importer?.isRunning" (click)="Import()"> {{'page_settings_import.btn_import'|translate}} </ion-button>
+            <ion-button fill="solid" color="secondary" [disabled]="!Archive?.length || !SomethingEnabled || ImportError || Importer?.isImportRunning" (click)="Import()"> {{'page_settings_import.btn_import'|translate}} </ion-button>
         </ion-buttons>
     </div>
 </ion-content>

@@ -393,12 +393,36 @@
         "confirm_clearitemstrash_ok": "Empty trashes",
         "confirm_clearitemstrash_cancel": "Don't empty trashes"
     },
+
     "page_settings_imexport": {
-        "page_title": "Import & Export",
+        "page_title": "Import & Backup",
         "import": "Import",
         "import_note": "Import an old backup from a file",
-        "export": "Export",
+        "export": "Backup",
         "export_note": "Save lists and app settings to a file"
+    },
+    "page_settings_import": {
+        "page_title": "Import",
+        "btn_import": "Import",
+        "btn_select_archive": "Select Archive",
+        "select_archive": "Please select the archive first:",
+        "select_archive_error": "The file could not be opened!",
+        "archive_invalid": "The archive does not contain a compatible backup!",
+        "archive_analysing": "The archive<br /><br /><strong>{{filename}}</strong><br /><br />is being analyzed",
+        "select_items": "What would you like to import from the archive?",
+        "btn_reset_archive": "Choose another archive",
+        "import_success": "Import completed successfully.",
+        "import_error": "Import could not be completed!",
+        "import_report_success_lists": "{{num}} lists imported.",
+        "import_report_success_lists_singular": "One list imported.",
+        "import_report_success_trash": "{{num}} trash items imported.",
+        "import_report_success_trash_singular": "One trash item imported.",
+        "import_report_success_settings": "All settings imported.",
+        "import_report_failed_lists": "{{num}} lists could not be imported.",
+        "import_report_failed_lists_singular": "One list could not be imported.",
+        "import_report_failed_trash": "{{num}} trash items could not be imported.",
+        "import_report_failed_trash_singular": "One trash item could not be imported.",
+        "import_report_failed_settings": "Not all settings could be imported."
     },
     "page_appinfos": {
         "page_title": "App information",
