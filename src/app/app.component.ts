@@ -21,6 +21,8 @@ export class AppComponent implements OnInit {
     private _useTrash: boolean = true;
     private _firstStart: boolean = true;
 
+    private static _instance?: AppComponent;
+
     public readonly ConnectIQ = inject(ConnectIQService);
     private readonly Platform = inject(Platform);
     private readonly Preferences = inject(PreferencesService);
@@ -44,7 +46,12 @@ export class AppComponent implements OnInit {
         return this._firstStart;
     }
 
+    public static get Instance(): AppComponent | undefined {
+        return AppComponent._instance;
+    }
+
     public async ngOnInit() {
+        AppComponent._instance = this;
         //exit app if back-stack is empty
         this.Platform.backButton.subscribeWithPriority(-1, async () => {
             await this.tapBackToExit();

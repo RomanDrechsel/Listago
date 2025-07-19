@@ -74,7 +74,7 @@ export class AdmobService {
     public async ShowBanner(): Promise<void> {
         if (this._bannerIsShown === false) {
             const options: BannerAdOptions = {
-                adId: "ca-app-pub-4693945059643494/5993520446",
+                adId: "ca-app-pub-4693945059643494/2141027651",
                 adSize: BannerAdSize.ADAPTIVE_BANNER,
                 position: BannerAdPosition.BOTTOM_CENTER,
                 margin: await this.saveAreaBottom(),

@@ -124,6 +124,9 @@
         "openapp_success": "App auf der Uhr geöffnet.",
         "init_failed": "Garmin Unterstützung konnte nicht aktiviert werden!"
     },
+    "service-intents": {
+        "import_failed": "Der Import ist fehlgeschlagen!"
+    },
     "comp-listeditor": {
         "title_new": "Neue Liste anlegen",
         "title_edit": "Liste bearbeiten",

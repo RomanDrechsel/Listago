@@ -124,6 +124,9 @@
         "openapp_success": "時計でアプリが開かれました。",
         "init_failed": "Garminサポートを有効にできませんでした。"
     },
+    "service-intents": {
+        "import_failed": "インポートに失敗しました！"
+    },
     "comp-listeditor": {
         "title_new": "新しいリストを作成",
         "title_edit": "リストを編集",

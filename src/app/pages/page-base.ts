@@ -18,9 +18,9 @@ import { PreferencesService } from "../services/storage/preferences.service";
     standalone: false,
 })
 export abstract class PageBase {
-    @ViewChild(MainToolbarComponent) protected Toolbar?: MainToolbarComponent;
+    @ViewChild(MainToolbarComponent) protected Toolbar?: MainToolbarComponent; //TODO: needed?
 
-    protected readonly appComponent = inject(AppComponent);
+    protected readonly appComponent = inject(AppComponent); //TODO: use AppComponent.Instance
     protected readonly Popups = inject(PopupsService);
     protected readonly ConnectIQ = inject(ConnectIQService);
     protected readonly ListsService = inject(ListsService);

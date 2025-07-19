@@ -1,14 +1,18 @@
 import { inject, Injectable } from "@angular/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { NavController } from "@ionic/angular/standalone";
+import { AppComponent } from "src/app/app.component";
+import { FileUtils } from "src/app/classes/utils/file-utils";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { Logger } from "../logging/logger";
+import { PopupsService } from "../popups/popups.service";
 
 @Injectable({
     providedIn: "root",
 })
 export class IntentsService {
     private readonly _navControler = inject(NavController);
+    private readonly _popups = inject(PopupsService);
 
     public Initialize() {
         SysInfo.addListener("INTENT", (intent: Intent) => this.onIntent(intent));
@@ -32,6 +36,7 @@ export class IntentsService {
         const filepath = intent.extras?.["android.intent.extra.STREAM"];
         if (!filepath) {
             Logger.Error(`No file found in SEND intent.`, intent);
+            this.errorListsImport();
             return;
         }
 
@@ -39,13 +44,14 @@ export class IntentsService {
             await Filesystem.stat({ path: filepath });
         } catch (e) {
             Logger.Error(`File not found in SEND intent.`, filepath);
+            this.errorListsImport();
             return;
         }
 
-        try {
-            await Filesystem.stat({ path: "import", directory: Directory.Cache });
-        } catch (e) {
-            Logger.Error(`Could not create directory 'import' in '${Directory.Cache}': `, e);
+        const create = await FileUtils.MkDir("import", Directory.Cache);
+        if (!create) {
+            Logger.Error(`Could not import '${filepath}'...`);
+            this.errorListsImport();
             return;
         }
 
@@ -55,19 +61,25 @@ export class IntentsService {
             importUri = res.uri;
         } catch (e) {
             Logger.Error(`Failed to copy file from ${intent.extras["android.intent.extra.STREAM"]} to '"import/lists-export.zip"' in ''${Directory.Cache}': `, e);
+            this.errorListsImport();
+            return;
         }
 
         try {
-            //TODO: uncomment
-            //await Filesystem.deleteFile({ path: filepath });
+            await Filesystem.deleteFile({ path: filepath });
         } catch (e) {
             Logger.Error(`Failed to delete file '${filepath}' from SEND intent.`, e);
         }
 
         if (importUri) {
             Logger.Notice(`Starting import from '${importUri}' due to SEND intent...`);
-            this._navControler.navigateForward("settings/import", { animated: true, queryParams: { importFile: importUri } });
+            await this._navControler.navigateForward("settings/import", { animated: true, queryParams: { importFile: importUri } });
+            AppComponent.Instance?.CloseMenu();
         }
+    }
+
+    private errorListsImport() {
+        this._popups.Toast.Error("service-intents.import_failed", undefined, true);
     }
 }
 

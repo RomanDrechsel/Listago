@@ -124,6 +124,9 @@
         "openapp_success": "應用已在手錶上打開。",
         "init_failed": "無法啟用Garmin支援。"
     },
+    "service-intents": {
+        "import_failed": "匯入失敗！"
+    },
     "comp-listeditor": {
         "title_new": "新增清單",
         "title_edit": "編輯清單",

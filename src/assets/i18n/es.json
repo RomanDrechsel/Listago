@@ -124,6 +124,9 @@
         "openapp_success": "App abierta en el reloj.",
         "init_failed": "No se pudo activar el soporte de Garmin."
     },
+    "service-intents": {
+        "import_failed": "¡La importación ha fallado!"
+    },
     "comp-listeditor": {
         "title_new": "Crear nueva lista",
         "title_edit": "Editar lista",

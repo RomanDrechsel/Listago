@@ -124,6 +124,9 @@
         "openapp_success": "घड़ी पर ऐप खुल गया।",
         "init_failed": "Garmin समर्थन सक्रिय नहीं किया जा सका।"
     },
+    "service-intents": {
+        "import_failed": "आयात विफल रहा!"
+    },
     "comp-listeditor": {
         "title_new": "नई सूची बनाएं",
         "title_edit": "सूची संपादित करें",

@@ -124,6 +124,9 @@
         "openapp_success": "App opened on the watch.",
         "init_failed": "Garmin support could not be enabled!"
     },
+    "service-intents": {
+        "import_failed": "Import failed!"
+    },
     "comp-listeditor": {
         "title_new": "Create new list",
         "title_edit": "Edit list",

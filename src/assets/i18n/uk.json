@@ -124,6 +124,9 @@
         "openapp_success": "Додаток відкрито на годиннику.",
         "init_failed": "Не вдалося активувати підтримку Garmin."
     },
+    "service-intents": {
+        "import_failed": "Імпорт не вдався!"
+    },
     "comp-listeditor": {
         "title_new": "Створіть новий список",
         "title_edit": "Редагуйте список",

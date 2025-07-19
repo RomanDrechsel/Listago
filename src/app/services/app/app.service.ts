@@ -230,38 +230,42 @@ export class AppService {
             };
         }
 
-        if (this._connectIQ.Initialized) {
-            const devices = query?.garmin
-                ? (await this._connectIQ.getDevices()).map(device => {
-                      return {
-                          Identifier: device.Identifier,
-                          Name: device.Name,
-                          State: device.State,
-                      };
-                  })
-                : undefined;
+        if (query?.garmin !== false) {
+            if (this._connectIQ.Initialized) {
+                const devices = query?.garmin
+                    ? (await this._connectIQ.getDevices()).map(device => {
+                          return {
+                              Identifier: device.Identifier,
+                              Name: device.Name,
+                              State: device.State,
+                          };
+                      })
+                    : undefined;
 
-            meta.ConnectIQ = {
-                Initialized: true,
-                Devices: devices,
-            };
-        } else {
-            meta.ConnectIQ = {
-                Initialized: false,
-            };
+                meta.ConnectIQ = {
+                    Initialized: true,
+                    Devices: devices,
+                };
+            } else {
+                meta.ConnectIQ = {
+                    Initialized: false,
+                };
+            }
         }
 
         return meta;
     }
 
-    private handleNightmode(isNightMode: boolean | undefined) {
+    private async handleNightmode(isNightMode: boolean | undefined) {
         this._logger.Debug(`NightMode set to '${isNightMode}'`);
         if (isNightMode === true) {
-            EdgeToEdge.setBackgroundColor({ color: "#002794" });
-            StatusBar.setStyle({ style: Style.Dark });
+            await EdgeToEdge.setBackgroundColor({ color: "#002794" });
+            await StatusBar.setStyle({ style: Style.Dark });
+            await StatusBar.setBackgroundColor({ color: "#002794" });
         } else {
-            EdgeToEdge.setBackgroundColor({ color: "#0050d8" });
-            StatusBar.setStyle({ style: Style.Dark });
+            await EdgeToEdge.setBackgroundColor({ color: "#0050d8" });
+            await StatusBar.setStyle({ style: Style.Light });
+            await StatusBar.setBackgroundColor({ color: "#0050d8" });
         }
     }
 }
