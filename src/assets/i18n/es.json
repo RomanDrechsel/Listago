@@ -222,6 +222,11 @@
         "deactivate": "Desactivar",
         "select": "Seleccionar"
     },
+    "im-export": {
+        "item_lists": "Listas",
+        "item_trash": "Papelera",
+        "item_settings": "Configuración"
+    },
     "page_firststart": {
         "welcome": "Bienvenido a Listago",
         "language1": "Por favor, selecciona tu idioma preferido:",
@@ -235,7 +240,8 @@
         "finish2": "Si estás interesado en mis otros proyectos, puedes encontrar más información en",
         "finish3": "sobre mí.",
         "finish4": "¡Disfruta usando mi aplicación!",
-        "finish_btn": "Continuar a la aplicación"
+        "finish_btn": "Continuar a la aplicación",
+        "finish_btn_import": "Iniciar importación"
     },
     "page_lists": {
         "page_title": "Mis listas",

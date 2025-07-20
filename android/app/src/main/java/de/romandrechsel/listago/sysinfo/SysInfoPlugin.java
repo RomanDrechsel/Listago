@@ -29,6 +29,8 @@ public class SysInfoPlugin extends Plugin {
     private static final String TAG = "SysInfoPlugin";
 
     private Boolean _isNightMode = null;
+    private Boolean _appIsReady = false;
+    private Intent _pendingIntent = null;
 
     @PluginMethod
     public void DisplayDensity(PluginCall call) {
@@ -103,6 +105,16 @@ public class SysInfoPlugin extends Plugin {
         call.resolve(res);
     }
 
+    @PluginMethod
+    public void AppIsReady(PluginCall call) {
+        this._appIsReady = true;
+        if (this._pendingIntent != null) {
+            this.handleIntent(this._pendingIntent);
+            this._pendingIntent = null;
+        }
+        call.resolve();
+    }
+
     public void SetNightMode(@NonNull Boolean isNightMode) {
         if (this._isNightMode != isNightMode) {
             if (this._isNightMode != null) {
@@ -119,6 +131,11 @@ public class SysInfoPlugin extends Plugin {
         if (action == null || action.equals(Intent.ACTION_MAIN)) {
             return;
         }
+        if (!this._appIsReady) {
+            this._pendingIntent = intent;
+            return;
+        }
+
         JSObject data = new JSObject();
         data.put("action", intent.getAction());
         data.put("type", intent.getType());

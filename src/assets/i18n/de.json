@@ -240,7 +240,8 @@
         "finish2": "Falls du an meinen anderen Projekten interessiert bist, kannst du auf",
         "finish3": "weitere Informationen zu mir finden.",
         "finish4": "Viel Spass mit meiner App!",
-        "finish_btn": "Weiter zur App"
+        "finish_btn": "Weiter zur App",
+        "finish_btn_import": "Import starten"
     },
     "page_lists": {
         "page_title": "Meine Listen",

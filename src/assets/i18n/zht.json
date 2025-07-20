@@ -222,6 +222,11 @@
         "deactivate": "停用",
         "select": "選擇"
     },
+    "im-export": {
+        "item_lists": "清單",
+        "item_trash": "資源回收筒",
+        "item_settings": "設定"
+    },
     "page_firststart": {
         "welcome": "歡迎使用 Listago",
         "language1": "請選擇您偏好的語言：",
@@ -235,7 +240,8 @@
         "finish2": "如果您對我的其他項目感興趣，可以在此找到更多資訊：",
         "finish3": "關於我。",
         "finish4": "祝您使用愉快！",
-        "finish_btn": "繼續使用應用程式"
+        "finish_btn": "繼續使用應用程式",
+        "finish_btn_import": "開始匯入"
     },
     "page_lists": {
         "page_title": "我的清單",

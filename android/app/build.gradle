@@ -1,14 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    dependenciesInfo {
+        includeInBundle true
+        includeInApk true
+    }
+    buildToolsVersion '36.0.0'
+    ndkVersion '28.2.13676358'
     namespace "de.romandrechsel.listago"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "de.romandrechsel.listago"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName '2025.7.1901'
+        versionCode 6
+        versionName '2025.7.2000'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

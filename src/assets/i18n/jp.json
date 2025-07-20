@@ -222,6 +222,12 @@
         "deactivate": "無効にする",
         "select": "選択する"
     },
+    "im-export": {
+        "item_lists": "リスト",
+        "item_trash": "ゴミ箱",
+        "item_settings": "設定",
+        "finish_btn_import": "インポート開始"
+    },
     "page_firststart": {
         "welcome": "Listagoへようこそ",
         "language1": "アプリの言語を選択してください:",

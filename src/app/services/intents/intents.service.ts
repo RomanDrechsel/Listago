@@ -3,6 +3,7 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 import { NavController } from "@ionic/angular/standalone";
 import { AppComponent } from "src/app/app.component";
 import { FileUtils } from "src/app/classes/utils/file-utils";
+import type { FirstStartPage } from "src/app/pages/first-start/first-start.page";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { Logger } from "../logging/logger";
 import { PopupsService } from "../popups/popups.service";
@@ -13,6 +14,11 @@ import { PopupsService } from "../popups/popups.service";
 export class IntentsService {
     private readonly _navControler = inject(NavController);
     private readonly _popups = inject(PopupsService);
+    private _firstStartPage?: FirstStartPage;
+
+    public set FirstStartPage(page: FirstStartPage | undefined) {
+        this._firstStartPage = page;
+    }
 
     public Initialize() {
         SysInfo.addListener("INTENT", (intent: Intent) => this.onIntent(intent));
@@ -28,6 +34,12 @@ export class IntentsService {
         } else {
             Logger.Error(`Received invalid Intent: `, intent);
         }
+    }
+
+    public async gotoImportAfterIntent(args: { importUri: string; replaceUrl?: boolean }): Promise<void> {
+        Logger.Notice(`Starting import from '${args.importUri}' due to SEND intent...`);
+        await this._navControler.navigateForward("settings/import", { animated: true, queryParams: { importFile: args.importUri }, replaceUrl: args.replaceUrl });
+        AppComponent.Instance?.CloseMenu();
     }
 
     private async handleListsImport(intent: Intent): Promise<void> {
@@ -72,9 +84,11 @@ export class IntentsService {
         }
 
         if (importUri) {
-            Logger.Notice(`Starting import from '${importUri}' due to SEND intent...`);
-            await this._navControler.navigateForward("settings/import", { animated: true, queryParams: { importFile: importUri } });
-            AppComponent.Instance?.CloseMenu();
+            if (this._firstStartPage) {
+                this._firstStartPage.StartImport = importUri;
+            } else {
+                await this.gotoImportAfterIntent({ importUri: importUri });
+            }
         }
     }
 

@@ -7,5 +7,6 @@ export interface ISysInfo extends Plugin {
     Logcat(args: { level: "d" | "n" | "i" | "e"; message: string }): Promise<void>;
     ClearAppCache(): Promise<ClearAppCacheEventArgs>;
     AppInstalled(args: { packageName: string }): Promise<{ installed: boolean }>;
+    AppIsReady(): Promise<void>;
     addListener<T>(eventName: string, listenerFunc: (data: T) => void): Promise<PluginListenerHandle>;
 }

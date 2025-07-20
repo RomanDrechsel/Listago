@@ -222,6 +222,11 @@
         "deactivate": "停用",
         "select": "选择"
     },
+    "im-export": {
+        "item_lists": "列表",
+        "item_trash": "回收站",
+        "item_settings": "设置"
+    },
     "page_firststart": {
         "welcome": "欢迎使用 Listago",
         "language1": "请选择您偏好的语言：",
@@ -235,7 +240,8 @@
         "finish2": "如果您对我的其他项目感兴趣，可以在此找到更多信息：",
         "finish3": "关于我。",
         "finish4": "祝您使用愉快！",
-        "finish_btn": "继续使用应用程序"
+        "finish_btn": "继续使用应用程序",
+        "finish_btn_import": "开始导入"
     },
     "page_lists": {
         "page_title": "我的列表",

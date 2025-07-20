@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Browser } from "@capacitor/browser";
 import { IonButton, IonContent, IonIcon, IonImg, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonText, IonToggle } from "@ionic/angular/standalone";
 import { SelectCustomEvent } from "@ionic/core";
 import { TranslateModule } from "@ngx-translate/core";
+import { IntentsService } from "src/app/services/intents/intents.service";
 import { EPrefProperty } from "../../services/storage/preferences.service";
 import { PageBase } from "../page-base";
 
@@ -23,6 +24,9 @@ export class FirstStartPage extends PageBase {
     @ViewChild("segbtnFinish", { static: false, read: ElementRef }) private _segbtnFinish?: ElementRef;
 
     private _garminActive: boolean = true;
+    private readonly _intents = inject(IntentsService);
+
+    public StartImport?: string;
 
     public get HomepageLink(): string {
         return this.Config.Homepage;
@@ -32,9 +36,27 @@ export class FirstStartPage extends PageBase {
         return this._garminActive;
     }
 
+    public get FinishButtonText(): string {
+        if (this.StartImport) {
+            return this.Locale.getText("page_firststart.finish_btn_import");
+        } else {
+            return this.Locale.getText("page_firststart.finish_btn");
+        }
+    }
+
+    public override async ionViewWillEnter(): Promise<void> {
+        await super.ionViewWillEnter();
+        this._intents.FirstStartPage = this;
+    }
+
     public override async ionViewDidEnter(): Promise<void> {
         await super.ionViewDidEnter();
         await this.Preferences.Set(EPrefProperty.GarminConnectIQ, true);
+    }
+
+    public override async ionViewWillLeave(): Promise<void> {
+        await super.ionViewWillLeave();
+        this._intents.FirstStartPage = undefined;
     }
 
     public async changeLanguage() {
@@ -84,7 +106,11 @@ export class FirstStartPage extends PageBase {
                 return;
             }
         }
-        this.NavController.navigateRoot("/lists", { animated: true, replaceUrl: true });
+        if (this.StartImport) {
+            await this._intents.gotoImportAfterIntent({ importUri: this.StartImport, replaceUrl: true });
+        } else {
+            this.NavController.navigateRoot("/lists", { animated: true, replaceUrl: true });
+        }
     }
 
     public async openApp() {

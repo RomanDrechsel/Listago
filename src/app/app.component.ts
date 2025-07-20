@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectorRef, Component, inject, isDevMode, OnInit, ViewChild } from "@angular/core";
+import { type AfterViewInit, ChangeDetectorRef, Component, inject, isDevMode, OnInit, ViewChild } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { App } from "@capacitor/app";
 import { IonApp, IonContent, IonFooter, IonIcon, IonImg, IonItem, IonLabel, IonList, IonMenu, IonRouterOutlet, IonSplitPane, IonToggle, NavController, Platform } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { EMenuItemType, MenuItem, MenuitemFactory, MenuitemFactoryList } from "./classes/menu-items";
+import SysInfo from "./plugins/sysinfo/sys-info";
 import { AppService } from "./services/app/app.service";
 import { ConnectIQService } from "./services/connectiq/connect-iq.service";
 import { EPrefProperty, PreferencesService } from "./services/storage/preferences.service";
@@ -15,7 +16,7 @@ import { EPrefProperty, PreferencesService } from "./services/storage/preference
     styleUrls: ["app.component.scss"],
     imports: [IonToggle, IonFooter, IonImg, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonRouterOutlet, TranslateModule, RouterLink, RouterLinkActive, CommonModule],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
     public appPages: MenuItem[] = [];
     public systemPages: MenuItem[] = MenuitemFactoryList([EMenuItemType.Settings, EMenuItemType.AppInfo, EMenuItemType.Privacy]);
     private _useTrash: boolean = true;
@@ -73,6 +74,10 @@ export class AppComponent implements OnInit {
         this._useTrash = await this.Preferences.Get<boolean>(EPrefProperty.TrashLists, true);
         this._firstStart = await this.Preferences.Get<boolean>(EPrefProperty.FirstStart, true);
         this.setAppPages();
+    }
+
+    public async ngAfterViewInit(): Promise<void> {
+        await SysInfo.AppIsReady();
     }
 
     public async onMenuItemClick(item: MenuItem) {

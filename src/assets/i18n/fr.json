@@ -222,6 +222,11 @@
         "deactivate": "Désactiver",
         "select": "Sélectionner"
     },
+    "im-export": {
+        "item_lists": "Listes",
+        "item_trash": "Corbeille",
+        "item_settings": "Paramètres"
+    },
     "page_firststart": {
         "welcome": "Bienvenue sur Listago",
         "language1": "Veuillez sélectionner votre langue préférée :",
@@ -235,7 +240,8 @@
         "finish2": "Si vous êtes intéressé par mes autres projets, vous pouvez trouver plus d'informations sur",
         "finish3": "à propos de moi.",
         "finish4": "Profitez bien de mon application !",
-        "finish_btn": "Continuer vers l'application"
+        "finish_btn": "Continuer vers l'application",
+        "finish_btn_import": "Démarrer l'importation"
     },
     "page_lists": {
         "page_title": "Mes listes",
