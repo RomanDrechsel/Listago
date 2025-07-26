@@ -1,6 +1,6 @@
-WIP: Admob
-BUG: "New List" on small display doesn't fit
+WIP: "New List" on small display doesn't fit
 TEST: import from lists
+BUG: Edit List -> sync device -> device name on new line
 TODO: export / save
 TODO: privacy policy -> im-/export
 TEST: SQLite on Android 15
