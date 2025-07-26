@@ -27,6 +27,8 @@ export class AdmobService {
 
     public async Initialize() {
         this._isInitialized = false;
+        this._bannerHeight = 0;
+        return;
 
         this._bannerHeight = await this.Preferences.Get(EPrefProperty.AdmobBannerHeight, this._bannerHeight);
         await this.resizeContainer(this._bannerHeight);
@@ -107,34 +109,39 @@ export class AdmobService {
      * @returns true if consent is obtained or not required, false otherwise.
      */
     public async RequestConsent(reset_consent: boolean = true): Promise<boolean> {
-        const authorizationStatus = (await AdMob.trackingAuthorizationStatus()).status;
-        Logger.Debug(`Admob tracking authorization status: ${authorizationStatus}`);
+        try {
+            const authorizationStatus = (await AdMob.trackingAuthorizationStatus()).status;
+            Logger.Debug(`Admob tracking authorization status: ${authorizationStatus}`);
 
-        if (authorizationStatus === "notDetermined" || reset_consent) {
-            await AdMob.requestTrackingAuthorization();
-        }
-
-        if ((await AdMob.trackingAuthorizationStatus()).status == "authorized") {
-            let consentInfo = await this.getConsentStatus();
-            if (consentInfo.status == AdmobConsentStatus.NOT_REQUIRED) {
-                Logger.Debug(`Admob constent status: ${consentInfo.status}`);
-            } else {
-                const before = consentInfo.status;
-                if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdmobConsentStatus.REQUIRED || reset_consent)) {
-                    Logger.Debug(`Show Admob ConsentForm...`);
-                    if (reset_consent) {
-                        await AdMob.resetConsentInfo();
-                        return this.RequestConsent(false);
-                    }
-                    consentInfo = await AdMob.showConsentForm();
-                }
-                if (before !== consentInfo.status) {
-                    Logger.Debug(`Admob consent status changed: ${before} -> ${consentInfo.status}`);
-                }
+            if (authorizationStatus === "notDetermined" || reset_consent) {
+                await AdMob.requestTrackingAuthorization();
             }
 
-            return consentInfo.status === AdmobConsentStatus.OBTAINED || consentInfo.status === AdmobConsentStatus.NOT_REQUIRED;
-        } else {
+            if ((await AdMob.trackingAuthorizationStatus()).status == "authorized") {
+                let consentInfo = await this.getConsentStatus();
+                if (consentInfo.status == AdmobConsentStatus.NOT_REQUIRED) {
+                    Logger.Debug(`Admob constent status: ${consentInfo.status}`);
+                } else {
+                    const before = consentInfo.status;
+                    if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdmobConsentStatus.REQUIRED || reset_consent)) {
+                        Logger.Debug(`Show Admob ConsentForm...`);
+                        if (reset_consent) {
+                            await AdMob.resetConsentInfo();
+                            return this.RequestConsent(false);
+                        }
+                        consentInfo = await AdMob.showConsentForm();
+                    }
+                    if (before !== consentInfo.status) {
+                        Logger.Debug(`Admob consent status changed: ${before} -> ${consentInfo.status}`);
+                    }
+                }
+
+                return consentInfo.status === AdmobConsentStatus.OBTAINED || consentInfo.status === AdmobConsentStatus.NOT_REQUIRED;
+            } else {
+                return false;
+            }
+        } catch (e) {
+            Logger.Error(`Could not check Admob tracking authorization status: `, e);
             return false;
         }
     }

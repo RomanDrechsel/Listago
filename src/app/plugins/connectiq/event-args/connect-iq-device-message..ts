@@ -7,7 +7,7 @@ export class ConnectIQDeviceMessage {
     public Message: any;
 
     constructor(args: DeviceMessageEventArgs, service: ConnectIQService) {
-        this.Device = ConnectIQDevice.FromEventArgs(args.device, service);
+        this.Device = new ConnectIQDevice(args.device);
         if (args.message) {
             if (args.message && typeof args.message === "string") {
                 try {

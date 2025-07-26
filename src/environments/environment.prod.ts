@@ -5,7 +5,3 @@ export const environment = {
     production: true,
     publicRelease: false,
 };
-
-export const DebugDevices = function (service: ConnectIQService): ConnectIQDevice[] {
-    return [];
-};

@@ -712,23 +712,6 @@ export class ListsService {
     }
 
     /**
-     * returns the number of lists in trash
-     * @returns number of lists in trash
-     */
-    public async GetTrashCount(): Promise<number> {
-        return this.BackendService.queryListsCount({ trash: true });
-    }
-
-    /**
-     * return the number of listitems in the trash of a list
-     * @param list the list
-     * @returns number of listitems in trash
-     */
-    public async GetTrashitemsCount(list: List): Promise<number> {
-        return this.BackendService.queryListitemsCount({ list: list, trash: true });
-    }
-
-    /**
      * remove automatic synchronization from all lists
      */
     public async PurgeAllSyncs(): Promise<void> {

@@ -1,6 +1,5 @@
 {
-    "name": "listago",
-    "app_id": "",
-    "type": "angular-standalone",
-    "integrations": {}
+  "name": "listago",
+  "integrations": {},
+  "type": "angular-standalone"
 }

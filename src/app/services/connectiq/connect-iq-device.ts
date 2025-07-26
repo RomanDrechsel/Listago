@@ -1,13 +1,12 @@
 import { DeviceEventArgs } from "src/app/plugins/connectiq/event-args/device-event-args";
 import { Locale } from "../localization/locale";
-import { ConnectIQService } from "./connect-iq.service";
 
 export class ConnectIQDevice {
     public Name!: string;
     public State: "Initializing" | "Ready" | "AppNotInstalled" | "CheckingApp" | "NotConnected" | "ConnectionLost" | "NotPaired" | "InvalidState" | "ServiceUnavailable" = "InvalidState";
     public Identifier!: number;
 
-    private constructor(arg: DeviceEventArgs, private Service: ConnectIQService) {
+    public constructor(arg: DeviceEventArgs) {
         this.Update(arg);
     }
 
@@ -49,15 +48,5 @@ export class ConnectIQDevice {
         } else {
             return false;
         }
-    }
-
-    /**
-     * create a new object from device state plugin response
-     * @param args
-     * @param service
-     * @returns
-     */
-    public static FromEventArgs(args: DeviceEventArgs, service: ConnectIQService): ConnectIQDevice {
-        return new ConnectIQDevice(args, service);
     }
 }

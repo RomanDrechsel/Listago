@@ -55,7 +55,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         AppComponent._instance = this;
         //exit app if back-stack is empty
         this.Platform.backButton.subscribeWithPriority(-1, async () => {
-            await this.tapBackToExit();
+            await this.tapBack();
         });
 
         this.Preferences.onPrefChanged$.subscribe(prop => {
@@ -138,12 +138,14 @@ export class AppComponent implements OnInit, AfterViewInit {
         await AppService.Popups.Toast.CloseAll();
     }
 
-    private async tapBackToExit() {
+    private async tapBack() {
         if (this.routerOutlet) {
             if (!this.routerOutlet.canGoBack()) {
                 const backlink = AppService.AppToolbar?.BackLink;
                 if (backlink) {
-                    this.NavController.navigateBack(backlink);
+                    if (!(await this.NavController.navigateBack(backlink))) {
+                        await this.NavController.navigateBack(backlink);
+                    }
                 } else {
                     await App.minimizeApp();
                 }

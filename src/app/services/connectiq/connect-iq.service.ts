@@ -171,7 +171,7 @@ export class ConnectIQService {
                             if (device) {
                                 device.Update(d);
                             } else {
-                                device = ConnectIQDevice.FromEventArgs(d, this);
+                                device = new ConnectIQDevice(d);
                             }
 
                             devices.push(device);
@@ -401,7 +401,7 @@ export class ConnectIQService {
     public async UpdateDevice(device_args: DeviceEventArgs) {
         let device = this._devices.find(d => d.Identifier == device_args.id);
         if (!device) {
-            device = ConnectIQDevice.FromEventArgs(device_args, this);
+            device = new ConnectIQDevice(device_args);
         }
         device.Update(device_args);
         await this.calcOnlineDevices();

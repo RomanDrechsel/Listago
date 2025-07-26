@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonText, SelectCustomEvent } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
-import { Subscription, interval } from "rxjs";
+import { interval, Subscription } from "rxjs";
 import { FileUtils } from "../../../classes/utils/file-utils";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
 import { PageBase } from "../../page-base";
@@ -83,6 +83,5 @@ export class LoggingPage extends PageBase {
         } else {
             this.LogsSize = undefined;
         }
-        this.cdr.detectChanges();
     }
 }

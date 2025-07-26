@@ -1,8 +1,6 @@
-BUG: ion-icon src soll nichtmehr genutzt weden...
-BUG: Double click in Back button (upper left), is app is reloaded
+WIP: Admob
 BUG: "New List" on small display doesn't fit
 TEST: import from lists
-TODO: translate service-intents.*
 TODO: export / save
 TODO: privacy policy -> im-/export
 TEST: SQLite on Android 15
