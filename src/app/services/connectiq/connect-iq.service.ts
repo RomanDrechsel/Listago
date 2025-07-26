@@ -5,7 +5,6 @@ import { Capacitor } from "@capacitor/core";
 import { NavController } from "@ionic/angular/standalone";
 import { BehaviorSubject, interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
-import { DebugDevices } from "../../../environments/environment";
 import { StringUtils } from "../../classes/utils/string-utils";
 import { SelectGarminDevice } from "../../pages/devices/devices.page";
 import ConnectIQ from "../../plugins/connectiq/connect-iq";
@@ -181,10 +180,6 @@ export class ConnectIQService {
             } catch (error) {
                 Logger.Error("Could not parse device infos");
             }
-        }
-
-        if (devices.length == 0) {
-            devices = DebugDevices(this);
         }
 
         this._alwaysTransmitToDevice = undefined;
