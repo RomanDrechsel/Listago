@@ -30,15 +30,14 @@ public class FileUtils {
         }
     }
 
-    public static DeleteDirResult DeleteDirectory(File dir, boolean delete_if_empty ) {
+    public static DeleteDirResult DeleteDirectory(File dir, boolean delete_if_empty) {
         DeleteDirResult result = new DeleteDirResult();
         if (dir != null && dir.isDirectory()) {
             boolean deleted_all = true;
             String[] children = null;
             try {
                 children = dir.list();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 Logger.Error(TAG, "Could not list directory " + dir.getAbsolutePath());
                 result.Success = false;
             }
@@ -52,12 +51,10 @@ public class FileUtils {
                 }
             }
             if (deleted_all) {
-                if (delete_if_empty && dir.delete())
-                {
+                if (delete_if_empty && dir.delete()) {
                     result.Directories++;
                 }
-            }
-            else {
+            } else {
                 result.Success = false;
             }
         } else if (dir != null && dir.isFile()) {

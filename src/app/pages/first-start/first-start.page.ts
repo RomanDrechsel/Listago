@@ -36,6 +36,10 @@ export class FirstStartPage extends PageBase {
         return this._garminActive;
     }
 
+    public get GarminAppname(): string {
+        return this.Config.GarminAppName;
+    }
+
     public get FinishButtonText(): string {
         if (this.StartImport) {
             return this.Locale.getText("page_firststart.finish_btn_import");
@@ -51,7 +55,8 @@ export class FirstStartPage extends PageBase {
 
     public override async ionViewDidEnter(): Promise<void> {
         await super.ionViewDidEnter();
-        await this.Preferences.Set(EPrefProperty.GarminConnectIQ, true);
+        this._garminActive = await this.ConnectIQ.IsConnectIQAppInstalled();
+        await this.Preferences.Set(EPrefProperty.GarminConnectIQ, this._garminActive);
     }
 
     public override async ionViewWillLeave(): Promise<void> {

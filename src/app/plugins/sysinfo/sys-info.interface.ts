@@ -6,7 +6,7 @@ export interface ISysInfo extends Plugin {
     NightMode(): Promise<{ isNightMode: boolean }>;
     Logcat(args: { level: "d" | "n" | "i" | "e"; message: string }): Promise<void>;
     ClearAppCache(): Promise<ClearAppCacheEventArgs>;
-    AppInstalled(args: { packageName: string }): Promise<{ installed: boolean }>;
-    AppIsReady(): Promise<void>;
+    AppInstalled(args: { packageName: string; silent?: boolean }): Promise<{ installed: boolean }>;
+    AppIsReady(): Promise<{ actions?: string }>;
     addListener<T>(eventName: string, listenerFunc: (data: T) => void): Promise<PluginListenerHandle>;
 }

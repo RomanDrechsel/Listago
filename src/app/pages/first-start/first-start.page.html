@@ -21,19 +21,19 @@
             </ion-segment-content>
             <ion-segment-content id="garmin">
                 <div class="content">
-                    <ion-img class="logo" src="/assets/img/garmin-connect-iq.svg"></ion-img>
+                    <ion-img class="logo" src="/assets/img/garmin-connect.png"></ion-img>
 
-                    <ion-toggle checked="true" labelPlacement="start" (ionChange)="onGarminChange($event.target.checked)">
+                    <ion-toggle [checked]="GarminActive" labelPlacement="start" (ionChange)="onGarminChange($event.target.checked)">
                         <ion-text class="text garmin1">{{'page_firststart.garmin1'|translate}}</ion-text>
                     </ion-toggle>
 
                     <div class="text garmin2">
-                        <span [innerHTML]="'page_firststart.garmin2'|translate"></span>
+                        <span [innerHTML]="'page_firststart.garmin2'|translate: { garminApp: GarminAppname }"></span>
                     </div>
                 </div>
 
                 <div class="buttons multiple">
-                    <ion-button (click)="openApp()" fill="outline"> {{'page_firststart.garmin_btn'|translate}} </ion-button>
+                    <ion-button (click)="openApp()" fill="outline"> {{'page_firststart.garmin_btn'|translate: { garminApp: GarminAppname } }} </ion-button>
                     <ion-button (click)="nextGarmin()">{{'next' | translate}}</ion-button>
                 </div>
             </ion-segment-content>

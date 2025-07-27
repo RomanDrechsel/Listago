@@ -5,7 +5,6 @@ import { App } from "@capacitor/app";
 import { IonApp, IonContent, IonFooter, IonIcon, IonImg, IonItem, IonLabel, IonList, IonMenu, IonRouterOutlet, IonSplitPane, IonToggle, NavController, Platform } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { EMenuItemType, MenuItem, MenuitemFactory, MenuitemFactoryList } from "./classes/menu-items";
-import SysInfo from "./plugins/sysinfo/sys-info";
 import { AppService } from "./services/app/app.service";
 import { ConnectIQService } from "./services/connectiq/connect-iq.service";
 import { EPrefProperty, PreferencesService } from "./services/storage/preferences.service";
@@ -77,7 +76,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     public async ngAfterViewInit(): Promise<void> {
-        await SysInfo.AppIsReady();
+        await this.App.AppIsReady();
     }
 
     public async onMenuItemClick(item: MenuItem) {

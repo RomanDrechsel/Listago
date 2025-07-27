@@ -43,7 +43,7 @@
 
                         <ion-item lines="none">
                             <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (click)="toggleSync($event)" #sync>
-                                {{ "comp-listeditor.sync" | translate }}
+                                <div>{{ "comp-listeditor.sync" | translate }}</div>
                                 <ion-note>{{ ListSyncDevices }}</ion-note>
                             </ion-checkbox>
                             <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>

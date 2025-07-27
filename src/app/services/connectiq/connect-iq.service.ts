@@ -5,6 +5,7 @@ import { Capacitor } from "@capacitor/core";
 import { NavController } from "@ionic/angular/standalone";
 import { BehaviorSubject, interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
+import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { StringUtils } from "../../classes/utils/string-utils";
 import { SelectGarminDevice } from "../../pages/devices/devices.page";
 import ConnectIQ from "../../plugins/connectiq/connect-iq";
@@ -402,6 +403,10 @@ export class ConnectIQService {
         await this.calcOnlineDevices();
         this.onDeviceChangedSubject.next(device);
         this.checkDeviceVersion(device_args);
+    }
+
+    public async IsConnectIQAppInstalled(): Promise<boolean> {
+        return (await SysInfo.AppInstalled({ packageName: "com.garmin.android.apps.connectmobile" })).installed;
     }
 
     private async checkDeviceVersion(device: DeviceEventArgs) {

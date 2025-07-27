@@ -6,7 +6,6 @@ import { Logger } from "../logging/logger";
 
 export enum EPrefProperty {
     FirstStart = "LISTAGO_FirstStart",
-    LastVersion = "LISTAGO_LastVersion",
     GarminConnectIQ = "LISTAGO_GarminConnectIQ",
     AppLanguage = "LISTAGO_AppLanguage",
     LogMode = "LISTAGO_LogMode",

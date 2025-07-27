@@ -6,8 +6,6 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
-import { FileUtils } from "src/app/classes/utils/file-utils";
-import type { ClearAppCacheEventArgs } from "src/app/plugins/sysinfo/event-args/clear-app-cache-event-args";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
@@ -28,7 +26,7 @@ import { EPrefProperty, PreferencesService } from "../storage/preferences.servic
     providedIn: "root",
 })
 export class AppService {
-    public static AppToolbar?: MainToolbarComponent;
+    public static AppToolbar?: MainToolbarComponent; //TODO: needed?
 
     private readonly _logger = inject(LoggingService);
     private readonly _locale = inject(LocalizationService);
@@ -76,25 +74,7 @@ export class AppService {
      */
     public async InitializeApp() {
         await this._platform.ready();
-
-        const last_version = await this._preferences.Get<number>(EPrefProperty.LastVersion, -1);
-        const build = Number((await App.getInfo()).build);
-        let clear_cache: ClearAppCacheEventArgs | undefined = undefined;
-        if (last_version >= 0 && !Number.isNaN(build) && build > last_version) {
-            clear_cache = await SysInfo.ClearAppCache();
-        }
-        await this._preferences.Set(EPrefProperty.LastVersion, build);
-
         await Logger.Initialize(this._logger);
-
-        if (clear_cache) {
-            const text = `Removed ${clear_cache.files ?? 0} file(s) in ${clear_cache.directories ?? 0} directory(ies), total of ${FileUtils.File.FormatSize(clear_cache.size ?? 0)}.`;
-            if (clear_cache?.success) {
-                Logger.Notice(`Cleared app cache due to new app version (${last_version} -> ${build}). ${text}`);
-            } else {
-                Logger.Error(`Tryed to clear app cache due to new app version (${last_version} -> ${build}), but not everything could be deleted... ${text}`);
-            }
-        }
 
         await EdgeToEdge.enable();
         this.handleNightmode((await SysInfo.NightMode()).isNightMode);
@@ -254,6 +234,32 @@ export class AppService {
         }
 
         return meta;
+    }
+
+    public async AppIsReady(): Promise<void> {
+        const initActions = await SysInfo.AppIsReady();
+        if (initActions?.actions) {
+            const actions = JSON.parse(initActions.actions);
+            if (actions && Array.isArray(actions) && actions.length > 0) {
+                for (let i = 0; i < actions.length; i++) {
+                    const action = actions[i];
+                    if (action.action == "appUpdate") {
+                        const fromVersion = action.payload.from ?? -1;
+                        const toVersion = action.payload.to ?? -1;
+                        if (action.payload.success) {
+                            this._logger.Notice(`Successfully updated app from version ${fromVersion} to ${toVersion}`);
+                        } else {
+                            this._logger.Error(`Updated app from version ${fromVersion} to ${toVersion}, but encountered errors.`, action.payload.error);
+                        }
+                    } else {
+                        this._logger.Notice(`InitialAction '${action.action}' done`, action.payload);
+                    }
+                }
+            } else {
+                this._logger.Notice(`Unknown initial actions: `, initActions.actions);
+            }
+        }
+        this._logger.Debug(`App initialization completed`);
     }
 
     private async handleNightmode(isNightMode: boolean | undefined) {

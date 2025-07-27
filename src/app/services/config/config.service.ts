@@ -23,4 +23,9 @@ export class ConfigService {
      * app-id for the Garmin ConnectIQ store
      */
     public readonly GarminAppStoreId = "c04a5671-7e39-46e7-b911-1911dbb2fe05";
+
+    /**
+     * name of the garmin app
+     */
+    public readonly GarminAppName = "Listago";
 }

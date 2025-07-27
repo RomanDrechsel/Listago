@@ -15,10 +15,14 @@ import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import de.romandrechsel.listago.logging.Logger;
@@ -26,11 +30,23 @@ import de.romandrechsel.listago.utils.FileUtils;
 
 @CapacitorPlugin(name = "SysInfo")
 public class SysInfoPlugin extends Plugin {
+    public static class InitialAction {
+        public InitialAction(String action, Map<String, Object> payload) {
+            this.action = action;
+            this.payload = payload;
+        }
+
+        String action = null;
+        Map<String, Object> payload = null;
+    }
+
     private static final String TAG = "SysInfoPlugin";
 
     private Boolean _isNightMode = null;
     private Boolean _appIsReady = false;
     private Intent _pendingIntent = null;
+    private ArrayList<InitialAction> _initActions = null;
+
 
     @PluginMethod
     public void DisplayDensity(PluginCall call) {
@@ -87,6 +103,10 @@ public class SysInfoPlugin extends Plugin {
     @PluginMethod
     public void AppInstalled(PluginCall call) {
         String packageName = call.getString("packageName", null);
+        Boolean silent = call.getBoolean("silent", false);
+        if (silent == null) {
+            silent = false;
+        }
 
         boolean installed = false;
         if (packageName != null) {
@@ -94,9 +114,13 @@ public class SysInfoPlugin extends Plugin {
             try {
                 pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
                 installed = true;
-                Logger.Debug(TAG, "App '" + packageName + "' is installed");
+                if (!silent) {
+                    Logger.Debug(TAG, "App '" + packageName + "' is installed");
+                }
             } catch (PackageManager.NameNotFoundException e) {
-                Logger.Debug(TAG, "App '" + packageName + "' is NOT installed");
+                if (!silent) {
+                    Logger.Debug(TAG, "App '" + packageName + "' is NOT installed");
+                }
             }
         }
 
@@ -112,7 +136,23 @@ public class SysInfoPlugin extends Plugin {
             this.handleIntent(this._pendingIntent);
             this._pendingIntent = null;
         }
-        call.resolve();
+        JSObject ret = new JSObject();
+        if (this._initActions != null && !this._initActions.isEmpty()) {
+            Gson gson = new Gson();
+            ArrayList<String> actions = new ArrayList<>();
+            for (InitialAction action : this._initActions) {
+                Map<String, Object> actionMap = new HashMap<>();
+                actionMap.put("action", action.action);
+                actionMap.put("payload", action.payload);
+                String json = gson.toJson(actionMap);
+                if (json != null) {
+                    actions.add(json);
+                }
+            }
+            ret.put("actions", actions);
+            this._initActions = null;
+        }
+        call.resolve(ret);
     }
 
     public void SetNightMode(@NonNull Boolean isNightMode) {
@@ -192,6 +232,17 @@ public class SysInfoPlugin extends Plugin {
             data.put("extras", extrasJson);
         }
         this.notifyListeners("INTENT", data);
+    }
+
+    public void InitialActionDone(InitialAction action) {
+        if (this._appIsReady) {
+            return;
+        }
+
+        if (this._initActions == null) {
+            this._initActions = new ArrayList<>();
+        }
+        this._initActions.add(action);
     }
 
     private FileUtils.DeleteDirResult DeleteCache() {

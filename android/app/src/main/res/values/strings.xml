@@ -5,4 +5,5 @@
     <string name="package_name" translatable="false">de.romandrechsel.listago</string>
     <string name="custom_url_scheme" translatable="false">de.romandrechsel.listago</string>
     <string name="app_name_debug" translatable="false">Listago Debug</string>
+    <string name="shared_pref" translatable="false">ListagoPreferences</string>
 </resources>
