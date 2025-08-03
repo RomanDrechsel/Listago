@@ -197,7 +197,7 @@ export class ListEditorComponent implements OnInit {
     }
 
     public async onSubmit() {
-        const listname = this.Form.get("listname")?.value;
+        const listname = this.Form.get("listname")?.value?.trim();
         if (!listname || listname.length === 0) {
             return this.cancel();
         }

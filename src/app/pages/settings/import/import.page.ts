@@ -361,17 +361,6 @@ export class ImportPage extends PageBase {
         this._importDone = false;
         this.Popups.Toast.Error("page_settings_import.select_archive_error", undefined, true);
     }
-
-    private async debugArchive(): Promise<boolean> {
-        const debug_archive = "import/lists-export.zip";
-        if (await FileUtils.FileExists(debug_archive, Directory.Cache)) {
-            try {
-                this._archive = (await Filesystem.getUri({ path: debug_archive, directory: Directory.Cache })).uri;
-                return true;
-            } catch {}
-        }
-        return false;
-    }
 }
 
 export type ImportKey = "lists" | "trash" | "settings";

@@ -3,7 +3,11 @@
 
     ion-toolbar.main-toolbar {
         ion-title {
-            padding-inline: 15px;
+            padding-inline: 1em;
+
+            &.back {
+                padding-inline: 0;
+            }
         }
 
         ion-progress-bar {

@@ -1,5 +1,6 @@
 export type ListitemModel = {
-    uuid: number | string;
+    id?: number;
+    uuid?: number | string;
     item: string;
     note?: string;
     order: number;
@@ -8,4 +9,5 @@ export type ListitemModel = {
     locked?: boolean;
     updated?: number;
     deleted?: number;
+    rev?: number;
 };

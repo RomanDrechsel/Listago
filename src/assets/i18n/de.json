@@ -101,6 +101,7 @@
         "empty_trash_confirm_single": "Möchtest du den Papierkorb leeren und die Listen löschen?",
         "empty_trash_listitems_confirm": "Möchtest du den Papierkorb der Liste leeren und die {{count}} Punkte löschen?",
         "empty_trash_listitems_confirm_single": "Möchtest du den Papierkorb der Liste leeren und den Punkt löschen",
+        "empty_trash_listitems_confirm_unknown": "Möchtest du den Papierkorb leeren und die Punkte löschen?",
         "empty_trash_success": "Der Papierkorb wurde geleert.",
         "empty_trash_error": "Der Papierkorb konnte nicht geleert werden!",
         "transmit_confirm": "Möchtest du die Liste auf dein Gerät <strong>{{device}}</strong> übertragen?",
@@ -270,7 +271,8 @@
         "restore": "Wiederherstellen",
         "deleted": "gelöscht: {{date}}",
         "empty": "Der Papierkorb ist leer.",
-        "loading": "Der Papierkorb wird geladen..."
+        "loading": "Der Papierkorb wird geladen...",
+        "error": "Der Papierkorb konnte nicht geladen werden!"
     },
     "page_trashitem": {
         "page_title": "Papierkorb",
@@ -433,6 +435,28 @@
         "import_report_failed_trash": "{{num}} Papierkorbeinträge konnten nicht importiert werden.",
         "import_report_failed_trash_singular": "Ein Papierkorbeintrag konnte nicht importiert werden.",
         "import_report_failed_settings": "Nicht alle Einstellungen konnten importiert werden."
+    },
+    "page_settings_export": {
+        "page_title": "Sichern",
+        "lists": "Möchtest du deine Listen exportieren?",
+        "lists_toggle": "Listen exportieren",
+        "trash": "Sollen auch die Listen und Listenpunkte im Papierkorb exportiert werden?",
+        "trash_toggle": "Papierkorb exportieren",
+        "settings": "Zusätzlich kannst du auch alle App-Einstellungen exportieren.",
+        "settings_toggle": "Einstellungen exportieren",
+        "export_to_zip": "Exportieren",
+        "export_summary": "Folgende Inhalte werden exportiert:",
+        "export_summary_lists": "Listen",
+        "export_summary_trash": "Papierkorb",
+        "export_summary_settings": "Einstellungen",
+        "export_summary_nothing": "Es gibt nichts zu exportieren.",
+        "export_cancel": "Export abbrechen",
+        "export_error": "Der Export konnte nicht abgeschlossen werden!",
+        "export_success": "Der Export wurde erfolgreich durchgeführt und das Archiv in <strong>DOCUMENTS</strong> gespeichert.",
+        "export_success_share": "Möchtest du das Archiv teilen?",
+        "export_success_share_listago": "Oder möchtest du das Archiv teilen?",
+        "export_success_share_title": "Listen Export",
+        "export_success_listago_error": "Der Import ist fehlgeschlagen!"
     },
     "page_appinfos": {
         "page_title": "App Informationen",

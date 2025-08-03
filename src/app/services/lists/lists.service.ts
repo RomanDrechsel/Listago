@@ -17,7 +17,7 @@ import { PopupsService } from "../popups/popups.service";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
 import { type ListsOrder, type ListsOrderDirection, ListsSqliteBackendService } from "../storage/sqlite/lists/lists-sqlite-backend.service";
 import { KeepInTrash } from "./keep-in-trash";
-import { List, type ListReset, type ListSyncDevice } from "./list";
+import { List, type ListReset, type ListSyncDevice, ListToLog } from "./list";
 import { Listitem } from "./listitem";
 
 @Injectable({
@@ -45,7 +45,7 @@ export class ListsService {
      */
     private _lastSyncInformList?: number;
 
-    private onTrashItemsDatasetChangedSubject = new BehaviorSubject<List | undefined>(undefined);
+    private onTrashItemsDatasetChangedSubject = new BehaviorSubject<List | number | undefined>(undefined);
     public onTrashItemsDatasetChanged$ = this.onTrashItemsDatasetChangedSubject.asObservable();
 
     private onTrashDatasetChangedSubject = new BehaviorSubject<List[] | undefined>(undefined);
@@ -104,6 +104,7 @@ export class ListsService {
     public async GetTrash(): Promise<List[]> {
         MainToolbarComponent.ToggleProgressbar(true);
         const trash = await this.BackendService.queryLists({ peek: true, trash: true, orderBy: "deleted", orderDir: "DESC" });
+        this.onTrashDatasetChangedSubject.next(trash);
         MainToolbarComponent.ToggleProgressbar(false);
         return trash;
     }
@@ -136,9 +137,12 @@ export class ListsService {
      * @param id unique identifier of the list
      * @returns ListitemTrashModel object
      */
-    public async GetListitemTrash(id: number | List): Promise<Listitem[] | undefined> {
+    public async GetListitemTrash(id: number | List, fire_subscription: boolean = true): Promise<Listitem[] | undefined> {
         MainToolbarComponent.ToggleProgressbar(false);
         const trash = await this.BackendService.queryListitems({ list: id, trash: true, itemsOrderBy: "deleted", itemsOrderDir: "DESC" });
+        if (fire_subscription) {
+            this.onTrashItemsDatasetChangedSubject.next(id);
+        }
         MainToolbarComponent.ToggleProgressbar(false);
         return trash;
     }
@@ -353,7 +357,7 @@ export class ListsService {
      * @param items the item in Trash to be erased
      * @returns erase successful, undefined if user canceled it
      */
-    public async EraseListitemFromTrash(trash: List, items: Listitem | Listitem[]): Promise<boolean | undefined> {
+    public async EraseListitemFromTrash(trash: List | number, items: Listitem | Listitem[]): Promise<boolean | undefined> {
         if (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmEraseListitem, true)) {
             let text = "";
             if (Array.isArray(items) && items.length > 1) {
@@ -427,13 +431,20 @@ export class ListsService {
      * @param trash the list, the items in trash should be removed
      * @returns removal successful? undefined if the user canceled it
      */
-    public async EmptyListitemTrash(trash: List): Promise<boolean | undefined> {
+    public async EmptyListitemTrash(trash: List | number): Promise<boolean | undefined> {
         if (await this.Preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)) {
+            if (!(trash instanceof List)) {
+                trash = (await this.GetList(trash)) ?? trash;
+            }
             let text;
-            if (trash.ItemsInTrashCount == 1) {
-                text = this.Locale.getText("service-lists.empty_trash_listitems_confirm_single");
+            if (trash instanceof List) {
+                if (trash.ItemsInTrashCount == 1) {
+                    text = this.Locale.getText("service-lists.empty_trash_listitems_confirm_single");
+                } else {
+                    text = this.Locale.getText("service-lists.empty_trash_listitems_confirm", { count: trash.ItemsInTrashCount });
+                }
             } else {
-                text = this.Locale.getText("service-lists.empty_trash_listitems_confirm", { count: trash.ItemsInTrashCount });
+                text = this.Locale.getText("service-lists.empty_trash_listitems_confirm_unknown");
             }
             text += this.Locale.getText("service-lists.undo_warning");
             if (await this.Popups.Alert.YesNo({ message: text })) {
@@ -540,7 +551,7 @@ export class ListsService {
      * @param items item(s) in trash to be restored
      * @returns restore successful? undefined if user canceled it
      */
-    public async RestoreListitemFromTrash(trash: List, items: Listitem | Listitem[]): Promise<boolean | undefined> {
+    public async RestoreListitemFromTrash(trash: List | number, items: Listitem | Listitem[]): Promise<boolean | undefined> {
         if (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmRestoreListitem, true)) {
             let text = "";
             if (!Array.isArray(items) || items.length == 1) {
@@ -785,6 +796,13 @@ export class ListsService {
             const trash = await this.GetTrash();
             this.onTrashDatasetChangedSubject.next(trash);
         }
+    }
+
+    public async GetListName(list: List | number): Promise<string | undefined> {
+        if (list instanceof List) {
+            return list.Name;
+        }
+        return await this.BackendService.queryListName(list);
     }
 
     private async addListToIndex(list: List) {
@@ -1093,7 +1111,7 @@ export class ListsService {
      * @param items listitem(s) to be erased
      * @returns was the erase successful
      */
-    private async eraseListitemFromTrash(trash: List, items: Listitem | Listitem[]): Promise<boolean> {
+    private async eraseListitemFromTrash(trash: List | number, items: Listitem | Listitem[]): Promise<boolean> {
         MainToolbarComponent.ToggleProgressbar(true);
         if (!Array.isArray(items)) {
             items = [items];
@@ -1101,13 +1119,12 @@ export class ListsService {
         const del = await this.BackendService.deleteListitems({ list: trash, items: items, trash: true });
 
         if (del) {
-            Logger.Notice(`Erased ${del} listitem(s) from trash of list ${trash.toLog()}`);
+            Logger.Notice(`Erased ${del} listitem(s) from trash of list ${ListToLog(trash)}`);
             const text = !Array.isArray(items) || items.length == 1 ? "service-lists.erase_item_success" : "service-lists.erase_item_success_plural";
             this.Popups.Toast.Success(text);
-            trash.ItemsInTrash = undefined;
             this.onTrashItemsDatasetChangedSubject.next(trash);
         } else {
-            Logger.Error(`Could not erease ${items.length} listitem(s) from trash of list ${trash.toLog()}`);
+            Logger.Error(`Could not erease ${items.length} listitem(s) from trash of list ${ListToLog(trash)}`);
             const text = !Array.isArray(items) || items.length == 1 ? "service-lists.erase_item_error" : "service-lists.erase_item_error_plural";
             this.Popups.Toast.Error(text);
         }
@@ -1154,13 +1171,15 @@ export class ListsService {
      * @param list list to empty
      * @returns was the emptying successful?
      */
-    private async emptyListitemTrash(trash: List): Promise<boolean> {
+    private async emptyListitemTrash(trash: List | number): Promise<boolean> {
         MainToolbarComponent.ToggleProgressbar(true);
         const ret = await this.BackendService.deleteListitems({ list: trash, items: undefined, force: true, trash: true });
         if (ret !== false) {
-            trash.ItemsInTrash = [];
+            if (trash instanceof List) {
+                trash.ItemsInTrash = [];
+            }
             if (trash) {
-                Logger.Notice(`Erased trash of list ${trash.toLog()}`);
+                Logger.Notice(`Erased trash of list ${ListToLog(trash)}`);
             } else {
                 Logger.Notice(`Erased trash of all lists`);
             }
@@ -1170,7 +1189,7 @@ export class ListsService {
             }
         } else {
             if (trash) {
-                Logger.Error(`Could not erase trash of list ${trash.toLog()}`);
+                Logger.Error(`Could not erase trash of list ${ListToLog(trash)}`);
             } else {
                 Logger.Error(`Could not erase trash of all lists`);
             }
@@ -1239,7 +1258,7 @@ export class ListsService {
      * @param items listitem(s) to restore
      * @returns was the restore successful
      */
-    private async restoreListitemFromTrash(list: List, items: Listitem | Listitem[]): Promise<boolean> {
+    private async restoreListitemFromTrash(list: List | number, items: Listitem | Listitem[]): Promise<boolean> {
         MainToolbarComponent.ToggleProgressbar(true);
 
         if (!Array.isArray(items)) {
@@ -1248,17 +1267,22 @@ export class ListsService {
 
         const restore = await this.BackendService.restoreListitemsFromTrash({ list: list, items: items });
         if (restore && restore >= 0) {
-            Logger.Debug(`Restored ${restore} listitem(s) from trash of list ${list.toLog()}`);
-            await this.refreshList(list);
-            await this.cleanOrderListitems(list, true);
-            this.syncListToWatch(list);
+            Logger.Debug(`Restored ${restore} listitem(s) from trash of list ${ListToLog(list)}`);
+            if (!(list instanceof List)) {
+                list = (await this.GetList(list as number)) ?? list;
+            }
+            if (list instanceof List) {
+                await this.refreshList(list);
+                await this.cleanOrderListitems(list, true);
+                this.syncListToWatch(list);
+                list.ItemsInTrash = list.ItemsInTrash?.filter(i => !items.includes(i));
+                this.onListChangedSubject.next(list);
+            }
             const text = !Array.isArray(items) || items.length == 1 ? "service-lists.restore_item_success" : "service-lists.restore_item_success_plural";
             this.Popups.Toast.Success(text);
-            list.ItemsInTrash = list.ItemsInTrash?.filter(i => !items.includes(i));
-            this.onListChangedSubject.next(list);
             this.onTrashItemsDatasetChangedSubject.next(list);
         } else {
-            Logger.Error(`Could not restore ${items.length} listitem(s) from trash of list ${list.toLog()}`);
+            Logger.Error(`Could not restore ${items.length} listitem(s) from trash of list ${ListToLog(list)}`);
             const text = items.length == 1 ? "service-lists.restore_item_error" : "service-lists.restore_item_error_plural";
             this.Popups.Toast.Error(text);
         }

@@ -1,12 +1,10 @@
 import { Directory, Encoding, type FileInfo, Filesystem } from "@capacitor/filesystem";
 import { Zip } from "capa-zip";
 import { FileUtils } from "src/app/classes/utils/file-utils";
-import { HelperUtils } from "src/app/classes/utils/helper-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { ConnectIQService } from "src/app/services/connectiq/connect-iq.service";
-import { List } from "src/app/services/lists/list";
-import { ListitemModel } from "src/app/services/lists/listitem";
+import type { ListitemModel } from "src/app/services/lists/listitem";
 import type { ListsService } from "src/app/services/lists/lists.service";
 import { LocalizationService } from "src/app/services/localization/localization.service";
 import { Logger } from "src/app/services/logging/logger";
@@ -16,6 +14,7 @@ import { EPrefProperty, PreferencesService } from "../../preferences.service";
 import type { SqliteService } from "../../sqlite/sqlite.service";
 import type { ListitemTrashModel } from "../listitem-trash-model";
 import { ListModel } from "./../list-model";
+import { ModelToList, ModelToListitem } from "./model-to";
 
 export class ListsImporter {
     private _importRunning: boolean = false;
@@ -318,140 +317,104 @@ export class ListsImporter {
     private async importListFile(args: { file: FileInfo; order_offset: number; is_trash: boolean }, sqlite: SqliteService, listsService: ListsService): Promise<boolean> {
         const json = await this.getFileJson<ListModel>(args.file);
 
-        if (!json || !json.uuid || !json.name) {
-            Logger.Error(`Importer: invalid list file '${args.file.uri}'`);
+        if (!json) {
+            Logger.Error(`Importer: could not read JSON from file '${args.file.uri}'`);
             return false;
         }
 
-        let list_id = undefined;
-        const res = await sqlite.Query("SELECT `id` FROM `lists` WHERE `legacy_uuid`=? LIMIT 1", [String(json.uuid)]);
-        if (res && Array.isArray(res) && res.length > 0 && res[0].id) {
-            list_id = Number(res[0].id);
-        }
+        try {
+            const list = await ModelToList(json, sqlite, listsService, args.file.uri, args.is_trash);
+            if (list) {
+                list.Order += args.order_offset;
+                const is_new = list.isVirtual;
 
-        if (!list_id || Number.isNaN(list_id)) {
-            list_id = HelperUtils.RandomNegativNumber();
-        }
-
-        const items: ListitemModel[] = [];
-        if (json.items?.length) {
-            for (let i = 0; i < json.items.length; i++) {
-                const model = json.items[i];
-                let item_id = undefined;
-                const res_item = await sqlite.Query("SELECT `id` FROM `listitems` WHERE `legacy_uuid` = ? LIMIT 1", [String(model.uuid)]);
-                if (res_item && Array.isArray(res_item) && res_item.length > 0 && res_item[0].id) {
-                    item_id = Number(res_item[0].id);
+                const store = await listsService.StoreList(list, true, true, false);
+                if (store === true) {
+                    if (is_new) {
+                        Logger.Debug(`Importer: imported new list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)` + (args.is_trash ? " in trash" : ""));
+                    } else {
+                        Logger.Debug(`Importer: updated list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)` + (args.is_trash ? " in trash" : ""));
+                    }
+                    return true;
                 }
-                if (!item_id || Number.isNaN(item_id)) {
-                    item_id = HelperUtils.RandomNegativNumber();
-                }
-                items.push({
-                    id: item_id,
-                    item: model.item,
-                    note: model.note,
-                    list_id: list_id,
-                    created: model.created,
-                    modified: model.updated ?? Date.now(),
-                    deleted: model.deleted,
-                    order: model.order,
-                    hidden: model.hidden ? 1 : undefined,
-                    locked: model.locked ? 1 : undefined,
-                    legacy_uuid: String(model.uuid),
-                });
-            }
-        }
 
-        const list = new List(
-            {
-                id: list_id,
-                name: json.name,
-                order: json.order + args.order_offset,
-                created: json.created,
-                modified: json.updated ?? Date.now(),
-                deleted: args.is_trash ? json.deleted ?? Date.now() : undefined,
-                sync_devices: undefined,
-                legacy_uuid: String(json.uuid),
-                reset: json.reset?.active === true ? 1 : json.reset?.active === false ? 0 : undefined,
-                reset_day: json.reset?.day,
-                reset_hour: json.reset?.hour,
-                reset_minute: json.reset?.minute,
-                reset_interval: json.reset?.interval,
-                reset_weekday: json.reset?.weekday,
-            },
-            items,
-            items.length,
-            true,
-        );
-
-        const is_new = list.isVirtual;
-
-        const store = await listsService.StoreList(list, true, true, false);
-        if (store === true) {
-            if (is_new) {
-                Logger.Debug(`Importer: imported new list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)` + (args.is_trash ? " in trash" : ""));
+                return store !== false;
             } else {
-                Logger.Debug(`Importer: updated list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)` + (args.is_trash ? " in trash" : ""));
+                Logger.Error(`Importer: invalid json of list in file '${args.file.uri}'`);
             }
-            return true;
+        } catch (e) {
+            Logger.Debug(`Importer: unknown rev ${json.rev} of list file '${args.file.uri}'`, e);
         }
 
-        return store !== false;
+        return false;
     }
 
     private async importListitemTrashFile(args: { file: FileInfo }, sqlite: SqliteService, ListsService: ListsService): Promise<false | number> {
         const json = await this.getFileJson<ListitemTrashModel>(args.file);
-        if (!json || !json.uuid) {
+        if (!json || (!json.uuid && !json.id)) {
             Logger.Error(`Importer: invalid listitems trash file '${args.file.uri}'`);
             return false;
         }
 
         if (json.items) {
-            const res = await sqlite.Query("SELECT `id` FROM `lists` WHERE `legacy_uuid` = ? LIMIT 1", [String(json.uuid)]);
-            if (!res || !Array.isArray(res) || res.length <= 0 || !res[0].id) {
-                Logger.Error(`Importer: could not import listitem trash for legacy_uuid '${json.uuid}' - no list found`);
+            const items: ListitemModel[] = [];
+
+            let list_id = -1;
+            if (json.id) {
+                list_id = json.id;
+            } else if (json.uuid) {
+                const res = await sqlite.Query("SELECT `id` FROM `lists` WHERE `legacy_uuid` = ? LIMIT 1", [String(json.uuid)]);
+                if (!res || !Array.isArray(res) || res.length <= 0 || !res[0].id) {
+                    Logger.Error(`Importer: could not import listitem trash for legacy_uuid '${json.uuid}' - no list found`);
+                    return false;
+                }
+                list_id = Number(res[0].id);
+            } else {
+                Logger.Error(`Importer: could not import listitem trash - no corresponding list found for '${json.id ? "id: " + json.id : "legacy_uuid: " + json.uuid}'`);
                 return false;
             }
 
-            const list_id = Number(res[0].id);
-
             for (let i = 0; i < json.items.length; i++) {
-                const item = json.items[i];
-                //check if this listitem is already in trash...
-                const res2 = await sqlite.Query("SELECT `id` FROM `listitems` WHERE `legacy_uuid` = ? LIMIT 1", [String(item.uuid)]);
-                if (String(item.uuid) == "915002") {
-                    console.log(res2);
+                let item: ListitemModel | undefined;
+                try {
+                    item = await ModelToListitem(json.items[i], list_id, sqlite, ListsService, true);
+                } catch (e) {
+                    Logger.Error(`Importer: could not import listitem 'id: ${json.items[i].id}' ('legacy_uuid: ${json.items[i].uuid})': `, e);
+                    continue;
                 }
-                if (!res2 || !Array.isArray(res2) || res2.length <= 0 || !res2[0].id) {
-                    //insert new listitem
-                    const res3 = await sqlite.Execute("INSERT INTO `listitems` (`list_id`,`item`, `note`, `order`,`hidden`, `locked`, `created`, `modified`,`deleted`,`legacy_uuid`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-                        list_id,
-                        item.item,
-                        item.note ?? null,
-                        item.order,
-                        item.hidden ? "1" : "0",
-                        item.locked ? "1" : "0",
-                        item.created,
-                        item.updated ?? Date.now(),
-                        item.deleted ?? Date.now(),
-                        item.uuid,
-                    ]);
-                    if (res3?.changes?.lastId && res3.changes.lastId > 0) {
-                        Logger.Debug(`Importer: added new listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' to trash (id: ${res3.changes.lastId})`);
+                if (item) {
+                    //check if this listitem is already in trash...
+                    if (item.id < 0) {
+                        //insert new listitem
+                        const res3 = await sqlite.Execute("INSERT INTO `listitems` (`list_id`,`item`, `note`, `order`,`hidden`, `locked`, `created`, `modified`,`deleted`,`legacy_uuid`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+                            list_id,
+                            item.item,
+                            item.note ?? null,
+                            item.order,
+                            item.hidden ? "1" : "0",
+                            item.locked ? "1" : "0",
+                            item.created,
+                            item.modified,
+                            item.deleted ?? Date.now(),
+                            item.legacy_uuid,
+                        ]);
+                        if (res3?.changes?.lastId && res3.changes.lastId > 0) {
+                            Logger.Debug(`Importer: added new listitem '${StringUtils.shorten(item.item, 30)}' with '${item.id ? "id: " + item.id : "legacy_uuid: " + item.legacy_uuid}' to trash (id: ${res3.changes.lastId})`);
+                        } else {
+                            Logger.Error(`Importer: could not add new listitem '${StringUtils.shorten(item.item, 30)}' with '${item.id ? "id: " + item.id : "legacy_uuid: " + item.legacy_uuid}' to trash`);
+                            return false;
+                        }
                     } else {
-                        Logger.Error(`Importer: could not add new listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' to trash`);
-                        return false;
-                    }
-                } else {
-                    //update listitem
-                    const res3 = await sqlite.Execute(
-                        `UPDATE
+                        //update listitem
+                        const res3 = await sqlite.Execute(
+                            `UPDATE
                             \`listitems\`
                         SET
                             \`list_id\` = ?,
                             \`item\` = ?,
                             \`note\` = ?,
                             \`order\` = ?,
-                            \`hidden\` = ?,
+                            \`hidden\` = ?
                             \`locked\` = ?,
                             \`created\` = ?,
                             \`modified\` = ?,
@@ -459,13 +422,14 @@ export class ListsImporter {
                             \`legacy_uuid\` = ?
                         WHERE
                             \`id\` = ?`,
-                        [list_id, item.item, item.note ?? null, item.order, item.hidden ? "1" : "0", item.locked ? "1" : "0", item.created, item.updated ?? Date.now(), item.deleted ?? Date.now(), String(item.uuid), Number(res2[0].id)],
-                    );
-                    if (res3?.changes) {
-                        Logger.Debug(`Importer: updated listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' in trash (id: ${res2[0].id})`);
-                    } else {
-                        Logger.Error(`Importer: could not update listitem '${StringUtils.shorten(item.item, 30)}' with legacy_uuid: '${item.uuid}' in trash (id: ${res[0].id})`);
-                        return false;
+                            [list_id, item.item, item.note ?? null, item.order, item.hidden ? "1" : "0", item.locked ? "1" : "0", item.created, item.modified, item.deleted, String(item.legacy_uuid), item.id],
+                        );
+                        if (res3?.changes) {
+                            Logger.Debug(`Importer: updated listitem '${StringUtils.shorten(item.item, 30)}' with '${item.id > 0 ? "id: " + item.id : "legacy_uuid: " + item.legacy_uuid}' in trash (id: ${item.id})`);
+                        } else {
+                            Logger.Error(`Importer: could not update listitem '${StringUtils.shorten(item.item, 30)}' with '${item.id > 0 ? "id: " + item.id : "legacy_uuid: " + item.legacy_uuid}' in trash (id: ${item.id})`);
+                            return false;
+                        }
                     }
                 }
             }

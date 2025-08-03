@@ -1,7 +1,8 @@
+import type { ListSyncDevice } from "../../lists/list";
 import type { ListitemModel } from "./listitem-model";
 
 export type ListModel = {
-    uuid: string | number;
+    uuid?: string | number;
     name: string;
     created: number;
     order: number;
@@ -9,7 +10,10 @@ export type ListModel = {
     deleted?: number;
     reset?: ListReset;
     sync?: boolean;
+    syncDevices?: ListSyncDevice[];
     items?: ListitemModel[];
+    id?: number;
+    rev?: number;
 };
 
 export type ListReset = {

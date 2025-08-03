@@ -31,11 +31,6 @@ export class TrashListsPage extends AnimatedListPageBase {
         await super.ionViewWillEnter();
         this.Lists = (await this.ListsService.GetTrash()).sort((a: List, b: List) => b.Deleted - a.Deleted);
         this._itemsInitialized = true;
-        this.onItemsChanged();
-    }
-
-    public override async ionViewDidEnter(): Promise<void> {
-        await super.ionViewDidEnter();
         this._trashChangedSubscription = this.ListsService.onTrashDatasetChanged$.subscribe(lists => {
             this.Lists = lists ?? [];
             if (lists) {
@@ -45,7 +40,6 @@ export class TrashListsPage extends AnimatedListPageBase {
                 this.appComponent.setAppPages(this.ModifyMainMenu());
             }
         });
-        this.appComponent.setAppPages(this.ModifyMainMenu());
     }
 
     public override async ionViewDidLeave() {

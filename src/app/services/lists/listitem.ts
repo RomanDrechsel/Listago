@@ -13,6 +13,7 @@ export class Listitem {
     private _deleted?: number;
     private _dirty: boolean = false;
     private _legacyUuid?: string;
+    public static readonly ListitemRevision = 1;
 
     constructor(obj: ListitemModel) {
         this._id = obj.id ?? HelperUtils.RandomNegativNumber();
@@ -24,6 +25,7 @@ export class Listitem {
         this._created = obj.created;
         this._modified = obj.modified;
         this._deleted = obj.deleted;
+        this._legacyUuid = obj.legacy_uuid != null ? obj.legacy_uuid : undefined;
         this._dirty = true;
     }
 
@@ -146,6 +148,10 @@ export class Listitem {
         return this._locked;
     }
 
+    public get LegacyUuid(): string | undefined {
+        return this._legacyUuid != null ? this._legacyUuid : undefined;
+    }
+
     /** any changes since the last storage */
     public get Dirty(): boolean {
         return this._dirty;
@@ -217,7 +223,7 @@ export class Listitem {
     }
 }
 
-export declare type ListitemModel = {
+export type ListitemModel = {
     id: number;
     list_id: number;
     item: string;

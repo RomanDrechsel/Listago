@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import type { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { Directory, Filesystem } from "@capacitor/filesystem";
-import { List } from "src/app/services/lists/list";
+import { List, ListToLog } from "src/app/services/lists/list";
 import { Logger } from "src/app/services/logging/logger";
 import { type ListModel } from "../../../lists/list";
 import { Listitem, ListitemModel } from "../../../lists/listitem";
@@ -46,7 +46,6 @@ export class ListsSqliteBackendService {
 
         const ret: List[] = [];
         const query = `SELECT * FROM \`lists\` WHERE \`deleted\` ${args.trash ? "IS NOT NULL" : "IS NULL"} ORDER BY \`${args.orderBy}\` ${args.orderDir}`;
-        //const lists = (await this._database!.query(query)).values as ListModel[] | undefined;
         const lists = (await this._sqliteService.Query(query)) as ListModel[] | undefined;
         if (lists) {
             for (let i = 0; i < lists.length; i++) {
@@ -130,7 +129,7 @@ export class ListsSqliteBackendService {
         if (!args.itemsOrderDir) {
             args.itemsOrderDir = "ASC";
         }
-        const query = `SELECT * FROM \`listitems\` WHERE \`list_id\`=? AND deleted ${!args.trash ? "IS NULL" : "IS NOT NULL"} ORDER BY \`${args.itemsOrderBy}\` ${args.itemsOrderDir}`;
+        const query = `SELECT * FROM \`listitems\` WHERE \`list_id\`=? AND \`deleted\` ${!args.trash ? "IS NULL" : "IS NOT NULL"} ORDER BY \`${args.itemsOrderBy}\` ${args.itemsOrderDir}`;
         const models = (await this._sqliteService.Query(query, [list_id])) as ListitemModel[] | undefined;
         if (models) {
             const items: Listitem[] = [];
@@ -264,7 +263,7 @@ export class ListsSqliteBackendService {
 
                 //delete all old items, that are no longer is this list...
                 const item_ids = args.list.Items.map(i => i.Id);
-                const query = `DELETE FROM \`listitems\` WHERE \`list_id\`=? AND \`id\` NOT IN (${item_ids.map(id => "?").join(", ")})`;
+                const query = `DELETE FROM \`listitems\` WHERE \`list_id\`=? AND \`id\` NOT IN (${item_ids.map(id => "?").join(", ")}) AND \`deleted\` IS NULL`;
                 await conn.run(query, [args.list.Id, ...item_ids], false);
 
                 args.list.Clean();
@@ -662,6 +661,16 @@ export class ListsSqliteBackendService {
             }
         }
         return 0;
+    }
+
+    public async queryListName(list: number): Promise<string | undefined> {
+        const query = "SELECT `name` FROM `lists` WHERE `id`=? LIMIT 1";
+        const ret = await this._sqliteService.Query(query, [list]);
+        if (ret?.[0]?.name) {
+            return ret[0].name;
+        }
+        Logger.Error(`Could not query list name for list ${ListToLog(list)}`);
+        return undefined;
     }
 
     /**

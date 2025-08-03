@@ -18,7 +18,7 @@ export class List {
     private _legacyUuid?: string;
     private _dirty: boolean = false;
 
-    private static readonly ListRevision = 1;
+    public static readonly ListRevision = 1;
 
     public constructor(obj: ListModel, itemsobjs?: ListitemModel[], itemcount?: number, dirty?: boolean) {
         this._id = obj.id ?? HelperUtils.RandomNegativNumber();
@@ -54,7 +54,7 @@ export class List {
                 weekday: obj.reset_weekday ?? 1,
             };
         }
-        this._legacyUuid = obj.legacy_uuid;
+        this._legacyUuid = obj.legacy_uuid != null ? obj.legacy_uuid : undefined;
 
         this._items = undefined;
         if (itemsobjs) {
@@ -224,7 +224,7 @@ export class List {
     }
 
     public get LegacyUuid(): string | undefined {
-        return this._legacyUuid;
+        return this._legacyUuid != null ? this._legacyUuid : undefined;
     }
 
     /** should the list be synced automatically to watch */
@@ -468,6 +468,17 @@ export class List {
         return this.Id === other.Id;
     }
 }
+
+export const ListToLog = (list: List | number | undefined): string => {
+    if (list) {
+        if (list instanceof List) {
+            return list.toLog();
+        } else {
+            return `(id: ${list}`;
+        }
+    }
+    return "(undefined list)";
+};
 
 export declare type ListModel = {
     id?: number;

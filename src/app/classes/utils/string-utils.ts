@@ -61,11 +61,16 @@ export namespace StringUtils {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    export function shorten(str: string, max_length: number): string {
+    export function shorten(str: string, max_length: number, with_ellipsis: boolean = true): string {
         if (str.length <= max_length) {
             return str;
         }
-        return str.substring(0, max_length - 3) + "...";
+        str = str.substring(0, max_length - 3);
+        if (with_ellipsis) {
+            return `${str}...`;
+        } else {
+            return str;
+        }
     }
 
     /**

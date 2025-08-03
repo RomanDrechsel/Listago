@@ -103,15 +103,12 @@ export class ListItemEditorComponent implements OnInit {
             return undefined;
         }
 
-        let title = this.Form.get("item")?.value;
-        if (title) {
-            title = title.trim();
-        } else {
+        let title = this.Form.get("item")?.value?.trim();
+        if (!title) {
             return undefined;
         }
-        let note = this.Form.get("note")?.value;
+        let note = this.Form.get("note")?.value?.trim();
         if (note) {
-            note = note.trim();
             if (note.length <= 0) {
                 note = undefined;
             }
