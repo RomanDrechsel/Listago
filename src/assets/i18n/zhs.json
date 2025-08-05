@@ -101,6 +101,7 @@
         "empty_trash_confirm_single": "确定要清空回收站并删除列表吗？",
         "empty_trash_listitems_confirm": "确定要清空列表的回收站并删除{{count}}个条目吗？",
         "empty_trash_listitems_confirm_single": "确定要清空列表的回收站并删除条目吗？",
+        "empty_trash_listitems_confirm_unknown": "你要清空回收站并删除这些项目吗？",
         "empty_trash_success": "回收站已清空。",
         "empty_trash_error": "无法清空回收站！",
         "transmit_confirm": "确定要将列表传输到设备<strong>{{device}}</strong>吗？",
@@ -270,7 +271,8 @@
         "restore": "恢复",
         "deleted": "删除时间：{{date}}",
         "empty": "回收站为空。",
-        "loading": "回收站正在加载..."
+        "loading": "回收站正在加载...",
+        "error": "无法加载回收站！"
     },
     "page_trashitem": {
         "page_title": "回收站",
@@ -431,6 +433,23 @@
         "import_report_failed_trash": "{{num}} 个回收站项目导入失败。",
         "import_report_failed_trash_singular": "一个回收站项目导入失败。",
         "import_report_failed_settings": "并非所有设置都已成功导入。"
+    },
+    "page_settings_export": {
+        "page_title": "备份",
+        "lists": "你要备份你的列表吗？",
+        "lists_toggle": "备份列表",
+        "trash": "是否也备份回收站中的列表和项目？",
+        "trash_toggle": "备份回收站",
+        "settings": "你还可以备份所有应用设置。",
+        "settings_toggle": "备份设置",
+        "export_to_zip": "备份",
+        "export_summary": "将备份以下内容：",
+        "export_summary_nothing": "没有需要备份的内容。",
+        "export_cancel": "取消备份",
+        "export_error": "备份未能完成！",
+        "export_success": "备份成功，已将归档文件保存至 <strong>DOCUMENTS</strong>。",
+        "export_success_share": "你想分享该归档文件吗？",
+        "export_success_share_title": "Listago 备份"
     },
     "page_appinfos": {
         "page_title": "应用信息",

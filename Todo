@@ -1,8 +1,3 @@
-WIP: List sync fehlt bei export
-TODO: translate page_settings_export.*
-TODO: translate service-lists.empty_trash_listitems_confirm_unknown
-TODO: translate page_trash.error
---> Release
-TODO: ads optional
+WIP: ads optional
 TODO: Notes support
 TEST: import from lists

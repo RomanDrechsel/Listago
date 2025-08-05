@@ -33,7 +33,7 @@
                                 "output": "assets"
                             }
                         ],
-                        "styles": ["src/global.scss", "src/theme/variables.scss", "src/theme/theming.scss", "src/theme/popups.scss"],
+                        "styles": ["src/global.scss", "src/theme/variables.scss", "src/theme/theming.scss", "src/theme/popups.scss", "src/theme/content/admob.scss"],
                         "scripts": [],
                         "browser": "src/main.ts"
                     },

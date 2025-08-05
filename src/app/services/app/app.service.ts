@@ -1,3 +1,4 @@
+import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, isDevMode } from "@angular/core";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
@@ -12,6 +13,7 @@ import { environment } from "../../../environments/environment";
 import { StringUtils } from "../../classes/utils/string-utils";
 import { MainToolbarComponent } from "../../components/main-toolbar/main-toolbar.component";
 import { AdmobService } from "../adverticing/admob.service";
+import { ReserveSpace } from "../adverticing/reserve-space";
 import { ConnectIQService } from "../connectiq/connect-iq.service";
 import { IntentsService } from "../intents/intents.service";
 import { ListsService } from "../lists/lists.service";
@@ -37,6 +39,7 @@ export class AppService {
     private readonly _admob = inject(AdmobService);
     private readonly _popups = inject(PopupsService);
     private readonly _intents = inject(IntentsService);
+    private readonly _http = inject(HttpClient);
     public static Popups: PopupsService;
 
     /** platform as short string (android, ios, web) */
@@ -73,6 +76,12 @@ export class AppService {
      * initialize app services
      */
     public async InitializeApp() {
+        document.addEventListener("DOMContentLoaded", async () => {
+            const reserve = new ReserveSpace(this._http);
+            await reserve.SetAdmobHeight();
+            await reserve.SetAdmobText();
+        });
+
         await this._platform.ready();
         await Logger.Initialize(this._logger);
 

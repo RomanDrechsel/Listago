@@ -101,6 +101,7 @@
         "empty_trash_confirm_single": "Vuoi davvero svuotare il cestino e cancellare la lista?",
         "empty_trash_listitems_confirm": "Vuoi davvero svuotare il cestino della lista e cancellare i {{count}} punti?",
         "empty_trash_listitems_confirm_single": "Vuoi davvero svuotare il cestino della lista e cancellare il punto?",
+        "empty_trash_listitems_confirm_unknown": "Vuoi svuotare il cestino ed eliminare gli elementi?",
         "empty_trash_success": "Il cestino è stato svuotato.",
         "empty_trash_error": "Il cestino non può essere svuotato!",
         "transmit_confirm": "Vuoi trasferire la lista al tuo dispositivo <strong>{{device}}</strong>?",
@@ -270,7 +271,8 @@
         "restore": "Ripristina",
         "deleted": "cancellato: {{date}}",
         "empty": "Il cestino è vuoto.",
-        "loading": "Il cestino sta caricando..."
+        "loading": "Il cestino sta caricando...",
+        "error": "Impossibile caricare il cestino!"
     },
     "page_trashitem": {
         "page_title": "Cestino",
@@ -410,6 +412,23 @@
         "import_report_failed_trash": "{{num}} elementi nel cestino non importati.",
         "import_report_failed_trash_singular": "Un elemento nel cestino non importato.",
         "import_report_failed_settings": "Non tutte le impostazioni sono state importate."
+    },
+    "page_settings_export": {
+        "page_title": "Backup",
+        "lists": "Vuoi eseguire il backup delle tue liste?",
+        "lists_toggle": "Backup liste",
+        "trash": "Vuoi anche salvare le liste e gli elementi nel cestino?",
+        "trash_toggle": "Backup cestino",
+        "settings": "Puoi anche salvare tutte le impostazioni dell'app.",
+        "settings_toggle": "Backup impostazioni",
+        "export_to_zip": "Salva",
+        "export_summary": "I seguenti contenuti verranno salvati:",
+        "export_summary_nothing": "Non c'è nulla da salvare.",
+        "export_cancel": "Annulla backup",
+        "export_error": "Il backup non è riuscito!",
+        "export_success": "Il backup è stato completato con successo e l'archivio è stato salvato in <strong>DOCUMENTI</strong>.",
+        "export_success_share": "Vuoi condividere l'archivio?",
+        "export_success_share_title": "Backup Listago"
     },
     "page_appinfos": {
         "page_title": "Informazioni sull'app",

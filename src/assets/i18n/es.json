@@ -101,6 +101,7 @@
         "empty_trash_confirm_single": "¿Quieres vaciar la papelera y eliminar la lista?",
         "empty_trash_listitems_confirm": "¿Quieres vaciar la papelera de la lista y eliminar los {{count}} elementos?",
         "empty_trash_listitems_confirm_single": "¿Quieres vaciar la papelera de la lista y eliminar el elemento?",
+        "empty_trash_listitems_confirm_unknown": "¿Quieres vaciar la papelera y eliminar los elementos?",
         "empty_trash_success": "La papelera fue vaciada.",
         "empty_trash_error": "¡No se pudo vaciar la papelera!",
         "transmit_confirm": "¿Quieres transmitir la lista a tu dispositivo <strong>{{device}}</strong>?",
@@ -270,7 +271,8 @@
         "restore": "Restaurar",
         "deleted": "Eliminado: {{date}}",
         "empty": "La papelera está vacía.",
-        "loading": "Se carga la papelera de reciclaje..."
+        "loading": "Se carga la papelera de reciclaje...",
+        "error": "¡No se pudo cargar la papelera!"
     },
     "page_trashitem": {
         "page_title": "Papelera de lista",
@@ -431,6 +433,23 @@
         "import_report_failed_trash": "{{num}} elementos de papelera no se pudieron importar.",
         "import_report_failed_trash_singular": "Un elemento de papelera no se pudo importar.",
         "import_report_failed_settings": "No se pudieron importar todas las configuraciones."
+    },
+    "page_settings_export": {
+        "page_title": "Copia de seguridad",
+        "lists": "¿Quieres hacer una copia de seguridad de tus listas?",
+        "lists_toggle": "Guardar listas",
+        "trash": "¿También deseas guardar las listas y elementos en la papelera?",
+        "trash_toggle": "Guardar papelera",
+        "settings": "También puedes guardar todos los ajustes de la aplicación.",
+        "settings_toggle": "Guardar ajustes",
+        "export_to_zip": "Guardar",
+        "export_summary": "Se guardarán los siguientes contenidos:",
+        "export_summary_nothing": "No hay nada que guardar.",
+        "export_cancel": "Cancelar copia de seguridad",
+        "export_error": "¡La copia de seguridad no se pudo completar!",
+        "export_success": "La copia de seguridad se realizó correctamente y el archivo se guardó en <strong>DOCUMENTOS</strong>.",
+        "export_success_share": "¿Quieres compartir el archivo?",
+        "export_success_share_title": "Copia de seguridad de Listago"
     },
     "page_appinfos": {
         "page_title": "Información de la app",

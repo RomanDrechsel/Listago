@@ -101,6 +101,7 @@
         "empty_trash_confirm_single": "Чи хочете ви очистити корзину і видалити список?",
         "empty_trash_listitems_confirm": "Чи хочете ви очистити корзину списку та видалити {{count}} пунктів?",
         "empty_trash_listitems_confirm_single": "Чи хочете ви очистити корзину списку та видалити пункт?",
+        "empty_trash_listitems_confirm_unknown": "Бажаєш очистити кошик і видалити всі елементи?",
         "empty_trash_success": "Корзина очищена.",
         "empty_trash_error": "Неможливість очищення корзини!",
         "transmit_confirm": "Чи хочете ви передати список на пристрій <strong>{{device}}</strong>?",
@@ -270,7 +271,8 @@
         "restore": "Відновити",
         "deleted": "вилучено: {{date}}",
         "empty": "Корзина пуста.",
-        "loading": "Корзина завантажується..."
+        "loading": "Корзина завантажується...",
+        "error": "Не вдалося завантажити кошик!"
     },
     "page_trashitem": {
         "page_title": "Корзина",
@@ -431,6 +433,23 @@
         "import_report_failed_trash": "Не вдалося імпортувати {{num}} елементів з кошика.",
         "import_report_failed_trash_singular": "Не вдалося імпортувати один елемент з кошика.",
         "import_report_failed_settings": "Не всі налаштування вдалося імпортувати."
+    },
+    "page_settings_export": {
+        "page_title": "Резервне копіювання",
+        "lists": "Хочеш зберегти свої списки?",
+        "lists_toggle": "Зберегти списки",
+        "trash": "Також зберегти списки та елементи з кошика?",
+        "trash_toggle": "Зберегти кошик",
+        "settings": "Можеш також зберегти всі налаштування додатку.",
+        "settings_toggle": "Зберегти налаштування",
+        "export_to_zip": "Зберегти",
+        "export_summary": "Буде збережено такий вміст:",
+        "export_summary_nothing": "Нічого для збереження.",
+        "export_cancel": "Скасувати збереження",
+        "export_error": "Не вдалося завершити резервне копіювання!",
+        "export_success": "Резервне копіювання успішне, архів збережено в <strong>DOCUMENTS</strong>.",
+        "export_success_share": "Бажаєш поділитися архівом?",
+        "export_success_share_title": "Резервна копія Listago"
     },
     "page_appinfos": {
         "page_title": "Інформація про додаток",

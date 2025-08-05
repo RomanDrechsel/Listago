@@ -39,7 +39,7 @@ export class LocalizationService {
 
     constructor() {
         this.Translate.addLangs([...new Set<string>(this.AvailableTranslations.map(l => l.localeFile))]);
-        this.Translate.setDefaultLang(this.FallbackCulture.localeFile);
+        this.Translate.setFallbackLang(this.FallbackCulture.localeFile);
     }
 
     /** all available languages */

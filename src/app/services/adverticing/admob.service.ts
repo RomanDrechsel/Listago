@@ -1,3 +1,4 @@
+import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { AdMob, AdMobBannerSize, AdmobConsentDebugGeography, AdmobConsentInfo, AdmobConsentRequestOptions, AdmobConsentStatus, BannerAdOptions, BannerAdPluginEvents, BannerAdPosition, BannerAdSize } from "@capacitor-community/admob";
 import { KeyboardInfo } from "@capacitor/keyboard";
@@ -6,6 +7,7 @@ import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
 import { Logger } from "../logging/logger";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
+import { ReserveSpace } from "./reserve-space";
 
 @Injectable({
     providedIn: "root",
@@ -15,11 +17,12 @@ export class AdmobService {
     private _bannerIsShown: boolean = false;
 
     /** last height of the banner in px */
-    private _bannerHeight: number = 56;
+    public static BannerHeight: number = 56;
 
     private _isInitialized: boolean = false;
 
     private readonly Preferences = inject(PreferencesService);
+    private readonly _http = inject(HttpClient);
 
     public get Initialized(): boolean {
         return this._isInitialized;
@@ -27,8 +30,8 @@ export class AdmobService {
 
     public async Initialize() {
         this._isInitialized = false;
-        this._bannerHeight = await this.Preferences.Get(EPrefProperty.AdmobBannerHeight, this._bannerHeight);
-        await this.resizeContainer(this._bannerHeight);
+        AdmobService.BannerHeight = await this.Preferences.Get(EPrefProperty.AdmobBannerHeight, AdmobService.BannerHeight);
+        await this.resizeContainer(AdmobService.BannerHeight);
 
         await AdMob.initialize({
             initializeForTesting: environment.publicRelease !== true,
@@ -62,6 +65,12 @@ export class AdmobService {
         } else {
             Logger.Debug(`Admob initialized in test mode`);
         }
+
+        this.Preferences.onPrefChanged$.subscribe(async pref => {
+            if (pref.prop == EPrefProperty.AppLanguage) {
+                await new ReserveSpace(this._http).SetAdmobText();
+            }
+        });
 
         this._isInitialized = true;
 
@@ -179,7 +188,7 @@ export class AdmobService {
     private async resumeBanner() {
         await AdMob.resumeBanner();
         this._bannerIsShown = true;
-        this.resizeContainer(this._bannerHeight);
+        this.resizeContainer(AdmobService.BannerHeight);
     }
 
     /**
@@ -187,17 +196,14 @@ export class AdmobService {
      * @param height banner height in px
      */
     private async resizeContainer(height: number) {
-        const container = document.querySelector("ion-app") as HTMLElement;
-        if (container) {
-            if (height > 0) {
-                if (this._bannerHeight !== height) {
-                    Logger.Debug(`Admob banner height changed to ${height}px`);
-                }
-                this._bannerHeight = height;
+        if (height > 0) {
+            if (AdmobService.BannerHeight !== height) {
+                Logger.Debug(`Admob banner height changed to ${height}px`);
+                AdmobService.BannerHeight = height;
                 this.Preferences.Set(EPrefProperty.AdmobBannerHeight, height);
             }
-            container.style.marginBottom = height + "px";
         }
+        await new ReserveSpace(this._http).SetAdmobHeight(height);
     }
 
     private async saveAreaBottom(): Promise<number> {

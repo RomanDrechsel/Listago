@@ -41,6 +41,11 @@ export class ModelToListRev1 {
             }
         }
 
+        let sync_devices: string | undefined = undefined;
+        if (Array.isArray(this._json.syncDevices) && this._json.syncDevices.length > 0) {
+            sync_devices = JSON.stringify(this._json.syncDevices);
+        }
+
         return new List(
             {
                 id: list_id,
@@ -49,7 +54,7 @@ export class ModelToListRev1 {
                 created: this._json.created ?? Date.now(),
                 modified: this._json.updated ?? Date.now(),
                 deleted: is_trash ? this._json.deleted ?? Date.now() : this._json.deleted,
-                sync_devices: undefined,
+                sync_devices: sync_devices,
                 legacy_uuid: this._json.uuid ? String(this._json.uuid) : undefined,
                 reset: this._json.reset?.active === true ? 1 : this._json.reset?.active === false ? 0 : undefined,
                 reset_day: this._json.reset?.day,

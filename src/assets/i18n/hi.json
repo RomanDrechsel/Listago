@@ -101,6 +101,7 @@
         "empty_trash_confirm_single": "क्या आप कचरा खाली करना चाहते हैं और सूची हटाना चाहते हैं?",
         "empty_trash_listitems_confirm": "क्या आप सूची का कचरा खाली करना चाहते हैं और {{count}} पॉइंट्स हटाना चाहते हैं?",
         "empty_trash_listitems_confirm_single": "क्या आप सूची का कचरा खाली करना चाहते हैं और पॉइंट हटाना चाहते हैं?",
+        "empty_trash_listitems_confirm_unknown": "क्या आप कचरा खाली करके सभी आइटम हटाना चाहते हैं?",
         "empty_trash_success": "कचरा खाली कर दिया गया है।",
         "empty_trash_error": "कचरा खाली नहीं किया जा सका!",
         "transmit_confirm": "क्या आप सूची को अपने डिवाइस <strong>{{device}}</strong> पर भेजना चाहते हैं?",
@@ -270,7 +271,8 @@
         "restore": "पुनः स्थापित करें",
         "deleted": "हटाया गया: {{date}}",
         "empty": "कचरा खाली है।",
-        "loading": "कचरा पात्र लोड हो रहा है..."
+        "loading": "कचरा पात्र लोड हो रहा है...",
+        "error": "कचरा लोड नहीं किया जा सका!"
     },
     "page_trashitem": {
         "page_title": "कचरा",
@@ -431,6 +433,23 @@
         "import_report_failed_trash": "{{num}} कचरा आइटम आयात नहीं किए जा सके।",
         "import_report_failed_trash_singular": "एक कचरा आइटम आयात नहीं किया जा सका।",
         "import_report_failed_settings": "सभी सेटिंग्स आयात नहीं की जा सकीं।"
+    },
+    "page_settings_export": {
+        "page_title": "बैकअप",
+        "lists": "क्या आप अपनी सूचियों का बैकअप लेना चाहते हैं?",
+        "lists_toggle": "सूचियों का बैकअप लें",
+        "trash": "क्या कचरे में मौजूद सूचियाँ और आइटम भी बैकअप में शामिल हों?",
+        "trash_toggle": "कचरे का बैकअप लें",
+        "settings": "आप ऐप की सभी सेटिंग्स का भी बैकअप ले सकते हैं।",
+        "settings_toggle": "सेटिंग्स का बैकअप लें",
+        "export_to_zip": "बैकअप लें",
+        "export_summary": "निम्नलिखित सामग्री का बैकअप लिया जाएगा:",
+        "export_summary_nothing": "बैकअप के लिए कुछ नहीं है।",
+        "export_cancel": "बैकअप रद्द करें",
+        "export_error": "बैकअप पूरा नहीं हो सका!",
+        "export_success": "बैकअप सफलतापूर्वक पूरा हो गया और संग्रह <strong>DOCUMENTS</strong> में सहेजा गया।",
+        "export_success_share": "क्या आप संग्रह साझा करना चाहते हैं?",
+        "export_success_share_title": "Listago बैकअप"
     },
     "page_appinfos": {
         "page_title": "ऐप जानकारी",

@@ -101,6 +101,7 @@
         "empty_trash_confirm_single": "Voulez-vous vider la corbeille et supprimer les listes ?",
         "empty_trash_listitems_confirm": "Voulez-vous vider la corbeille de la liste et supprimer les {{count}} éléments ?",
         "empty_trash_listitems_confirm_single": "Voulez-vous vider la corbeille de la liste et supprimer l'élément ?",
+        "empty_trash_listitems_confirm_unknown": "Souhaites-tu vider la corbeille et supprimer les éléments ?",
         "empty_trash_success": "La corbeille a été vidée.",
         "empty_trash_error": "La corbeille n'a pas pu être vidée !",
         "transmit_confirm": "Voulez-vous transférer la liste sur votre appareil <strong>{{device}}</strong> ?",
@@ -270,7 +271,8 @@
         "restore": "Restaurer",
         "deleted": "Supprimé : {{date}}",
         "empty": "La corbeille est vide.",
-        "loading": "La corbeille est en cours de chargement..."
+        "loading": "La corbeille est en cours de chargement...",
+        "error": "Impossible de charger la corbeille !"
     },
     "page_trashitem": {
         "page_title": "Corbeille",
@@ -431,6 +433,23 @@
         "import_report_failed_trash": "{{num}} éléments de la corbeille n’ont pas pu être importés.",
         "import_report_failed_trash_singular": "Un élément de la corbeille n’a pas pu être importé.",
         "import_report_failed_settings": "Tous les paramètres n'ont pas pu être importés."
+    },
+    "page_settings_export": {
+        "page_title": "Sauvegarde",
+        "lists": "Souhaites-tu sauvegarder tes listes ?",
+        "lists_toggle": "Sauvegarder les listes",
+        "trash": "Faut-il également sauvegarder les listes et éléments dans la corbeille ?",
+        "trash_toggle": "Sauvegarder la corbeille",
+        "settings": "Tu peux également sauvegarder tous les paramètres de l'application.",
+        "settings_toggle": "Sauvegarder les paramètres",
+        "export_to_zip": "Sauvegarder",
+        "export_summary": "Les contenus suivants seront sauvegardés :",
+        "export_summary_nothing": "Il n'y a rien à sauvegarder.",
+        "export_cancel": "Annuler la sauvegarde",
+        "export_error": "La sauvegarde n’a pas pu être complétée !",
+        "export_success": "La sauvegarde a été effectuée avec succès et l’archive a été enregistrée dans <strong>DOCUMENTS</strong>.",
+        "export_success_share": "Souhaites-tu partager l’archive ?",
+        "export_success_share_title": "Sauvegarde Listago"
     },
     "page_appinfos": {
         "page_title": "Informations sur l'application",
