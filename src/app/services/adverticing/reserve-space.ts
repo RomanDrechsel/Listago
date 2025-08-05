@@ -20,7 +20,6 @@ export class ReserveSpace {
     }
 
     public async SetAdmobHeight(height?: number) {
-        console.log("Height: ", height);
         if (height === undefined) {
             const pref = (await Preferences.get({ key: EPrefProperty.AdmobBannerHeight })).value;
             if (pref) {
