@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, type OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard } from "@capacitor/keyboard";
 import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
@@ -37,8 +36,6 @@ export class ListEditorComponent implements OnInit {
 
     private _listReset?: ListReset = undefined;
     private _listSyncDevices?: ListSyncDevice[] = undefined;
-    private _keyboardUpListerner?: PluginListenerHandle;
-    private _keyboardDownListener?: PluginListenerHandle;
 
     public Form: FormGroup;
 
@@ -177,21 +174,14 @@ export class ListEditorComponent implements OnInit {
     }
 
     public async ionViewDidEnter() {
-        this._keyboardUpListerner = await Keyboard.addListener("keyboardWillShow", info => this.Admob.OnKeyboardShow(info));
-        this._keyboardDownListener = await Keyboard.addListener("keyboardWillHide", () => this.Admob.OnKeyboardHide());
         if (!this.Params?.list) {
             this.listname?.setFocus();
             await Keyboard.show();
         }
     }
 
-    public ionViewWillLeave() {
-        this._keyboardUpListerner?.remove();
-        this._keyboardUpListerner = undefined;
-        this._keyboardDownListener?.remove();
-        this._keyboardDownListener = undefined;
-        Keyboard.hide();
-        this.Admob.OnKeyboardHide();
+    public async ionViewWillLeave() {
+        await Keyboard.hide();
     }
 
     public async onSubmit() {

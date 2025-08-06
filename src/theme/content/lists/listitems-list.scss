@@ -58,3 +58,19 @@ ion-list {
         }
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    ion-list {
+        ion-item-sliding {
+            ion-item {
+                ion-label {
+                    .details {
+                        &.hidden {
+                            opacity: 0.6;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

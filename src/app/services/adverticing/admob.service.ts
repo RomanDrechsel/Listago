@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { AdMob, AdMobBannerSize, AdmobConsentDebugGeography, AdmobConsentInfo, AdmobConsentRequestOptions, AdmobConsentStatus, BannerAdOptions, BannerAdPluginEvents, BannerAdPosition, BannerAdSize } from "@capacitor-community/admob";
-import { KeyboardInfo } from "@capacitor/keyboard";
+import type { PluginListenerHandle } from "@capacitor/core";
+import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
@@ -23,6 +24,8 @@ export class AdmobService {
 
     private readonly Preferences = inject(PreferencesService);
     private readonly _http = inject(HttpClient);
+    private _keyboardUpListerner?: PluginListenerHandle;
+    private _keyboardDownListener?: PluginListenerHandle;
 
     public get Initialized(): boolean {
         return this._isInitialized;
@@ -71,6 +74,9 @@ export class AdmobService {
                 await new ReserveSpace(this._http).SetAdmobText();
             }
         });
+
+        this._keyboardUpListerner = await Keyboard.addListener("keyboardWillShow", info => this.onKeyboardShow(info));
+        this._keyboardDownListener = await Keyboard.addListener("keyboardWillHide", () => this.onKeyboardHide());
 
         this._isInitialized = true;
 
@@ -173,14 +179,14 @@ export class AdmobService {
      * hide the ad, if the keyboard is too big
      * @param info height of the keyboard
      */
-    public async OnKeyboardShow(info: KeyboardInfo): Promise<void> {
+    private async onKeyboardShow(info: KeyboardInfo): Promise<void> {
         await this.HideBanner();
     }
 
     /**
      * show the ad, if the keyboard is closed
      */
-    public async OnKeyboardHide(): Promise<void> {
+    private async onKeyboardHide(): Promise<void> {
         await this.resumeBanner();
     }
 

@@ -7,6 +7,7 @@ const config: CapacitorConfig = {
     webDir: "www",
     loggingBehavior: "debug",
     zoomEnabled: false,
+    initialFocus: true,
     plugins: {
         SplashScreen: {
             launchShowDuration: 1000,
@@ -30,7 +31,7 @@ const config: CapacitorConfig = {
             resizeOnFullScreen: false,
         },
         EdgeToEdge: {
-            backgroundColor: "#0050d8",
+            backgroundColor: "#ffffff",
         },
         CapacitorSQLite: {
             androidIsEncryption: false,

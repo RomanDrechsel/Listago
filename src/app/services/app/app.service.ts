@@ -279,7 +279,7 @@ export class AppService {
             await StatusBar.setBackgroundColor({ color: "#002794" });
         } else {
             await EdgeToEdge.setBackgroundColor({ color: "#0050d8" });
-            await StatusBar.setStyle({ style: Style.Light });
+            await StatusBar.setStyle({ style: Style.Dark });
             await StatusBar.setBackgroundColor({ color: "#0050d8" });
         }
     }
