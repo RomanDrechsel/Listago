@@ -14,7 +14,7 @@
 </ion-header>
 <div class="inner-content ion-padding">
     <form (ngSubmit)="onSubmit()" [formGroup]="Form">
-        <ion-input [label]="'comp-listeditor.listname' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="100" autocapitalize="sentence" spellcheck="true" enterkeyhint="enter" required="true" formControlName="listname" #listname></ion-input>
+        <ion-input [label]="'comp-listeditor.listname' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="100" autocapitalize="sentence" spellcheck="true" enterkeyhint="enter" required="true" formControlName="listname" (ionFocus)="hideAds()" #listname></ion-input>
         <ion-accordion-group *ngIf="ConnectIQInitialized">
             <ion-accordion class="list-settings">
                 <ion-item slot="header">

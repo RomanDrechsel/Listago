@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { AppComponent } from "../app.component";
 import { MenuItem } from "../classes/menu-items";
 import { MainToolbarComponent } from "../components/main-toolbar/main-toolbar.component";
+import { AdmobService } from "../services/adverticing/admob.service";
 import { AppService } from "../services/app/app.service";
 import { ConfigService } from "../services/config/config.service";
 import { ConnectIQService } from "../services/connectiq/connect-iq.service";
@@ -29,6 +30,7 @@ export abstract class PageBase {
     protected readonly Preferences = inject(PreferencesService);
     protected readonly NavController = inject(NavController);
     protected readonly AppService = inject(AppService);
+    protected readonly Admob = inject(AdmobService);
     protected readonly Config = inject(ConfigService);
     protected readonly cdr = inject(ChangeDetectorRef);
 

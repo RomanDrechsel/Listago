@@ -14,7 +14,7 @@
 </ion-header>
 <div class="inner-content ion-padding">
     <form (ngSubmit)="onSubmit()" [formGroup]="Form">
-        <ion-textarea [label]="'comp-listitemeditor.itemname' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="250" autocapitalize="sentence" spellcheck="true" formControlName="item" [autoGrow]="true" required="true" #itemname></ion-textarea>
+        <ion-textarea [label]="'comp-listitemeditor.itemname' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="250" autocapitalize="sentence" spellcheck="true" formControlName="item" [autoGrow]="true" required="true" (ionFocus)="hideAds()" #itemname></ion-textarea>
         <ion-textarea class="note" [label]="'comp-listitemeditor.itemnote' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="250" autocapitalize="sentence" spellcheck="true" formControlName="note" [autoGrow]="true"></ion-textarea>
         <ion-item lines="none" *ngIf="ConnectIQInitialized">
             <ion-checkbox labelPlacement="end" justify="start" alignment="center" formControlName="hidden">

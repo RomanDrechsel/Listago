@@ -268,6 +268,10 @@ export class ListItemsPage extends AnimatedListPageBase {
         return this._selectedItems.indexOf(item.Id) >= 0;
     }
 
+    public async hideAds() {
+        await this.Admob.HideBanner();
+    }
+
     protected override getEditMenuActions(): EditMenuAction[] {
         if (!this._list) {
             return [];

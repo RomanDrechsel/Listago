@@ -176,6 +176,10 @@ export class ListItemEditorComponent implements OnInit {
         await this.Preferences.Set(EPrefProperty.AddMoreItemsDialog, checked);
     }
 
+    public async hideAds() {
+        await this.Admob.HideBanner();
+    }
+
     private resetForm() {
         this.Form.reset();
     }

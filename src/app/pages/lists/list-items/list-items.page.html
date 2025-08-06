@@ -48,7 +48,7 @@
             </ion-reorder-group>
         </ion-list>
         <ion-item lines="none" class="quick-add" [ngClass]="{'visible': InitialAnimationDone && !EditMode}">
-            <ion-textarea placeholder="{{'page_listitems.quickadd'|translate}}" autoGrow="true" inputmode="text" spellcheck="true" maxlength="250" autocapitalize="sentence" rows="2" fill="solid" [disabled]="!InitialAnimationDone || EditMode" #quickAdd>
+            <ion-textarea placeholder="{{'page_listitems.quickadd'|translate}}" autoGrow="true" inputmode="text" spellcheck="true" maxlength="250" autocapitalize="sentence" rows="2" fill="solid" (ionFocus)="hideAds()" [disabled]="!InitialAnimationDone || EditMode" #quickAdd>
                 <ion-button fill="outline" [ariaLabel]="'add'|translate" size="small" slot="end" (click)="QuickAddItem($event)" [disabled]="!InitialAnimationDone || EditMode || !quickAdd?.value?.length">
                     <ion-icon slot="start" src="./assets/icons/add.svg"></ion-icon>
                     {{'add'|translate}}

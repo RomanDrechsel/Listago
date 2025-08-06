@@ -177,10 +177,8 @@ export class ListEditorComponent implements OnInit {
     }
 
     public async ionViewDidEnter() {
-        this._keyboardUpListerner = await Keyboard.addListener("keyboardDidShow", info => this.Admob.OnKeyboardShow(info));
-        this._keyboardDownListener = await Keyboard.addListener("keyboardWillHide", () => {
-            this.Admob.OnKeyboardHide();
-        });
+        this._keyboardUpListerner = await Keyboard.addListener("keyboardWillShow", info => this.Admob.OnKeyboardShow(info));
+        this._keyboardDownListener = await Keyboard.addListener("keyboardWillHide", () => this.Admob.OnKeyboardHide());
         if (!this.Params?.list) {
             this.listname?.setFocus();
             await Keyboard.show();
@@ -279,6 +277,10 @@ export class ListEditorComponent implements OnInit {
                 this._listReset = ret;
             }
         }
+    }
+
+    public async hideAds() {
+        await this.Admob.HideBanner();
     }
 }
 
