@@ -8,11 +8,13 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
 import android.webkit.WebView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.PluginHandle;
@@ -38,6 +40,10 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(SysInfoPlugin.class);
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
+        Window window = getWindow();
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
+        insetsController.setAppearanceLightStatusBars(false);
+
         this.handleIntent(this.getIntent());
     }
 
