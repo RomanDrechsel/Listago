@@ -311,7 +311,9 @@
         "trash": "資源回收筒設定",
         "trash_note": "垃圾桶使用設置",
         "transmission": "傳輸設置",
-        "transmission_note": "向手錶傳輸清單的設置"
+        "transmission_note": "向手錶傳輸清單的設置",
+        "advertisement": "廣告",
+        "advertisement_note": "透過廣告支持我，或將其關閉"
     },
     "page_settings_logs": {
         "page_title": "日誌",
@@ -450,6 +452,21 @@
         "export_success": "備份成功，已將檔案儲存至 <strong>DOCUMENTS</strong>。",
         "export_success_share": "你要分享此檔案嗎？",
         "export_success_share_title": "Listago 備份"
+    },
+    "page_settings_advertisement": {
+        "page_title": "廣告",
+        "activated": "廣告已啟用",
+        "deactivated": "廣告已停用",
+        "deactivate_confirm": "你確定要停用廣告並不再支持我嗎？",
+        "activated_success": "非常感謝！",
+        "deactivated_success": "廣告已停用。",
+        "text1": "Listago 是免費的。",
+        "text2": "所有硬體與軟體的費用都是我自己承擔。透過小小的廣告橫幅，我嘗試至少補貼一部分費用。",
+        "text3": "如果你覺得廣告太煩人，你可以在這裡關閉它。",
+        "support1": "如果你喜歡這個 App，並仍想支持我，非常歡迎通過",
+        "support2": "或",
+        "support3": "捐款支持。",
+        "thanks": "謝謝你。"
     },
     "page_appinfos": {
         "page_title": "應用資訊",

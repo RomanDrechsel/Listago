@@ -1,0 +1,58 @@
+:host {
+    ion-item {
+        &.activate {
+            margin-block: 1em;
+            font-size: 1.3em;
+
+            .centered-toggle-wrapper {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .centered-toggle {
+                width: max-content;
+            }
+        }
+
+        &.texts,
+        &.supports {
+            margin-top: 1em;
+
+            &::part(native) {
+                flex-direction: column;
+            }
+
+            .text {
+                font-size: 1.2em;
+                margin-bottom: 1em;
+                text-align: center;
+
+                &.listago {
+                    font-weight: bold;
+                    font-size: 1.4em;
+                }
+            }
+
+            .support {
+                font-size: 1.2em;
+                text-align: center;
+            }
+
+            ion-img {
+                padding-block: 1.5em;
+            }
+        }
+
+        &.thanks {
+            margin-block: 2em;
+
+            .thank {
+                width: 100%;
+                text-align: center;
+                font-size: 1.6em;
+                font-weight: bold;
+            }
+        }
+    }
+}

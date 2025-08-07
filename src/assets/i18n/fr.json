@@ -311,7 +311,9 @@
         "trash": "Paramètres de la corbeille",
         "trash_note": "Paramètres pour l'utilisation de la corbeille",
         "transmission": "Paramètres de transmission",
-        "transmission_note": "Paramètres pour la transmission de listes à votre montre"
+        "transmission_note": "Paramètres pour la transmission de listes à votre montre",
+        "advertisement": "Publicité",
+        "advertisement_note": "Soutiens-moi grâce à la publicité, ou désactive-la"
     },
     "page_settings_logs": {
         "page_title": "Journalisation",
@@ -450,6 +452,21 @@
         "export_success": "La sauvegarde a été effectuée avec succès et l’archive a été enregistrée dans <strong>DOCUMENTS</strong>.",
         "export_success_share": "Souhaites-tu partager l’archive ?",
         "export_success_share_title": "Sauvegarde Listago"
+    },
+    "page_settings_advertisement": {
+        "page_title": "Publicité",
+        "activated": "La publicité est activée",
+        "deactivated": "La publicité est désactivée",
+        "deactivate_confirm": "Souhaites-tu vraiment désactiver la publicité et ne plus me soutenir ?",
+        "activated_success": "Merci beaucoup !",
+        "deactivated_success": "La publicité est désactivée.",
+        "text1": "Listago est gratuit.",
+        "text2": "Je prends en charge moi-même tous les frais de matériel et de logiciel. Avec une petite bannière publicitaire, j’essaie de couvrir au moins une partie des coûts.",
+        "text3": "Si la bannière te dérange trop, tu as la possibilité de la désactiver ici.",
+        "support1": "Si tu aimes l’application et que tu veux quand même me soutenir, je serais ravi d’un petit don via",
+        "support2": "ou",
+        "support3": "merci.",
+        "thanks": "Merci beaucoup."
     },
     "page_appinfos": {
         "page_title": "Informations sur l'application",

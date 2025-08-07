@@ -61,6 +61,15 @@
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
 
+        <!-- advertisement -->
+        <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/advertisement']" lines="full">
+            <ion-label>
+                <div class="text">{{'page_settings.advertisement'|translate}}</div>
+                <ion-note>{{'page_settings.advertisement_note'|translate}}</ion-note>
+            </ion-label>
+            <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
+        </ion-item>
+
         <!-- logging -->
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/logging']" lines="full">
             <ion-label>

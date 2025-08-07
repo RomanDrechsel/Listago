@@ -33,6 +33,7 @@ export enum EPrefProperty {
     OpenedList = "LISTAGO_OpenedList",
     IgnoreWatchOutdated = "LISTAGO_IgnoreWatchOutdated",
     AdmobBannerHeight = "LISTAGO_AdmobBannerHeight",
+    AdmobActive = "LISTAGO_AdmobActive",
 }
 
 @Injectable({

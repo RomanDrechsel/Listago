@@ -311,7 +311,9 @@
         "trash": "Trash settings",
         "trash_note": "Settings for usage of the trash",
         "transmission": "Transmission settings",
-        "transmission_note": "Settings for transferring lists to your watch"
+        "transmission_note": "Settings for transferring lists to your watch",
+        "advertisement": "Advertisement",
+        "advertisement_note": "Support me through ads, or disable them"
     },
     "page_settings_logs": {
         "page_title": "Log settings",
@@ -450,6 +452,21 @@
         "export_success": "The backup was successful and the archive was saved in <strong>DOCUMENTS</strong>.",
         "export_success_share": "Do you want to share the archive?",
         "export_success_share_title": "Listago Backup"
+    },
+    "page_settings_advertisement": {
+        "page_title": "Advertisement",
+        "activated": "Ads are active",
+        "deactivated": "Ads are deactivated",
+        "deactivate_confirm": "Do you really want to deactivate ads and stop supporting me?",
+        "activated_success": "Thank you very much!",
+        "deactivated_success": "Ads are deactivated.",
+        "text1": "Listago is free.",
+        "text2": "I personally cover all costs for hardware and software. With a small banner ad, I try to cover at least a small part of the expenses.",
+        "text3": "If the banner bothers you too much, I give you the option to deactivate it here.",
+        "support1": "If you like the app and still want to support me, I’d appreciate a small donation via",
+        "support2": "or",
+        "support3": "thank you.",
+        "thanks": "Thank you."
     },
     "page_appinfos": {
         "page_title": "App information",

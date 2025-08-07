@@ -311,7 +311,9 @@
         "trash": "Configuración de la papelera",
         "trash_note": "Configuración para utilizar la papelera",
         "transmission": "Configuración de transmisión",
-        "transmission_note": "Configuración para transmitir listas a tu reloj"
+        "transmission_note": "Configuración para transmitir listas a tu reloj",
+        "advertisement": "Publicidad",
+        "advertisement_note": "Apóyame mediante la publicidad o desactívala"
     },
     "page_settings_logs": {
         "page_title": "Registro de registros",
@@ -450,6 +452,21 @@
         "export_success": "La copia de seguridad se realizó correctamente y el archivo se guardó en <strong>DOCUMENTOS</strong>.",
         "export_success_share": "¿Quieres compartir el archivo?",
         "export_success_share_title": "Copia de seguridad de Listago"
+    },
+    "page_settings_advertisement": {
+        "page_title": "Publicidad",
+        "activated": "La publicidad está activa",
+        "deactivated": "La publicidad está desactivada",
+        "deactivate_confirm": "¿De verdad quieres desactivar la publicidad y dejar de apoyarme?",
+        "activated_success": "¡Muchas gracias!",
+        "deactivated_success": "La publicidad está desactivada.",
+        "text1": "Listago es gratuita.",
+        "text2": "Yo mismo cubro todos los costes de hardware y software. Con un pequeño banner publicitario, intento cubrir al menos una parte de los gastos.",
+        "text3": "Si el banner te molesta demasiado, aquí tienes la opción de desactivarlo.",
+        "support1": "Si te gusta la app y aún así quieres apoyarme, agradecería una pequeña donación a través de",
+        "support2": "o",
+        "support3": "gracias.",
+        "thanks": "Muchas gracias."
     },
     "page_appinfos": {
         "page_title": "Información de la app",

@@ -308,7 +308,9 @@
         "trash": "Impostazioni del cestino",
         "trash_note": "Impostazioni per l'utilizzo del cestino",
         "transmission": "Impostazioni di trasmissione",
-        "transmission_note": "Configurazione per il trasferimento delle liste sul tuo orologio"
+        "transmission_note": "Configurazione per il trasferimento delle liste sul tuo orologio",
+        "advertisement": "Pubblicità",
+        "advertisement_note": "Sostienimi con la pubblicità oppure disattivala"
     },
     "page_settings_logs": {
         "page_title": "Logging",
@@ -429,6 +431,21 @@
         "export_success": "Il backup è stato completato con successo e l'archivio è stato salvato in <strong>DOCUMENTI</strong>.",
         "export_success_share": "Vuoi condividere l'archivio?",
         "export_success_share_title": "Backup Listago"
+    },
+    "page_settings_advertisement": {
+        "page_title": "Pubblicità",
+        "activated": "La pubblicità è attiva",
+        "deactivated": "La pubblicità è disattivata",
+        "deactivate_confirm": "Vuoi davvero disattivare la pubblicità e smettere di supportarmi?",
+        "activated_success": "Grazie mille!",
+        "deactivated_success": "La pubblicità è stata disattivata.",
+        "text1": "Listago è gratuita.",
+        "text2": "Copro personalmente tutti i costi per hardware e software. Con un piccolo banner pubblicitario cerco di coprire almeno una parte delle spese.",
+        "text3": "Se però il banner ti dà troppo fastidio, puoi disattivarlo qui.",
+        "support1": "Se ti piace l'app e vuoi comunque supportarmi, una piccola donazione tramite",
+        "support2": "o",
+        "support3": "sarebbe molto apprezzata.",
+        "thanks": "Grazie."
     },
     "page_appinfos": {
         "page_title": "Informazioni sull'app",

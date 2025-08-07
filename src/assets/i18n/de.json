@@ -313,7 +313,9 @@
         "transmission": "Übertragungs-Einstellungen",
         "transmission_note": "Einstellungen für das Übertragen von Listen auf deine Uhr",
         "im_export": "Import und Sicherung",
-        "im_export_note": "Listen und Einstellungen Importieren oder Sichern"
+        "im_export_note": "Listen und Einstellungen Importieren oder Sichern",
+        "advertisement": "Werbung",
+        "advertisement_note": "Unterstütze mich durch Werbung, oder deaktiviere sie"
     },
     "page_settings_logs": {
         "page_title": "Logging",
@@ -452,6 +454,21 @@
         "export_success": "Die Sicherung wurde erfolgreich durchgeführt und das Archiv in <strong>DOCUMENTS</strong> gespeichert.",
         "export_success_share": "Möchtest du das Archiv teilen?",
         "export_success_share_title": "Listago Sicherung"
+    },
+    "page_settings_advertisement": {
+        "page_title": "Werbung",
+        "activated": "Werbung ist aktiv",
+        "deactivated": "Werbung ist deaktiviert",
+        "deactivate_confirm": "Möchtest du die Werbung wirklich deaktivieren und mich nicht mehr unterstützen?",
+        "activated_success": "Vielen Dank!",
+        "deactivated_success": "Die Werbung ist deaktiviert.",
+        "text1": "Listago ist kostenlos.",
+        "text2": "Alle entstenden Kosten für Hard- und Software trage ich privat selbst. Mit einem kleinen Werbebanner versuche ich, zumindest einen kleinen Teil der Kosten zu decken.",
+        "text3": "Falls der Banner dich jedoch zu sehr stört, gebe ich dir hier die Möglichkeit ihn zu deaktivieren.",
+        "support1": "Wenn dir die App gefällt und du mich dennoch unterstützen möchtest, würde ich mich über eine kleine Spende mittels",
+        "support2": "oder",
+        "support3": "freunen.",
+        "thanks": "Vielen Dank."
     },
     "page_appinfos": {
         "page_title": "App Informationen",

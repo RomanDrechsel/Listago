@@ -226,8 +226,7 @@
     "im-export": {
         "item_lists": "リスト",
         "item_trash": "ゴミ箱",
-        "item_settings": "設定",
-        "finish_btn_import": "インポート開始"
+        "item_settings": "設定"
     },
     "page_firststart": {
         "welcome": "Listagoへようこそ",
@@ -242,7 +241,8 @@
         "finish2": "他のプロジェクトに興味がある場合は、以下で詳細をご覧いただけます。",
         "finish3": "私について。",
         "finish4": "アプリをお楽しみください！",
-        "finish_btn": "アプリへ進む"
+        "finish_btn": "アプリへ進む",
+        "finish_btn_import": "インポート開始"
     },
     "page_lists": {
         "page_title": "マイリスト",
@@ -311,7 +311,9 @@
         "trash": "ごみ箱の設定",
         "trash_note": "ゴミ箱の設定",
         "transmission": "転送設定",
-        "transmission_note": "ウォッチへのリスト転送設定"
+        "transmission_note": "ウォッチへのリスト転送設定",
+        "advertisement": "広告",
+        "advertisement_note": "広告でサポートするか、無効にしてください"
     },
     "page_settings_logs": {
         "page_title": "ログ設定",
@@ -450,6 +452,21 @@
         "export_success": "バックアップが正常に完了し、アーカイブは<strong>DOCUMENTS</strong>に保存されました。",
         "export_success_share": "アーカイブを共有しますか？",
         "export_success_share_title": "Listago バックアップ"
+    },
+    "page_settings_advertisement": {
+        "page_title": "広告",
+        "activated": "広告は有効です",
+        "deactivated": "広告は無効です",
+        "deactivate_confirm": "本当に広告を無効にしてサポートをやめますか？",
+        "activated_success": "ありがとうございます！",
+        "deactivated_success": "広告は無効になりました。",
+        "text1": "Listagoは無料です。",
+        "text2": "ハードウェアとソフトウェアの費用はすべて私が負担しています。小さな広告バナーで、少しでも費用をカバーしようとしています。",
+        "text3": "もしバナーが気になるようなら、ここで無効にすることができます。",
+        "support1": "アプリが気に入って、引き続き応援したいと思ってくださる場合は、",
+        "support2": "または",
+        "support3": "を通じて寄付いただけると嬉しいです。",
+        "thanks": "ありがとうございます。"
     },
     "page_appinfos": {
         "page_title": "アプリ情報",

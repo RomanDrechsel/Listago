@@ -28,4 +28,19 @@ export class ConfigService {
      * name of the garmin app
      */
     public readonly GarminAppName = "Listago";
+
+    /**
+     * link to my buy-me-a-coffee page
+     */
+    public readonly BuyMeACoffeeLink = "https://buymeacoffee.com/romandrechsel";
+
+    /**
+     * link to my german paypal donation page
+     */
+    public readonly PaypalDELink = "https://www.paypal.com/donate/?hosted_button_id=T5GWXZJ9PZK4N&locale.x=de_DE";
+
+    /**
+     * link to my paypal donation page
+     */
+    public readonly PaypalLink = "https://www.paypal.com/donate/?hosted_button_id=6SML79UYCTTL8";
 }

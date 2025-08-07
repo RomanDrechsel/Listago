@@ -3,6 +3,7 @@ import { inject, Injectable, isDevMode } from "@angular/core";
 import { App } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
+import { Preferences } from "@capacitor/preferences";
 import { SplashScreen } from "@capacitor/splash-screen";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
@@ -77,9 +78,17 @@ export class AppService {
      */
     public async InitializeApp() {
         document.addEventListener("DOMContentLoaded", async () => {
-            const reserve = new ReserveSpace(this._http);
-            await reserve.SetAdmobHeight();
-            await reserve.SetAdmobText();
+            let admob = true;
+            const pref = (await Preferences.get({ key: EPrefProperty.AdmobActive })).value;
+            if (pref) {
+                admob = JSON.parse(pref);
+            }
+
+            if (admob) {
+                const reserve = new ReserveSpace(this._http);
+                await reserve.SetAdmobHeight();
+                await reserve.SetAdmobText();
+            }
         });
 
         await this._platform.ready();
@@ -117,7 +126,12 @@ export class AppService {
         //no await...
         (async () => {
             try {
-                await this._admob.Initialize();
+                const admob = await this._preferences.Get(EPrefProperty.AdmobActive, true);
+                if (admob) {
+                    await this._admob.Initialize();
+                } else {
+                    Logger.Debug(`Advertising is unfortunately deactivated.`);
+                }
             } catch (e) {
                 Logger.Error(`Could not initialize Admob service: `, e);
             }

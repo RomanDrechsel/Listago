@@ -64,11 +64,11 @@ export class AppinfosPage extends PageBase {
     }
 
     public async bmc() {
-        await Browser.open({ url: "https://buymeacoffee.com/romandrechsel" });
+        await Browser.open({ url: this.Config.BuyMeACoffeeLink });
     }
 
     public async paypal() {
-        const url = this.Locale.CurrentLanguage.locale == "de-DE" ? "https://www.paypal.com/donate/?hosted_button_id=T5GWXZJ9PZK4N&locale.x=de_DE" : "https://www.paypal.com/donate/?hosted_button_id=6SML79UYCTTL8";
+        const url = this.Locale.CurrentLanguage.locale == "de-DE" ? this.Config.PaypalDELink : this.Config.PaypalLink;
         await Browser.open({ url: url });
     }
 

@@ -73,6 +73,10 @@ export const routes: Routes = [
         loadComponent: () => import("./pages/settings/export/export.page").then(m => m.ExportPage),
     },
     {
+        path: "settings/advertisement",
+        loadComponent: () => import("./pages/settings/advertisement/advertisement.page").then(m => m.AdvertisementPage),
+    },
+    {
         path: "appinfo",
         loadComponent: () => import("./pages/appinfos/appinfos.page").then(m => m.AppinfosPage),
     },

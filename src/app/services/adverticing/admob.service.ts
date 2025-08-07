@@ -4,6 +4,7 @@ import { AdMob, AdMobBannerSize, AdmobConsentDebugGeography, AdmobConsentInfo, A
 import type { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
+import type { Subscription } from "rxjs";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
 import { Logger } from "../logging/logger";
@@ -26,6 +27,11 @@ export class AdmobService {
     private readonly _http = inject(HttpClient);
     private _keyboardUpListerner?: PluginListenerHandle;
     private _keyboardDownListener?: PluginListenerHandle;
+    private _admobBannerLoadedListener?: PluginListenerHandle;
+    private _admobBannerChangedListener?: PluginListenerHandle;
+    private _admobBannerFailedListener?: PluginListenerHandle;
+    private _admobBannerClosedListener?: PluginListenerHandle;
+    private _preferencesSubscription?: Subscription;
 
     public get Initialized(): boolean {
         return this._isInitialized;
@@ -43,22 +49,22 @@ export class AdmobService {
 
         await this.RequestConsent(false);
 
-        AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
+        this._admobBannerLoadedListener = await AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
             Logger.Debug(`Admob banner loaded`);
             this._bannerIsShown = true;
         });
 
-        AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: AdMobBannerSize) => {
+        this._admobBannerChangedListener = await AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: AdMobBannerSize) => {
             this.resizeContainer(size.height);
         });
 
-        AdMob.addListener(BannerAdPluginEvents.FailedToLoad, (error: any) => {
+        this._admobBannerFailedListener = await AdMob.addListener(BannerAdPluginEvents.FailedToLoad, (error: any) => {
             Logger.Error(`Admob banner error: `, error);
             this.resizeContainer(0);
             this._bannerIsShown = false;
         });
 
-        AdMob.addListener(BannerAdPluginEvents.Closed, () => {
+        this._admobBannerClosedListener = await AdMob.addListener(BannerAdPluginEvents.Closed, () => {
             Logger.Debug(`Admob banner closed`);
             this._bannerIsShown = false;
         });
@@ -69,7 +75,7 @@ export class AdmobService {
             Logger.Debug(`Admob initialized in test mode`);
         }
 
-        this.Preferences.onPrefChanged$.subscribe(async pref => {
+        this._preferencesSubscription = this.Preferences.onPrefChanged$.subscribe(async pref => {
             if (pref.prop == EPrefProperty.AppLanguage) {
                 await new ReserveSpace(this._http).SetAdmobText();
             }
@@ -81,6 +87,32 @@ export class AdmobService {
         this._isInitialized = true;
 
         await this.ShowBanner();
+    }
+
+    public async Shutdown(): Promise<void> {
+        await this.HideBanner();
+        this._keyboardDownListener?.remove();
+        this._keyboardDownListener = undefined;
+        this._keyboardUpListerner?.remove();
+        this._keyboardUpListerner = undefined;
+        this._admobBannerChangedListener?.remove();
+        this._admobBannerChangedListener = undefined;
+        this._admobBannerClosedListener?.remove();
+        this._admobBannerClosedListener = undefined;
+        this._admobBannerFailedListener?.remove();
+        this._admobBannerFailedListener = undefined;
+        this._admobBannerLoadedListener?.remove();
+        this._admobBannerLoadedListener = undefined;
+        this._preferencesSubscription?.unsubscribe();
+        this._preferencesSubscription = undefined;
+
+        if (environment.publicRelease === true) {
+            Logger.Notice(`Admob shut down`);
+        } else {
+            Logger.Notice(`Admob test mode shut down`);
+        }
+
+        this._isInitialized = false;
     }
 
     /**
