@@ -113,7 +113,8 @@
         "transmit_error_partial": "Not all lists could be transmitted!",
         "transmit_send_btn": "Send to device",
         "add_moreitems_success": "Item was added.",
-        "add_moreitems_error": "Item could not be added!"
+        "add_moreitems_error": "Item could not be added!",
+        "sync_device_offline": "The list could not be synced, the device is not ready!"
     },
     "service-connectiq": {
         "watch_outdated": "You seem to be using an old version of the list app on your device <strong>{{device}}</strong>.<br /><br />Please update the app on your watch to be able to use all functions.",

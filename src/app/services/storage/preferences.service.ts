@@ -45,6 +45,12 @@ export class PreferencesService {
 
     private _prefsCache = new Map<EPrefProperty, any>();
 
+    private static _animations: boolean = true;
+
+    public static get Animations(): boolean {
+        return PreferencesService._animations;
+    }
+
     /**
      * stores a value in preferences
      * @param prop property
@@ -57,6 +63,9 @@ export class PreferencesService {
         } else {
             await Preferences.remove({ key: prop });
             this._prefsCache.delete(prop);
+        }
+        if (prop == EPrefProperty.Animations) {
+            PreferencesService._animations = value === true;
         }
         this.onPrefChangedSubject.next({ prop: prop, value: value });
     }

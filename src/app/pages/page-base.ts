@@ -19,9 +19,7 @@ import { PreferencesService } from "../services/storage/preferences.service";
     standalone: false,
 })
 export abstract class PageBase {
-    @ViewChild(MainToolbarComponent) protected Toolbar?: MainToolbarComponent; //TODO: needed?
-
-    protected readonly appComponent = inject(AppComponent); //TODO: use AppComponent.Instance
+    @ViewChild(MainToolbarComponent, { static: false }) private _mainToolbar?: MainToolbarComponent;
     protected readonly Popups = inject(PopupsService);
     protected readonly ConnectIQ = inject(ConnectIQService);
     protected readonly ListsService = inject(ListsService);
@@ -41,14 +39,14 @@ export abstract class PageBase {
         this._deviceChangedSubscription = this.ConnectIQ.onDeviceChanged$.subscribe(async () => {
             if (this._onlineDevices != this.ConnectIQ.OnlineDevices) {
                 this._onlineDevices = this.ConnectIQ.OnlineDevices;
-                this.appComponent.setAppPages(this.ModifyMainMenu());
+                AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
             }
         });
-        AppService.AppToolbar = this.Toolbar;
+        AppComponent?.Instance?.setToolbar(this._mainToolbar);
     }
 
     public async ionViewDidEnter() {
-        this.appComponent.setAppPages(this.ModifyMainMenu());
+        AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
     }
 
     public async ionViewWillLeave() {

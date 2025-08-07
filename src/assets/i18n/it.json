@@ -113,7 +113,8 @@
         "transmit_error_partial": "Non tutte le liste sono state trasferite!",
         "transmit_send_btn": "Invia al dispositivo",
         "add_moreitems_success": "Elemento aggiunto.",
-        "add_moreitems_error": "Impossibile aggiungere l'elemento!"
+        "add_moreitems_error": "Impossibile aggiungere l'elemento!",
+        "sync_device_offline": "Impossibile sincronizzare la lista, il dispositivo non è pronto!"
     },
     "service-connectiq": {
         "watch_outdated": "Sembra che tu stia utilizzando una versione obsoleta dell'app Liste sul tuo dispositivo <strong>{{device}}</strong>.<br /><br />Per favore, aggiorna l'app sul tuo orologio per poter utilizzare tutte le funzioni.",

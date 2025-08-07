@@ -37,10 +37,13 @@ export class ListsService {
     private _removeOldTrashEntriesTimer?: Subscription;
     private readonly _listIndex: Map<number, List> = new Map();
 
-    private _informedAboutNoReadyDevice: boolean = false;
-
     /**
-     * if automatic syncing is disabled in preferences and a list ist stored as sync list,
+     * if automatic syncing is enabled for a list, but no sync-device is online,
+     * show a toast. But only once per list...
+     */
+    private _informedAboutNotReadyDeviceList?: number;
+    /**
+     * if automatic syncing is disabled in preferences and a list is stored as sync list,
      * then open a popup. But only once per list...
      */
     private _lastSyncInformList?: number;
@@ -822,21 +825,22 @@ export class ListsService {
      * @param force_if_sync_is_disabled force sync even if list-sync is disabled
      */
     private async syncListToWatch(list: List, force_if_sync_is_disabled: boolean = false): Promise<void> {
-        if ((!this._syncLists || !list.Sync) && !force_if_sync_is_disabled) {
+        if ((!this._syncLists && !force_if_sync_is_disabled) || !list.Sync) {
             return;
         }
 
         const devices = (await this.ConnectIQ.getDevices()).filter(device => list.SyncDevices?.some(d => device.Identifier == d.id));
         if (devices.length == 0) {
-            Logger.Debug(`No device only for syncing ${list.toLog()}, skipping sync`);
-            if (!this._informedAboutNoReadyDevice) {
-                //TODO: toast here...
+            Logger.Debug(`No device online for syncing ${list.toLog()}, skipping sync`);
+            if (this._informedAboutNotReadyDeviceList != list.Id) {
+                this.Popups.Toast.Error("service-lists.sync_device_offline", undefined, true);
+                this._informedAboutNotReadyDeviceList = list.Id;
             }
             return;
         }
 
         let peek = false;
-        if (list.isPeek && list.Id) {
+        if (list.isPeek) {
             list.copyDetails(await this.GetList(list.Id));
             peek = true;
         }

@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { Subscription } from "rxjs";
+import { AppComponent } from "src/app/app.component";
 import type { EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 import { MainToolbarListsCustomMenuComponent } from "src/app/components/main-toolbar-lists-custom-menu/main-toolbar-lists-custom-menu.component";
 import { List } from "src/app/services/lists/list";
@@ -66,7 +67,7 @@ export class TrashListitemsPage extends AnimatedListPageBase {
                 this._trashItems = await this.ListsService.GetListitemTrash(this._listUuid, false);
                 this._itemsInitialized = true;
                 this.onItemsChanged();
-                this.appComponent.setAppPages(this.ModifyMainMenu());
+                AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
             }
         });
     }

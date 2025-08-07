@@ -113,7 +113,8 @@
         "transmit_error_partial": "Toutes les listes n'ont pas pu être transférées !",
         "transmit_send_btn": "Envoyer à l'appareil",
         "add_moreitems_success": "Élément ajouté.",
-        "add_moreitems_error": "Impossible d'ajouter l'élément !"
+        "add_moreitems_error": "Impossible d'ajouter l'élément !",
+        "sync_device_offline": "La liste n’a pas pu être synchronisée, l’appareil n’est pas prêt !"
     },
     "service-connectiq": {
         "watch_outdated": "Il semble que vous utilisiez une ancienne version de l'application Liste sur votre appareil <strong>{{device}}</strong>.<br /><br />Veuillez mettre à jour l'application sur votre montre pour profiter de toutes les fonctionnalités.",

@@ -113,7 +113,8 @@
         "transmit_error_partial": "Es konnten nicht alle Listen übertragen werden!",
         "transmit_send_btn": "An Gerät senden",
         "add_moreitems_success": "Punkt hinzugefügt.",
-        "add_moreitems_error": "Punkte konnte nicht hinzugefügt werden!"
+        "add_moreitems_error": "Punkte konnte nicht hinzugefügt werden!",
+        "sync_device_offline": "Die Liste konnte nicht syncronisiert werden, das Gerät ist nicht bereit!"
     },
     "service-connectiq": {
         "watch_outdated": "Du scheinst auf deinem Gerät <strong>{{device}}</strong> eine alte Version der Listen-App zu verwenden.<br /><br />Bitte aktuallisiere die App auf deiner Uhr, um alle Funktionen nutzen zu können.",

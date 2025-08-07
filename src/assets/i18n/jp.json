@@ -113,7 +113,8 @@
         "transmit_error_partial": "一部のリストを送信できませんでした！",
         "transmit_send_btn": "デバイスに送信",
         "add_moreitems_success": "アイテムが追加されました。",
-        "add_moreitems_error": "アイテムを追加できませんでした！"
+        "add_moreitems_error": "アイテムを追加できませんでした！",
+        "sync_device_offline": "リストを同期できませんでした。デバイスの準備ができていません！"
     },
     "service-connectiq": {
         "watch_outdated": "デバイス <strong>{{device}}</strong> に古いバージョンのリストアプリがインストールされているようです。<br /><br />ウォッチのアプリを最新バージョンに更新して、すべての機能を利用してください。",

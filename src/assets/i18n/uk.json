@@ -113,7 +113,8 @@
         "transmit_error_partial": "Деякі списки не вдалося передати!",
         "transmit_send_btn": "Передати на пристрій",
         "add_moreitems_success": "Елемент додано.",
-        "add_moreitems_error": "Не вдалося додати елемент!"
+        "add_moreitems_error": "Не вдалося додати елемент!",
+        "sync_device_offline": "Список не вдалося синхронізувати, пристрій не готовий!"
     },
     "service-connectiq": {
         "watch_outdated": "Повідомлення щодо відсутності останньої версії додатку Listen-Manager на вашому смарт-часовому приладі <strong>{{device}}</strong>.<br /><br />Для повної функціональності, пожалуйста, оновіть додаток.",

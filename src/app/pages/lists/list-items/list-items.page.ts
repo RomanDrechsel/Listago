@@ -5,6 +5,7 @@ import { ActivatedRoute } from "@angular/router";
 import { IonButton, IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonReorder, IonReorderGroup, IonTextarea, ItemReorderEventDetail } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { Subscription } from "rxjs";
+import { AppComponent } from "src/app/app.component";
 import type { EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 import { MainToolbarListsCustomMenuComponent } from "src/app/components/main-toolbar-lists-custom-menu/main-toolbar-lists-custom-menu.component";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -79,7 +80,7 @@ export class ListItemsPage extends AnimatedListPageBase {
                         this.onItemsChanged();
                     }
                     this._itemsInitialized = true;
-                    this.appComponent.setAppPages(this.ModifyMainMenu());
+                    AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
                 }
             })();
         } else {
@@ -96,14 +97,14 @@ export class ListItemsPage extends AnimatedListPageBase {
         this._listSubscription = this.ListsService.onListChanged$.subscribe(async list => {
             if (list && list.equals(this._list) && list.isPeek == false) {
                 this._list = list;
-                this.appComponent.setAppPages(this.ModifyMainMenu());
+                AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
                 this._itemsInitialized = true;
                 this.onItemsChanged();
             }
         });
 
         this._connectIQSubscription = this.ConnectIQ.onInitialized$.subscribe(async () => {
-            this.appComponent.setAppPages(this.ModifyMainMenu());
+            AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
         });
     }
 
@@ -142,7 +143,7 @@ export class ListItemsPage extends AnimatedListPageBase {
         if (this.List) {
             success = await this.ListsService.DeleteListitem(this.List, items, false, false);
             if (success) {
-                this.appComponent.setAppPages(this.ModifyMainMenu());
+                AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
             }
         }
         this._itemsList?.closeSlidingItems();
@@ -170,7 +171,7 @@ export class ListItemsPage extends AnimatedListPageBase {
     public async AddItem() {
         if (this.List) {
             await this.ListsService.NewListitem(this.List);
-            this.appComponent.setAppPages(this.ModifyMainMenu());
+            AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
         }
     }
 
@@ -200,7 +201,7 @@ export class ListItemsPage extends AnimatedListPageBase {
 
     public async EditList(): Promise<boolean> {
         if (this.List) {
-            this.appComponent.CloseMenu();
+            AppComponent.Instance?.CloseMenu();
             await this.ListsService.EditList(this.List);
             return true;
         }

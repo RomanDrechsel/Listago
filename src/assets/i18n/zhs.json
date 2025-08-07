@@ -113,7 +113,8 @@
         "transmit_error_partial": "并非所有列表都能传输！",
         "transmit_send_btn": "发送到设备",
         "add_moreitems_success": "项目已添加。",
-        "add_moreitems_error": "无法添加项目！"
+        "add_moreitems_error": "无法添加项目！",
+        "sync_device_offline": "列表无法同步，设备尚未准备好！"
     },
     "service-connectiq": {
         "watch_outdated": "您的设备<strong>{{device}}</strong>上似乎使用的是旧版本的列表应用。<br /><br />请更新手表上的应用，以便使用所有功能。",

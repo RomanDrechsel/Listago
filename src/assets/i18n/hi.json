@@ -113,7 +113,8 @@
         "transmit_error_partial": "सभी सूचियाँ नहीं भेजी जा सकीं!",
         "transmit_send_btn": "डिवाइस पर भेजें",
         "add_moreitems_success": "आइटम जोड़ा गया।",
-        "add_moreitems_error": "आइटम जोड़ने में असफल!"
+        "add_moreitems_error": "आइटम जोड़ने में असफल!",
+        "sync_device_offline": "सूची को सिंक नहीं किया जा सका, डिवाइस तैयार नहीं है!"
     },
     "service-connectiq": {
         "watch_outdated": "ऐसा लगता है कि आप अपने डिवाइस <strong>{{device}}</strong> पर सूची ऐप का पुराना संस्करण उपयोग कर रहे हैं।<br /><br />सभी फ़ीचर्स का उपयोग करने के लिए कृपया अपनी घड़ी पर ऐप को अपडेट करें।",

@@ -113,7 +113,8 @@
         "transmit_error_partial": "無法傳送所有清單！",
         "transmit_send_btn": "傳送到裝置",
         "add_moreitems_success": "項目已添加。",
-        "add_moreitems_error": "無法添加項目！"
+        "add_moreitems_error": "無法添加項目！",
+        "sync_device_offline": "無法同步清單，裝置尚未準備好！"
     },
     "service-connectiq": {
         "watch_outdated": "您在裝置 <strong>{{device}}</strong> 上似乎使用的是舊版本的清單應用。<br /><br />請更新手錶上的應用，以使用所有功能。",

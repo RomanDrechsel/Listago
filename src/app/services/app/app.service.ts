@@ -12,7 +12,6 @@ import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/nigh
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
 import { StringUtils } from "../../classes/utils/string-utils";
-import { MainToolbarComponent } from "../../components/main-toolbar/main-toolbar.component";
 import { AdmobService } from "../adverticing/admob.service";
 import { ReserveSpace } from "../adverticing/reserve-space";
 import { ConnectIQService } from "../connectiq/connect-iq.service";
@@ -29,8 +28,6 @@ import { EPrefProperty, PreferencesService } from "../storage/preferences.servic
     providedIn: "root",
 })
 export class AppService {
-    public static AppToolbar?: MainToolbarComponent; //TODO: needed?
-
     private readonly _logger = inject(LoggingService);
     private readonly _locale = inject(LocalizationService);
     private readonly _listsService = inject(ListsService);

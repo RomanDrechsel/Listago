@@ -5,6 +5,7 @@ import { App } from "@capacitor/app";
 import { IonApp, IonContent, IonFooter, IonIcon, IonImg, IonItem, IonLabel, IonList, IonMenu, IonRouterOutlet, IonSplitPane, IonToggle, NavController, Platform } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { EMenuItemType, MenuItem, MenuitemFactory, MenuitemFactoryList } from "./classes/menu-items";
+import type { MainToolbarComponent } from "./components/main-toolbar/main-toolbar.component";
 import { AppService } from "./services/app/app.service";
 import { ConnectIQService } from "./services/connectiq/connect-iq.service";
 import { EPrefProperty, PreferencesService } from "./services/storage/preferences.service";
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private readonly App = inject(AppService);
     private readonly NavController = inject(NavController);
     private readonly cdr = inject(ChangeDetectorRef);
+    private _currentToolbar?: MainToolbarComponent = undefined;
 
     @ViewChild("router_outlet") private routerOutlet!: IonRouterOutlet;
 
@@ -127,6 +129,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
     }
 
+    public setToolbar(toolbar?: MainToolbarComponent) {
+        this._currentToolbar = toolbar;
+    }
+
     public async CloseMenu(): Promise<void> {
         if (this.MainMenu) {
             await this.MainMenu.close();
@@ -140,7 +146,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private async tapBack() {
         if (this.routerOutlet) {
             if (!this.routerOutlet.canGoBack()) {
-                const backlink = AppService.AppToolbar?.BackLink;
+                const backlink = this._currentToolbar?.BackLink;
                 if (backlink) {
                     if (!(await this.NavController.navigateBack(backlink))) {
                         await this.NavController.navigateBack(backlink);

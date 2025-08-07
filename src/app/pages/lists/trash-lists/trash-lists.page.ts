@@ -3,6 +3,7 @@ import { Component } from "@angular/core";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonNote, IonText } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 import { Subscription } from "rxjs";
+import { AppComponent } from "src/app/app.component";
 import type { EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 import { MainToolbarListsCustomMenuComponent } from "src/app/components/main-toolbar-lists-custom-menu/main-toolbar-lists-custom-menu.component";
 import { EMenuItemType, MenuItem, MenuitemFactory } from "../../../classes/menu-items";
@@ -37,7 +38,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 this.Lists = this.Lists.sort((a, b) => b.Deleted - a.Deleted);
                 this._itemsInitialized = true;
                 this.onItemsChanged();
-                this.appComponent.setAppPages(this.ModifyMainMenu());
+                AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
             }
         });
     }
@@ -76,7 +77,7 @@ export class TrashListsPage extends AnimatedListPageBase {
     }
 
     public async emptyTrash(): Promise<boolean> {
-        this.appComponent.CloseMenu();
+        AppComponent.Instance?.CloseMenu();
         return (await this.ListsService.WipeTrash()) !== false;
     }
 

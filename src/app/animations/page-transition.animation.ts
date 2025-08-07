@@ -1,10 +1,10 @@
 import { Animation, AnimationController } from "@ionic/angular/standalone";
+import { PreferencesService } from "../services/storage/preferences.service";
 
 export const PageTransitionAnimation = (baseEl: HTMLElement, opts?: any): Animation => {
     const animationCtrl = new AnimationController();
     const PageTransitionAnimationDuration = 270;
-    const UsePageTransitionAnimations = true; //TODO: preferences
-    if (opts && UsePageTransitionAnimations) {
+    if (opts && PreferencesService.Animations) {
         const animations: Animation[] = [];
 
         const entering_mainElement = (opts.enteringEl.querySelector("ion-content[role='main']") as HTMLElement) ?? opts.enteringEl;
