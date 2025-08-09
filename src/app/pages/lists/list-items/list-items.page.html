@@ -4,20 +4,27 @@
 </app-main-toolbar>
 
 <ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
-    <div class="content" *ngIf="List !== undefined && List.Items.length > 0; else noItems" #listContent>
+    @if(List !== undefined && List.Items.length > 0) {
+    <div class="content" #listContent>
         <ion-list id="animated-list" #itemsList>
             <ion-reorder-group [disabled]="List.Items.length <= 1" (ionItemReorder)="HandleReorder($any($event))" [disabled]="!EditMode">
-                <ion-item-sliding *ngFor="let item of List.Items" [disabled]="EditMode || !InitialAnimationDone">
+                @for (item of List.Items; track item.Id) {
+                <ion-item-sliding [disabled]="EditMode || !InitialAnimationDone">
                     <ion-item lines="none" [button]="true" (click)="clickOnItem($event, item)" [ngClass]="{'selected-item': EditMode && isItemSelected(item)}">
                         <ion-label class="animated-item" [ngClass]="{'pre-animation-state': !InitialAnimationDone}">
                             <div class="details" [ngClass]="{'hidden': item.Hidden}">
                                 <div class="listpoint-indicator-wrapper">
-                                    <div class="listpoint-indicator" *ngIf="!item.Locked"></div>
-                                    <ion-icon src="./assets/icons/pin_solid.svg" *ngIf="item.Locked"></ion-icon>
+                                    @if(!item.Locked) {
+                                    <div class="listpoint-indicator"></div>
+                                    } @else {
+                                    <ion-icon src="./assets/icons/pin_solid.svg"></ion-icon>
+                                    }
                                 </div>
                                 <div class="text">
                                     <div class="item">{{item.Item}}</div>
-                                    <div color="medium" class="note" *ngIf="item.Note">{{item.Note}}</div>
+                                    @if(item.Note) {
+                                    <div color="medium" class="note">{{item.Note}}</div>
+                                    }
                                 </div>
                             </div>
                         </ion-label>
@@ -45,6 +52,7 @@
                         </ion-item-option>
                     </ion-item-options>
                 </ion-item-sliding>
+                }
             </ion-reorder-group>
         </ion-list>
         <ion-item lines="none" class="quick-add" [ngClass]="{'visible': InitialAnimationDone && !EditMode}">
@@ -56,29 +64,10 @@
             </ion-textarea>
         </ion-item>
     </div>
-
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="List && ShowAddButton">
-        <ion-fab-button (click)="AddItem()" [ariaLabel]="'add'|translate">
-            <ion-icon src="./assets/icons/add.svg"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="List && List.Items.length > 0 && ShowScrollButtons">
-        <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
-            <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-button (click)="ScrollToBottom(false)" [disabled]="DisableScrollToBottom">
-            <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-</ion-content>
-
-<ng-template #noItems>
-    <app-page-add-new *ngIf="List && ItemsInitialized && List.Items.length == 0; else notInit"> {{'page_listitems.add_new_hint'|translate}} </app-page-add-new>
-</ng-template>
-
-<ng-template #notInit>
-    <app-page-empty *ngIf="!ItemsInitialized; else error">
+    }@else if (List && ItemsInitialized && List.Items.length == 0) {
+    <app-page-add-new> {{'page_listitems.add_new_hint'|translate}} </app-page-add-new>
+    } @else if (!ItemsInitialized) {
+    <app-page-empty>
         <div slot="image">
             <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
         </div>
@@ -86,9 +75,7 @@
             <div [innerHTML]="'page_listitems.loading'|translate"></div>
         </div>
     </app-page-empty>
-</ng-template>
-
-<ng-template #error>
+    } @else {
     <app-page-empty>
         <div slot="image">
             <ion-icon src="./assets/icons/nolist.svg"></ion-icon>
@@ -97,4 +84,20 @@
             <div [innerHTML]="'page_listitems.nolist'|translate"></div>
         </div>
     </app-page-empty>
-</ng-template>
+    } @if(List && ItemsInitialized && ShowAddButton) {
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="AddItem()" [ariaLabel]="'add'|translate">
+            <ion-icon src="./assets/icons/add.svg"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    } @if(List && ItemsInitialized && List.Items.length > 0 && ShowScrollButtons) {
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+        <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
+            <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="ScrollToBottom(false)" [disabled]="DisableScrollToBottom">
+            <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    }
+</ion-content>

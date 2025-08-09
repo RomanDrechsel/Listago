@@ -8,9 +8,11 @@
                     <div class="text welcome">{{'page_firststart.welcome'|translate}}</div>
                     <div class="text language1" [innerHTML]="'page_firststart.language1'|translate"></div>
 
-                    <ion-img class="language-icon" *ngIf="Locale.CurrentLanguage?.Icon" [src]="Locale.CurrentLanguage!.Icon" (click)="changeLanguage()"></ion-img>
+                    <ion-img class="language-icon" [src]="Locale.CurrentLanguage!.Icon" (click)="changeLanguage()"></ion-img>
                     <ion-select class="select-language" interface="action-sheet" fill="outline" value="{{Locale.CurrentLanguage.locale}}" [okText]="'change'|translate" [cancelText]="'cancel'|translate" (ionChange)="onChangeLanguage($event)" #selLanguage>
-                        <ion-select-option *ngFor="let details of Locale.AvailableTranslations" value="{{details.locale}}" (selected)="Locale.CurrentLanguage.locale == details.locale"> {{details.LocalizedString}} </ion-select-option>
+                        @for (details of Locale.AvailableTranslations; track details.locale) {
+                        <ion-select-option value="{{details.locale}}" (selected)="Locale.CurrentLanguage.locale == details.locale"> {{details.LocalizedString}} </ion-select-option>
+                        }
                     </ion-select>
 
                     <div class="text language2" [innerHTML]="'page_firststart.language2'|translate"></div>
@@ -37,7 +39,8 @@
                     <ion-button (click)="nextGarmin()">{{'next' | translate}}</ion-button>
                 </div>
             </ion-segment-content>
-            <ion-segment-content id="garmin-hint" *ngIf="GarminActive">
+            @if(GarminActive) {
+            <ion-segment-content id="garmin-hint">
                 <div class="content">
                     <ion-icon src="/assets/icons/info.svg" class="logo garmin-hint"></ion-icon>
                     <div class="text garmin-hint1" [innerHTML]="'page_firststart.garmin-hint1'|translate"></div>
@@ -47,6 +50,7 @@
                     <ion-button (click)="nextGarminHint()">{{'next' | translate}}</ion-button>
                 </div>
             </ion-segment-content>
+            }
             <ion-segment-content id="finish">
                 <div class="content">
                     <div class="text finish1" [innerHTML]="'page_firststart.finish1'|translate"></div>

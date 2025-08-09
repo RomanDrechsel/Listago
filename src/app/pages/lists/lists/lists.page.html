@@ -4,10 +4,12 @@
 </app-main-toolbar>
 
 <ion-content fixed-slot-placement="before" scrollX="false" scrollEvents="true" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
-    <div *ngIf="Lists.length > 0; else noLists" class="list-content" #listContent>
+    @if(Lists.length > 0) {
+    <div class="list-content" #listContent>
         <ion-list id="animated-list" #itemsList>
             <ion-reorder-group (ionItemReorder)="handleReorder($any($event))" [disabled]="!EditMode">
-                <ion-item-sliding *ngFor="let list of Lists" [disabled]="EditMode || !InitialAnimationDone">
+                @for (list of Lists; track list.Id) {
+                <ion-item-sliding [disabled]="EditMode || !InitialAnimationDone">
                     <ion-item lines="none" [button]="true" (click)="clickOnItem($event, list)" [ngClass]="{'selected-item': EditMode && isListSelected(list)}">
                         <ion-label class="animated-item" [ngClass]="{'pre-animation-state': !InitialAnimationDone}">
                             <div class="details">
@@ -29,10 +31,12 @@
                         </div>
                     </ion-item>
                     <ion-item-options side="start" (ionSwipe)="onSwipeRight(list)">
-                        <ion-item-option color="danger" (click)="emptyLists(list)" *ngIf="list.ItemsCount > 0">
+                        @if(list.ItemsCount > 0) {
+                        <ion-item-option color="danger" (click)="emptyLists(list)">
                             <ion-icon slot="start" src="./assets/icons/trash_bin_solid.svg"></ion-icon>
                             {{'page_lists.empty'|translate}}
                         </ion-item-option>
+                        }
                         <ion-item-option color="danger" expandable="true" (click)="deleteLists(list)">
                             <ion-icon slot="start" src="./assets/icons/trash_solid.svg"></ion-icon>
                             {{'delete'|translate}}
@@ -45,31 +49,13 @@
                         </ion-item-option>
                     </ion-item-options>
                 </ion-item-sliding>
+                }
             </ion-reorder-group>
         </ion-list>
     </div>
-
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="ShowAddButton">
-        <ion-fab-button [ariaLabel]="'add'|translate" (click)="addList()">
-            <ion-icon src="./assets/icons/add.svg"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="Lists.length > 0 && ShowScrollButtons">
-        <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
-            <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-button (click)="ScrollToBottom(false)" [disabled]="DisableScrollToBottom">
-            <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-</ion-content>
-
-<ng-template #noLists>
-    <app-page-add-new *ngIf="ItemsInitialized; else notInit">{{'page_lists.add_new_hint'|translate}}</app-page-add-new>
-</ng-template>
-
-<ng-template #notInit>
+    } @else if (ItemsInitialized) {
+    <app-page-add-new>{{'page_lists.add_new_hint'|translate}}</app-page-add-new>
+    } @else {
     <app-page-empty>
         <div slot="image">
             <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
@@ -78,4 +64,20 @@
             <div [innerHTML]="'page_lists.loading'|translate"></div>
         </div>
     </app-page-empty>
-</ng-template>
+    } @if(ShowAddButton) {
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button [ariaLabel]="'add'|translate" (click)="addList()">
+            <ion-icon src="./assets/icons/add.svg"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    } @if(Lists.length > 0 && ShowScrollButtons) {
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+        <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
+            <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="ScrollToBottom(false)" [disabled]="DisableScrollToBottom">
+            <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    }
+</ion-content>

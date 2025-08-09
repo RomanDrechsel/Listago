@@ -15,18 +15,25 @@
                 (ionChange)="onDeviceChanged($event.detail.value)"
                 [interfaceOptions]="{'cssClass': 'devices'}"
                 #deviceSelect>
-                <ion-select-option *ngFor="let device of Devices" [value]="device.Identifier" [ngClass]="{'disabled': device.State != 'Ready'}">{{device.Name}}</ion-select-option>
+                @for (device of Devices; track device.Identifier) {
+                <ion-select-option [value]="device.Identifier" [ngClass]="{'disabled': device.State != 'Ready'}">{{device.Name}}</ion-select-option>
+                }
             </ion-select>
             <div style="clear: both"></div>
             <ion-checkbox labelPlacement="end" [checked]="AlwaysTransmitDeviceSelected" [disabled]="SelectedDevice == undefined || SelectedDevice.State == 'AppNotInstalled'" (ionChange)="onToggle($event.detail.checked)">
                 <div>{{'page_devices.toggle'|translate}}</div>
             </ion-checkbox>
-            <div class="deviceState" [ngClass]="{'error': SelectedDevice.Error}" *ngIf="SelectedDevice && SelectedDevice.State != 'Ready' && SelectedDevice.State != 'AppNotInstalled'">{{SelectedDevice.StateLocale}}</div>
-            <div class="install ion-text-center" *ngIf="installHint">
+            @if(SelectedDevice && SelectedDevice.State != 'Ready' && SelectedDevice.State != 'AppNotInstalled') {
+            <div class="deviceState" [ngClass]="{'error': SelectedDevice.Error}">{{SelectedDevice.StateLocale}}</div>
+            } @if(installHint) {
+            <div class="install ion-text-center">
                 <ion-text (click)="openStore()" [innerHTML]="'page_devices.install_app'|translate"></ion-text>
             </div>
+            }
             <div style="clear: both"></div>
-            <ion-button class="ion-float-right" [disabled]="SelectedDevice?.State != 'Ready'" *ngIf="hasSubmitButton" (click)="SubmitButton()"> {{SubmitButtonLabel}} </ion-button>
+            @if(hasSubmitButton) {
+            <ion-button class="ion-float-right" [disabled]="SelectedDevice?.State != 'Ready'" (click)="SubmitButton()"> {{SubmitButtonLabel}} </ion-button>
+            }
         </ion-card>
     </div>
 

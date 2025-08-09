@@ -1,26 +1,31 @@
 <app-main-toolbar back="/settings/im-export">{{'page_settings_import.page_title'|translate}}</app-main-toolbar>
 
 <ion-content class="page">
-    <div class="container" *ngIf="!ImportDone; else done">
+    @if (!ImportDone) {
+    <div class="container">
         <div class="content">
             <ion-icon src="/assets/icons/import.svg" class="icon"></ion-icon>
 
-            <div class="select-archive" *ngIf="!Archive?.length || !ArchiveValid">
-                <div *ngIf="!Importer?.isAnalysingRunning">
+            @if (!Archive?.length || !ArchiveValid) {
+            <div class="select-archive">
+                @if (!Importer?.isAnalysingRunning) {
+                <div>
                     <div class="text" [innerHTML]="'page_settings_import.select_archive' | translate"></div>
                     <ion-button (click)="selectArchive()">{{'page_settings_import.btn_select_archive'|translate}}</ion-button>
                 </div>
-
-                <div class="text analysing" *ngIf="Importer?.isAnalysingRunning"><span class="analyse-text" [innerHTML]="AnalysingText" id="analysingText" data-after-content="..."></span></div>
-
-                <div class="text error" [innerHTML]="'page_settings_import.archive_invalid'|translate" *ngIf="ArchiveValid === false"></div>
+                }@else {
+                <div class="text analysing"><span class="analyse-text" [innerHTML]="AnalysingText" id="analysingText" data-after-content="..."></span></div>
+                } @if(ArchiveValid === false) {
+                <div class="text error" [innerHTML]="'page_settings_import.archive_invalid'|translate"></div>
+                }
             </div>
-
-            <div class="select-items" *ngIf="Archive?.length && ArchiveValid && !Importer?.isImportRunning">
+            } @if(Archive?.length && ArchiveValid && !Importer?.isImportRunning) {
+            <div class="select-items">
                 <div class="text" [innerHTML]="'page_settings_import.select_items' | translate"></div>
                 <ion-card>
                     <ion-list>
-                        <ion-item lines="full" [ngClass]="['import-item', item.status]" (click)="onChangeImportItem(item)" *ngFor="let item of ImportItems">
+                        @for(item of ImportItems; track item.key) {
+                        <ion-item lines="full" [ngClass]="['import-item', item.status]" (click)="onChangeImportItem(item)">
                             <ion-icon slot="start" [src]="item.icon"></ion-icon>
                             <ion-label>
                                 <ion-text class="import-item-title">{{item.locale|translate}}</ion-text>
@@ -29,38 +34,42 @@
                                 <ion-checkbox [checked]="item.status != 'disabled'"></ion-checkbox>
                             </div>
                         </ion-item>
+                        }
                     </ion-list>
                 </ion-card>
                 <div class="buttons">
                     <ion-button color="secondary" fill="outline" (click)="selectArchive()">{{'page_settings_import.btn_reset_archive'|translate}}</ion-button>
                 </div>
             </div>
-
-            <div class="running" *ngIf="Archive?.length && ArchiveValid && Importer?.isImportRunning">
+            } @if(Archive?.length && ArchiveValid && Importer?.isImportRunning) {
+            <div class="running">
                 <ion-card>
                     <ion-list>
-                        <ion-item lines="full" [ngClass]="['import-item', item.status]" *ngFor="let item of ImportItems">
+                        @for(item of ImportItems; track item.key) {
+                        <ion-item lines="full" [ngClass]="['import-item', item.status]">
                             <ion-icon slot="start" [src]="'/assets/icons/im-export/item_'+item.status+'.svg'"></ion-icon>
                             <ion-label>
                                 <ion-text class="import-item-title">{{item.locale|translate}}</ion-text>
                                 <ion-progress-bar [value]="item.done"></ion-progress-bar>
                             </ion-label>
                         </ion-item>
+                        }
                     </ion-list>
                 </ion-card>
-                <div class="buttons" *ngIf="ImportError">
+                @if(ImportError) {
+                <div class="buttons">
                     <ion-button color="secondary" (click)="selectArchive()">{{'page_settings_import.btn_reset_archive'|translate}}</ion-button>
                 </div>
+                }
             </div>
+            }
         </div>
         <ion-buttons class="fixed-bottom">
             <ion-button fill="outline" color="secondary" (click)="back()"> {{'back'|translate}} </ion-button>
             <ion-button fill="solid" color="secondary" [disabled]="!Archive?.length || !SomethingEnabled || ImportError || Importer?.isImportRunning" (click)="Import()"> {{'page_settings_import.btn_import'|translate}} </ion-button>
         </ion-buttons>
     </div>
-</ion-content>
-
-<ng-template #done>
+    }@else {
     <div class="container done-report">
         <div class="content">
             <div>
@@ -69,10 +78,12 @@
             </div>
             <ion-card>
                 <ion-list>
-                    <ion-item lines="full" *ngFor="let item of FinishedImportItems">
+                    @for(item of FinishedImportItems; track item.key) {
+                    <ion-item lines="full">
                         <ion-label [innerHTML]="Report(item.key)"></ion-label>
                         <ion-icon [src]="ReportIcon(item.key)" [ngClass]="[ReportIconClass(item.key)]" slot="end"></ion-icon>
                     </ion-item>
+                    }
                 </ion-list>
             </ion-card>
         </div>
@@ -81,4 +92,5 @@
             <ion-button fill="solid" color="secondary" (click)="importDone()">{{ 'done' | translate }}</ion-button>
         </ion-buttons>
     </div>
-</ng-template>
+    }
+</ion-content>

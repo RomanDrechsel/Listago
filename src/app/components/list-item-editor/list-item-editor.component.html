@@ -16,12 +16,14 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="Form">
         <ion-textarea [label]="'comp-listitemeditor.itemname' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="250" autocapitalize="sentence" spellcheck="true" formControlName="item" [autoGrow]="true" required="true" (ionFocus)="hideAds()" #itemname></ion-textarea>
         <ion-textarea class="note" [label]="'comp-listitemeditor.itemnote' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="250" autocapitalize="sentence" spellcheck="true" formControlName="note" [autoGrow]="true"></ion-textarea>
-        <ion-item lines="none" *ngIf="ConnectIQInitialized">
+        @if (ConnectIQInitialized) {
+        <ion-item lines="none">
             <ion-checkbox labelPlacement="end" justify="start" alignment="center" formControlName="hidden">
                 {{ "comp-listitemeditor.hidden" | translate }}
             </ion-checkbox>
             <ion-icon src="/assets/icons/info.svg" slot="end" class="info-icon" (click)="clickInfoHidden($event)"></ion-icon>
         </ion-item>
+        }
         <ion-item lines="none">
             <ion-checkbox labelPlacement="end" justify="start" alignment="center" formControlName="locked">
                 {{ "comp-listitemeditor.locked" | translate }}
@@ -30,12 +32,15 @@
         </ion-item>
 
         <div class="buttons">
-            <ion-button *ngIf="Params?.list && Params?.item" class="ion-float-end" fill="outline" (click)="onDelete()">
+            @if(Params?.list && Params?.item) {
+            <ion-button class="ion-float-end" fill="outline" (click)="onDelete()">
                 {{ "comp-listitemeditor.delete" | translate }}
             </ion-button>
-            <ion-toggle *ngIf="Params?.onAddItem" labelPlacement="end" #addmore (ionChange)="onAddMoreChanged($event.target.checked)">
+            } @if (Params?.onAddItem) {
+            <ion-toggle labelPlacement="end" #addmore (ionChange)="onAddMoreChanged($event.target.checked)">
                 <ion-label class="ion-text-wrap">{{ "comp-listitemeditor.add_more" | translate }}</ion-label>
             </ion-toggle>
+            }
             <ion-button class="ion-float-end" [disabled]="!Form.valid" (click)="onSubmit()">
                 {{ Confirm }}
             </ion-button>

@@ -1,7 +1,8 @@
 <app-main-toolbar back="/settings/im-export">{{'page_settings_export.page_title'|translate}}</app-main-toolbar>
 
 <ion-content class="page">
-    <div class="container" *ngIf="!ExportDone; else done">
+    @if(!ExportDone) {
+    <div class="container">
         <ion-segment-view>
             <ion-segment-content id="lists">
                 <div class="content">
@@ -50,30 +51,38 @@
 
                     <div class="text first">{{'page_settings_export.export_summary'|translate}}</div>
 
-                    <div *ngIf="SomethingEnabled">
+                    @if (SomethingEnabled) {
+                    <div>
                         <ion-card class="export-list">
                             <ion-list>
-                                <ion-item lines="full" [ngClass]="['export-item', item.status]" *ngFor="let item of ExportItems">
+                                @for (item of ExportItems; track item.key) {
+                                <ion-item lines="full" [ngClass]="['export-item', item.status]">
                                     <ion-icon slot="start" [src]="item.icon"></ion-icon>
                                     <ion-label>
                                         <ion-text class="export-item-title">{{item.locale|translate}}</ion-text>
                                         <ion-progress-bar [value]="item.done"></ion-progress-bar>
                                     </ion-label>
                                 </ion-item>
+                                }
                             </ion-list>
                         </ion-card>
 
                         <ion-buttons>
-                            <ion-button (click)="exportToZip()" color="secondary" fill="outline" *ngIf="!ExportRunning"> {{'page_settings_export.export_to_zip'|translate}} </ion-button>
-                            <ion-button (click)="stopExport()" color="secondary" fill="outline" *ngIf="ExportRunning"> {{'cancel'|translate}} </ion-button>
+                            @if (!ExportRunning) {
+                            <ion-button (click)="exportToZip()" color="secondary" fill="outline"> {{'page_settings_export.export_to_zip'|translate}} </ion-button>
+                            } @else {
+                            <ion-button (click)="stopExport()" color="secondary" fill="outline"> {{'cancel'|translate}} </ion-button>
+                            }
                         </ion-buttons>
                     </div>
-                    <div *ngIf="!SomethingEnabled">
+                    } @else {
+                    <div>
                         <div class="text margin">{{'page_settings_export.export_summary_nothing'|translate}}</div>
                         <ion-buttons>
                             <ion-button (click)="cancel()" color="secondary" fill="outline"> {{'page_settings_export.export_cancel'|translate}} </ion-button>
                         </ion-buttons>
                     </div>
+                    }
                 </div>
                 <div class="buttons left">
                     <ion-button (click)="toSettings()">{{'back' | translate}}</ion-button>
@@ -97,8 +106,7 @@
             </ion-segment>
         </div>
     </div>
-</ion-content>
-<ng-template #done>
+    } @else {
     <div class="container done">
         <ion-icon src="/assets/icons/done.svg"></ion-icon>
         <div class="content">
@@ -110,4 +118,5 @@
             </ion-buttons>
         </div>
     </div>
-</ng-template>
+    }
+</ion-content>

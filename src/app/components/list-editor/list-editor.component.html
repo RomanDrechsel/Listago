@@ -15,7 +15,8 @@
 <div class="inner-content ion-padding">
     <form (ngSubmit)="onSubmit()" [formGroup]="Form">
         <ion-input [label]="'comp-listeditor.listname' | translate" labelPlacement="floating" fill="outline" counter="true" maxlength="100" autocapitalize="sentence" spellcheck="true" enterkeyhint="enter" required="true" formControlName="listname" (ionFocus)="hideAds()" #listname></ion-input>
-        <ion-accordion-group *ngIf="ConnectIQInitialized">
+        @if (ConnectIQInitialized) {
+        <ion-accordion-group>
             <ion-accordion class="list-settings">
                 <ion-item slot="header">
                     <ion-label>{{ "comp-listeditor.settings" | translate }}</ion-label>
@@ -29,7 +30,8 @@
                             <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
                         </ion-item>
 
-                        <ion-item lines="none" *ngIf="ResetActive">
+                        @if (ResetActive) {
+                        <ion-item lines="none">
                             <ion-select [label]="'comp-listeditor.reset_interval' | translate" label-placement="stacked" [value]="ResetInteval" [okText]="'ok' | translate" [cancelText]="'cancel' | translate" (ionChange)="onResetIntervalChanged($event.target.value)" #resetinterval>
                                 <ion-select-option value="daily">{{ "comp-listeditor.reset_daily" | translate }}</ion-select-option>
                                 <ion-select-option value="weekly">{{ "comp-listeditor.reset_weekly" | translate }}</ion-select-option>
@@ -37,9 +39,10 @@
                             </ion-select>
                         </ion-item>
 
-                        <ion-item (click)="selectResetDate()" class="select-resetdate" lines="none" *ngIf="ResetActive">
+                        <ion-item (click)="selectResetDate()" class="select-resetdate" lines="none">
                             <ion-text>{{ ResetString }}</ion-text>
                         </ion-item>
+                        }
 
                         <ion-item lines="none">
                             <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (click)="toggleSync($event)" #sync>
@@ -52,11 +55,14 @@
                 </div>
             </ion-accordion>
         </ion-accordion-group>
+        }
 
         <div class="buttons">
-            <ion-button *ngIf="Params?.list" class="ion-float-end" fill="outline" (click)="onDelete()">
+            @if (Params?.list) {
+            <ion-button class="ion-float-end" fill="outline" (click)="onDelete()">
                 {{ "comp-listeditor.delete" | translate }}
             </ion-button>
+            }
             <ion-button class="ion-float-end" [disabled]="!Form.valid" (click)="onSubmit()">
                 {{ Confirm }}
             </ion-button>

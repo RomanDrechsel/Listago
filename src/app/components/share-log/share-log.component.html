@@ -10,7 +10,8 @@
 </ion-header>
 <div class="inner-content ion-padding ion-text-center">
     <div [innerHTML]="'comp-sharelog.text' | translate : { filename: Params.file.Filename }"></div>
-    <div *ngIf="!IsWebApp">
+    @if(!IsWebApp) {
+    <div>
         <ion-select value="store" interface="popover" fill="outline" [value]="Params.do ?? 'email'" #do>
             <ion-select-option value="store">{{ "comp-sharelog.store" | translate }}</ion-select-option>
             <ion-select-option value="share">{{ "comp-sharelog.share" | translate }}</ion-select-option>
@@ -50,7 +51,8 @@
                             </div>
                         </div>
                     </ion-item>
-                    <ion-item lines="none" *ngIf="ConnectIQInitialized">
+                    @if(ConnectIQInitialized) {
+                    <ion-item lines="none">
                         <div>
                             <ion-checkbox labelPlacement="end" justify="start" checked="true" #attachMetaGarmin>{{ "comp-sharelog.meta_garmin" | translate }}</ion-checkbox>
                             <div class="meta_note">
@@ -58,15 +60,19 @@
                             </div>
                         </div>
                     </ion-item>
+                    }
                 </ion-list>
             </ion-accordion>
         </ion-accordion-group>
-        <ion-item lines="none" class="attach-watchlog" *ngIf="ConnectIQInitialized">
+        @if(ConnectIQInitialized) {
+        <ion-item lines="none" class="attach-watchlog">
             <ion-checkbox [checked]="Params.watch_logs_included === true" [disabled]="Params.watch_logs_included === true" #attachWatchLogs>
                 {{ "comp-sharelog.watch" | translate }}
             </ion-checkbox>
         </ion-item>
+        }
     </div>
+    }
 </div>
 <div class="button">
     <ion-button (click)="storeFile()">{{ "save" | translate }}</ion-button>

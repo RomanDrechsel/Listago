@@ -414,7 +414,7 @@ export class ListsImporter {
                             \`item\` = ?,
                             \`note\` = ?,
                             \`order\` = ?,
-                            \`hidden\` = ?
+                            \`hidden\` = ?,
                             \`locked\` = ?,
                             \`created\` = ?,
                             \`modified\` = ?,

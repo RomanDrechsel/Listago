@@ -5,21 +5,13 @@
         <ion-icon src="./assets/icons/calendar.svg" class="calendar" (click)="openCalendar()"></ion-icon>
         <ion-select interface="action-sheet" [interfaceOptions]="{header: 'page_settings_showlogs.select_logs'|translate}" [value]="currentLogfile?.Filename" [cancelText]="'cancel'|translate" [disabled]="!LogfilesAvailable" (ionChange)="onChangeLogfile($event)">
             <ion-text slot="label">{{currentLogfile?.Filename ?? 'page_settings_showlogs.no_log'|translate}}</ion-text>
-            <ion-select-option *ngFor="let file of availableLogfiles" [value]="file.name" (selected)="currentLogfile?.Path == file.uri">{{formatLogfile(file)}}</ion-select-option>
+            @for (file of availableLogfiles; track file.uri) {
+            <ion-select-option [value]="file.name" (selected)="currentLogfile?.Path == file.uri">{{formatLogfile(file)}}</ion-select-option>
+            }
         </ion-select>
     </div>
-    <div id="logtext" *ngIf="currentLogfile; else nologfile" class="list-content" #logContent>{{currentLogfile.Content}}</div>
-    <ng-template #nologfile>
-        <app-page-empty>
-            <div slot="image">
-                <ion-icon src="./assets/icons/file.svg"></ion-icon>
-            </div>
-            <div slot="text">
-                <ion-text>{{'page_settings_showlogs.no_log_note'|translate: {date: SelectedDayString} }}</ion-text>
-            </div>
-        </app-page-empty>
-    </ng-template>
-
+    @if (currentLogfile) {
+    <div id="logtext" class="list-content" #logContent>{{currentLogfile.Content}}</div>
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
         <ion-fab-button [disabled]="!currentLogfile || !currentLogfile.Exists" #fabButton>
             <ion-icon src="./assets/icons/list_menu.svg"></ion-icon>
@@ -33,7 +25,8 @@
             </ion-fab-button>
         </ion-fab-list>
     </ion-fab>
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="ShowScrollButtons">
+    @if (ShowScrollButtons) {
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
         <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
             <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
         </ion-fab-button>
@@ -41,4 +34,14 @@
             <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+    } } @else {
+    <app-page-empty>
+        <div slot="image">
+            <ion-icon src="./assets/icons/file.svg"></ion-icon>
+        </div>
+        <div slot="text">
+            <ion-text>{{'page_settings_showlogs.no_log_note'|translate: {date: SelectedDayString} }}</ion-text>
+        </div>
+    </app-page-empty>
+    }
 </ion-content>

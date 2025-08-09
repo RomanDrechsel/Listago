@@ -1,13 +1,21 @@
 <ion-toolbar class="main-toolbar" id="main-toolbar">
-    <ion-buttons slot="start" *ngIf="backButton">
+    @if(backButton) {
+    <ion-buttons slot="start">
         <ion-back-button [defaultHref]="backButton" text="" #backbutton></ion-back-button>
     </ion-buttons>
+    }
     <ion-title [ngClass]="{ back: backButton, menu: displayCustomMenu || displayMenu }">
         <ng-content></ng-content>
     </ion-title>
-    <ion-buttons class="menu" slot="end" *ngIf="displayCustomMenu || displayMenu">
-        <ng-content select="[slot='customMenu']" *ngIf="displayCustomMenu"></ng-content>
-        <ion-menu-button *ngIf="displayMenu"></ion-menu-button>
+    @if (displayCustomMenu || displayMenu) {
+    <ion-buttons class="menu" slot="end">
+        @if (displayCustomMenu) {
+        <ng-content select="[slot='customMenu']"></ng-content>
+        } @if (displayMenu) {
+        <ion-menu-button></ion-menu-button>
+        }
     </ion-buttons>
-    <ion-progress-bar type="indeterminate" *ngIf="ShowProgressbar"></ion-progress-bar>
+    } @if (ShowProgressbar) {
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+    }
 </ion-toolbar>

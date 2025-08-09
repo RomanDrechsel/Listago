@@ -3,13 +3,15 @@
 <ion-content>
     <ion-list>
         <!-- transmit list-->
-        <ion-item lines="full" *ngIf="ConnectIQInitialized">
+        @if (ConnectIQInitialized) {
+        <ion-item lines="full">
             <ion-label (click)="onTransmitListChanged(!TransmitList)">
                 <div class="text" [innerHTML]="'page_settings_confirm.transmit_list'|translate"></div>
                 <ion-note [innerHTML]="'page_settings_confirm.transmit_list_note'|translate"></ion-note>
             </ion-label>
             <ion-toggle [checked]="TransmitList" (ionChange)="onTransmitListChanged($event.target.checked)" slot="end"></ion-toggle>
         </ion-item>
+        }
         <!-- delete list -->
         <ion-item lines="full">
             <ion-label (click)="onDeleteListChanged(!DeleteList)">

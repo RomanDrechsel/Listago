@@ -14,9 +14,11 @@
 </ion-header>
 <div class="inner-content ion-padding">
     <ion-list>
-        <ion-item *ngFor="let device of Devices" lines="none">
+        @for (device of Devices; track device.Identifier) {
+        <ion-item lines="none">
             <ion-checkbox [checked]="SelectedDevices.indexOf(device) >= 0" [attr.data-device-id]="device.Identifier" [ariaLabel]="'select' | translate" (ionChange)="onCheckboxChanged($event.target.checked, device)">{{ device.Name }}</ion-checkbox>
         </ion-item>
+        }
     </ion-list>
     <ion-buttons class="ion-float-end">
         <ion-button fill="outline" color="secondary" (click)="onDeactivate()">

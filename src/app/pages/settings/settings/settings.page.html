@@ -5,8 +5,10 @@
         <!-- app language -->
         <ion-item lines="none">
             <ion-select class="select-language" interface="action-sheet" [label]="'page_settings.language'|translate" label-placement="stacked" value="{{Locale.CurrentLanguage.locale}}" [okText]="'change'|translate" [cancelText]="'cancel'|translate" (ionChange)="onChangeLanguage($event)">
-                <ion-img *ngIf="Locale.CurrentLanguage?.Icon" slot="start" [src]="Locale.CurrentLanguage!.Icon"></ion-img>
-                <ion-select-option *ngFor="let details of Locale.AvailableTranslations" value="{{details.locale}}" (selected)="Locale.CurrentLanguage.locale == details.locale"> {{details.LocalizedString}} </ion-select-option>
+                <ion-img slot="start" [src]="Locale.CurrentLanguage.Icon"></ion-img>
+                @for (details of Locale.AvailableTranslations; track details.locale) {
+                <ion-select-option value="{{details.locale}}" (selected)="Locale.CurrentLanguage.locale == details.locale"> {{details.LocalizedString}} </ion-select-option>
+                }
             </ion-select>
         </ion-item>
 

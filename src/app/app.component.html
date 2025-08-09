@@ -1,32 +1,39 @@
 <ion-app>
     <ion-split-pane contentId="main-content">
-        <ion-menu contentId="main-content" type="overlay" [side]="menuSide" *ngIf="!FirstStart" (ionWillOpen)="onMainMenuOpen()" #mainMenu>
+        @if (!FirstStart) {
+        <ion-menu contentId="main-content" type="overlay" [side]="menuSide" (ionWillOpen)="onMainMenuOpen()" #mainMenu>
             <ion-content>
                 <div class="header">
                     <ion-img id="main-applogo" src="./assets/img/applogo.png" alt="Listago"></ion-img>
                 </div>
                 <ion-list id="page-list">
-                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" [button]="true" detail="false" *ngFor="let p of appPages">
+                    @for (p of appPages; track $index) {
+                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" [button]="true" detail="false">
                         <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
                         <ion-label>{{ p.TitleId | translate }}</ion-label>
                     </ion-item>
+                    }
                 </ion-list>
             </ion-content>
             <ion-footer class="bar-stable">
                 <ion-list id="bottom-list">
-                    <ion-item *ngIf="isDevMode" lines="full">
+                    @if (isDevMode) {
+                    <ion-item lines="full">
                         <ion-toggle labelPlacement="end" justify="start" [checked]="ConnectIQ.useGarminSimulator" (ionChange)="onGarminSimulator($event.target.checked)">Garmin Simulator</ion-toggle>
                     </ion-item>
-                    <ion-item *ngIf="isDevMode" lines="full">
+                    <ion-item lines="full">
                         <ion-toggle labelPlacement="end" justify="start" [checked]="ConnectIQ.useGarminDebugApp" (ionChange)="onGarminDebugApp($event.target.checked)">Debug App</ion-toggle>
                     </ion-item>
-                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" detail="false" [button]="true" *ngFor="let p of systemPages">
+                    } @for (p of systemPages; track $index) {
+                    <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" detail="false" [button]="true">
                         <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
                         <ion-label>{{ p.TitleId | translate }}</ion-label>
                     </ion-item>
+                    }
                 </ion-list>
             </ion-footer>
         </ion-menu>
+        }
         <ion-router-outlet id="main-content" #router_outlet></ion-router-outlet>
     </ion-split-pane>
 </ion-app>

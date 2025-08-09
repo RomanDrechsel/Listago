@@ -74,7 +74,7 @@
         "empty_success": "Alle Listenpunkte wurden gelöscht.",
         "empty_error": "Die Listenpunkte konnten nicht gelöscht werden!",
         "empty_error_partial": "Es konnten nicht alle Listenpunkte gelöscht werden!",
-        "undo_warning": "<br /><br /><strong>Achtung:</strong> Dies kann nichtmehr rückgängig gemacht werden!",
+        "undo_warning": "<br /><br /><strong>Achtung:</strong> Dies kann nicht mehr rückgängig gemacht werden!",
         "erase_confirm": "Möchstest du die Liste <strong>{{name}}</strong> endgültig löschen?",
         "erase_confirm_plural": "Möchtest du die Listen endgültig löschen?",
         "erase_success": "Die Liste wurde endgültig gelöscht.",
@@ -375,7 +375,7 @@
         "restore_list_note": "Beim Wiederherstellen einer Liste aus dem Papierkorb eine Bestätigung anfordern.",
         "restore_listitem": "Listenpunkt wiederherstellen",
         "restore_listitem_note": "Beim Wiederherstellen eines Listenpunktes aus dem Papierkorb eine Bestätigung anfordern.",
-        "undo_warning": "<br /><strong>Achtung:</strong> Die Aktion kann nichtmehr rückgängig gemacht werden!",
+        "undo_warning": "<br /><strong>Achtung:</strong> Die Aktion kann nicht mehr rückgängig gemacht werden!",
         "transmit_list": "Liste übertragen",
         "transmit_list_note": "Beim Übertragen einer Liste auf eine Uhr eine Bestätigung anfordern"
     },
@@ -405,7 +405,7 @@
         "instock_onemonth": "einen Monat",
         "instock_hundredentries": "letzte 100 Einträge",
         "instock_note": "Wie lange sollen alte Listen bzw. Listenpunkte im Papierkorb vorrätig gehalten werden?",
-        "confirm_clearitemstrash": "Sollen die Papierkörbe geleert werden?<br /><br /><strong>Achtung:</strong> Die Aktion kann nichtmehr rückgängig gemacht werden!",
+        "confirm_clearitemstrash": "Sollen die Papierkörbe geleert werden?<br /><br /><strong>Achtung:</strong> Die Aktion kann nicht mehr rückgängig gemacht werden!",
         "confirm_clearitemstrash_ok": "Papierkörbe leeren",
         "confirm_clearitemstrash_cancel": "Papierkörbe nicht leeren"
     },

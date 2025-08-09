@@ -6,10 +6,12 @@
         </div>
         <ion-card>
             <ion-list>
-                <ion-item lines="full" *ngFor="let item of FinishedImportItems">
+                @for (item of FinishedImportItems; track item.key) {
+                <ion-item lines="full">
                     <ion-label [innerHTML]="Report(item.key)"></ion-label>
                     <ion-icon [src]="ReportIcon(item.key)" [ngClass]="[ReportIconClass(item.key)]" slot="end"></ion-icon>
                 </ion-item>
+                }
             </ion-list>
         </ion-card>
     </div>

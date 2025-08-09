@@ -4,27 +4,31 @@
     <div class="select">
         <ion-select interface="action-sheet" [interfaceOptions]="{header: 'page_settings_showwatchlogs.select_watch'|translate}" [value]="Device" [cancelText]="'cancel'|translate" [disabled]="!Device" (ionChange)="onChangeDevice($event)">
             <ion-text slot="label">{{Device?.Name ?? 'page_settings_showwatchlogs.no_watch'|translate}}</ion-text>
-            <ion-select-option *ngFor="let device of availableDevices" [value]="device" (selected)="Device?.Identifier == device.Identifier">{{device.Name}}</ion-select-option>
+            @for(device of availableDevices; track device.Identifier) {
+            <ion-select-option [value]="device" (selected)="Device?.Identifier == device.Identifier">{{device.Name}}</ion-select-option>
+            }
         </ion-select>
     </div>
-    <div id="logtext" *ngIf="DeviceLog; else nologfile" #logContent>{{DeviceLog}}</div>
-    <ng-template #nologfile>
-        <app-page-empty>
-            <div slot="image">
-                <ion-icon src="./assets/icons/info.svg"></ion-icon>
-            </div>
-            <div slot="text">
-                <ion-text [innerHTML]="Device ? ('page_settings_showwatchlogs.no_logs'|translate) : ('page_settings_showwatchlogs.no_device'|translate)"></ion-text>
-            </div>
-        </app-page-empty>
-    </ng-template>
+    @if (DeviceLog) {
+    <div id="logtext" #logContent>{{DeviceLog}}</div>
+    }@else {
+    <app-page-empty>
+        <div slot="image">
+            <ion-icon src="./assets/icons/info.svg"></ion-icon>
+        </div>
+        <div slot="text">
+            <ion-text [innerHTML]="Device ? ('page_settings_showwatchlogs.no_logs'|translate) : ('page_settings_showwatchlogs.no_device'|translate)"></ion-text>
+        </div>
+    </app-page-empty>
+    }
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
         <ion-fab-button (click)="loadLog()" [disabled]="!Device">
             <ion-icon src="./assets/icons/reload.svg"></ion-icon>
         </ion-fab-button>
     </ion-fab>
 
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start" *ngIf="ShowScrollButtons">
+    @if (ShowScrollButtons) {
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
         <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
             <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
         </ion-fab-button>
@@ -32,4 +36,5 @@
             <ion-icon src="./assets/icons/to-top.svg" class="to-bottom"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+    }
 </ion-content>
