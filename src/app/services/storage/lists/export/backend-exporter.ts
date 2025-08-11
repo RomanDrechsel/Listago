@@ -17,6 +17,7 @@ export class BackendExporter {
     private _archiveExtension = ".zip";
     private _archiveFilename?: string = undefined;
     private _settingsFile = "settings.json";
+    private _cancelRequested = false;
 
     private get _tmpPath(): string {
         return FileUtils.JoinPaths(this._exportPath, "temp");
@@ -40,8 +41,8 @@ export class BackendExporter {
     }
 
     public async Stop() {
+        this._cancelRequested = true;
         await this.CleanUp();
-        this._isRunning = false;
     }
 
     public async CleanUp(delete_archive: boolean = false) {
@@ -102,6 +103,10 @@ export class BackendExporter {
             }
 
             for (const list of lists) {
+                if (this._cancelRequested) {
+                    await this.CleanUp();
+                    return false;
+                }
                 const json = JSON.stringify(ListToModel(list), null, 2);
                 const filename = `${list.Id}-${StringUtils.shorten(StringUtils.FilesaveString(list.Name), 20, false)}.json`;
                 const filepath = FileUtils.JoinPaths(this._tmpPath, "lists", "lists", filename);
@@ -134,6 +139,10 @@ export class BackendExporter {
             }
 
             for (const list of lists) {
+                if (this._cancelRequested) {
+                    await this.CleanUp();
+                    return false;
+                }
                 const json = JSON.stringify(ListToModel(list), null, 2);
                 const filename = `${list.Id}-${StringUtils.shorten(StringUtils.FilesaveString(list.Name), 20, false)}.json`;
                 const filepath = FileUtils.JoinPaths(this._tmpPath, "lists", "trash", filename);
@@ -164,6 +173,10 @@ export class BackendExporter {
             }
 
             for (const [list_id, models] of trashMap.entries()) {
+                if (this._cancelRequested) {
+                    await this.CleanUp();
+                    return false;
+                }
                 const obj = {
                     id: list_id,
                     items: models.map(m => ListitemToModel(new Listitem(m))),
