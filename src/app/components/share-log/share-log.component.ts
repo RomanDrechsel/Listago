@@ -59,7 +59,7 @@ export class StoreLogComponent {
             await this.WatchLogs.RequestGarminWatchLogs();
         }
 
-        if (this.Params.file && this.Params.file.Exists) {
+        if (this.Params.file) {
             if (this.do) {
                 const meta_device = this.attachMetaDevice?.checked ?? false;
                 const meta_settings = this.attachMetaSettings?.checked ?? false;
@@ -88,7 +88,7 @@ export class StoreLogComponent {
                     }
                 } else if (this.do.value == "share") {
                     try {
-                        if (await ShareUtil.Share({ files: this.Params.file.Path })) {
+                        if (await ShareUtil.ShareFile({ files: this.Params.file.Path })) {
                             Logger.Debug(`Shared log ${this.Params.file.Filename}`);
                             this.modalCtrl.dismiss(null, "confirm");
                         } else {
@@ -103,12 +103,8 @@ export class StoreLogComponent {
                     const email_title = this.Locale.getText("comp-sharelog.share_email.title", { package: meta.Package?.Name, platform: meta.Device?.Platform, file: this.Params.file.Filename, size: FileUtils.File.FormatSize(this.Params.file.Size) });
                     if (await ShareUtil.SendMail({ sendto: this.Config.EMailAddress, files: this.Params.file.Path, title: email_title, text: this.Locale.getText("comp-sharelog.share_email.text") })) {
                         Logger.Debug(`Shared log ${this.Params.file.Filename} via e-mail`);
-                        this.modalCtrl.dismiss(null, "confirm");
-                    } else {
-                        Logger.Error(`Could not share log ${this.Params.file.Filename} via e-mail`);
-                        this.modalCtrl.dismiss(null, "cancel");
-                        this.Popups.Toast.Error("page_settings_showlogs.store_error");
                     }
+                    this.modalCtrl.dismiss(null, "confirm");
                 }
             }
         }
@@ -119,14 +115,15 @@ export class StoreLogComponent {
             add = add.join("\n");
         }
         try {
+            const file = await FileUtils.GetFile(this.Params.file);
             await Filesystem.appendFile({
                 path: this.Params.file.Path,
                 data: "\n" + add + "\n",
                 encoding: Encoding.UTF8,
             });
-            this.Params.file.ReadContent();
+            file.ReadContent();
         } catch (e) {
-            console.error(`Could not attach string to logfile ${this.Params.file.Filename}:`, e);
+            console.error(`Could not attach string to logfile '${this.Params.file}':`, e);
         }
     }
 

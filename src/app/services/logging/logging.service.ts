@@ -25,9 +25,9 @@ export class LoggingService {
     /** when to delete old logs */
     public AutoDelete: EAutoDelete = EAutoDelete.Month;
     /** path to store logs on device */
-    public static LogPath = "logs";
+    public static readonly LogPath = "logs";
     /** capacitor directory to store logs in */
-    public static LogDirectory = Directory.Data;
+    public static readonly LogDirectory = Directory.Data;
     /** Log level */
     public LogLevel = ELogType.Debug;
     /** current logfile, messages are stored in */
@@ -392,7 +392,7 @@ export class LoggingService {
     }
 
     /**
-     * gehts a specific logfile with content
+     * gets a specific logfile with content
      * @param name filename of the logfile
      * @returns File object
      */
@@ -410,6 +410,21 @@ export class LoggingService {
         }
 
         return file;
+    }
+
+    /**
+     * get the absolute path of a logfile with content://
+     * @param name
+     * @returns
+     */
+    public async GetLogfileUri(name?: string): Promise<string> {
+        if (name == undefined) {
+            name = this.LogFile;
+        } else {
+            name = `${LoggingService.LogPath}/${name}`;
+        }
+
+        return (await Filesystem.getUri({ path: name, directory: LoggingService.LogDirectory })).uri;
     }
 
     /**

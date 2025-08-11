@@ -26,6 +26,7 @@ import java.util.Map;
 
 import de.romandrechsel.listago.garmin.ConnectIQPlugin;
 import de.romandrechsel.listago.logging.Logger;
+import de.romandrechsel.listago.share.SharePlugin;
 import de.romandrechsel.listago.sysinfo.SysInfoPlugin;
 import de.romandrechsel.listago.utils.FileUtils;
 
@@ -38,6 +39,7 @@ public class MainActivity extends BridgeActivity {
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(ConnectIQPlugin.class);
         registerPlugin(SysInfoPlugin.class);
+        registerPlugin(SharePlugin.class);
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
         Window window = getWindow();
@@ -62,7 +64,7 @@ public class MainActivity extends BridgeActivity {
         SysInfoPlugin plugin = this.GetSysInfoPlugin();
         if (plugin != null) {
             int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            plugin.SetNightMode(currentNightMode == Configuration.UI_MODE_NIGHT_YES);
+            plugin.SetNightMode(currentNightMode == Configuration.UI_MODE_NIGHT_YES, true);
             if (this._initActions != null) {
                 for (SysInfoPlugin.InitialAction action : this._initActions) {
                     plugin.InitialActionDone(action);
@@ -93,9 +95,10 @@ public class MainActivity extends BridgeActivity {
             int currentNightMode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
             isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
         }
+
         SysInfoPlugin plugin = this.GetSysInfoPlugin();
         if (plugin != null) {
-            plugin.SetNightMode(isNightMode);
+            plugin.SetNightMode(isNightMode, false);
         }
     }
 

@@ -155,11 +155,12 @@ public class SysInfoPlugin extends Plugin {
         call.resolve(ret);
     }
 
-    public void SetNightMode(@NonNull Boolean isNightMode) {
-        if (this._isNightMode != isNightMode) {
+    public void SetNightMode(@NonNull Boolean isNightMode, boolean force) {
+        if (force || this._isNightMode != isNightMode) {
             if (this._isNightMode != null) {
                 JSObject data = new JSObject();
                 data.put("isNightMode", isNightMode);
+                data.put("silent", !force);
                 this.notifyListeners("NIGHTMODE", data);
             }
             this._isNightMode = isNightMode;

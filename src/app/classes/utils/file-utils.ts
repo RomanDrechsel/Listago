@@ -1,4 +1,5 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
+import { Buffer } from "buffer";
 import { Logger } from "../../services/logging/logger";
 import { StringUtils } from "./string-utils";
 
@@ -299,6 +300,16 @@ export namespace FileUtils {
                     this.Content = String(fileRes.data);
                 }
             }
+        }
+
+        public async Base64Content(): Promise<string | undefined> {
+            if (!this.Content) {
+                await this.ReadContent();
+            }
+            if (this.Content) {
+                return Buffer.from(this.Content).toString("base64");
+            }
+            return undefined;
         }
 
         /**

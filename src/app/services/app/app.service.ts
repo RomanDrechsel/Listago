@@ -94,7 +94,7 @@ export class AppService {
         await EdgeToEdge.enable();
         this.handleNightmode((await SysInfo.NightMode()).isNightMode);
         SysInfo.addListener<NightModeEventArgs>("NIGHTMODE", (data: NightModeEventArgs) => {
-            this.handleNightmode(data.isNightMode);
+            this.handleNightmode(data.isNightMode, data.silent);
         });
 
         await Locale.Initialize(this._locale);
@@ -282,8 +282,10 @@ export class AppService {
         this._logger.Debug(`App initialization completed`);
     }
 
-    private async handleNightmode(isNightMode: boolean | undefined) {
-        this._logger.Debug(`NightMode set to '${isNightMode}'`);
+    private async handleNightmode(isNightMode?: boolean, silent: boolean = false) {
+        if (!silent) {
+            this._logger.Debug(`NightMode set to '${isNightMode}'`);
+        }
         if (isNightMode === true) {
             await EdgeToEdge.setBackgroundColor({ color: "#002794" });
             await StatusBar.setStyle({ style: Style.Dark });
