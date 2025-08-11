@@ -281,7 +281,7 @@
     },
     "page_devices": {
         "page_title": "मेरे डिवाइस",
-        "known_devices": "पहचाने गए डिवाइस",
+        "known_devices": "पहचाने गए डिवाइस:",
         "install_app": "आपको पहले अपनी घड़ी पर सूची ऐप इंस्टॉल करनी होगी।<br /><strong>यहां क्लिक करें</strong> ताकि Garmin ConnectIQ स्टोर पर जा सकें।",
         "toggle": "हमेशा इस डिवाइस पर भेजें",
         "select_btn": "डिवाइस चुनें",

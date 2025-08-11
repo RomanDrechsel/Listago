@@ -281,7 +281,7 @@
     },
     "page_devices": {
         "page_title": "Мої пристрої",
-        "known_devices": "Знайдені пристрої",
+        "known_devices": "Знайдені пристрої:",
         "install_app": "Спершу встановіть застосунок на своєму годиннику у <br /><strong>Garmin ConnectIQ Store</strong>",
         "toggle": "Інформацію до цього пристрою відправляти завжди",
         "select_btn": "Вибрати пристрій",

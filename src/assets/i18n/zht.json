@@ -281,7 +281,7 @@
     },
     "page_devices": {
         "page_title": "我的設備",
-        "known_devices": "已知設備",
+        "known_devices": "已知設備:",
         "install_app": "您需要先在手錶上安裝清單應用。<br /><strong>點擊此處</strong>前往 Garmin ConnectIQ 商店。",
         "toggle": "始終發送到此設備",
         "select_btn": "選擇設備",

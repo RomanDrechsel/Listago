@@ -281,7 +281,7 @@
     },
     "page_devices": {
         "page_title": "マイデバイス",
-        "known_devices": "既知のデバイス",
+        "known_devices": "既知のデバイス:",
         "install_app": "ウォッチにリストアプリをインストールする必要があります。<br /><strong>こちらをクリック</strong>してGarmin ConnectIQストアにアクセスしてください。",
         "toggle": "常にこのデバイスに送信",
         "select_btn": "デバイスを選択",

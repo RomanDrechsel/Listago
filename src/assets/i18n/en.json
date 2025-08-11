@@ -281,7 +281,7 @@
     },
     "page_devices": {
         "page_title": "My devices",
-        "known_devices": "Known devices",
+        "known_devices": "Known devices:",
         "install_app": "You need to install the Lists app on your device first.<br /><strong>Click here</strong> to get to the Garmin ConnectIQ Store.",
         "toggle": "Always send to this device",
         "select_btn": "Select device",

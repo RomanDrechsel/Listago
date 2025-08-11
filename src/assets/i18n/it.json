@@ -281,7 +281,7 @@
     },
     "page_devices": {
         "page_title": "I miei dispositivi",
-        "known_devices": "Dispositivi noti",
+        "known_devices": "Dispositivi noti:",
         "install_app": "Devi prima installare l'app Lista sul tuo orologio.<br /><strong>Clicca qui</strong> per andare allo store Garmin Connect IQ.",
         "toggle": "Invia sempre a questo dispositivo",
         "select_btn": "Seleziona dispositivo",

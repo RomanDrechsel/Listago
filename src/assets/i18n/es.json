@@ -281,7 +281,7 @@
     },
     "page_devices": {
         "page_title": "Mis dispositivos",
-        "known_devices": "Dispositivos conocidos",
+        "known_devices": "Dispositivos conocidos:",
         "install_app": "Debes instalar primero la aplicación de listas en tu reloj.<br /><strong>Haz clic aquí</strong> para llegar al Store Garmin ConnectIQ.",
         "toggle": "Enviar siempre a este dispositivo",
         "select_btn": "Seleccionar dispositivo",
