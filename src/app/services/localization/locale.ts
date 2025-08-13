@@ -27,6 +27,6 @@ export class Locale {
      * @returns string or array of string from localization
      */
     public static getText(keys: string | string[], params: Object | undefined = undefined): any {
-        return Locale.Service.Translate.instant(keys, params);
+        return Locale.Service.Service.translate(keys, params);
     }
 }

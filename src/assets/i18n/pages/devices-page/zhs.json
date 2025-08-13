@@ -1,0 +1,18 @@
+{
+    "page_title": "我的设备",
+    "known_devices": "已知设备:",
+    "install_app": "你需要先在手表上安装列表应用。<br /><strong>点击这里</strong> 前往 Garmin Connect IQ 商店。",
+    "toggle": "始终发送到该设备",
+    "select_btn": "选择设备",
+    "device_state": {
+        "Ready": "设备已准备就绪",
+        "ServiceUnavailable": "Connect IQ 服务不可用",
+        "AppNotInstalled": "此设备上未安装应用",
+        "CheckingApp": "正在检查设备...",
+        "ConnectionLost": "设备已断开连接",
+        "Initializing": "正在初始化设备...",
+        "InvalidState": "设备处于无效状态",
+        "NotConnected": "无法连接到设备",
+        "NotPaired": "该设备未与 Garmin Connect 配对！"
+    }
+}

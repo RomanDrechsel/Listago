@@ -1,0 +1,15 @@
+{
+    "page_title": "广告",
+    "activated": "广告已启用",
+    "deactivated": "广告已停用",
+    "deactivate_confirm": "你确定要关闭广告并不再支持我吗？",
+    "activated_success": "非常感谢！",
+    "deactivated_success": "广告已关闭。",
+    "text1": "Listago 是免费的。",
+    "text2": "所有硬件和软件的费用都由我个人承担。通过一个小广告横幅，我尝试至少覆盖一部分成本。",
+    "text3": "如果这个广告让你感到困扰，你可以在这里将其关闭。",
+    "support1": "如果你喜欢这个应用，并仍然愿意支持我，可以通过",
+    "support2": "或",
+    "support3": "捐赠一点点支持我。",
+    "thanks": "谢谢你。"
+}

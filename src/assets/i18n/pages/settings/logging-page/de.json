@@ -1,0 +1,21 @@
+{
+    "page_title": "Logging",
+    "mode": "Log-Modus",
+    "mode_debug": "Debug",
+    "mode_verbose": "Ausführlich",
+    "mode_normal": "Normal",
+    "mode_error": "Nur Fehler",
+    "autodelete": "Alte Logs löschen",
+    "autodelete_day": "Nach einem Tag",
+    "autodelete_week": "Nach einer Woche",
+    "autodelete_month": "Nach einem Monat",
+    "show": "Logs anzeigen",
+    "show_watch": "Logs der Uhr anzeigen",
+    "show_watch_note": "Zeigt die Logs der Uhr an. Die App muss dazu auf der Uhr laufen",
+    "size": "Größe:\n{{size}} / {{files}} Datei(en)",
+    "deleteall": "Alle Logs löschen",
+    "deleteall_confirm": "Sollen die {{count}} Log-Dateien gelöscht werden?",
+    "deleteall_confirm_single": "Soll die Log-Datei gelöscht werden?",
+    "deleteall_done": "{{count}} Log-Dateien gelöscht.",
+    "deleteall_done_single": "Eine Log-Datei gelöscht."
+}

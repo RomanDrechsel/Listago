@@ -1,0 +1,21 @@
+{
+    "page_title": "日志",
+    "mode": "日志模式",
+    "mode_debug": "调试",
+    "mode_verbose": "详细",
+    "mode_normal": "正常",
+    "mode_error": "仅错误",
+    "autodelete": "自动删除旧日志",
+    "autodelete_day": "一天后",
+    "autodelete_week": "一周后",
+    "autodelete_month": "一个月后",
+    "show": "显示日志",
+    "show_watch": "显示手表日志",
+    "show_watch_note": "显示手表的日志。应用需要在手表上运行",
+    "size": "大小：\n{{size}} / {{files}} 文件",
+    "deleteall": "删除所有日志",
+    "deleteall_confirm": "要删除 {{count}} 个日志文件吗？",
+    "deleteall_confirm_single": "要删除日志文件吗？",
+    "deleteall_done": "已删除 {{count}} 个日志文件。",
+    "deleteall_done_single": "已删除一个日志文件。"
+}

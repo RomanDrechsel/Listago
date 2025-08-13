@@ -1,0 +1,18 @@
+{
+    "page_title": "マイデバイス",
+    "known_devices": "既知のデバイス:",
+    "install_app": "ウォッチにリストアプリをインストールする必要があります。<br /><strong>こちらをクリック</strong>してGarmin ConnectIQストアにアクセスしてください。",
+    "toggle": "常にこのデバイスに送信",
+    "select_btn": "デバイスを選択",
+    "device_state": {
+        "Ready": "デバイスは準備完了",
+        "ServiceUnavailable": "ConnectIQサービスは利用できません",
+        "AppNotInstalled": "このデバイスにはアプリがインストールされていません",
+        "CheckingApp": "デバイスを確認中...",
+        "ConnectionLost": "デバイスの接続が切断されました",
+        "Initializing": "デバイスを初期化中...",
+        "InvalidState": "デバイスが無効な状態です",
+        "NotConnected": "デバイスに接続できませんでした",
+        "NotPaired": "デバイスがGarmin Connectにペアリングされていません！"
+    }
+}

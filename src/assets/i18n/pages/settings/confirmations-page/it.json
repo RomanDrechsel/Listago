@@ -1,0 +1,22 @@
+{
+    "page_title": "Conferme",
+    "delete_list": "Elimina lista",
+    "delete_list_note": "Richiedi una conferma quando si elimina una lista.",
+    "delete_listitem": "Elimina elemento della lista",
+    "delete_listitem_note": "Richiedi una conferma quando si elimina un elemento della lista.",
+    "empty_list": "Svuota lista",
+    "empty_list_note": "Richiedi una conferma quando si svuota una lista.",
+    "erase_list": "Rimuovi lista dal cestino",
+    "erase_list_note": "Richiedi una conferma quando si rimuove definitivamente una lista dal cestino.",
+    "erase_listitem": "Rimuovi elemento dal cestino",
+    "erase_listitem_note": "Richiedi una conferma quando si rimuove definitivamente un elemento dal cestino.",
+    "empty_trash": "Svuota cestino",
+    "empty_trash_note": "Richiedi una conferma quando si svuota il cestino.",
+    "restore_list": "Ripristina lista",
+    "restore_list_note": "Richiedi una conferma quando si ripristina una lista dal cestino.",
+    "restore_listitem": "Ripristina elemento della lista",
+    "restore_listitem_note": "Richiedi una conferma quando si ripristina un elemento della lista dal cestino.",
+    "undo_warning": "<br /><strong>Attenzione:</strong> L'azione non può essere annullata!",
+    "transmit_list": "Trasferisci lista",
+    "transmit_list_note": "Richiedi una conferma quando si trasferisce una lista su un orologio"
+}

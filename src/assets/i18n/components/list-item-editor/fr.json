@@ -1,0 +1,12 @@
+{
+    "title_new": "Créer un élément",
+    "title_edit": "Modifier l'élément",
+    "itemname": "Nom",
+    "itemnote": "Note",
+    "hidden": "Caché",
+    "hidden_info": "Les éléments de liste cachés ne sont pas transférés sur votre montre mais restent sur le smartphone.<br /><br />Cela est utile si vous ne souhaitez temporairement pas afficher certains éléments, tout en les conservant pour une utilisation ultérieure.",
+    "locked": "Verrouillé",
+    "locked_info": "Les éléments de liste verrouillés ne sont pas supprimés lorsque la liste est vidée.<br /><br />Cela simplifie le nettoyage de la liste si vous souhaitez répéter régulièrement certains éléments.",
+    "delete": "Supprimer l'élément",
+    "add_more": "Ajouter un autre élément"
+}

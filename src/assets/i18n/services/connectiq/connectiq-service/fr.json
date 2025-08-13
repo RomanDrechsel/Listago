@@ -1,0 +1,10 @@
+{
+    "watch_outdated": "Il semble que vous utilisiez une ancienne version de l'application Liste sur votre appareil <strong>{{device}}</strong>.<br /><br />Veuillez mettre à jour l'application sur votre montre pour profiter de toutes les fonctionnalités.",
+    "watch_outdated_button": "Aller au Connect-IQ Store",
+    "watch_outdated_ignore": "Ignorer",
+    "watch_outdated_dontremind": "Ne plus me rappeler pour cette version",
+    "openapp_btn": "Ouvrir l'application",
+    "openapp_nodevice": "Aucun appareil actif trouvé !",
+    "openapp_success": "Application ouverte sur la montre.",
+    "init_failed": "Le support Garmin n'a pas pu être activé."
+}

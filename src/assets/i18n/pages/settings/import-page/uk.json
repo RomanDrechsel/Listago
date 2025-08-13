@@ -1,0 +1,23 @@
+{
+    "page_title": "Імпорт",
+    "btn_import": "Імпортувати",
+    "btn_select_archive": "Вибрати архів",
+    "select_archive": "Спочатку виберіть архів:",
+    "select_archive_error": "Не вдалося відкрити файл!",
+    "archive_invalid": "Архів не містить сумісної резервної копії!",
+    "archive_analysing": "Архів<br /><br /><strong>{{filename}}</strong><br /><br />аналізується",
+    "select_items": "Що ви хочете імпортувати з архіву?",
+    "btn_reset_archive": "Вибрати інший архів",
+    "import_success": "Імпорт завершено.",
+    "import_error": "Не вдалося повністю завершити імпорт!",
+    "import_report_success_lists": "Імпортовано {{num}} списків.",
+    "import_report_success_lists_singular": "Імпортовано один список.",
+    "import_report_success_trash": "Імпортовано {{num}} елементів з кошика.",
+    "import_report_success_trash_singular": "Імпортовано один елемент з кошика.",
+    "import_report_success_settings": "Усі налаштування імпортовано.",
+    "import_report_failed_lists": "Не вдалося імпортувати {{num}} списків.",
+    "import_report_failed_lists_singular": "Не вдалося імпортувати один список.",
+    "import_report_failed_trash": "Не вдалося імпортувати {{num}} елементів з кошика.",
+    "import_report_failed_trash_singular": "Не вдалося імпортувати один елемент з кошика.",
+    "import_report_failed_settings": "Не всі налаштування вдалося імпортувати."
+}

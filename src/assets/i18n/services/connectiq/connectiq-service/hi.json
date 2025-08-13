@@ -1,0 +1,10 @@
+{
+    "watch_outdated": "ऐसा लगता है कि आप अपने डिवाइस <strong>{{device}}</strong> पर सूची ऐप का पुराना संस्करण उपयोग कर रहे हैं।<br /><br />सभी फ़ीचर्स का उपयोग करने के लिए कृपया अपनी घड़ी पर ऐप को अपडेट करें।",
+    "watch_outdated_button": "Connect-IQ स्टोर पर जाएँ",
+    "watch_outdated_ignore": "नज़रअंदाज़ करें",
+    "watch_outdated_dontremind": "इस संस्करण के लिए पुनः स्मरण न करें",
+    "openapp_btn": "ऐप खोलें",
+    "openapp_nodevice": "कोई सक्रिय डिवाइस नहीं मिला!",
+    "openapp_success": "घड़ी पर ऐप खुल गया।",
+    "init_failed": "Garmin समर्थन सक्रिय नहीं किया जा सका।"
+}

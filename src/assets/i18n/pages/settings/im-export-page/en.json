@@ -1,0 +1,7 @@
+{
+    "page_title": "Import & Backup",
+    "import": "Import",
+    "import_note": "Import an old backup from a file",
+    "export": "Backup",
+    "export_note": "Save lists and app settings to a file"
+}

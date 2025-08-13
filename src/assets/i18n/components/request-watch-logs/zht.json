@@ -1,0 +1,7 @@
+{
+    "title": "傳輸日誌",
+    "text": "要傳輸手錶上的日誌，請首先在手錶上啟動應用<br /><br /><strong>{{name}}</strong><br /><br />。應用啟動後，日誌將自動傳輸。不過，這可能需要幾秒鐘。",
+    "withoutlogs": "無日誌繼續",
+    "openApp": "開啟應用程式",
+    "logs_received_confirm": "記錄已收到。<br /><br />您想現在就查看嗎？"
+}

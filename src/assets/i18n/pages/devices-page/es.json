@@ -1,0 +1,18 @@
+{
+    "page_title": "Mis dispositivos",
+    "known_devices": "Dispositivos conocidos:",
+    "install_app": "Debes instalar primero la aplicación de listas en tu reloj.<br /><strong>Haz clic aquí</strong> para llegar al Store Garmin ConnectIQ.",
+    "toggle": "Enviar siempre a este dispositivo",
+    "select_btn": "Seleccionar dispositivo",
+    "device_state": {
+        "Ready": "El dispositivo está listo",
+        "ServiceUnavailable": "No se puede conectar al servicio ConnectIQ",
+        "AppNotInstalled": "La aplicación no está instalada en este dispositivo",
+        "CheckingApp": "Se está verificando la aplicación...",
+        "ConnectionLost": "Se ha perdido la conexión con el dispositivo",
+        "Initializing": "El dispositivo está inicializando...",
+        "InvalidState": "El dispositivo se encuentra en un estado inválido",
+        "NotConnected": "No se pudo establecer una conexión con el dispositivo",
+        "NotPaired": "El dispositivo no está conectado a Garmin Connect"
+    }
+}

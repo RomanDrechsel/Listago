@@ -1,0 +1,17 @@
+{
+    "page_title": "Copia de seguridad",
+    "lists": "¿Quieres hacer una copia de seguridad de tus listas?",
+    "lists_toggle": "Guardar listas",
+    "trash": "¿También deseas guardar las listas y elementos en la papelera?",
+    "trash_toggle": "Guardar papelera",
+    "settings": "También puedes guardar todos los ajustes de la aplicación.",
+    "settings_toggle": "Guardar ajustes",
+    "export_to_zip": "Guardar",
+    "export_summary": "Se guardarán los siguientes contenidos:",
+    "export_summary_nothing": "No hay nada que guardar.",
+    "export_cancel": "Cancelar copia de seguridad",
+    "export_error": "¡La copia de seguridad no se pudo completar!",
+    "export_success": "La copia de seguridad se realizó correctamente y el archivo se guardó en <strong>DOCUMENTOS</strong>.",
+    "export_success_share": "¿Quieres compartir el archivo?",
+    "export_success_share_title": "Copia de seguridad de Listago"
+}

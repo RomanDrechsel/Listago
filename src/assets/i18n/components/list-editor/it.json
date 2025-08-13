@@ -1,0 +1,16 @@
+{
+    "title_new": "Crea una nuova lista",
+    "title_edit": "Modifica la lista",
+    "listname": "Nome",
+    "settings": "Impostazioni",
+    "reset": "Reimposta automaticamente la lista",
+    "reset_info": "Sull'orologio, tutti i punti di questa lista verranno impostati su \"non completato\" in un determinato intervallo di tempo.<br /><br />Questo è adatto, ad esempio, per compiti ricorrenti come le faccende domestiche o altre attività regolari.",
+    "reset_interval": "Intervallo",
+    "reset_daily": "Giornaliero",
+    "reset_weekly": "Settimanale",
+    "reset_monthly": "Mensile",
+    "sync": "Sincronizza elenco con l'orologio",
+    "sync_info": "Quando apporti modifiche all'elenco, ad esempio aggiungendo o eliminando elementi, queste modifiche verranno trasferite automaticamente al tuo orologio in background.<br /><br />Si prega di notare che lo spazio di memoria dell'app sull'orologio è limitato e che la sincronizzazione può consumare più rapidamente la carica della batteria dell'orologio.<br />Non sincronizzare troppi elenchi contemporaneamente.",
+    "sync_settings": "Per attivare la sincronizzazione automatica, devi attivare l'opzione corrispondente nelle impostazioni.<br />Vuoi andare alle impostazioni?",
+    "delete": "Cancellare la lista"
+}

@@ -1,0 +1,21 @@
+{
+    "page_title": "Registro de registros",
+    "mode": "Modo de registro",
+    "mode_debug": "Depuración",
+    "mode_verbose": "Detallado",
+    "mode_normal": "Normal",
+    "mode_error": "Solo errores",
+    "autodelete": "Eliminar registros antiguos",
+    "autodelete_day": "Después de un día",
+    "autodelete_week": "Después de una semana",
+    "autodelete_month": "Después de un mes",
+    "show": "Mostrar registros",
+    "show_watch": "Mostrar registros del reloj",
+    "show_watch_note": "Muestra los registros del reloj. La app debe estar ejecutándose en el reloj",
+    "size": "Tamaño:\n{{size}} / {{files}} archivo(s)",
+    "deleteall": "Eliminar todos los registros",
+    "deleteall_confirm": "¿Quieres eliminar los {{count}} registros?",
+    "deleteall_confirm_single": "¿Quieres eliminar el registro?",
+    "deleteall_done": "{{count}} registro(s) eliminado(s).",
+    "deleteall_done_single": "Un registro eliminado."
+}

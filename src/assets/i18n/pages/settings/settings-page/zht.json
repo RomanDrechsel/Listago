@@ -1,0 +1,19 @@
+{
+    "page_title": "設置",
+    "language": "應用語言",
+    "language_hint": "本應用程式已使用人工智慧進行翻譯。如果發生錯誤，請向 <span class=\"no-wrap\">{{email}}</span> 報告。",
+    "translation_error_confirm": "您要報告翻譯錯誤嗎？",
+    "translation_error_title": "中文翻譯錯誤 (繁體)",
+    "animations": "動畫",
+    "animations_note": "是否應以動畫形式直觀呈現各種過程？",
+    "logging": "日誌設置",
+    "logging_note": "日誌條目的設置和管理",
+    "confirm": "確認設置",
+    "confirm_note": "用戶確認設置",
+    "trash": "資源回收筒設定",
+    "trash_note": "垃圾桶使用設置",
+    "transmission": "傳輸設置",
+    "transmission_note": "向手錶傳輸清單的設置",
+    "advertisement": "廣告",
+    "advertisement_note": "透過廣告支持我，或將其關閉"
+}

@@ -1,0 +1,15 @@
+{
+    "page_title": "Advertisement",
+    "activated": "Ads are active",
+    "deactivated": "Ads are deactivated",
+    "deactivate_confirm": "Do you really want to deactivate ads and stop supporting me?",
+    "activated_success": "Thank you very much!",
+    "deactivated_success": "Ads are deactivated.",
+    "text1": "Listago is free.",
+    "text2": "I personally cover all costs for hardware and software. With a small banner ad, I try to cover at least a small part of the expenses.",
+    "text3": "If the banner bothers you too much, I give you the option to deactivate it here.",
+    "support1": "If you like the app and still want to support me, I’d appreciate a small donation via",
+    "support2": "or",
+    "support3": "thank you.",
+    "thanks": "Thank you."
+}

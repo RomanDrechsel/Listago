@@ -1,0 +1,16 @@
+{
+    "page_title": "Cestino",
+    "use_trash": "Usa il cestino",
+    "use_trash_note": "Sposta le liste nel cestino anziché cancellarle definitivamente quando le elimini.",
+    "use_trash_listitem": "Usa il cestino per gli elementi della lista",
+    "use_trash_listitem_note": "Sposta gli elementi della lista nel cestino anziché cancellarli definitivamente.<br />Per ogni lista viene utilizzato un cestino separato.",
+    "instock": "Mantieni in magazzino",
+    "instock_oneday": "un giorno",
+    "instock_oneweek": "una settimana",
+    "instock_onemonth": "un mese",
+    "instock_hundredentries": "ultimi 100 elementi",
+    "instock_note": "Quanto tempo desideri mantenere gli elementi nel cestino prima della loro cancellazione automatica?",
+    "confirm_clearitemstrash": "Vuoi svuotare i cestini?<br /><br /><strong>Attenzione:</strong> Questa azione non può essere annullata!",
+    "confirm_clearitemstrash_ok": "Svuota cestini",
+    "confirm_clearitemstrash_cancel": "Non svuotare i cestini"
+}

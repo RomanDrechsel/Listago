@@ -1,0 +1,7 @@
+{
+    "title": "传输日志",
+    "text": "要传输手表的日志，请首先在手表上启动应用<br /><br /><strong>{{name}}</strong><br /><br />。当应用运行时，日志将会自动传输。不过，这可能需要几秒钟。",
+    "withoutlogs": "继续而不包含日志",
+    "openApp": "打开应用程序",
+    "logs_received_confirm": "日志已收到。<br /><br />您想现在查看吗？"
+}

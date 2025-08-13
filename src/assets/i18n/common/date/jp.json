@@ -1,0 +1,18 @@
+{
+    "date_add": "",
+    "today": "今日",
+    "yesterday": "昨日",
+    "min_short": "分",
+    "hour_short": "時",
+    "hours_short": "時間",
+    "ago": "{{date}}前",
+    "weekday": {
+        "mon": "月曜日",
+        "tue": "火曜日",
+        "wed": "水曜日",
+        "thu": "木曜日",
+        "fri": "金曜日",
+        "sat": "土曜日",
+        "sun": "日曜日"
+    }
+}

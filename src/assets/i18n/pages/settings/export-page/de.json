@@ -1,0 +1,17 @@
+{
+    "page_title": "Sichern",
+    "lists": "Möchtest du deine Listen sichern?",
+    "lists_toggle": "Listen sichern",
+    "trash": "Sollen auch die Listen und Listenpunkte im Papierkorb gesichert werden?",
+    "trash_toggle": "Papierkorb sichern",
+    "settings": "Zusätzlich kannst du auch alle App-Einstellungen sichern.",
+    "settings_toggle": "Einstellungen sichern",
+    "export_to_zip": "Sichern",
+    "export_summary": "Folgende Inhalte werden gesichert:",
+    "export_summary_nothing": "Es gibt nichts zu sichern.",
+    "export_cancel": "Sicherung abbrechen",
+    "export_error": "Die Sicherung konnte nicht abgeschlossen werden!",
+    "export_success": "Die Sicherung wurde erfolgreich durchgeführt und das Archiv in <strong>DOCUMENTS</strong> gespeichert.",
+    "export_success_share": "Möchtest du das Archiv teilen?",
+    "export_success_share_title": "Listago Sicherung"
+}

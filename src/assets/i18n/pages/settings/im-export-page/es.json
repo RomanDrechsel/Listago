@@ -1,0 +1,7 @@
+{
+    "page_title": "Importar y Exportar",
+    "import": "Importar",
+    "import_note": "Importar una copia de seguridad antigua desde un archivo",
+    "export": "Exportar",
+    "export_note": "Guardar listas y configuraciones de la app en un archivo"
+}

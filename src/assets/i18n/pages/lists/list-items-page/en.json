@@ -1,0 +1,13 @@
+{
+    "page_title": "List not found",
+    "loading": "List is being loaded...",
+    "menu_empty": "Empty list",
+    "menu_devices": "Transmit list",
+    "hide": "Hide",
+    "show": "Show",
+    "lock": "Lock",
+    "unlock": "Unlock",
+    "nolist": "Something went wrong :(<br /><br />The list can not be displayed.",
+    "add_new_hint": "Create a new item in the list.",
+    "quickadd": "Add new item..."
+}

@@ -1,0 +1,21 @@
+{
+    "page_title": "ログ設定",
+    "mode": "ログモード",
+    "mode_debug": "デバッグ",
+    "mode_verbose": "詳細",
+    "mode_normal": "標準",
+    "mode_error": "エラーのみ",
+    "autodelete": "古いログを削除",
+    "autodelete_day": "1日後",
+    "autodelete_week": "1週間後",
+    "autodelete_month": "1ヶ月後",
+    "show": "ログを表示",
+    "show_watch": "ウォッチのログを表示",
+    "show_watch_note": "ウォッチのログを表示します。アプリはウォッチ上で起動する必要があります",
+    "size": "サイズ:\n{{size}} / {{files}} ファイル",
+    "deleteall": "すべてのログを削除",
+    "deleteall_confirm": "{{count}} ログファイルを削除してもよろしいですか？",
+    "deleteall_confirm_single": "このログファイルを削除してもよろしいですか？",
+    "deleteall_done": "{{count}} ログファイルを削除しました。",
+    "deleteall_done_single": "1つのログファイルを削除しました。"
+}

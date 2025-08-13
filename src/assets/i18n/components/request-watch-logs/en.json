@@ -1,0 +1,7 @@
+{
+    "title": "Transmit logs",
+    "text": "To transfer the logs from your watch, you must first start the app on your watch<br /><br /><strong>{{name}}</strong><br /><br />If the app is running, the logs should be transferred automatically. This may take a few seconds.",
+    "withoutlogs": "Continue without logs",
+    "openApp": "Open app",
+    "logs_received_confirm": "The logs have been received.<br /><br />Would you like to see them now?"
+}

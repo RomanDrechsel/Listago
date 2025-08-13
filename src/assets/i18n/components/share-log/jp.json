@@ -1,0 +1,24 @@
+{
+    "title": "ログを保存",
+    "text": "ログを<br /><strong>{{filename}}</strong><br />としてどう保存しますか？",
+    "store": "ドキュメントに保存",
+    "share": "共有",
+    "email": "開発者に電子メールで送信する",
+    "share_email": {
+        "title": "{{package}} / {{platform}} - ログファイル {{file}} ({{size}})",
+        "text": "問題の詳細を教えてください：\n\n"
+    },
+    "store_success": "ログが保存されました。",
+    "store_error": "ログを保存できませんでした！",
+    "meta": "メタデータを添付",
+    "meta_device": "デバイス情報",
+    "meta_device_note": "モデル、解像度、メモリ使用量など",
+    "meta_settings": "アプリ設定",
+    "meta_settings_note": "ログ設定、言語など",
+    "meta_storage": "ストレージ情報",
+    "meta_storage_note": "デバイス上のリストやログの数・サイズ",
+    "meta_garmin": "時計の情報",
+    "meta_garmin_note": "時計の名前、ユニーク識別子、現在の状態",
+    "watch": "ウォッチのログを添付",
+    "error_report_confirm": "バグレポートは受け取りました。<br /><br />バグレポートとして転送しますか？"
+}

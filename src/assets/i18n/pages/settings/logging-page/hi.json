@@ -1,0 +1,21 @@
+{
+    "page_title": "लॉगिंग",
+    "mode": "लॉग मोड",
+    "mode_debug": "डिबग",
+    "mode_verbose": "विस्तृत",
+    "mode_normal": "सामान्य",
+    "mode_error": "केवल त्रुटियां",
+    "autodelete": "पुराने लॉग हटाएं",
+    "autodelete_day": "एक दिन बाद",
+    "autodelete_week": "एक सप्ताह बाद",
+    "autodelete_month": "एक महीने बाद",
+    "show": "लॉग दिखाएं",
+    "show_watch": "घड़ी के लॉग दिखाएं",
+    "show_watch_note": "घड़ी के लॉग दिखाता है। इसके लिए ऐप को घड़ी पर चलाना होगा।",
+    "size": "आकार:\n{{size}} / {{files}} फ़ाइल(एं)",
+    "deleteall": "सभी लॉग हटाएं",
+    "deleteall_confirm": "क्या {{count}} लॉग फाइलें हटाई जानी चाहिए?",
+    "deleteall_confirm_single": "क्या लॉग फ़ाइल हटाई जानी चाहिए?",
+    "deleteall_done": "{{count}} लॉग फाइलें हटा दी गईं।",
+    "deleteall_done_single": "एक लॉग फ़ाइल हटा दी गई।"
+}

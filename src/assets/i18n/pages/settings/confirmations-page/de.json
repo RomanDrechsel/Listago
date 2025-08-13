@@ -1,0 +1,22 @@
+{
+    "page_title": "Bestätigungen",
+    "delete_list": "Liste löschen",
+    "delete_list_note": "Beim Löschen einer Liste eine Bestätigung anfordern.",
+    "delete_listitem": "Listenpunkt löschen",
+    "delete_listitem_note": "Beim Löschen eines Listenpunktes eine Bestätigung anfordern.",
+    "empty_list": "Liste leeren",
+    "empty_list_note": "Beim Leeren einer Liste eine Bestätigung anfordern.",
+    "erase_list": "Liste aus Papierkorb entfernen",
+    "erase_list_note": "Beim endgültigen Entfernen einer Liste aus dem Papierkorb eine Bestätigung anfordern.",
+    "erase_listitem": "Listenpunkt aus Papierkorb entfernen",
+    "erase_listitem_note": "Beim endgültigen Entfernen eines Listenpunktes aus dem Papierkorb eine Bestätigung anfordern.",
+    "empty_trash": "Papierkorb leeren",
+    "empty_trash_note": "Beim Leeren des Papierkorbs eine Bestätigung anfordern.",
+    "restore_list": "Liste wiederherstellen",
+    "restore_list_note": "Beim Wiederherstellen einer Liste aus dem Papierkorb eine Bestätigung anfordern.",
+    "restore_listitem": "Listenpunkt wiederherstellen",
+    "restore_listitem_note": "Beim Wiederherstellen eines Listenpunktes aus dem Papierkorb eine Bestätigung anfordern.",
+    "undo_warning": "<br /><strong>Achtung:</strong> Die Aktion kann nicht mehr rückgängig gemacht werden!",
+    "transmit_list": "Liste übertragen",
+    "transmit_list_note": "Beim Übertragen einer Liste auf eine Uhr eine Bestätigung anfordern"
+}

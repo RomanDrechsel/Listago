@@ -1,0 +1,13 @@
+{
+    "page_title": "Liste nicht gefunden",
+    "loading": "Liste wird geladen...",
+    "menu_empty": "Liste leeren",
+    "menu_devices": "Liste übertragen",
+    "hide": "Verstecken",
+    "show": "Anzeigen",
+    "lock": "Sperren",
+    "unlock": "Entsperren",
+    "nolist": "Etwas ist schiefgelaufen :(<br /><br />Die Liste kann nicht angezeigt werden.",
+    "add_new_hint": "Lege einen neuen Punkt in der Liste an.",
+    "quickadd": "Neuen Punkt anlegen..."
+}

@@ -1,0 +1,14 @@
+{
+    "page_title": "Trasmissione all'orologio",
+    "openontransmit": "Avviare l'applicazione durante il trasferimento manuale",
+    "openontransmit_note": "Chiedi al tuo orologio se vuoi avviare l'app quando trasferisci una lista.",
+    "deletelist": "Cancella automaticamente le liste dall'orologio",
+    "deletelist_note": "Quando cancelli una lista sul tuo smartphone, cancella anche la lista sull'orologio.",
+    "synclist": "Sincronizza automaticamente le liste",
+    "synclist_warning": "<strong>Attenzione:</strong> Tieni presente che lo spazio di archiviazione dell'app sull'orologio è limitato. Non dovresti sincronizzare troppe liste contemporaneamente!<br />Inoltre, potrebbe influire negativamente sulla durata della batteria dell'orologio.",
+    "synclist_note": "Sincronizza immediatamente una lista con l'orologio quando vengono apportate modifiche.",
+    "synclist_disable_title": "Disabilitare la sincronizzazione?",
+    "synclist_disable": "Vuoi disattivare le impostazioni di sincronizzazione automatica per tutte le liste?<br /><br />Se riattivi questa impostazione in seguito, dovrai riconfigurare la sincronizzazione per ogni lista.",
+    "garminconnectiq": "Supporto Garmin Connect IQ",
+    "garminconnectiq_note": "Disattivare questa impostazione se non si possiede un orologio Garmin o se non si desidera utilizzare le funzioni di trasferimento.<br />Se questa impostazione è attivata, è necessario disporre dell'app Garmin ConnectIQ sullo smartphone."
+}

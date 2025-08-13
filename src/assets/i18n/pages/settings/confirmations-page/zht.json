@@ -1,0 +1,22 @@
+{
+    "page_title": "確認",
+    "delete_list": "刪除清單",
+    "delete_list_note": "刪除清單時要求確認。",
+    "delete_listitem": "刪除清單項目",
+    "delete_listitem_note": "刪除清單項目時要求確認。",
+    "empty_list": "清空清單",
+    "empty_list_note": "清空清單時要求確認。",
+    "erase_list": "從垃圾桶中移除清單",
+    "erase_list_note": "從垃圾桶中永久移除清單時要求確認。",
+    "erase_listitem": "從垃圾桶中移除清單項目",
+    "erase_listitem_note": "從垃圾桶中永久移除清單項目時要求確認。",
+    "empty_trash": "清空垃圾桶",
+    "empty_trash_note": "清空垃圾桶時要求確認。",
+    "restore_list": "還原清單",
+    "restore_list_note": "從垃圾桶中還原清單時要求確認。",
+    "restore_listitem": "還原清單項目",
+    "restore_listitem_note": "從垃圾桶中還原清單項目時要求確認。",
+    "undo_warning": "<br /><strong>警告:</strong> 此操作無法撤銷！",
+    "transmit_list": "傳輸清單",
+    "transmit_list_note": "將清單傳輸到手錶時要求確認"
+}

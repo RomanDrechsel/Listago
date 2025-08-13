@@ -1,0 +1,9 @@
+{
+    "page_title": "Cestino",
+    "erase": "Cancella",
+    "restore": "Ripristina",
+    "deleted": "cancellato: {{date}}",
+    "empty": "Il cestino è vuoto.",
+    "loading": "Il cestino sta caricando...",
+    "error": "Impossibile caricare il cestino!"
+}

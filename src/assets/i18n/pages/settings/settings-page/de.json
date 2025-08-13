@@ -1,0 +1,21 @@
+{
+    "page_title": "Einstellungen",
+    "language": "Sprache der App",
+    "language_hint": "Deutsch ist meine Muttersprache. Solltest du trotzdem Rechschreibfehler finden, melde sie bitte an <span class=\"no-wrap\">{{email}}</span>",
+    "translation_error_confirm": "Möchtest du mir einen Rechtschreibfehler melden?",
+    "translation_error_title": "Fehler in der deutschen Übersetzung",
+    "animations": "Animationen",
+    "animations_note": "Sollen verschiedene Vorgänge animiert dargestellt werden?",
+    "logging": "Logging Einstellungen",
+    "logging_note": "Einstellungen und Verwaltung von Log-Einträgen",
+    "confirm": "Bestätigungs-Einstellungen",
+    "confirm_note": "Einstellungen zur Abfrage von Benutzerbestätigungen",
+    "trash": "Papierkorb Einstellungen",
+    "trash_note": "Einstellungen zur Verwendung des Papierkorbs",
+    "transmission": "Übertragungs-Einstellungen",
+    "transmission_note": "Einstellungen für das Übertragen von Listen auf deine Uhr",
+    "im_export": "Import und Sicherung",
+    "im_export_note": "Listen und Einstellungen Importieren oder Sichern",
+    "advertisement": "Werbung",
+    "advertisement_note": "Unterstütze mich durch Werbung, oder deaktiviere sie"
+}

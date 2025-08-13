@@ -1,0 +1,7 @@
+{
+    "title": "Logs übertragen",
+    "text": "Um die Logs von Deiner Uhr zu übertragen, musst du zuerst die App auf deiner Uhr<br /><br /><strong>{{name}}</strong><br /><br />starten. Wenn du App läuft, sollten die Logs automatisch übertragen werden. Dies kann aber ein paar Sekunden dauern.",
+    "withoutlogs": "Ohne Logs fortfahren",
+    "openApp": "App öffnen",
+    "logs_received_confirm": "Die Logs wurden empfangen.<br /><br />Möchtest du sie jetzt anzeigen?"
+}

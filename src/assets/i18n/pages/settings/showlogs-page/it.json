@@ -1,0 +1,11 @@
+{
+    "page_title": "Logs",
+    "btn_delete": "Cancella log",
+    "btn_save": "Salva log",
+    "confirm_delete": "Vuoi cancellare il log <strong>{{filename}}</strong>?",
+    "toast_deleted": "Il log è stato cancellato.",
+    "select_logs": "Seleziona file di log:",
+    "select_logday_title": "Seleziona i giorni dei file di log:",
+    "no_log": "Nessun file di log trovato!",
+    "no_log_note": "Per {{date}} non sono stati trovati file di log."
+}

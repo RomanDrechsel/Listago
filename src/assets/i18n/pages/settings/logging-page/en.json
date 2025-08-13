@@ -1,0 +1,21 @@
+{
+    "page_title": "Log settings",
+    "mode": "Logging mode",
+    "mode_debug": "Debug",
+    "mode_verbose": "Detailed",
+    "mode_normal": "Normal",
+    "mode_error": "Errors only",
+    "autodelete": "Delete old logfiles",
+    "autodelete_day": "Older than a day",
+    "autodelete_week": "Older than a week",
+    "autodelete_month": "Older than a month",
+    "show": "Show logs",
+    "show_watch": "Show logs ot the watch",
+    "show_watch_note": "Displays the logs of the watch. The app must be running on the watch",
+    "size": "Size:\n{{size}} / {{files}} file(s)",
+    "deleteall": "Delete all logfiles",
+    "deleteall_confirm": "Should the {{count}} logfiles be deleted?",
+    "deleteall_confirm_single": "Should the logfile be deleted?",
+    "deleteall_done": "{{count}} logfiles were deleted.",
+    "deleteall_done_single": "One logfile was deleted."
+}

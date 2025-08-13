@@ -1,0 +1,12 @@
+{
+    "title_new": "Aggiungere un elemento alla lista",
+    "title_edit": "Modificare un elemento dell'elenco",
+    "itemname": "Nome",
+    "itemnote": "Nota",
+    "hidden": "Nascosto",
+    "hidden_info": "I punti della lista nascosti non vengono trasferiti al tuo orologio, ma rimangono sul telefono.<br /><br />Questo è utile se desideri temporaneamente nascondere alcuni punti senza eliminarli. Possono essere riutilizzati in seguito.",
+    "locked": "Bloccato",
+    "locked_info": "I punti della lista bloccati non vengono eliminati quando la lista viene svuotata.<br /><br />Questo semplifica l'ordine nella lista se desideri ripetere regolarmente alcuni punti.",
+    "delete": "Eliminare l'elemento",
+    "add_more": "Aggiungere un altro elemento"
+}

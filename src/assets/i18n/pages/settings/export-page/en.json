@@ -1,0 +1,17 @@
+{
+    "page_title": "Backup",
+    "lists": "Do you want to back up your lists?",
+    "lists_toggle": "Back up lists",
+    "trash": "Should the lists and items in the trash also be backed up?",
+    "trash_toggle": "Back up trash",
+    "settings": "You can also back up all app settings.",
+    "settings_toggle": "Back up settings",
+    "export_to_zip": "Back up",
+    "export_summary": "The following contents will be backed up:",
+    "export_summary_nothing": "There is nothing to back up.",
+    "export_cancel": "Cancel backup",
+    "export_error": "The backup could not be completed!",
+    "export_success": "The backup was successful and the archive was saved in <strong>DOCUMENTS</strong>.",
+    "export_success_share": "Do you want to share the archive?",
+    "export_success_share_title": "Listago Backup"
+}

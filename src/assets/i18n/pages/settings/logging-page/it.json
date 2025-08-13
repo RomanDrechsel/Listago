@@ -1,0 +1,21 @@
+{
+    "page_title": "Logging",
+    "mode": "Modo log",
+    "mode_debug": "Debug",
+    "mode_verbose": "Dettagliato",
+    "mode_normal": "Normale",
+    "mode_error": "Solo errori",
+    "autodelete": "Elimina vecchi log",
+    "autodelete_day": "Dopo un giorno",
+    "autodelete_week": "Dopo una settimana",
+    "autodelete_month": "Dopo un mese",
+    "show": "Mostra log",
+    "show_watch": "Mostra i log dell'orologio",
+    "show_watch_note": "Mostra i log dell'orologio. L'app deve essere in esecuzione sull'orologio.",
+    "size": "Dimensione:\n{{size}} / {{files}} file",
+    "deleteall": "Cancella tutti i log",
+    "deleteall_confirm": "Vuoi cancellare i {{count}} file di log?",
+    "deleteall_confirm_single": "Vuoi cancellare questo file di log?",
+    "deleteall_done": "{{count}} file di log cancellati.",
+    "deleteall_done_single": "Un file di log cancellato."
+}

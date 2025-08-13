@@ -1,0 +1,18 @@
+{
+    "date_add": "",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "min_short": "min",
+    "hour_short": "hr",
+    "hours_short": "hrs",
+    "ago": "{{date}} ago",
+    "weekday": {
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday",
+        "sun": "Sunday"
+    }
+}

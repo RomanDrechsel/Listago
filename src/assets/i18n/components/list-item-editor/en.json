@@ -1,0 +1,12 @@
+{
+    "title_new": "Create new item",
+    "title_edit": "Edit item",
+    "itemname": "Description",
+    "itemnote": "Note",
+    "hidden": "Hidden",
+    "hidden_info": "Hidden list items are not transferred to your watch but remain on the smartphone.<br /><br />This is useful if you temporarily do not want to display certain items, but you do not want to delete them either. They can be reused later.",
+    "locked": "Locked",
+    "locked_info": "Locked list items are not deleted when the list is cleared.<br /><br />This simplifies tidying up the list if you regularly want to reuse certain items.",
+    "delete": "Delete item",
+    "add_more": "Add another item"
+}

@@ -1,0 +1,24 @@
+{
+    "title": "保存日志",
+    "text": "你想如何保存日志<br /><strong>{{filename}}</strong><br />？",
+    "store": "保存到Documents",
+    "share": "分享",
+    "email": "通过电子邮件发送给开发人员",
+    "share_email": {
+        "title": "{{package}} / {{platform}} - 日志文件 {{file}} ({{size}})",
+        "text": "请更详细地描述问题，以便我能够更好地理解:\n\n"
+    },
+    "store_success": "日志已保存。",
+    "store_error": "无法保存日志！",
+    "meta": "附加元数据",
+    "meta_device": "设备信息",
+    "meta_device_note": "型号，分辨率，内存使用等。",
+    "meta_settings": "应用设置",
+    "meta_settings_note": "日志设置，语言等。",
+    "meta_storage": "存储信息",
+    "meta_storage_note": "设备上列表和日志的数量/大小",
+    "meta_garmin": "手表信息",
+    "meta_garmin_note": "手表名称、唯一识别码、当前状态",
+    "watch": "附加手表日志",
+    "error_report_confirm": "已收到错误报告。<br /><br />您愿意将其作为错误报告转发给我吗？"
+}

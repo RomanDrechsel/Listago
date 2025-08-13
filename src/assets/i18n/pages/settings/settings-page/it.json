@@ -1,0 +1,19 @@
+{
+    "page_title": "Impostazioni",
+    "language": "Lingua dell'app",
+    "language_hint": "Il tedesco è la mia lingua madre. Se trovi errori di traduzione, segnalali per favore a <span class=\"no-wrap\">{{email}}</span>",
+    "translation_error_confirm": "Vuoi segnalare un errore di traduzione?",
+    "translation_error_title": "Errore nella traduzione italiana",
+    "animations": "Animazioni",
+    "animations_note": "Le diverse operazioni devono essere rappresentate visivamente in modo animato?",
+    "logging": "Impostazioni del logging",
+    "logging_note": "Gestione e configurazione delle voci di log",
+    "confirm": "Impostazioni di conferma",
+    "confirm_note": "Configurazione delle richieste di conferma dell'utente",
+    "trash": "Impostazioni del cestino",
+    "trash_note": "Impostazioni per l'utilizzo del cestino",
+    "transmission": "Impostazioni di trasmissione",
+    "transmission_note": "Configurazione per il trasferimento delle liste sul tuo orologio",
+    "advertisement": "Pubblicità",
+    "advertisement_note": "Sostienimi con la pubblicità oppure disattivala"
+}

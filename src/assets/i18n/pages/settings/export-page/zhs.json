@@ -1,0 +1,17 @@
+{
+    "page_title": "备份",
+    "lists": "你要备份你的列表吗？",
+    "lists_toggle": "备份列表",
+    "trash": "是否也备份回收站中的列表和项目？",
+    "trash_toggle": "备份回收站",
+    "settings": "你还可以备份所有应用设置。",
+    "settings_toggle": "备份设置",
+    "export_to_zip": "备份",
+    "export_summary": "将备份以下内容：",
+    "export_summary_nothing": "没有需要备份的内容。",
+    "export_cancel": "取消备份",
+    "export_error": "备份未能完成！",
+    "export_success": "备份成功，已将归档文件保存至 <strong>DOCUMENTS</strong>。",
+    "export_success_share": "你想分享该归档文件吗？",
+    "export_success_share_title": "Listago 备份"
+}

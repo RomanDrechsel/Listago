@@ -1,0 +1,11 @@
+{
+    "page_title": "Registros",
+    "btn_delete": "Eliminar registro",
+    "btn_save": "Guardar registro",
+    "confirm_delete": "¿Quieres eliminar el registro <strong>{{filename}}</strong>?",
+    "toast_deleted": "El registro fue eliminado.",
+    "select_logs": "Seleccione un archivo de registro:",
+    "select_logday_title": "Seleccione los días del archivo de registros:",
+    "no_log": "¡No se encontraron archivos de registros!",
+    "no_log_note": "Para {{date}} no se encontraron archivos de registros."
+}

@@ -1,0 +1,7 @@
+{
+    "page_title": "Watch logs",
+    "select_watch": "Select device",
+    "no_watch": "No device found",
+    "no_logs": "No Logs loaded!",
+    "no_device": "Found not active device!"
+}

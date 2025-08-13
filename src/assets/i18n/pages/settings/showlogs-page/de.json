@@ -1,0 +1,11 @@
+{
+    "page_title": "Logs",
+    "btn_delete": "Log löschen",
+    "btn_save": "Log speichern",
+    "confirm_delete": "Soll das Log <strong>{{filename}}</strong> wirklich gelöscht?",
+    "toast_deleted": "Das Log wurde gelöscht.",
+    "select_logs": "Log-Datei auswählen:",
+    "select_logday_title": "Tage der Log-Dateien auswählen:",
+    "no_log": "Keine Log-Dateien gefunden!",
+    "no_log_note": "Für {{date}} wurden keine Log-Dateien gefunden."
+}

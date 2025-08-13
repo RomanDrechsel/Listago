@@ -1,0 +1,9 @@
+{
+    "page_title": "Corbeille",
+    "erase": "Supprimer",
+    "restore": "Restaurer",
+    "deleted": "Supprimé : {{date}}",
+    "empty": "La corbeille est vide.",
+    "loading": "La corbeille est en cours de chargement...",
+    "error": "Impossible de charger la corbeille !"
+}

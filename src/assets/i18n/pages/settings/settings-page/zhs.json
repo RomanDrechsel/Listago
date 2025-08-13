@@ -1,0 +1,19 @@
+{
+    "page_title": "设置",
+    "language": "应用语言",
+    "language_hint": "该应用程序已使用人工智能进行翻译。如果出现错误，请将错误报告至 <span class=\"no-wrap\">{{email}}</span>。",
+    "translation_error_confirm": "您要报告翻译错误吗？",
+    "translation_error_title": "中文译文（简体）中的错误",
+    "animations": "动画",
+    "animations_note": "是否应以动画形式直观呈现各种过程？",
+    "logging": "日志设置",
+    "logging_note": "日志条目的设置和管理",
+    "confirm": "确认设置",
+    "confirm_note": "用户确认设置",
+    "trash": "回收站设置",
+    "trash_note": "回收站使用设置",
+    "transmission": "传输设置",
+    "transmission_note": "将列表传输到手表的设置",
+    "advertisement": "广告",
+    "advertisement_note": "通过广告支持我，或者将其关闭"
+}

@@ -1,0 +1,16 @@
+{
+    "title_new": "Create new list",
+    "title_edit": "Edit list",
+    "listname": "Description",
+    "settings": "Settings",
+    "reset": "Reset the list automatically",
+    "reset_info": "On your watch, all items on this list will be reset to \"not done\" at a certain interval.<br /><br />This is suitable for recurring tasks such as household chores or other regular activities.",
+    "reset_interval": "Interval",
+    "reset_daily": "Daily",
+    "reset_weekly": "Weekly",
+    "reset_monthly": "Monthly",
+    "sync": "Sync list with watch",
+    "sync_info": "When you make changes to the list, such as adding or deleting list items, these changes will be automatically transferred to your watch in the background.<br /><br />Please note that the storage of the app on your watch is limited and that synchronisation can drain up the battery charge of the watch more quickly.<br />Do not synchronise too many lists at the same time.",
+    "sync_settings": "To activate automatic synchronisation, you must activate the corresponding option in the settings.<br />Would you like to go to the settings?",
+    "delete": "Delete"
+}

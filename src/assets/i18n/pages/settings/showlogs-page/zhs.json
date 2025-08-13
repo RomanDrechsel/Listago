@@ -1,0 +1,11 @@
+{
+    "page_title": "日志",
+    "btn_delete": "删除日志",
+    "btn_save": "保存日志",
+    "confirm_delete": "确定要删除日志 <strong>{{filename}}</strong>？",
+    "toast_deleted": "日志已删除。",
+    "select_logs": "选择日志文件：",
+    "select_logday_title": "选择日志文件日期：",
+    "no_log": "未找到日志文件！",
+    "no_log_note": "未找到 {{date}} 的日志文件。"
+}

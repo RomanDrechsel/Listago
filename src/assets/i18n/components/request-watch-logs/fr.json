@@ -1,0 +1,7 @@
+{
+    "title": "Transférer les journaux",
+    "text": "Pour transférer les journaux de votre montre, vous devez d'abord lancer l'application sur votre montre<br /><br /><strong>{{name}}</strong>.<br /><br />Les journaux devraient se transférer automatiquement une fois l'application lancée. Cela peut toutefois prendre quelques secondes.",
+    "withoutlogs": "Continuer sans journaux",
+    "openApp": "Ouvrir l'application",
+    "logs_received_confirm": "Les journaux ont été reçus.<br /><br />Voulez-vous les afficher maintenant ?"
+}

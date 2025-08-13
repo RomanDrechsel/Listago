@@ -1,0 +1,14 @@
+{
+    "page_title": "Transmission à la montre",
+    "openontransmit": "Lancer l'application lors du transfert manuel",
+    "openontransmit_note": "Demander à votre montre si elle doit démarrer l'application lors de la transmission d'une liste.",
+    "deletelist": "Supprimer automatiquement les listes de la montre",
+    "deletelist_note": "Lors de la suppression d'une liste sur le smartphone, la supprimer également de la montre.",
+    "synclist": "Synchroniser les listes automatiquement",
+    "synclist_warning": "<strong>Attention:</strong> N'oubliez pas que l'espace de stockage de l'application sur la montre est limité. Vous ne devriez pas synchroniser trop de listes en même temps !<br />De plus, cela peut également avoir un impact négatif sur l'autonomie de la batterie de la montre.",
+    "synclist_note": "Synchroniser immédiatement une liste avec la montre lorsqu'elle est modifiée.",
+    "synclist_disable_title": "Désactiver la synchronisation?",
+    "synclist_disable": "Voulez-vous désactiver les paramètres de synchronisation automatique pour toutes les listes ?<br /><br />Si vous réactivez ce paramètre plus tard, vous devrez reconfigurer la synchronisation pour chaque liste.",
+    "garminconnectiq": "Support de Garmin Connect IQ",
+    "garminconnectiq_note": "Désactive ce paramètre si tu ne possèdes pas de montre Garmin ou si tu ne souhaites pas utiliser les fonctions de transfert.<br />Lorsque ce paramètre est activé, l'application Garmin ConnectIQ est nécessaire sur ton smartphone."
+}

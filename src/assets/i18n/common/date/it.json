@@ -1,0 +1,18 @@
+{
+    "date_add": "",
+    "today": "Oggi",
+    "yesterday": "Ieri",
+    "min_short": "Min.",
+    "hour_short": "Ora",
+    "hours_short": "Ore",
+    "ago": "{{date}} fa",
+    "weekday": {
+        "mon": "Lunedì",
+        "tue": "Martedì",
+        "wed": "Mercoledì",
+        "thu": "Giovedì",
+        "fri": "Venerdì",
+        "sat": "Sabato",
+        "sun": "Domenica"
+    }
+}

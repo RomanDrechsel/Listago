@@ -1,0 +1,22 @@
+{
+    "page_title": "Confirmaciones",
+    "delete_list": "Eliminar lista",
+    "delete_list_note": "Pida confirmación antes de eliminar una lista.",
+    "delete_listitem": "Eliminar elemento de lista",
+    "delete_listitem_note": "Pida confirmación antes de eliminar un elemento de lista.",
+    "empty_list": "Vaciar lista",
+    "empty_list_note": "Pida confirmación antes de vaciar una lista.",
+    "erase_list": "Eliminar lista del papelera",
+    "erase_list_note": "Pida confirmación antes de eliminar permanentemente una lista del papelera.",
+    "erase_listitem": "Eliminar elemento de lista del papelera",
+    "erase_listitem_note": "Pida confirmación antes de eliminar permanentemente un elemento de lista del papelera.",
+    "empty_trash": "Vaciar papelera",
+    "empty_trash_note": "Pida confirmación antes de vaciar la papelera.",
+    "restore_list": "Restaurar lista",
+    "restore_list_note": "Pida confirmación antes de restaurar una lista del papelera.",
+    "restore_listitem": "Restaurar elemento de lista",
+    "restore_listitem_note": "Pida confirmación antes de restaurar un elemento de lista del papelera.",
+    "undo_warning": "<br /><strong>Aviso:</strong> La acción no puede ser revertida!",
+    "transmit_list": "Enviar lista",
+    "transmit_list_note": "Pida confirmación antes de enviar una lista al reloj."
+}

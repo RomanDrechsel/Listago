@@ -1,0 +1,23 @@
+{
+    "page_title": "Importer",
+    "btn_import": "Importer",
+    "btn_select_archive": "Choisir l’archive",
+    "select_archive": "Veuillez d'abord choisir l'archive :",
+    "select_archive_error": "Le fichier n’a pas pu être ouvert !",
+    "archive_invalid": "L’archive ne contient pas une sauvegarde compatible !",
+    "archive_analysing": "L’archive<br /><br /><strong>{{filename}}</strong><br /><br />est en cours d’analyse",
+    "select_items": "Que souhaites-tu importer de l'archive ?",
+    "btn_reset_archive": "Choisir une autre archive",
+    "import_success": "L'importation est terminée.",
+    "import_error": "L'importation n'a pas pu être complétée !",
+    "import_report_success_lists": "{{num}} listes importées.",
+    "import_report_success_lists_singular": "Une liste importée.",
+    "import_report_success_trash": "{{num}} éléments de la corbeille importés.",
+    "import_report_success_trash_singular": "Un élément de la corbeille importé.",
+    "import_report_success_settings": "Tous les paramètres ont été importés.",
+    "import_report_failed_lists": "{{num}} listes n’ont pas pu être importées.",
+    "import_report_failed_lists_singular": "Une liste n’a pas pu être importée.",
+    "import_report_failed_trash": "{{num}} éléments de la corbeille n’ont pas pu être importés.",
+    "import_report_failed_trash_singular": "Un élément de la corbeille n’a pas pu être importé.",
+    "import_report_failed_settings": "Tous les paramètres n'ont pas pu être importés."
+}

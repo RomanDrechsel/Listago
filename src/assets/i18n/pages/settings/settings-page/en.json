@@ -1,0 +1,19 @@
+{
+    "page_title": "Settings",
+    "language": "Language",
+    "language_hint": "English is not my native language. If you find any translation errors, please report them to <span class=\"no-wrap\">{{email}}</span>",
+    "translation_error_confirm": "Would you like to report a translation error to me?",
+    "translation_error_title": "Mistake in the english translation",
+    "animations": "Animations",
+    "animations_note": "Should some visual effects be animated?",
+    "logging": "Log settings",
+    "logging_note": "Settings and management of log files",
+    "confirm": "Confirmation settings",
+    "confirm_note": "Settings for requesting user confirmation",
+    "trash": "Trash settings",
+    "trash_note": "Settings for usage of the trash",
+    "transmission": "Transmission settings",
+    "transmission_note": "Settings for transferring lists to your watch",
+    "advertisement": "Advertisement",
+    "advertisement_note": "Support me through ads, or disable them"
+}

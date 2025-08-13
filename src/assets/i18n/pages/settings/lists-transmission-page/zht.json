@@ -1,0 +1,14 @@
+{
+    "page_title": "傳輸到手錶",
+    "openontransmit": "手動傳輸期間啟動應用程式",
+    "openontransmit_note": "當你傳輸清單時，在手錶上詢問是否啟動應用。",
+    "deletelist": "自動從手錶中刪除清單",
+    "deletelist_note": "在手機上刪除清單時，同時從手錶中刪除。",
+    "synclist": "自動同步清單",
+    "synclist_warning": "<strong>注意：</strong> 請注意，手錶上應用的存儲空間有限。你不應該同時同步太多列表！<br />此外，這可能會對手錶的電池壽命產生負面影響。",
+    "synclist_note": "清單變更後，立即與手錶同步。",
+    "synclist_disable_title": "取消同步？",
+    "synclist_disable": "是否要禁用所有列表的自動同步設置？<br /><br />如果稍後重新啟用此設置，則需要為每個列表重新配置同步。",
+    "garminconnectiq": "Garmin 連接 IQ 支援",
+    "garminconnectiq_note": "如果您沒有 Garmin 手表或不想使用傳輸函數, 就取消此設定 。 <br/>如果啟用此設定, 在您智能手機上需要 Garmin ConnectIQ 應用程式。"
+}

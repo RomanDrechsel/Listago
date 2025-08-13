@@ -1,0 +1,15 @@
+{
+    "page_title": "Publicité",
+    "activated": "La publicité est activée",
+    "deactivated": "La publicité est désactivée",
+    "deactivate_confirm": "Souhaites-tu vraiment désactiver la publicité et ne plus me soutenir ?",
+    "activated_success": "Merci beaucoup !",
+    "deactivated_success": "La publicité est désactivée.",
+    "text1": "Listago est gratuit.",
+    "text2": "Je prends en charge moi-même tous les frais de matériel et de logiciel. Avec une petite bannière publicitaire, j’essaie de couvrir au moins une partie des coûts.",
+    "text3": "Si la bannière te dérange trop, tu as la possibilité de la désactiver ici.",
+    "support1": "Si tu aimes l’application et que tu veux quand même me soutenir, je serais ravi d’un petit don via",
+    "support2": "ou",
+    "support3": "merci.",
+    "thanks": "Merci beaucoup."
+}

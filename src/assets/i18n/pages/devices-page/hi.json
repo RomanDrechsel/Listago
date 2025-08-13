@@ -1,0 +1,18 @@
+{
+    "page_title": "मेरे डिवाइस",
+    "known_devices": "पहचाने गए डिवाइस:",
+    "install_app": "आपको पहले अपनी घड़ी पर सूची ऐप इंस्टॉल करनी होगी।<br /><strong>यहां क्लिक करें</strong> ताकि Garmin ConnectIQ स्टोर पर जा सकें।",
+    "toggle": "हमेशा इस डिवाइस पर भेजें",
+    "select_btn": "डिवाइस चुनें",
+    "device_state": {
+        "Ready": "डिवाइस तैयार है",
+        "ServiceUnavailable": "ConnectIQ सेवा उपलब्ध नहीं है",
+        "AppNotInstalled": "यह ऐप इस डिवाइस पर इंस्टॉल नहीं है",
+        "CheckingApp": "डिवाइस की जांच हो रही है...",
+        "ConnectionLost": "डिवाइस का कनेक्शन खो गया",
+        "Initializing": "डिवाइस को प्रारंभ किया जा रहा है...",
+        "InvalidState": "डिवाइस अवैध स्थिति में है",
+        "NotConnected": "डिवाइस से कनेक्शन स्थापित नहीं हो सका",
+        "NotPaired": "डिवाइस Garmin Connect से जोड़ा नहीं गया है!"
+    }
+}

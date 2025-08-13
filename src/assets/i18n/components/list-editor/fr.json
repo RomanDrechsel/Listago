@@ -1,0 +1,16 @@
+{
+    "title_new": "Créer une nouvelle liste",
+    "title_edit": "Modifier la liste",
+    "listname": "Nom",
+    "settings": "Paramètres",
+    "reset": "Réinitialisation automatique de la liste",
+    "reset_info": "Sur votre montre, tous les éléments de cette liste seront réinitialisés à \"non terminé\" à un intervalle défini.<br /><br />Cela est utile pour les tâches récurrentes comme le ménage ou d'autres activités régulières.",
+    "reset_interval": "Intervalle",
+    "reset_daily": "Quotidiennement",
+    "reset_weekly": "Hebdomadairement",
+    "reset_monthly": "Mensuellement",
+    "sync": "Synchroniser la liste avec la montre",
+    "sync_info": "Lorsque vous modifiez la liste, par exemple en ajoutant ou en supprimant des éléments, ces changements seront automatiquement transférés en arrière-plan sur votre montre.<br /><br />N'oublie pas que l'espace de stockage de l'application sur ta montre est limité et que la synchronisation risque d'épuiser plus rapidement la batterie de la montre.<br />Ne synchronise pas trop de listes en même temps.",
+    "sync_settings": "Pour activer la synchronisation automatique, vous devez activer l'option correspondante dans les paramètres.<br />Voulez-vous aller dans les paramètres?",
+    "delete": "Supprimer la liste"
+}

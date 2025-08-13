@@ -1,0 +1,8 @@
+{
+    "page_title": "マイリスト",
+    "empty": "空にする",
+    "upload": "転送",
+    "updated": "最終更新日: {{date}}",
+    "add_new_hint": "新しいリストを作成します。",
+    "loading": "リストを読み込んでいます…"
+}

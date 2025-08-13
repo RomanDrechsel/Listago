@@ -1,0 +1,16 @@
+{
+    "welcome": "Bienvenue sur Listago",
+    "language1": "Veuillez sélectionner votre langue préférée :",
+    "language2": "Vous pouvez changer la langue plus tard si nécessaire.",
+    "garmin1": "Support pour les montres Garmin",
+    "garmin2": "Cela vous permet de synchroniser vos listes avec votre montre Garmin.<br />Vous avez besoin de l'application <strong>Garmin Connect</strong> sur votre smartphone et de l'application <strong>{{garminApp}}</strong> sur votre montre.",
+    "garmin_btn": "vers l’application {{garminApp}}",
+    "garmin-hint1": "Parfois, il se peut que vous ne puissiez pas transférer de listes sur votre montre, même si elle est correctement reconnue.<br /><br />Dans la plupart des cas, redémarrer votre smartphone ou votre montre résoudra le problème.",
+    "garmin-hint2": "Malheureusement, je n'ai aucun contrôle sur le fonctionnement de l'application Garmin Connect, qui sert de passerelle pour la communication avec votre montre.",
+    "finish1": "Merci d'utiliser mon application.",
+    "finish2": "Si vous êtes intéressé par mes autres projets, vous pouvez trouver plus d'informations sur",
+    "finish3": "à propos de moi.",
+    "finish4": "Profitez bien de mon application !",
+    "finish_btn": "Continuer vers l'application",
+    "finish_btn_import": "Démarrer l'importation"
+}

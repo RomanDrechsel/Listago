@@ -1,0 +1,19 @@
+{
+    "page_title": "Paramètres",
+    "language": "Langue de l'application",
+    "language_hint": "L'application a été traduite à l'aide de l'intelligence artificielle. Si des erreurs ont été commises, merci de les signaler à <span class=\"no-wrap\">{{email}}</span>.",
+    "translation_error_confirm": "Voulez-vous me signaler une erreur de traduction ?",
+    "translation_error_title": "Erreur dans la traduction française",
+    "animations": "Animations",
+    "animations_note": "Faut-il représenter visuellement plusieurs processus de manière animée?",
+    "logging": "Paramètres de journalisation",
+    "logging_note": "Paramètres et gestion des entrées de journal",
+    "confirm": "Paramètres de confirmation",
+    "confirm_note": "Paramètres pour les confirmations utilisateur",
+    "trash": "Paramètres de la corbeille",
+    "trash_note": "Paramètres pour l'utilisation de la corbeille",
+    "transmission": "Paramètres de transmission",
+    "transmission_note": "Paramètres pour la transmission de listes à votre montre",
+    "advertisement": "Publicité",
+    "advertisement_note": "Soutiens-moi grâce à la publicité, ou désactive-la"
+}

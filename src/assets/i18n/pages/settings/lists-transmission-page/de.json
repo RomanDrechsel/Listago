@@ -1,0 +1,14 @@
+{
+    "page_title": "Übertragung zu Uhr",
+    "openontransmit": "App beim manuellen Übertragen starten",
+    "openontransmit_note": "Auf deiner Uhr nachfragen, ob die App gestartet werden soll, wenn du eine Liste überträgst?",
+    "deletelist": "Listen automatisch von der Uhr löschen",
+    "deletelist_note": "Beim Löschen einer Liste auf dem Smartphone die Liste auch auf deiner Uhr löschen.",
+    "synclist": "Listen automatisch synchronisieren",
+    "synclist_note": "Bei Änderungen an einer Liste diese sofort mit der Uhr synchronisieren.",
+    "synclist_warning": "<strong>Achtung:</strong> Bedenke, dass der Speicherplatz der App auf der Uhr begrenzt ist. Du solltest nicht zu viele Listen gleichzeitig synchronisieren!<br />Außerdem kann es sich negativ auf die Akku-Laufzeit der Uhr auswirken.",
+    "synclist_disable_title": "Synchronisierung aufheben?",
+    "synclist_disable": "Sollen die Einstellungen für die automatische Synchronisierung für alle Listen aufgehoben werden?<br /><br />Falls Du diese Einstellung später wieder aktivierst, musst du die Synchronisierung für jede Liste neu einstellen.",
+    "garminconnectiq": "Garmin Connect IQ Unterstützung",
+    "garminconnectiq_note": "Deaktiviere diese Einstellung, wenn du keine Garmin Uhr besitzt, oder die Übertragungsfunktionen nicht nutzen möchtest. <br />Wenn diese Einstellung aktiviert ist, wird die Garmin ConnectIQ App auf deinem Smartphone benötigt."
+}

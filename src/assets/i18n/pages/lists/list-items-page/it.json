@@ -1,0 +1,13 @@
+{
+    "page_title": "Lista non trovata",
+    "loading": "La lista è in caricamento...",
+    "menu_empty": "Svuota lista",
+    "menu_devices": "Trasferisci lista",
+    "hide": "Nascondi",
+    "show": "Mostra",
+    "lock": "Blocca",
+    "unlock": "Sblocca",
+    "nolist": "Qualcosa è andato storto :(<br /><br />La lista non può essere visualizzata.",
+    "add_new_hint": "Aggiungi un nuovo elemento alla lista.",
+    "quickadd": "Creare un nuovo elemento..."
+}

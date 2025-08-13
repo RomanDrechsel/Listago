@@ -1,0 +1,16 @@
+{
+    "welcome": "欢迎使用 Listago",
+    "language1": "请选择您偏好的语言：",
+    "language2": "您可以稍后更改语言。",
+    "garmin1": "支持 Garmin 手表",
+    "garmin2": "这让您可以将列表与您的 Garmin 手表同步。<br />您需要在智能手机上安装 <strong>Garmin Connect</strong> 应用程序，并在手表上安装 <strong>{{garminApp}}</strong> 应用程序。",
+    "garmin_btn": "前往 {{garminApp}} 应用",
+    "garmin-hint1": "有时，即使您的手表已正确识别，您仍可能无法传输列表。<br /><br />在大多数情况下，重新启动您的智能手机或手表即可解决问题。",
+    "garmin-hint2": "很遗憾，我无法影响 Garmin Connect 应用程序的运作，该应用程序作为与您的手表通信的桥梁。",
+    "finish1": "感谢您使用我的应用程序。",
+    "finish2": "如果您对我的其他项目感兴趣，可以在此找到更多信息：",
+    "finish3": "关于我。",
+    "finish4": "祝您使用愉快！",
+    "finish_btn": "继续使用应用程序",
+    "finish_btn_import": "开始导入"
+}

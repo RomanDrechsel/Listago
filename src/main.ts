@@ -1,14 +1,14 @@
 import { provideHttpClient } from "@angular/common/http";
-import { inject, provideAppInitializer } from "@angular/core";
+import { inject, isDevMode, provideAppInitializer } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading } from "@angular/router";
 import { IonicRouteStrategy, provideIonicAngular } from "@ionic/angular/standalone";
-import { provideTranslateService } from "@ngx-translate/core";
-import { provideTranslateHttpLoader } from "@ngx-translate/http-loader";
+import { provideTransloco } from "@jsverse/transloco";
 import { PageTransitionAnimation } from "./app/animations/page-transition.animation";
 import { AppComponent } from "./app/app.component";
 import { routes } from "./app/app.routes";
 import { AppService } from "./app/services/app/app.service";
+import { HttpLoader } from "./app/services/localization/transloco-loader";
 
 bootstrapApplication(AppComponent, {
     providers: [
@@ -20,12 +20,22 @@ bootstrapApplication(AppComponent, {
         }),
         provideRouter(routes, withPreloading(PreloadAllModules)),
         provideHttpClient(),
-        provideTranslateService({
-            fallbackLang: "en",
-            loader: provideTranslateHttpLoader({
-                prefix: "/assets/i18n/",
-                suffix: ".json",
-            }),
+        provideTransloco({
+            config: {
+                reRenderOnLangChange: true,
+                fallbackLang: "en",
+                defaultLang: undefined,
+                missingHandler: {
+                    useFallbackTranslation: true,
+                    logMissingKey: true,
+                    allowEmpty: true,
+                },
+                prodMode: !isDevMode(),
+                flatten: {
+                    aot: !isDevMode(),
+                },
+            },
+            loader: HttpLoader,
         }),
         provideAppInitializer(() => inject(AppService).InitializeApp()),
     ],

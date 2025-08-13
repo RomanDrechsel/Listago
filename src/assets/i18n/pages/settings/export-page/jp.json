@@ -1,0 +1,17 @@
+{
+    "page_title": "バックアップ",
+    "lists": "リストをバックアップしますか？",
+    "lists_toggle": "リストをバックアップ",
+    "trash": "ゴミ箱内のリストと項目もバックアップしますか？",
+    "trash_toggle": "ゴミ箱をバックアップ",
+    "settings": "アプリの設定もすべてバックアップできます。",
+    "settings_toggle": "設定をバックアップ",
+    "export_to_zip": "バックアップ",
+    "export_summary": "次の内容がバックアップされます：",
+    "export_summary_nothing": "バックアップするものがありません。",
+    "export_cancel": "バックアップをキャンセル",
+    "export_error": "バックアップに失敗しました！",
+    "export_success": "バックアップが正常に完了し、アーカイブは<strong>DOCUMENTS</strong>に保存されました。",
+    "export_success_share": "アーカイブを共有しますか？",
+    "export_success_share_title": "Listago バックアップ"
+}

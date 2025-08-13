@@ -1,0 +1,23 @@
+{
+    "page_title": "Importieren",
+    "btn_import": "Importieren",
+    "btn_select_archive": "Archiv auswählen",
+    "select_archive": "Bitte wähle zuerst das Archiv aus:",
+    "select_archive_error": "Die Datei konnte nicht geöffnet werden!",
+    "archive_invalid": "Das Archiv enthält keine kompatible Sicherung!",
+    "archive_analysing": "Das Archiv<br /><br /><strong>{{filename}}</strong><br /><br />wird geprüft",
+    "select_items": "Was möchtest du aus dem Archiv importieren?",
+    "btn_reset_archive": "Anderes Archiv auswählen",
+    "import_success": "Der Import wurde abgeschlossen.",
+    "import_error": "Der Import konnte nicht vollständig durchgeführt werden!",
+    "import_report_success_lists": "{{num}} Listen importiert.",
+    "import_report_success_lists_singular": "Eine Liste importiert.",
+    "import_report_success_trash": "{{num}} Papierkorbeinträge importiert.",
+    "import_report_success_trash_singular": "Ein Papierkorbeintrag importiert.",
+    "import_report_success_settings": "Alle Einstellungen importiert.",
+    "import_report_failed_lists": "{{num}} Listen konnten nicht importiert werden.",
+    "import_report_failed_lists_singular": "Eine Liste konnte nicht importiert werden.",
+    "import_report_failed_trash": "{{num}} Papierkorbeinträge konnten nicht importiert werden.",
+    "import_report_failed_trash_singular": "Ein Papierkorbeintrag konnte nicht importiert werden.",
+    "import_report_failed_settings": "Nicht alle Einstellungen konnten importiert werden."
+}

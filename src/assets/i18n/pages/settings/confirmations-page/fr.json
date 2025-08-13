@@ -1,0 +1,22 @@
+{
+    "page_title": "Confirmations",
+    "delete_list": "Supprimer la liste",
+    "delete_list_note": "Demander confirmation lors de la suppression d'une liste.",
+    "delete_listitem": "Supprimer l'élément de la liste",
+    "delete_listitem_note": "Demander confirmation lors de la suppression d'un élément de la liste.",
+    "empty_list": "Vider la liste",
+    "empty_list_note": "Demander confirmation lors du vidage d'une liste.",
+    "erase_list": "Supprimer la liste de la corbeille",
+    "erase_list_note": "Demander confirmation pour supprimer définitivement une liste de la corbeille.",
+    "erase_listitem": "Supprimer l'élément de la corbeille",
+    "erase_listitem_note": "Demander confirmation pour supprimer définitivement un élément de la corbeille.",
+    "empty_trash": "Vider la corbeille",
+    "empty_trash_note": "Demander confirmation pour vider la corbeille.",
+    "restore_list": "Restaurer la liste",
+    "restore_list_note": "Demander confirmation lors de la restauration d'une liste de la corbeille.",
+    "restore_listitem": "Restaurer l'élément de la liste",
+    "restore_listitem_note": "Demander confirmation pour restaurer un élément de la liste depuis la corbeille.",
+    "undo_warning": "<br /><strong>Attention :</strong> Cette action est irréversible !",
+    "transmit_list": "Transmettre la liste",
+    "transmit_list_note": "Demander confirmation lors de la transmission d'une liste à une montre"
+}

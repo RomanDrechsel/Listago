@@ -1,0 +1,13 @@
+{
+    "page_title": "列表未找到",
+    "loading": "正在加载列表...",
+    "menu_empty": "清空列表",
+    "menu_devices": "传输列表",
+    "hide": "隐藏",
+    "show": "显示",
+    "lock": "锁定",
+    "unlock": "解锁",
+    "nolist": "出了点问题:(<br /><br />无法显示列表。",
+    "add_new_hint": "在列表中添加新项。",
+    "quickadd": "创建新的列表元素..."
+}

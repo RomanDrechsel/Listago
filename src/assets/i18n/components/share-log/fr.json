@@ -1,0 +1,24 @@
+{
+    "title": "Sauvegarder le journal",
+    "text": "Comment voulez-vous sauvegarder le journal<br /><strong>{{filename}}</strong> ?",
+    "store": "Sauvegarder dans Documents",
+    "share": "Partager",
+    "email": "Envoyer par e-mail aux développeurs",
+    "share_email": {
+        "title": "{{package}} / {{platform}} - Fichier journal {{file}} ({{size}})",
+        "text": "Merci de me donner plus de détails sur le problème afin que je puisse le reproduire :\n\n"
+    },
+    "store_success": "Le journal a été sauvegardé.",
+    "store_error": "Le journal n'a pas pu être sauvegardé !",
+    "meta": "Joindre des métadonnées",
+    "meta_device": "Infos appareil",
+    "meta_device_note": "Modèle, résolution, mémoire, etc.",
+    "meta_settings": "Paramètres de l'application",
+    "meta_settings_note": "Paramètres de log, langue, etc.",
+    "meta_storage": "Infos de stockage",
+    "meta_storage_note": "Nom de la montre, identifiant unique, état actuel",
+    "meta_garmin": "Informations sur la montre",
+    "meta_garmin_note": "Watch name, unique identifier, current status",
+    "watch": "Joindre les journaux de la montre",
+    "error_report_confirm": "Le rapport d'erreur a été reçu.<br /><br />Voulez-vous me le transmettre comme rapport d'erreur ?"
+}

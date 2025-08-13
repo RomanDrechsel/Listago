@@ -1,0 +1,10 @@
+{
+    "watch_outdated": "Повідомлення щодо відсутності останньої версії додатку Listen-Manager на вашому смарт-часовому приладі <strong>{{device}}</strong>.<br /><br />Для повної функціональності, пожалуйста, оновіть додаток.",
+    "watch_outdated_button": "Повернутися до магазину Connect-IQ",
+    "watch_outdated_ignore": "Відмінити",
+    "watch_outdated_dontremind": "Не повідомляти про цю версію",
+    "openapp_btn": "Відкрити додаток",
+    "openapp_nodevice": "Не знайдено активного пристрою!",
+    "openapp_success": "Додаток відкрито на годиннику.",
+    "init_failed": "Не вдалося активувати підтримку Garmin."
+}

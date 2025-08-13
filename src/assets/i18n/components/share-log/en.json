@@ -1,0 +1,24 @@
+{
+    "title": "Store log",
+    "text": "How do you want to store the logfile <br /><strong>{{filename}}</strong>?",
+    "store": "Store in Documents on your device",
+    "share": "Share",
+    "email": "Send as e-mail to developer",
+    "share_email": {
+        "title": "{{package}} / {{platform}} - logfile {{file}} ({{size}})",
+        "text": "Please describe me the problems in more detailed way, so I can understand them a little bit better:\n\n"
+    },
+    "store_success": "The log was stored.",
+    "store_error": "The log could not be stored!",
+    "meta": "Attach meta data",
+    "meta_device": "Device information",
+    "meta_device_note": "Model, version, memory, etc.",
+    "meta_settings": "App settings",
+    "meta_settings_note": "Log settings, language, etc.",
+    "meta_storage": "Storage information",
+    "meta_storage_note": "Number and size of lists and logs on the device",
+    "meta_garmin": "Watch information",
+    "meta_garmin_note": "Watch name, unique identifier, current status",
+    "watch": "Attach logs of the watch",
+    "error_report_confirm": "The error report has been received.<br /><br />Would you like to forward it to me as a bug report??"
+}

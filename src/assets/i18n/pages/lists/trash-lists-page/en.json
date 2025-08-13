@@ -1,0 +1,9 @@
+{
+    "page_title": "Trash",
+    "erase": "Erase",
+    "restore": "Restore",
+    "deleted": "deleted: {{date}}",
+    "empty": "The trash is empty.",
+    "loading": "The trash is being loaded...",
+    "error": "The trash could not be loaded!"
+}

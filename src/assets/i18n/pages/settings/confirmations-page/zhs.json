@@ -1,0 +1,22 @@
+{
+    "page_title": "确认",
+    "delete_list": "删除列表",
+    "delete_list_note": "删除列表时请求确认。",
+    "delete_listitem": "删除列表项",
+    "delete_listitem_note": "删除列表项时请求确认。",
+    "empty_list": "清空列表",
+    "empty_list_note": "清空列表时请求确认。",
+    "erase_list": "从回收站移除列表",
+    "erase_list_note": "从回收站永久移除列表时请求确认。",
+    "erase_listitem": "从回收站移除列表项",
+    "erase_listitem_note": "从回收站永久移除列表项时请求确认。",
+    "empty_trash": "清空回收站",
+    "empty_trash_note": "清空回收站时请求确认。",
+    "restore_list": "恢复列表",
+    "restore_list_note": "从回收站恢复列表时请求确认。",
+    "restore_listitem": "恢复列表项",
+    "restore_listitem_note": "从回收站恢复列表项时请求确认。",
+    "undo_warning": "<br /><strong>警告：</strong> 此操作无法撤销！",
+    "transmit_list": "传输列表",
+    "transmit_list_note": "传输列表到手表时请求确认"
+}

@@ -10,7 +10,7 @@
                     @for (p of appPages; track $index) {
                     <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" [button]="true" detail="false">
                         <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
-                        <ion-label>{{ p.TitleId | translate }}</ion-label>
+                        <ion-label>{{ p.TitleId | transloco }}</ion-label>
                     </ion-item>
                     }
                 </ion-list>
@@ -27,7 +27,7 @@
                     } @for (p of systemPages; track $index) {
                     <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" detail="false" [button]="true">
                         <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
-                        <ion-label>{{ p.TitleId | translate }}</ion-label>
+                        <ion-label>{{ p.TitleId | transloco }}</ion-label>
                     </ion-item>
                     }
                 </ion-list>

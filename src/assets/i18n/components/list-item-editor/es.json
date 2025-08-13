@@ -1,0 +1,12 @@
+{
+    "title_new": "Crear elemento de lista",
+    "title_edit": "Editar elemento de lista",
+    "itemname": "Nombre del elemento",
+    "itemnote": "Nota del elemento",
+    "hidden": "Oculto",
+    "hidden_info": "Los elementos de lista ocultos no se transfieren a tu reloj, pero permanecen en el teléfono inteligente.<br /><br />Esto es útil si temporalmente no deseas mostrar ciertos elementos, pero tampoco deseas eliminarlos. Pueden ser reutilizados más tarde.",
+    "locked": "Bloqueado",
+    "locked_info": "Los elementos de lista bloqueados no se eliminan al vaciar la lista.<br /><br />Esto facilita el orden de la lista si deseas repetir ciertos elementos regularmente.",
+    "delete": "Borrar el elemento",
+    "add_more": "Añadir otro elemento"
+}

@@ -1,0 +1,24 @@
+{
+    "title": "儲存日誌",
+    "text": "您希望如何儲存日誌 <br /><strong>{{filename}}</strong><br />？",
+    "store": "儲存至 Documents",
+    "share": "分享",
+    "email": "透過電子郵件傳送給開發人員",
+    "share_email": {
+        "title": "{{package}} / {{platform}} - 日誌檔案 {{file}} ({{size}})",
+        "text": "請詳細描述問題，以便我理解：\n\n"
+    },
+    "store_success": "日誌已儲存。",
+    "store_error": "無法儲存日誌！",
+    "meta": "附加元數據",
+    "meta_device": "裝置資訊",
+    "meta_device_note": "型號、解析度、內存消耗等。",
+    "meta_settings": "應用設置",
+    "meta_settings_note": "日誌設置、語言等。",
+    "meta_storage": "存儲資訊",
+    "meta_storage_note": "裝置上的清單和日誌數量/大小",
+    "meta_garmin": "手錶資訊",
+    "meta_garmin_note": "手錶名稱、唯一識別碼、當前狀態",
+    "watch": "附加手錶日誌",
+    "error_report_confirm": "已收到錯誤報告。<br /><br />您是否願意將其作為錯誤報告轉寄給我？"
+}

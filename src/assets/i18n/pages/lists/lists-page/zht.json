@@ -1,0 +1,8 @@
+{
+    "page_title": "我的清單",
+    "empty": "清空",
+    "upload": "傳輸",
+    "updated": "最後更新：{{date}}",
+    "add_new_hint": "新增一個新的清單。",
+    "loading": "列表正在加載..."
+}

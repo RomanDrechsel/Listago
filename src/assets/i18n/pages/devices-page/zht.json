@@ -1,0 +1,18 @@
+{
+    "page_title": "我的設備",
+    "known_devices": "已知設備:",
+    "install_app": "您需要先在手錶上安裝清單應用。<br /><strong>點擊此處</strong>前往 Garmin ConnectIQ 商店。",
+    "toggle": "始終發送到此設備",
+    "select_btn": "選擇設備",
+    "device_state": {
+        "Ready": "設備已準備好",
+        "ServiceUnavailable": "ConnectIQ 服務不可用",
+        "AppNotInstalled": "此設備上未安裝應用",
+        "CheckingApp": "正在檢查設備...",
+        "ConnectionLost": "設備已斷開連接",
+        "Initializing": "正在初始化設備...",
+        "InvalidState": "設備處於無效狀態",
+        "NotConnected": "無法連接到設備",
+        "NotPaired": "設備未與 Garmin Connect 配對！"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "page_title": "Papierkorb",
+    "erase": "Entfernen",
+    "restore": "Wiederherstellen",
+    "deleted": "gelöscht: {{date}}",
+    "empty": "Der Papierkorb ist leer.",
+    "loading": "Der Papierkorb wird geladen...",
+    "error": "Der Papierkorb konnte nicht geladen werden!"
+}

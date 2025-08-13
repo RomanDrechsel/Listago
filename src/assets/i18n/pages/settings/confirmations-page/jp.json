@@ -1,0 +1,22 @@
+{
+    "page_title": "確認設定",
+    "delete_list": "リストの削除",
+    "delete_list_note": "リストを削除する際に確認を求める。",
+    "delete_listitem": "リスト項目の削除",
+    "delete_listitem_note": "リスト項目を削除する際に確認を求める。",
+    "empty_list": "リストを空にする",
+    "empty_list_note": "リストを空にする際に確認を求める。",
+    "erase_list": "リストをゴミ箱から削除",
+    "erase_list_note": "ゴミ箱からリストを完全に削除する際に確認を求める。",
+    "erase_listitem": "リスト項目をゴミ箱から削除",
+    "erase_listitem_note": "ゴミ箱からリスト項目を完全に削除する際に確認を求める。",
+    "empty_trash": "ゴミ箱を空にする",
+    "empty_trash_note": "ゴミ箱を空にする際に確認を求める。",
+    "restore_list": "リストを復元",
+    "restore_list_note": "ゴミ箱からリストを復元する際に確認を求める。",
+    "restore_listitem": "リスト項目を復元",
+    "restore_listitem_note": "ゴミ箱からリスト項目を復元する際に確認を求める。",
+    "undo_warning": "<br /><strong>警告:</strong> この操作は元に戻せません！",
+    "transmit_list": "リストを転送",
+    "transmit_list_note": "ウォッチにリストを転送する際に確認を求める"
+}

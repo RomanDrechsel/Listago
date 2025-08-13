@@ -1,0 +1,14 @@
+{
+    "page_title": "Transmission to watch",
+    "openontransmit": "Open app after transmitting a lis manually",
+    "openontransmit_note": "Request on your watch whether the app should be opened when you transfer a list?",
+    "deletelist": "Automatically delete lists on the watch",
+    "deletelist_note": "When deleting a list on your smartphone, also delete the list on your watch.",
+    "synclist": "Automatically sync lists with the watch",
+    "synclist_note": "When making changes to a list, sync it with the watch immediately.",
+    "synclist_warning": "<strong>Attention:</strong> Keep in mind that the app's storage space on the watch is limited. You shouldn't sync too many lists at the same time!<br />Additionally, it may also have a negative impact on the watch's battery life.",
+    "synclist_disable_title": "Disable automatic synchronization?",
+    "synclist_disable": "Do you want to disable the automatic synchronization for all lists?<br /><br />If you enable this setting again later, you will need to reconfigure the synchronization for each list again.",
+    "garminconnectiq": "Garmin Connect IQ support",
+    "garminconnectiq_note": "Deactivate this setting if you do not own a Garmin watch or do not want to use the transfer functions.<br />If this setting is activated, the Garmin ConnectIQ app is required on your smartphone."
+}

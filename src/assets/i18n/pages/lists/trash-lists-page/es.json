@@ -1,0 +1,9 @@
+{
+    "page_title": "Papelera",
+    "erase": "Eliminar",
+    "restore": "Restaurar",
+    "deleted": "Eliminado: {{date}}",
+    "empty": "La papelera está vacía.",
+    "loading": "Se carga la papelera de reciclaje...",
+    "error": "¡No se pudo cargar la papelera!"
+}

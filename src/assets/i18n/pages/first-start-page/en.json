@@ -1,0 +1,16 @@
+{
+    "welcome": "Welcome to Listago",
+    "language1": "Please select your preferred language:",
+    "language2": "You can change the language later if needed.",
+    "garmin1": "Support for Garmin watches",
+    "garmin2": "This allows you to sync your lists with your Garmin watch.<br />You need the <strong>Garmin Connect</strong> app on your smartphone and the <strong>{{garminApp}}</strong> app on your watch.",
+    "garmin_btn": "to {{garminApp}} App",
+    "garmin-hint1": "Sometimes, you may not be able to transfer lists to your watch, even though it is correctly recognized.<br /><br />In most cases, restarting your smartphone or watch will solve the issue.",
+    "garmin-hint2": "Unfortunately, I have no influence on how the Garmin Connect app works, as it acts as a bridge for communication with your watch.",
+    "finish1": "Thank you for using my app.",
+    "finish2": "If you're interested in my other projects, you can find more information on",
+    "finish3": "about me.",
+    "finish4": "Enjoy using my app!",
+    "finish_btn": "Continue to the app",
+    "finish_btn_import": "Start Import"
+}

@@ -1,0 +1,16 @@
+{
+    "welcome": "Bienvenido a Listago",
+    "language1": "Por favor, selecciona tu idioma preferido:",
+    "language2": "Puedes cambiar el idioma más tarde si es necesario.",
+    "garmin1": "Soporte para relojes Garmin",
+    "garmin2": "Esto te permite sincronizar tus listas con tu reloj Garmin.<br />Necesitas la aplicación <strong>Garmin Connect</strong> en tu smartphone y la aplicación <strong>{{garminApp}}</strong> en tu reloj.",
+    "garmin_btn": "a la aplicación {{garminApp}}",
+    "garmin-hint1": "A veces, es posible que no puedas transferir listas a tu reloj, incluso si es reconocido correctamente.<br /><br />En la mayoría de los casos, reiniciar tu smartphone o reloj resolverá el problema.",
+    "garmin-hint2": "Desafortunadamente, no tengo control sobre cómo funciona la aplicación Garmin Connect, ya que actúa como un puente para la comunicación con tu reloj.",
+    "finish1": "Gracias por usar mi aplicación.",
+    "finish2": "Si estás interesado en mis otros proyectos, puedes encontrar más información en",
+    "finish3": "sobre mí.",
+    "finish4": "¡Disfruta usando mi aplicación!",
+    "finish_btn": "Continuar a la aplicación",
+    "finish_btn_import": "Iniciar importación"
+}

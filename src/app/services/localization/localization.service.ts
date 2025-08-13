@@ -1,8 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
-import { TranslateService, Translation, TranslationObject } from "@ngx-translate/core";
-import { firstValueFrom } from "rxjs";
+import { getBrowserCultureLang, TranslocoService } from "@jsverse/transloco";
+import { Translation, TranslationObject } from "@ngx-translate/core";
 import { AppService } from "../app/app.service";
 import { ConfigService } from "../config/config.service";
 import { Logger } from "../logging/logger";
@@ -31,15 +31,15 @@ export class LocalizationService {
     private _currentCulture: Culture = this.FallbackCulture;
     private _currentLocale: string = this.FallbackCulture.locale;
 
-    public readonly Translate = inject(TranslateService);
+    public readonly Service = inject(TranslocoService);
     private readonly Preferences = inject(PreferencesService);
     private readonly Config = inject(ConfigService);
 
     private _availableTranslations: Culture[] = [];
 
     constructor() {
-        this.Translate.addLangs([...new Set<string>(this.AvailableTranslations.map(l => l.localeFile))]);
-        this.Translate.setFallbackLang(this.FallbackCulture.localeFile);
+        this.Service.setAvailableLangs([...new Set<string>(this.AvailableTranslations.map(l => l.localeFile))]);
+        this.Service.setFallbackLangForMissingTranslation({ fallbackLang: "en" });
     }
 
     /** all available languages */
@@ -80,7 +80,7 @@ export class LocalizationService {
                 lang = (await Device.getLanguageTag()).value;
                 Logger.Debug(`Device language is ${lang}`);
             } else {
-                lang = this.Translate.getBrowserCultureLang();
+                lang = getBrowserCultureLang();
                 Logger.Debug(`Browser language is ${lang}`);
             }
         } else {
@@ -117,7 +117,7 @@ export class LocalizationService {
 
             if (!this._currentCulture.Match(this._currentLocale)) {
                 if (this._currentCulture.localeFile != culture.localeFile) {
-                    await firstValueFrom(this.Translate.use(culture.localeFile));
+                    this.Service.setActiveLang(culture.localeFile);
                 }
                 this._currentCulture = culture;
             }
@@ -134,7 +134,7 @@ export class LocalizationService {
      * @returns string or array of string from localization
      */
     public getText(keys: string | string[], params: Object | undefined = undefined): Translation | TranslationObject {
-        return this.Translate.instant(keys, params);
+        return this.Service.translate(keys, params);
     }
 
     /**

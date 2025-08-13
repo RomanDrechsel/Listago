@@ -1,0 +1,7 @@
+{
+    "title": "Trasferisci i log",
+    "text": "Per trasferire i log dal tuo orologio, devi prima avviare l'app sul tuo orologio<br /><br /><strong>{{name}}</strong><br /><br />Se l'app è in esecuzione, i log verranno trasferiti automaticamente. Tuttavia, questa operazione potrebbe richiedere alcuni secondi.",
+    "withoutlogs": "Procedi senza log",
+    "openApp": "Aprire l'applicazione",
+    "logs_received_confirm": "I registri sono stati ricevuti.<br /><br />Vuoi visualizzarli ora?"
+}

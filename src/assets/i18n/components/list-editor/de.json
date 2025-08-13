@@ -1,0 +1,16 @@
+{
+    "title_new": "Neue Liste anlegen",
+    "title_edit": "Liste bearbeiten",
+    "listname": "Bezeichnung",
+    "settings": "Einstellungen",
+    "reset": "Liste automatisch zurücksetzen",
+    "reset_info": "Auf deiner Uhr werden alle Listenpunkte dieser Liste in einem bestimmten Intervall wieder auf \"nicht erledigt\" gesetzt.<br /><br />Dies eignet sich zum Beispiel für wiederkehrende Aufgaben wie Hausarbeiten oder andere regelmäßige Tätigkeiten.",
+    "reset_interval": "Intervall",
+    "reset_daily": "Täglich",
+    "reset_weekly": "Wöchentlich",
+    "reset_monthly": "Monatlich",
+    "sync": "Liste mit Uhr synchronisieren",
+    "sync_info": "Wenn du Änderungen an der Liste vornimmst, z.B. das Hinzufügen oder Löschen von Listenpunkten, werden diese Änderungen im Hintergrund automatisch auf deine Uhr übertragen.<br /><br />Beachte bitte, dass der Speicherplatz der App auf deiner Uhr begrenzt ist und dass durch die Synchronisierung die Akku-Ladung der Uhr schneller verbraucht werden kann.<br />Synchronisiere nicht zu viele Listen gleichzeitg.",
+    "sync_settings": "Um das automatische Synchronisieren zu aktivieren, musst du die entsprechende Option in den Einstellungen aktivieren.<br />Möchtest du zu den Einstellungen wechseln?",
+    "delete": "Liste löschen"
+}

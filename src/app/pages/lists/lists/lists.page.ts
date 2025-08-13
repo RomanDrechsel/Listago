@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { type Subscription } from "rxjs";
 import { type EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 import { MainToolbarListsCustomMenuComponent } from "src/app/components/main-toolbar-lists-custom-menu/main-toolbar-lists-custom-menu.component";
@@ -18,7 +18,8 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     templateUrl: "./lists.page.html",
     styleUrls: ["./lists.page.scss"],
     changeDetection: ChangeDetectionStrategy.Default,
-    imports: [IonCheckbox, IonLabel, IonReorderGroup, IonItemOption, IonItemOptions, IonItemSliding, IonIcon, IonFabButton, IonFab, IonItem, IonReorder, IonList, IonContent, MainToolbarComponent, PageAddNewComponent, CommonModule, FormsModule, TranslateModule, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
+    imports: [IonCheckbox, IonLabel, IonReorderGroup, IonItemOption, IonItemOptions, IonItemSliding, IonIcon, IonFabButton, IonFab, IonItem, IonReorder, IonList, IonContent, MainToolbarComponent, PageAddNewComponent, CommonModule, FormsModule, TranslocoModule, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
+    providers: [provideTranslocoScope({ scope: "pages/lists/lists-page", alias: "page_lists" }, { scope: "common/date", alias: "date" })],
 })
 export class ListsPage extends AnimatedListPageBase {
     private _lists: List[] | undefined;
@@ -32,6 +33,8 @@ export class ListsPage extends AnimatedListPageBase {
         super();
         this._animationDirection = "top";
     }
+
+    private readonly _locale = inject(TranslocoService);
 
     public override async ionViewWillEnter(): Promise<void> {
         await super.ionViewWillEnter();

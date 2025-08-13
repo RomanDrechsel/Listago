@@ -1,0 +1,10 @@
+{
+    "watch_outdated": "Du scheinst auf deinem Gerät <strong>{{device}}</strong> eine alte Version der Listen-App zu verwenden.<br /><br />Bitte aktuallisiere die App auf deiner Uhr, um alle Funktionen nutzen zu können.",
+    "watch_outdated_button": "Zum Connect-IQ Store",
+    "watch_outdated_ignore": "Ignorieren",
+    "watch_outdated_dontremind": "Für diese Version nicht wieder benachrichtigen",
+    "openapp_btn": "App öffnen",
+    "openapp_nodevice": "Kein aktives Gerät gefunden!",
+    "openapp_success": "App auf der Uhr geöffnet.",
+    "init_failed": "Garmin Unterstützung konnte nicht aktiviert werden!"
+}

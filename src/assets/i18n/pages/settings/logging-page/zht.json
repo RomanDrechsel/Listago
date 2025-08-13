@@ -1,0 +1,21 @@
+{
+    "page_title": "日誌",
+    "mode": "日誌模式",
+    "mode_debug": "除錯",
+    "mode_verbose": "詳細",
+    "mode_normal": "正常",
+    "mode_error": "僅限錯誤",
+    "autodelete": "刪除舊日誌",
+    "autodelete_day": "一天後",
+    "autodelete_week": "一週後",
+    "autodelete_month": "一個月後",
+    "show": "顯示日誌",
+    "show_watch": "顯示手錶日誌",
+    "show_watch_note": "顯示手錶的日誌，應用程式必須在手錶上運行",
+    "size": "大小:\n{{size}} / {{files}} 個檔案",
+    "deleteall": "刪除所有日誌",
+    "deleteall_confirm": "是否要刪除 {{count}} 個日誌檔案？",
+    "deleteall_confirm_single": "是否要刪除此日誌檔案？",
+    "deleteall_done": "{{count}} 個日誌檔案已刪除。",
+    "deleteall_done_single": "一個日誌檔案已刪除。"
+}

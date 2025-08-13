@@ -1,0 +1,13 @@
+{
+    "page_title": "清單未找到",
+    "loading": "正在加載清單...",
+    "menu_empty": "清空清單",
+    "menu_devices": "傳輸清單",
+    "hide": "隱藏",
+    "show": "顯示",
+    "lock": "鎖定",
+    "unlock": "解鎖",
+    "nolist": "出現錯誤 :(<br /><br />無法顯示清單。",
+    "add_new_hint": "在清單中創建一個新項目。",
+    "quickadd": "建立新的列表元素..."
+}

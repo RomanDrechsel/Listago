@@ -1,0 +1,18 @@
+{
+    "page_title": "My devices",
+    "known_devices": "Known devices:",
+    "install_app": "You need to install the Lists app on your device first.<br /><strong>Click here</strong> to get to the Garmin ConnectIQ Store.",
+    "toggle": "Always send to this device",
+    "select_btn": "Select device",
+    "device_state": {
+        "Ready": "The device is ready",
+        "ServiceUnavailable": "The ConnectIQ service is unavailable",
+        "AppNotInstalled": "The app is not installed on this device",
+        "CheckingApp": "The device is being checked...",
+        "ConnectionLost": "The device was disconnected",
+        "Initializing": "The device is being initialized...",
+        "InvalidState": "The device is in an invalid state",
+        "NotConnected": "No connection could be established with the device",
+        "NotPaired": "The device is not paired with Garmin Connect"
+    }
+}

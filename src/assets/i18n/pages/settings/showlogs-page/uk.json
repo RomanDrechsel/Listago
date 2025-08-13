@@ -1,0 +1,11 @@
+{
+    "page_title": "Логи",
+    "btn_delete": "Видалити лог",
+    "btn_save": "Зберегти лог",
+    "confirm_delete": "Підтвердити видалення логу <strong>{{filename}}</strong>?",
+    "toast_deleted": "Лог видалено.",
+    "select_logs": "Виберіть файл з логами:",
+    "select_logday_title": "Оберіть дати файлів з логами:",
+    "no_log": "Немає файлів з логами!",
+    "no_log_note": "Для {{date}} не було знайдено жодного файла з логами."
+}

@@ -1,0 +1,16 @@
+{
+    "page_title": "Trash",
+    "use_trash": "Use trash",
+    "use_trash_note": "Move lists to the trash when deleting instead of permanently removing them.",
+    "use_trash_listitem": "Use trash for list items",
+    "use_trash_listitem_note": "Move list items to the trash instead of permanently removing them.<br />A separate trash bin is used for each list.",
+    "instock": "Keep list items in the trash",
+    "instock_oneday": "one day",
+    "instock_oneweek": "one week",
+    "instock_onemonth": "one month",
+    "instock_hundredentries": "last 100 entries",
+    "instock_note": "How long should old lists or list items be kept in the trash?",
+    "confirm_clearitemstrash": "Should the trashes be emptied?<br /><br /><strong>Warning:</strong> The action can not be undone!",
+    "confirm_clearitemstrash_ok": "Empty trashes",
+    "confirm_clearitemstrash_cancel": "Don't empty trashes"
+}

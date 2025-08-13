@@ -1,0 +1,17 @@
+{
+    "page_title": "備份",
+    "lists": "你要備份你的清單嗎？",
+    "lists_toggle": "備份清單",
+    "trash": "是否也備份回收桶中的清單與項目？",
+    "trash_toggle": "備份回收桶",
+    "settings": "你也可以備份所有應用程式設定。",
+    "settings_toggle": "備份設定",
+    "export_to_zip": "備份",
+    "export_summary": "將備份以下內容：",
+    "export_summary_nothing": "沒有可備份的內容。",
+    "export_cancel": "取消備份",
+    "export_error": "備份未能完成！",
+    "export_success": "備份成功，已將檔案儲存至 <strong>DOCUMENTS</strong>。",
+    "export_success_share": "你要分享此檔案嗎？",
+    "export_success_share_title": "Listago 備份"
+}

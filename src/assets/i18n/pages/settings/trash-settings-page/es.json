@@ -1,0 +1,16 @@
+{
+    "page_title": "Papelera",
+    "use_trash": "Usar papelera",
+    "use_trash_note": "Mueva las listas a la papelera cuando se eliminen, en lugar de eliminarlas permanentemente.",
+    "use_trash_listitem": "Usar papelera para elementos de lista",
+    "use_trash_listitem_note": "Mueva los elementos de lista a la papelera al mismo tiempo que los elimina, en lugar de eliminarlos permanentemente. Cada lista tiene su propia papelera.",
+    "instock": "Guardar en stock",
+    "instock_oneday": "Un día",
+    "instock_oneweek": "Una semana",
+    "instock_onemonth": "Un mes",
+    "instock_hundredentries": "Últimos 100 registros",
+    "instock_note": "¿Cuánto tiempo guardar las listas o elementos de lista en la papelera?",
+    "confirm_clearitemstrash": "¿Quieres vaciar las papeleras?<br /><br /><strong>Aviso:</strong> La acción no puede ser revertida!",
+    "confirm_clearitemstrash_ok": "Vaciar papeleras",
+    "confirm_clearitemstrash_cancel": "No vaciar papeleras"
+}

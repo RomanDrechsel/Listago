@@ -1,0 +1,23 @@
+{
+    "page_title": "インポート",
+    "btn_import": "インポート",
+    "btn_select_archive": "アーカイブを選択",
+    "select_archive": "まずアーカイブを選択してください：",
+    "select_archive_error": "ファイルを開けませんでした！",
+    "archive_invalid": "アーカイブに互換性のあるバックアップが含まれていません！",
+    "archive_analysing": "アーカイブ<br /><br /><strong>{{filename}}</strong><br /><br />を解析中",
+    "select_items": "アーカイブから何をインポートしますか？",
+    "btn_reset_archive": "別のアーカイブを選択",
+    "import_success": "インポートが完了しました。",
+    "import_error": "インポートを完了できませんでした！",
+    "import_report_success_lists": "{{num}} 件のリストをインポートしました。",
+    "import_report_success_lists_singular": "1 件のリストをインポートしました。",
+    "import_report_success_trash": "{{num}} 件のゴミ箱アイテムをインポートしました。",
+    "import_report_success_trash_singular": "1 件のゴミ箱アイテムをインポートしました。",
+    "import_report_success_settings": "すべての設定をインポートしました。",
+    "import_report_failed_lists": "{{num}} 件のリストをインポートできませんでした。",
+    "import_report_failed_lists_singular": "1 件のリストをインポートできませんでした。",
+    "import_report_failed_trash": "{{num}} 件のゴミ箱アイテムをインポートできませんでした。",
+    "import_report_failed_trash_singular": "1 件のゴミ箱アイテムをインポートできませんでした。",
+    "import_report_failed_settings": "すべての設定をインポートできませんでした。"
+}

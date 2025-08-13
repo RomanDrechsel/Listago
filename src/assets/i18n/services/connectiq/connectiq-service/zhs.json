@@ -1,0 +1,10 @@
+{
+    "watch_outdated": "您的设备<strong>{{device}}</strong>上似乎使用的是旧版本的列表应用。<br /><br />请更新手表上的应用，以便使用所有功能。",
+    "watch_outdated_button": "前往Connect IQ商店",
+    "watch_outdated_ignore": "忽略",
+    "watch_outdated_dontremind": "此版本不再提醒",
+    "openapp_btn": "打开应用",
+    "openapp_nodevice": "未找到活动设备！",
+    "openapp_success": "应用已在手表上打开。",
+    "init_failed": "无法启用Garmin支持。"
+}

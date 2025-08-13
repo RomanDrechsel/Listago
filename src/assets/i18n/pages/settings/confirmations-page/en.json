@@ -1,0 +1,22 @@
+{
+    "page_title": "Confirmations",
+    "delete_list": "Delete list",
+    "delete_list_note": "Request confirmation when deleting a list.",
+    "delete_listitem": "Delete list item",
+    "delete_listitem_note": "Request confirmation when deleting a list item.",
+    "empty_list": "Empty list",
+    "empty_list_note": "Request confirmation when emptying a list.",
+    "erase_list": "Erase list from trash",
+    "erase_list_note": "Request confirmation when finally removing a list from the trash.",
+    "erase_listitem": "Erase list item from trash",
+    "erase_listitem_note": "Request confirmation when finally removing a list item from the trash.",
+    "empty_trash": "Empty trash",
+    "empty_trash_note": "Request confirmation when emptying the trash.",
+    "restore_list": "Restore list",
+    "restore_list_note": "Request confirmation when restoring a list from the trash.",
+    "restore_listitem": "Restore listitem",
+    "restore_listitem_note": "Request confirmation when restoring a listitem from the trash.",
+    "undo_warning": "<br /><strong>Warning:</strong> The action can not be undone!",
+    "transmit_list": "Transmit list",
+    "transmit_list_note": "Request confirmation when transferring a list to a watch."
+}

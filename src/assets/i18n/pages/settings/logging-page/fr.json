@@ -1,0 +1,21 @@
+{
+    "page_title": "Journalisation",
+    "mode": "Mode de journalisation",
+    "mode_debug": "Débogage",
+    "mode_verbose": "Détaillé",
+    "mode_normal": "Normal",
+    "mode_error": "Erreurs uniquement",
+    "autodelete": "Supprimer les anciens journaux",
+    "autodelete_day": "Après un jour",
+    "autodelete_week": "Après une semaine",
+    "autodelete_month": "Après un mois",
+    "show": "Afficher les journaux",
+    "show_watch": "Afficher les journaux de la montre",
+    "show_watch_note": "Affiche les journaux de la montre. L'application doit être en cours d'exécution sur la montre.",
+    "size": "Taille :\n{{size}} / {{files}} fichier(s)",
+    "deleteall": "Supprimer tous les journaux",
+    "deleteall_confirm": "Supprimer les {{count}} fichiers journaux ?",
+    "deleteall_confirm_single": "Voulez-vous supprimer ce fichier journal ?",
+    "deleteall_done": "{{count}} fichiers journaux supprimés.",
+    "deleteall_done_single": "Un fichier journal supprimé."
+}

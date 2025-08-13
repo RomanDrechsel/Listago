@@ -1,0 +1,12 @@
+{
+    "title_new": "Listenpunkt anlegen",
+    "title_edit": "Listenpunkt bearbeiten",
+    "itemname": "Bezeichnung",
+    "itemnote": "Notiz",
+    "hidden": "Versteckt",
+    "hidden_info": "Versteckte Listenpunkte werden nicht mit auf Deine Uhr übertragen, bleiben aber auf dem Smartphone erhalten.<br /><br />Dies ist nützlich, wenn Du zeitweise bestimmte Punkte nicht anzeigen willst, aber sie trotzdem nicht löschen möchtest. Sie können später wiederverwendet werden.",
+    "locked": "Gesperrt",
+    "locked_info": "Gesperrte Listenpunkte werden beim Leeren der Liste nicht gelöscht.<br /><br />Dies vereinfacht das Aufräumen der Liste, wenn Du bestimmte Punkte regelmäßig wiederholen möchtest.",
+    "delete": "Listenpunkt löschen",
+    "add_more": "einen weiteren Punkt hinzufügen"
+}

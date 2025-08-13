@@ -1,0 +1,11 @@
+{
+    "page_title": "लॉग्स",
+    "btn_delete": "लॉग हटाएं",
+    "btn_save": "लॉग सहेजें",
+    "confirm_delete": "क्या लॉग <strong>{{filename}}</strong> को वास्तव में हटाया जाना चाहिए?",
+    "toast_deleted": "लॉग हटा दिया गया।",
+    "select_logs": "लॉग फ़ाइल चुनें:",
+    "select_logday_title": "लॉग फ़ाइलों के दिन चुनें:",
+    "no_log": "कोई लॉग फ़ाइल नहीं मिली!",
+    "no_log_note": "{{date}} के लिए कोई लॉग फ़ाइल नहीं मिली।"
+}

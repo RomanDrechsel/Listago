@@ -1,0 +1,7 @@
+{
+    "page_title": "Importer & Exporter",
+    "import": "Importer",
+    "import_note": "Importer une ancienne sauvegarde depuis un fichier",
+    "export": "Exporter",
+    "export_note": "Enregistrer les listes et les paramètres de l'application dans un fichier"
+}

@@ -1,0 +1,16 @@
+{
+    "page_title": "ゴミ箱",
+    "use_trash": "ゴミ箱を使用",
+    "use_trash_note": "リストを削除する際、完全に削除せずゴミ箱に移動します。",
+    "use_trash_listitem": "リスト項目用のゴミ箱を使用",
+    "use_trash_listitem_note": "リスト項目を完全に削除せず、ゴミ箱に移動します。<br />各リストに独自のゴミ箱があります。",
+    "instock": "保持期間",
+    "instock_oneday": "1日",
+    "instock_oneweek": "1週間",
+    "instock_onemonth": "1ヶ月",
+    "instock_hundredentries": "最新100項目",
+    "instock_note": "古いリストやリスト項目をゴミ箱にどのくらいの期間保持しますか？",
+    "confirm_clearitemstrash": "ゴミ箱を空にしますか？<br /><br /><strong>警告:</strong> この操作は元に戻せません！",
+    "confirm_clearitemstrash_ok": "ゴミ箱を空にする",
+    "confirm_clearitemstrash_cancel": "ゴミ箱を空にしない"
+}

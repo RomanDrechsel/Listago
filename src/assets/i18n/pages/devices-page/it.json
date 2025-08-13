@@ -1,0 +1,15 @@
+{
+    "page_title": "I miei dispositivi",
+    "known_devices": "Dispositivi noti:",
+    "install_app": "Devi prima installare l'app Lista sul tuo orologio.<br /><strong>Clicca qui</strong> per andare allo store Garmin Connect IQ.",
+    "toggle": "Invia sempre a questo dispositivo",
+    "select_btn": "Seleziona dispositivo",
+    "device_state": {
+        "Ready": "Il dispositivo è pronto",
+        "ServiceUnavailable": "Il servizio ConnectIQ non è raggiungibile",
+        "AppNotInstalled": "L'app non è installata su questo dispositivo",
+        "CheckingApp": "Controllo app in corso...",
+        "CheckingAppComplete": "Controllo dell'app completato.",
+        "UnknownError": "Errore sconosciuto."
+    }
+}

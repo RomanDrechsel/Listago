@@ -1,0 +1,24 @@
+{
+    "title": "Guardar log",
+    "text": "¿Cómo quieres guardar el log <br /><strong>{{filename}}</strong><br />?",
+    "store": "Guardar en Documentos",
+    "share": "Compartir",
+    "email": "Enviar al promotor por e-mail",
+    "share_email": {
+        "title": "{{package}} / {{platform}} - {{file}} ({{size}})",
+        "text": "Por favor, describe los problemas un poco más detalladamente para que pueda entenderlos:\n\n"
+    },
+    "store_success": "El log se guardó correctamente.",
+    "store_error": "¡No se pudo guardar el log!",
+    "meta": "Anexar metadatos",
+    "meta_device": "Información del dispositivo",
+    "meta_device_note": "Modelo, resolución, consumo de memoria, etc.",
+    "meta_settings": "Especificaciones de la aplicación",
+    "meta_settings_note": "Configuraciones de log, idioma, etc.",
+    "meta_storage": "Información de almacenamiento",
+    "meta_storage_note": "Número/tamaño de listas y logs en el dispositivo",
+    "meta_garmin": "Información del reloj",
+    "meta_garmin_note": "Nombre del reloj, identificador único, estado actual",
+    "watch": "Anexar logs del reloj",
+    "error_report_confirm": "El informe de error ha sido recibido.<br /><br />¿Quieres reenviármelo como informe de error?"
+}

@@ -1,0 +1,19 @@
+{
+    "page_title": "設定",
+    "language": "アプリの言語",
+    "language_hint": "このアプリケーションは人工知能を使って翻訳されています。エラーが発生した場合は、 <span class=\"no-wrap\">{{email}}</span> に連絡してください。",
+    "translation_error_confirm": "翻訳エラーを報告しますか？",
+    "translation_error_title": "日本語訳の誤り",
+    "animations": "アニメーション",
+    "animations_note": "さまざまな処理をアニメーションで視覚的に表示しますか？",
+    "logging": "ログ設定",
+    "logging_note": "ログの設定と管理",
+    "confirm": "確認設定",
+    "confirm_note": "ユーザー確認の設定",
+    "trash": "ごみ箱の設定",
+    "trash_note": "ゴミ箱の設定",
+    "transmission": "転送設定",
+    "transmission_note": "ウォッチへのリスト転送設定",
+    "advertisement": "広告",
+    "advertisement_note": "広告でサポートするか、無効にしてください"
+}

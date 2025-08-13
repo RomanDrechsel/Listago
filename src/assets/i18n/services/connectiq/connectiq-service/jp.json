@@ -1,0 +1,10 @@
+{
+    "watch_outdated": "デバイス <strong>{{device}}</strong> に古いバージョンのリストアプリがインストールされているようです。<br /><br />ウォッチのアプリを最新バージョンに更新して、すべての機能を利用してください。",
+    "watch_outdated_button": "Connect IQストアへ",
+    "watch_outdated_ignore": "無視",
+    "watch_outdated_dontremind": "このバージョンに対して再通知しない",
+    "openapp_btn": "アプリを開く",
+    "openapp_nodevice": "アクティブなデバイスが見つかりません！",
+    "openapp_success": "時計でアプリが開かれました。",
+    "init_failed": "Garminサポートを有効にできませんでした。"
+}

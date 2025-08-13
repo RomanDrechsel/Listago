@@ -1,0 +1,16 @@
+{
+    "page_title": "Papierkorb",
+    "use_trash": "Papierkorb verwenden",
+    "use_trash_note": "Listen beim Löschen in den Papierkorb verschieben, statt sie entgültig zu entfernen.",
+    "use_trash_listitem": "Papierkorb für Listen-Punkte verwenden",
+    "use_trash_listitem_note": "Listen-Punkte in den Papierkorb verschieben, statt sie entgültig zu entfernen.<br />Für jede Liste wird ein eigener Papierkorb verwendet.",
+    "instock": "Vorrätig halten",
+    "instock_oneday": "einen Tag",
+    "instock_oneweek": "eine Woche",
+    "instock_onemonth": "einen Monat",
+    "instock_hundredentries": "letzte 100 Einträge",
+    "instock_note": "Wie lange sollen alte Listen bzw. Listenpunkte im Papierkorb vorrätig gehalten werden?",
+    "confirm_clearitemstrash": "Sollen die Papierkörbe geleert werden?<br /><br /><strong>Achtung:</strong> Die Aktion kann nicht mehr rückgängig gemacht werden!",
+    "confirm_clearitemstrash_ok": "Papierkörbe leeren",
+    "confirm_clearitemstrash_cancel": "Papierkörbe nicht leeren"
+}

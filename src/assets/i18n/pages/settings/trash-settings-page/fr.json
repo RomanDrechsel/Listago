@@ -1,0 +1,16 @@
+{
+    "page_title": "Corbeille",
+    "use_trash": "Utiliser la corbeille",
+    "use_trash_note": "Déplacer les listes supprimées dans la corbeille au lieu de les supprimer définitivement.",
+    "use_trash_listitem": "Utiliser la corbeille pour les éléments de liste",
+    "use_trash_listitem_note": "Déplacer les éléments de liste dans la corbeille au lieu de les supprimer définitivement.<br />Chaque liste a sa propre corbeille.",
+    "instock": "Conserver en stock",
+    "instock_oneday": "un jour",
+    "instock_oneweek": "une semaine",
+    "instock_onemonth": "un mois",
+    "instock_hundredentries": "les 100 dernières entrées",
+    "instock_note": "Combien de temps les anciennes listes ou éléments doivent-ils être conservés dans la corbeille ?",
+    "confirm_clearitemstrash": "Vider les corbeilles des éléments ?<br /><br /><strong>Attention :</strong> Cette action est irréversible !",
+    "confirm_clearitemstrash_ok": "Vider les corbeilles",
+    "confirm_clearitemstrash_cancel": "Ne pas vider les corbeilles"
+}

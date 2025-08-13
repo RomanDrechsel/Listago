@@ -1,0 +1,11 @@
+{
+    "page_title": "ログ",
+    "btn_delete": "ログを削除",
+    "btn_save": "ログを保存",
+    "confirm_delete": "本当にログ <strong>{{filename}}</strong> を削除しますか？",
+    "toast_deleted": "ログが削除されました。",
+    "select_logs": "ログファイルを選択:",
+    "select_logday_title": "ログファイルの日付を選択:",
+    "no_log": "ログファイルが見つかりません！",
+    "no_log_note": "{{date}} のログファイルが見つかりませんでした。"
+}
