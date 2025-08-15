@@ -1,4 +1,8 @@
 {
     "page_title": "Corbeille",
-    "empty": "La corbeille de la liste est vide."
+    "empty": "La corbeille de la liste est vide.",
+    "loading": "La corbeille est en cours de chargement...",
+    "error": "Impossible de charger la corbeille !",
+    "erase": "Supprimer",
+    "restore": "Restaurer"
 }

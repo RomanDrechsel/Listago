@@ -1,8 +1,8 @@
-<div class="container done-report">
+<div class="container done-report" *transloco="let t">
     <div class="content">
         <div>
             <ion-icon src="/assets/icons/done.svg" class="done"></ion-icon>
-            <div class="text" [innerHTML]="'page_settings_import.import_success' | translate"></div>
+            <div class="text" [innerHTML]="t('page_settings_import.import_success')"></div>
         </div>
         <ion-card>
             <ion-list>
@@ -17,6 +17,6 @@
     </div>
 
     <ion-buttons class="fixed-bottom">
-        <ion-button fill="solid" color="secondary" (click)="importDone()">{{ "done" | translate }}</ion-button>
+        <ion-button fill="solid" color="secondary" (click)="importDone()">{{ t("buttons.done") }}</ion-button>
     </ion-buttons>
 </div>

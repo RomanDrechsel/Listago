@@ -1,7 +1,6 @@
 {
     "page_title": "設定",
     "language": "アプリの言語",
-    "language_hint": "このアプリケーションは人工知能を使って翻訳されています。エラーが発生した場合は、 <span class=\"no-wrap\">{{email}}</span> に連絡してください。",
     "translation_error_confirm": "翻訳エラーを報告しますか？",
     "translation_error_title": "日本語訳の誤り",
     "animations": "アニメーション",

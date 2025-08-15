@@ -1,8 +1,8 @@
-<app-main-toolbar back="/lists">{{'page_policy.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/lists" *transloco="let t">{{t('page_policy.page_title')}}</app-main-toolbar>
 
-<ion-content class="privacy-policy">
+<ion-content class="privacy-policy" *transloco="let t">
     <div class="select-language">
-        <ion-select interface="action-sheet" justify="end" [okText]="'change'|translate" [cancelText]="'cancel'|translate" [value]="this.SelectedCulture" (ionChange)="onSelectLanguage($event.target.value)">
+        <ion-select interface="action-sheet" justify="end" [okText]="t('buttons.change')" [cancelText]="t('buttons.cancel')" [value]="this.SelectedCulture" (ionChange)="onSelectLanguage($event.target.value)">
             @if (SelectedCulture) {
             <ion-img slot="start" [src]="this.SelectedCulture.Icon"></ion-img>
             } @for (lang of Languages; track lang.locale) {
@@ -10,5 +10,5 @@
             }
         </ion-select>
     </div>
-    <div class="policy" #policy></div>
+    <div class="policy" id="policy-container"></div>
 </ion-content>

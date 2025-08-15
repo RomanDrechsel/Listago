@@ -197,11 +197,11 @@ export class AppService {
         }
 
         if (!query || query.storage !== false) {
-            const database = await this._listsService.BackendService.DatabaseStats();
+            const database = await this._listsService._backendService.DatabaseStats();
             const logs = await this._logger.GetLogSize();
             meta.Storage = {
                 Backend: {
-                    Size: await this._listsService.BackendService.DatabaseSize(),
+                    Size: await this._listsService._backendService.DatabaseSize(),
                     Lists: {
                         Lists: database.lists.lists,
                         Items: database.lists.items,

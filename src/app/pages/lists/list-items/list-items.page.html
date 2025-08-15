@@ -3,7 +3,7 @@
     <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="!List?.Items?.length" [EditModeMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
 </app-main-toolbar>
 
-<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
+<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent *transloco="let t">
     @if(List !== undefined && List.Items.length > 0) {
     <div class="content" #listContent>
         <ion-list id="animated-list" #itemsList>
@@ -38,17 +38,17 @@
                     <ion-item-options side="start" (ionSwipe)="onSwipeRight(item)">
                         <ion-item-option color="danger" expandable="true" (click)="DeleteItem(item)">
                             <ion-icon slot="start" src="./assets/icons/trash_solid.svg"></ion-icon>
-                            {{'delete'|translate}}
+                            {{ t('buttons.delete')}}
                         </ion-item-option>
                     </ion-item-options>
                     <ion-item-options side="end" (ionSwipe)="onSwipeLeft(item)">
                         <ion-item-option color="secondary" (click)="PinItem(item)">
                             <ion-icon slot="end" [src]="item.Locked ? './assets/icons/pin_off.svg' : './assets/icons/pin.svg'"></ion-icon>
-                            {{(item.Locked ? 'page_listitems.unlock' : 'page_listitems.lock')|translate}}
+                            {{(item.Locked ? t('page_listitems.unlock') : t('page_listitems.lock'))}}
                         </ion-item-option>
                         <ion-item-option color="secondary" expandable="true" (click)="HideItem(item)">
                             <ion-icon slot="end" [src]="item.Hidden ? './assets/icons/eye.svg' : './assets/icons/eye_off.svg'"></ion-icon>
-                            {{(item.Hidden ? 'page_listitems.show' : 'page_listitems.hide')|translate}}
+                            {{(item.Hidden ? t('page_listitems.show') : t('page_listitems.hide'))}}
                         </ion-item-option>
                     </ion-item-options>
                 </ion-item-sliding>
@@ -56,23 +56,23 @@
             </ion-reorder-group>
         </ion-list>
         <ion-item lines="none" class="quick-add" [ngClass]="{'visible': InitialAnimationDone && !EditMode}">
-            <ion-textarea placeholder="{{'page_listitems.quickadd'|translate}}" autoGrow="true" inputmode="text" spellcheck="true" maxlength="250" autocapitalize="sentence" rows="2" fill="solid" (ionFocus)="hideAds()" [disabled]="!InitialAnimationDone || EditMode" #quickAdd>
-                <ion-button fill="outline" [ariaLabel]="'add'|translate" size="small" slot="end" (click)="QuickAddItem($event)" [disabled]="!InitialAnimationDone || EditMode || !quickAdd?.value?.length">
+            <ion-textarea [placeholder]="t('page_listitems.quickadd')" autoGrow="true" inputmode="text" spellcheck="true" maxlength="250" autocapitalize="sentence" rows="2" fill="solid" (ionFocus)="hideAds()" [disabled]="!InitialAnimationDone || EditMode" #quickAdd>
+                <ion-button fill="outline" [ariaLabel]="t('buttons.add')" size="small" slot="end" (click)="QuickAddItem($event)" [disabled]="!InitialAnimationDone || EditMode || !quickAdd?.value?.length">
                     <ion-icon slot="start" src="./assets/icons/add.svg"></ion-icon>
-                    {{'add'|translate}}
+                    {{ t('buttons.add')}}
                 </ion-button>
             </ion-textarea>
         </ion-item>
     </div>
     }@else if (List && ItemsInitialized && List.Items.length == 0) {
-    <app-page-add-new> {{'page_listitems.add_new_hint'|translate}} </app-page-add-new>
+    <app-page-add-new> {{t('page_listitems.add_new_hint')}} </app-page-add-new>
     } @else if (!ItemsInitialized) {
     <app-page-empty>
         <div slot="image">
             <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
         </div>
         <div slot="text">
-            <div [innerHTML]="'page_listitems.loading'|translate"></div>
+            <div [innerHTML]="t('page_listitems.loading')"></div>
         </div>
     </app-page-empty>
     } @else {
@@ -81,12 +81,12 @@
             <ion-icon src="./assets/icons/nolist.svg"></ion-icon>
         </div>
         <div slot="text">
-            <div [innerHTML]="'page_listitems.nolist'|translate"></div>
+            <div [innerHTML]="t('page_listitems.nolist')"></div>
         </div>
     </app-page-empty>
     } @if(List && ItemsInitialized && ShowAddButton) {
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="AddItem()" [ariaLabel]="'add'|translate">
+        <ion-fab-button (click)="AddItem()" [ariaLabel]="t('buttons.add')">
             <ion-icon src="./assets/icons/add.svg"></ion-icon>
         </ion-fab-button>
     </ion-fab>

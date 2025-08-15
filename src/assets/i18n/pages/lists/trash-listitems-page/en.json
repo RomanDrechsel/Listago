@@ -1,4 +1,8 @@
 {
     "page_title": "Trash",
-    "empty": "The trash of the list is empty."
+    "empty": "The trash of the list is empty.",
+    "loading": "The trash is being loaded...",
+    "error": "The trash could not be loaded!",
+    "erase": "Erase",
+    "restore": "Restore"
 }

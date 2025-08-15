@@ -1,30 +1,30 @@
-<app-main-toolbar back="/settings">{{'page_settings_advertisement.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/settings" *transloco="let t">{{t('page_settings_advertisement.page_title')}}</app-main-toolbar>
 
-<ion-content>
+<ion-content *transloco="let t">
     <ion-list>
         <ion-item lines="full" class="activate">
             <div class="centered-toggle-wrapper">
                 <div class="centered-toggle">
-                    <ion-toggle [checked]="AdvertisementActive" (click)="toggleAdvertisements($event)" #adsToggle>{{AdvertisementText|translate}}</ion-toggle>
+                    <ion-toggle [checked]="AdvertisementActive" (click)="toggleAdvertisements($event)" #adsToggle>{{t(AdvertisementText)}}</ion-toggle>
                 </div>
             </div>
         </ion-item>
         <ion-item lines="none" class="texts">
-            <div class="listago text" [innerHTML]="'page_settings_advertisement.text1'|translate"></div>
-            <div class="text" [innerHTML]="'page_settings_advertisement.text2'|translate"></div>
-            <div class="text" [innerHTML]="'page_settings_advertisement.text3'|translate"></div>
+            <div class="listago text" [innerHTML]="t('page_settings_advertisement.text1')"></div>
+            <div class="text" [innerHTML]="t('page_settings_advertisement.text2')"></div>
+            <div class="text" [innerHTML]="t('page_settings_advertisement.text3')"></div>
         </ion-item>
 
         <ion-item lines="none" class="supports">
-            <div class="support" [innerHTML]="'page_settings_advertisement.support1'|translate"></div>
+            <div class="support" [innerHTML]="t('page_settings_advertisement.support1')"></div>
             <ion-img src="/assets/img/de-pp-logo-200px.png" class="paypal" (click)="paypal()" />
-            <div class="support" [innerHTML]="'page_settings_advertisement.support2'|translate"></div>
+            <div class="support" [innerHTML]="t('page_settings_advertisement.support2')"></div>
             <ion-img [src]="isDarkmode ? './assets/img/bmc_dark.png' : './assets/img/bmc.png'" (click)="bmc()" />
-            <div class="support" [innerHTML]="'page_settings_advertisement.support3'|translate"></div>
+            <div class="support" [innerHTML]="t('page_settings_advertisement.support3')"></div>
         </ion-item>
 
         <ion-item lines="none" class="thanks">
-            <div class="thank" [innerHTML]="'page_settings_advertisement.thanks'|translate"></div>
+            <div class="thank" [innerHTML]="t('page_settings_advertisement.thanks')"></div>
         </ion-item>
     </ion-list>
 </ion-content>

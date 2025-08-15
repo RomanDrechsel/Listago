@@ -1,8 +1,9 @@
+import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
 import { getBrowserCultureLang, TranslocoService } from "@jsverse/transloco";
-import { Translation, TranslationObject } from "@ngx-translate/core";
+import { Translation } from "@ngx-translate/core";
 import { AppService } from "../app/app.service";
 import { ConfigService } from "../config/config.service";
 import { Logger } from "../logging/logger";
@@ -31,15 +32,17 @@ export class LocalizationService {
     private _currentCulture: Culture = this.FallbackCulture;
     private _currentLocale: string = this.FallbackCulture.locale;
 
-    public readonly Service = inject(TranslocoService);
-    private readonly Preferences = inject(PreferencesService);
-    private readonly Config = inject(ConfigService);
+    public readonly Transloco = inject(TranslocoService);
+    private readonly _preferences = inject(PreferencesService);
+    private readonly _config = inject(ConfigService);
+    private readonly _http = inject(HttpClient);
 
     private _availableTranslations: Culture[] = [];
 
+    private _loadedScopes: { [key: string]: string | undefined } = {};
+
     constructor() {
-        this.Service.setAvailableLangs([...new Set<string>(this.AvailableTranslations.map(l => l.localeFile))]);
-        this.Service.setFallbackLangForMissingTranslation({ fallbackLang: "en" });
+        this.Transloco.setAvailableLangs([...new Set<string>(this.AvailableTranslations.map(l => l.localeFile))]);
     }
 
     /** all available languages */
@@ -74,7 +77,7 @@ export class LocalizationService {
      * initialize service
      */
     public async Initialize() {
-        let lang: string | Culture | undefined = await this.Preferences.Get<string>(EPrefProperty.AppLanguage, "");
+        let lang: string | Culture | undefined = await this._preferences.Get<string>(EPrefProperty.AppLanguage, "");
         if (lang.length == 0) {
             if (Capacitor.isNativePlatform()) {
                 lang = (await Device.getLanguageTag()).value;
@@ -92,6 +95,9 @@ export class LocalizationService {
         }
 
         this.ChangeLanguage(lang, true);
+        await this.loadScope("services/localization/localization-service", "service-locale");
+        await this.loadScope("common/languages", "languages");
+
         Logger.Debug("Locale initialized");
     }
 
@@ -116,12 +122,13 @@ export class LocalizationService {
             this._currentLocale = locale;
 
             if (!this._currentCulture.Match(this._currentLocale)) {
-                if (this._currentCulture.localeFile != culture.localeFile) {
-                    this.Service.setActiveLang(culture.localeFile);
+                if (init || this._currentCulture.localeFile != culture.localeFile) {
+                    this._currentCulture = culture;
+                    this.Transloco.setActiveLang(culture.localeFile);
+                    await this.reloadScopes();
                 }
-                this._currentCulture = culture;
             }
-            await this.Preferences.Set(EPrefProperty.AppLanguage, this._currentLocale);
+            await this._preferences.Set(EPrefProperty.AppLanguage, this._currentLocale);
             Logger.Debug(`Changed language to ${this._currentCulture.name} (${this._currentLocale})`);
             this.WarnForTranslation(init);
         }
@@ -133,20 +140,57 @@ export class LocalizationService {
      * @param params placeholder to me replaced in text
      * @returns string or array of string from localization
      */
-    public getText(keys: string | string[], params: Object | undefined = undefined): Translation | TranslationObject {
-        return this.Service.translate(keys, params);
+    public getText(keys: string | string[], params: Object | undefined = undefined): Translation | { [key: string]: Translation } {
+        if (Array.isArray(keys)) {
+            const ret: { [key: string]: Translation } = [];
+            for (const key of keys) {
+                ret[key] = this.Transloco.translate(key, params);
+            }
+            return ret;
+        }
+        return this.Transloco.translate(keys, params);
     }
 
     /**
      * display an alert, if an ai translation is used
      */
     public async WarnForTranslation(init: boolean = true) {
-        if (["de", "en"].indexOf(this.CurrentLanguage.localeFile) < 0) {
-            if (!init) {
-                await AppService.Popups.Alert.Show({
-                    message: this.getText("page_settings.language_hint", { email: this.Config.EMailAddress }),
-                });
+        if (!init && ["de", "en"].indexOf(this.CurrentLanguage.localeFile) < 0) {
+            await AppService.Popups.Alert.Show({
+                message: this.getText("service-locale.language_hint", { email: this._config.EMailAddress }),
+            });
+        }
+    }
+
+    public async loadScope(scope: string, alias?: string): Promise<void> {
+        //check if scope is already loaded
+        for (const [s, a] of Object.entries(this._loadedScopes)) {
+            if (scope == s && alias == a) {
+                return;
             }
+        }
+
+        return new Promise((resolve, reject) => {
+            this._http.get<Translation>(`/assets/i18n/${scope}/${this._currentCulture.localeFile}.json`).subscribe({
+                next: (translation: Translation) => {
+                    for (let [key, value] of Object.entries(translation)) {
+                        key = alias ? `${alias}.${key}` : key;
+                        this.Transloco.setTranslationKey(key, String(value), { lang: this._currentCulture.localeFile });
+                    }
+                    this._loadedScopes[scope] = alias;
+                    resolve();
+                },
+                error: error => reject(error),
+            });
+        });
+    }
+
+    private async reloadScopes() {
+        const copy: { [key: string]: string | undefined } = { ...this._loadedScopes };
+        console.log("LOCALE-Reload: ", copy);
+        this._loadedScopes = {};
+        for (const [scope, alias] of Object.entries(copy)) {
+            await this.loadScope(scope, alias);
         }
     }
 }

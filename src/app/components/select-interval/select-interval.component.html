@@ -1,11 +1,11 @@
-<div class="content">
+<div class="content" *transloco="let t">
     <ion-header>
         <ion-toolbar>
             <ion-buttons slot="start">
-                <ion-button (click)="cancel()" [ariaLabel]="'cancel' | translate">{{ "cancel" | translate }}</ion-button>
+                <ion-button (click)="cancel()" [ariaLabel]="t('buttons.cancel')">{{ t("buttons.cancel") }}</ion-button>
             </ion-buttons>
             <ion-buttons slot="end">
-                <ion-button (click)="select()" [ariaLabel]="'select' | translate">{{ "select" | translate }}</ion-button>
+                <ion-button (click)="select()" [ariaLabel]="t('buttons.select')">{{ t("buttons.select") }}</ion-button>
             </ion-buttons>
         </ion-toolbar>
     </ion-header>
@@ -17,7 +17,7 @@
                     @for (d of Days; track d.v) {
                     <ion-picker-column-option>{{ d.s }}</ion-picker-column-option>
                     }
-                    <span slot="suffix" class="no-padding">{{ "comp-select-interval.ofmonth" | translate }}</span>
+                    <span slot="suffix" class="no-padding" [innerHTML]="t('comp-select-interval.ofmonth')"></span>
                 </ion-picker-column>
             </ion-picker>
             <div class="devider"></div>
@@ -43,7 +43,7 @@
                 @for(m of Minutes; track m.v) {
                 <ion-picker-column-option [value]="m.v">{{ m.s }}</ion-picker-column-option>
                 } @if (Locale.CurrentLanguage.h24) {
-                <span slot="suffix">{{ "comp-select-interval.oclock" | translate }}</span>
+                <span slot="suffix" [innerHTML]="t('comp-select-interval.oclock')"></span>
                 }
             </ion-picker-column>
         </ion-picker>

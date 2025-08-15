@@ -6,7 +6,7 @@ import { CapacitorException } from "@capacitor/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FilePicker, type PickFilesResult } from "@capawesome/capacitor-file-picker";
 import { IonButton, IonButtons, IonCard, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonProgressBar, IonText, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { ImportDonePopup } from "src/app/components/import-done/import-done.component";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -24,7 +24,8 @@ export type ImportPageQueryParams = {
     templateUrl: "./import.page.html",
     styleUrls: ["./import.page.scss"],
     standalone: true,
-    imports: [IonItem, IonCheckbox, IonProgressBar, IonText, IonLabel, IonList, IonCard, IonIcon, IonButton, IonButtons, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
+    imports: [IonItem, IonCheckbox, IonProgressBar, IonText, IonLabel, IonList, IonCard, IonIcon, IonButton, IonButtons, IonContent, CommonModule, FormsModule, TranslocoModule, MainToolbarComponent],
+    providers: [provideTranslocoScope({ scope: "pages/settings/import-page", alias: "page_settings_import" }, { scope: "pages/settings/im-export", alias: "im-export" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ImportPage extends PageBase {
     private _archive?: string;

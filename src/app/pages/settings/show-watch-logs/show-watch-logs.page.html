@@ -1,9 +1,9 @@
-<app-main-toolbar back="/settings/logging">{{'page_settings_showwatchlogs.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/settings/logging" *transloco="let t">{{t('page_settings_showwatchlogs.page_title')}}</app-main-toolbar>
 
-<ion-content scrollEvents="true" scrollX="false" (ionScroll)="onScroll($event)" #mainContent>
+<ion-content scrollEvents="true" scrollX="false" (ionScroll)="onScroll($event)" #mainContent *transloco="let t">
     <div class="select">
-        <ion-select interface="action-sheet" [interfaceOptions]="{header: 'page_settings_showwatchlogs.select_watch'|translate}" [value]="Device" [cancelText]="'cancel'|translate" [disabled]="!Device" (ionChange)="onChangeDevice($event)">
-            <ion-text slot="label">{{Device?.Name ?? 'page_settings_showwatchlogs.no_watch'|translate}}</ion-text>
+        <ion-select interface="action-sheet" [interfaceOptions]="{header: t('page_settings_showwatchlogs.select_watch')}" [value]="Device" [cancelText]="t('buttons.cancel')" [disabled]="!Device" (ionChange)="onChangeDevice($event)">
+            <ion-text slot="label">{{Device?.Name ?? t('page_settings_showwatchlogs.no_watch')}}</ion-text>
             @for(device of availableDevices; track device.Identifier) {
             <ion-select-option [value]="device" (selected)="Device?.Identifier == device.Identifier">{{device.Name}}</ion-select-option>
             }
@@ -17,7 +17,7 @@
             <ion-icon src="./assets/icons/info.svg"></ion-icon>
         </div>
         <div slot="text">
-            <ion-text [innerHTML]="Device ? ('page_settings_showwatchlogs.no_logs'|translate) : ('page_settings_showwatchlogs.no_device'|translate)"></ion-text>
+            <ion-text [innerHTML]="Device ? t('page_settings_showwatchlogs.no_logs') : t('page_settings_showwatchlogs.no_device')"></ion-text>
         </div>
     </app-page-empty>
     }

@@ -1,26 +1,26 @@
-<app-main-toolbar back="/settings">{{'page_settings_logs.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/settings" *transloco="let t">{{t('page_settings_logs.page_title')}}</app-main-toolbar>
 
-<ion-content>
+<ion-content *transloco="let t">
     <ion-list>
         <ion-item lines="full">
-            <ion-select [label]="'page_settings_logs.mode' | translate" label-placement="stacked" [okText]="'change'|translate" [cancelText]="'cancel'|translate" value="{{Logger.LogLevelShort}}" (ionChange)="onChangeLogging($event)">
-                <ion-select-option value="debug" (selected)="Logger.LogLevelShort == 'debug'">{{'page_settings_logs.mode_debug'|translate}}</ion-select-option>
-                <ion-select-option value="verbose" (selected)="Logger.LogLevelShort == 'verbose'">{{'page_settings_logs.mode_verbose'|translate}}</ion-select-option>
-                <ion-select-option value="normal" (selected)="Logger.LogLevelShort == 'normal'">{{'page_settings_logs.mode_normal'|translate}}</ion-select-option>
-                <ion-select-option value="error" (selected)="Logger.LogLevelShort == 'error'">{{'page_settings_logs.mode_error'|translate}}</ion-select-option>
+            <ion-select [label]="t('page_settings_logs.mode')" label-placement="stacked" [okText]="t('buttons.change')" [cancelText]="t('buttons.cancel')" value="{{Logger.LogLevelShort}}" (ionChange)="onChangeLogging($event)">
+                <ion-select-option value="debug" (selected)="Logger.LogLevelShort == 'debug'">{{t('page_settings_logs.mode_debug')}}</ion-select-option>
+                <ion-select-option value="verbose" (selected)="Logger.LogLevelShort == 'verbose'">{{t('page_settings_logs.mode_verbose')}}</ion-select-option>
+                <ion-select-option value="normal" (selected)="Logger.LogLevelShort == 'normal'">{{t('page_settings_logs.mode_normal')}}</ion-select-option>
+                <ion-select-option value="error" (selected)="Logger.LogLevelShort == 'error'">{{t('page_settings_logs.mode_error')}}</ion-select-option>
             </ion-select>
         </ion-item>
 
         <ion-item lines="full">
-            <ion-select [label]="'page_settings_logs.autodelete'|translate" label-placement="stacked" [okText]="'change'|translate" value="{{Logger.AutoDelete}}" [cancelText]="'cancel'|translate" (ionChange)="onChangeLoggingAutoDelete($event)">
-                <ion-select-option value="1" (selected)="Logger.AutoDelete == 1">{{'page_settings_logs.autodelete_day'|translate}}</ion-select-option>
-                <ion-select-option value="7" (selected)="Logger.AutoDelete == 7">{{'page_settings_logs.autodelete_week'|translate}}</ion-select-option>
-                <ion-select-option value="30" (selected)="Logger.AutoDelete == 30">{{'page_settings_logs.autodelete_month'|translate}}</ion-select-option>
+            <ion-select [label]="t('page_settings_logs.autodelete')" label-placement="stacked" [okText]="t('buttons.change')" value="{{Logger.AutoDelete}}" [cancelText]="t('buttons.cancel')" (ionChange)="onChangeLoggingAutoDelete($event)">
+                <ion-select-option value="1" (selected)="Logger.AutoDelete == 1">{{t('page_settings_logs.autodelete_day')}}</ion-select-option>
+                <ion-select-option value="7" (selected)="Logger.AutoDelete == 7">{{t('page_settings_logs.autodelete_week')}}</ion-select-option>
+                <ion-select-option value="30" (selected)="Logger.AutoDelete == 30">{{t('page_settings_logs.autodelete_month')}}</ion-select-option>
             </ion-select>
         </ion-item>
 
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/logs']" lines="none">
-            <ion-label>{{'page_settings_logs.show'|translate}}</ion-label>
+            <ion-label>{{t('page_settings_logs.show')}}</ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
 
@@ -30,14 +30,14 @@
                 <ion-text>{{LogsSize}}</ion-text>
             </div>
             <div class="delete">
-                <ion-button (click)="onBtnDeleteLogs()" slot="end" size="default" fill="outline" [disabled]="Logfiles == 0">{{'page_settings_logs.deleteall'|translate}}</ion-button>
+                <ion-button (click)="onBtnDeleteLogs()" slot="end" size="default" fill="outline" [disabled]="Logfiles == 0">{{t('page_settings_logs.deleteall')}}</ion-button>
             </div>
         </ion-item>
         } @if(ConnectIQ.Initialized) {
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/watch-logs']" lines="full">
             <ion-label>
-                <div>{{'page_settings_logs.show_watch'|translate}}</div>
-                <ion-note>{{'page_settings_logs.show_watch_note'|translate}}</ion-note>
+                <div [innerHTML]="t('page_settings_logs.show_watch')"></div>
+                <ion-note>{{t('page_settings_logs.show_watch_note')}}</ion-note>
             </ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>

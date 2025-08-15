@@ -1,14 +1,15 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { IonButton, IonButtons, IonCard, IonIcon, IonItem, IonLabel, IonList, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import type { ImportItem, ImportKey, ImportPage } from "src/app/pages/settings/import/import.page";
 
 @Component({
     selector: "app-import-done",
-    imports: [IonButton, IonButtons, IonLabel, IonCard, IonList, IonItem, IonIcon, TranslateModule, CommonModule],
+    imports: [IonButton, IonButtons, IonLabel, IonCard, IonList, IonItem, IonIcon, TranslocoModule, CommonModule],
     templateUrl: "./import-done.component.html",
     styleUrl: "./import-done.component.scss",
+    providers: [provideTranslocoScope({ scope: "pages/settings/import-page", alias: "page_settings_import" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ImportDoneComponent {
     private readonly _modalCtrl = inject(ModalController);

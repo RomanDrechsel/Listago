@@ -23,7 +23,7 @@ export class AdmobService {
 
     private _isInitialized: boolean = false;
 
-    private readonly Preferences = inject(PreferencesService);
+    private readonly _preferences = inject(PreferencesService);
     private readonly _http = inject(HttpClient);
     private _keyboardUpListerner?: PluginListenerHandle;
     private _keyboardDownListener?: PluginListenerHandle;
@@ -39,7 +39,7 @@ export class AdmobService {
 
     public async Initialize() {
         this._isInitialized = false;
-        AdmobService.BannerHeight = await this.Preferences.Get(EPrefProperty.AdmobBannerHeight, AdmobService.BannerHeight);
+        AdmobService.BannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, AdmobService.BannerHeight);
         await this.resizeContainer(AdmobService.BannerHeight);
 
         await AdMob.initialize({
@@ -75,7 +75,7 @@ export class AdmobService {
             Logger.Debug(`Admob initialized in test mode`);
         }
 
-        this._preferencesSubscription = this.Preferences.onPrefChanged$.subscribe(async pref => {
+        this._preferencesSubscription = this._preferences.onPrefChanged$.subscribe(async pref => {
             if (pref.prop == EPrefProperty.AppLanguage) {
                 await new ReserveSpace(this._http).SetAdmobText();
             }
@@ -238,7 +238,7 @@ export class AdmobService {
             if (AdmobService.BannerHeight !== height) {
                 Logger.Debug(`Admob banner height changed to ${height}px`);
                 AdmobService.BannerHeight = height;
-                this.Preferences.Set(EPrefProperty.AdmobBannerHeight, height);
+                this._preferences.Set(EPrefProperty.AdmobBannerHeight, height);
             }
         }
         await new ReserveSpace(this._http).SetAdmobHeight(height);

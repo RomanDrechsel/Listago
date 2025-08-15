@@ -1,31 +1,29 @@
-<ion-header>
+<ion-header *transloco="let t">
     <ion-toolbar>
         <ion-title>
-            <div class="ion-text-wrap">
-                {{ "comp-device-select.title" | translate }}
-            </div>
+            <div class="ion-text-wrap" [innerHTML]="t('comp-device-select.title')"></div>
         </ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="cancel()" [ariaLabel]="'cancel' | translate">
+            <ion-button (click)="cancel()" [ariaLabel]="t('buttons.cancel')">
                 <ion-icon src="./assets/icons/close.svg" slot="icon-only"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<div class="inner-content ion-padding">
+<div class="inner-content ion-padding" *transloco="let t">
     <ion-list>
         @for (device of Devices; track device.Identifier) {
         <ion-item lines="none">
-            <ion-checkbox [checked]="SelectedDevices.indexOf(device) >= 0" [attr.data-device-id]="device.Identifier" [ariaLabel]="'select' | translate" (ionChange)="onCheckboxChanged($event.target.checked, device)">{{ device.Name }}</ion-checkbox>
+            <ion-checkbox [checked]="SelectedDevices.indexOf(device) >= 0" [attr.data-device-id]="device.Identifier" [ariaLabel]="t('buttons.select')" (ionChange)="onCheckboxChanged($event.target.checked, device)">{{ device.Name }}</ion-checkbox>
         </ion-item>
         }
     </ion-list>
     <ion-buttons class="ion-float-end">
         <ion-button fill="outline" color="secondary" (click)="onDeactivate()">
-            {{ "comp-device-select.deactivate" | translate }}
+            {{ t("comp-device-select.deactivate") }}
         </ion-button>
         <ion-button fill="solid" color="secondary" (click)="onSelect()">
-            {{ "comp-device-select.select" | translate }}
+            {{ t("comp-device-select.select") }}
         </ion-button>
     </ion-buttons>
 </div>

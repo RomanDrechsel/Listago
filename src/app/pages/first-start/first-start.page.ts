@@ -1,10 +1,10 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from "@angular/core";
+import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Browser } from "@capacitor/browser";
 import { IonButton, IonContent, IonIcon, IonImg, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonText, IonToggle } from "@ionic/angular/standalone";
 import { SelectCustomEvent } from "@ionic/core";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { IntentsService } from "src/app/services/intents/intents.service";
 import { EPrefProperty } from "../../services/storage/preferences.service";
 import { PageBase } from "../page-base";
@@ -14,8 +14,8 @@ import { PageBase } from "../page-base";
     templateUrl: "./first-start.page.html",
     styleUrls: ["./first-start.page.scss"],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [IonSegmentButton, IonSegment, IonSegmentContent, IonSegmentView, IonButton, IonText, IonToggle, IonImg, IonContent, IonIcon, IonSelect, IonSelectOption, CommonModule, FormsModule, TranslateModule],
+    imports: [IonSegmentButton, IonSegment, IonSegmentContent, IonSegmentView, IonButton, IonText, IonToggle, IonImg, IonContent, IonIcon, IonSelect, IonSelectOption, CommonModule, FormsModule, TranslocoModule],
+    providers: [provideTranslocoScope({ scope: "pages/first-start-page", alias: "page_firststart" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class FirstStartPage extends PageBase {
     @ViewChild("selLanguage", { static: false, read: IonSelect }) private _selLanguage?: IonSelect;
@@ -89,7 +89,6 @@ export class FirstStartPage extends PageBase {
     public async nextGarmin() {
         if (this.GarminActive) {
             if (!this.ConnectIQ.Initialized) {
-                //no await ...
                 if (!(await this.ConnectIQ.Initialize())) {
                     return;
                 }

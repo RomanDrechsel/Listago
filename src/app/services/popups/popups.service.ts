@@ -9,22 +9,26 @@ import { Toast } from "./toast";
     providedIn: "root",
 })
 export class PopupsService {
-    private readonly Locale = inject(LocalizationService);
-    private readonly ToastCtrl = inject(ToastController);
-    private readonly AlertCtrl = inject(AlertController);
-    private readonly Preferences = inject(PreferencesService);
+    private readonly _locale = inject(LocalizationService);
+    private readonly _toastCtrl = inject(ToastController);
+    private readonly _alertCtrl = inject(AlertController);
+    private readonly _preferences = inject(PreferencesService);
+
+    constructor() {
+        this._locale.loadScope("common/buttons", "buttons");
+    }
 
     /**
      * new Toast object
      */
     public get Toast(): Toast {
-        return new Toast(this.ToastCtrl, this.Locale, this.Preferences);
+        return new Toast(this._toastCtrl, this._locale, this._preferences);
     }
 
     /**
      * new yes/no confirm object
      */
     public get Alert(): Alert {
-        return new Alert(this.AlertCtrl, this.Locale);
+        return new Alert(this._alertCtrl, this._locale);
     }
 }

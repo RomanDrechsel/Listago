@@ -1,9 +1,9 @@
-<app-main-toolbar back="/lists" [displayCustomMenu]="true" [displayMenu]="false">
-    {{'page_trash.page_title'|translate}}
+<app-main-toolbar back="/lists" [displayCustomMenu]="true" [displayMenu]="false" *transloco="let t">
+    {{t('page_trash.page_title')}}
     <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="Lists.length <= 0" [EditModeMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
 </app-main-toolbar>
 
-<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
+<ion-content fixed-slot-placement="before" scrollEvents="true" scrollX="false" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent *transloco="let t">
     @if(Lists.length > 0) {
     <div class="list-content" #listContent>
         <ion-list id="animated-list" #itemsList>
@@ -29,13 +29,13 @@
                 <ion-item-options side="start" (ionSwipe)="onSwipeRight(list)">
                     <ion-item-option color="danger" expandable="true" (click)="deleteList(list)">
                         <ion-icon slot="start" src="./assets/icons/trash_solid.svg"></ion-icon>
-                        {{'page_trash.erase'|translate}}
+                        {{t('page_trash.erase')}}
                     </ion-item-option>
                 </ion-item-options>
                 <ion-item-options side="end" (ionSwipe)="onSwipeLeft(list)">
                     <ion-item-option color="secondary" expandable="true" (click)="restoreList(list)">
                         <ion-icon slot="end" src="./assets/icons/undo.svg"></ion-icon>
-                        {{'page_trash.restore'|translate}}
+                        {{t('page_trash.restore')}}
                     </ion-item-option>
                 </ion-item-options>
             </ion-item-sliding>
@@ -57,7 +57,7 @@
             <ion-icon src="./assets/icons/menu/trash.svg"></ion-icon>
         </div>
         <div slot="text">
-            <ion-text>{{'page_trash.empty'|translate}}</ion-text>
+            <ion-text>{{t('page_trash.empty')}}</ion-text>
         </div>
     </app-page-empty>
     }@else {
@@ -66,7 +66,7 @@
             <ion-img src="./assets/icons/hourglass.svg"></ion-img>
         </div>
         <div slot="text">
-            <div [innerHTML]="'page_trash.loading'|translate"></div>
+            <div [innerHTML]="t('page_trash.loading')"></div>
         </div>
     </app-page-empty>
     }

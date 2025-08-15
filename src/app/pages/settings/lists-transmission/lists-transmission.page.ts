@@ -3,8 +3,7 @@ import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { IonContent, IonItem, IonLabel, IonList, IonNote, IonToggle } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
-import { InteractionAnimation } from "src/app/animations/interaction.animation";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
 import { EPrefProperty } from "../../../services/storage/preferences.service";
 import { PageBase } from "../../page-base";
@@ -13,13 +12,14 @@ import { PageBase } from "../../page-base";
     selector: "app-lists-transmission",
     templateUrl: "./lists-transmission.page.html",
     styleUrls: ["./lists-transmission.page.scss"],
-    imports: [IonLabel, IonNote, IonItem, IonToggle, IonList, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
+    imports: [IonLabel, IonNote, IonItem, IonToggle, IonList, IonContent, CommonModule, FormsModule, TranslocoModule, MainToolbarComponent],
+    providers: [provideTranslocoScope({ scope: "pages/settings/lists-transmission-page", alias: "page_lists_transmission" })],
 })
 export class ListsTransmissionPage extends PageBase {
     @ViewChild("content", { static: false, read: IonContent }) private readonly _content?: IonContent;
     @ViewChild("syncList", { static: false, read: ElementRef }) private readonly _syncList?: ElementRef;
 
-    private readonly Route = inject(ActivatedRoute);
+    private readonly _route = inject(ActivatedRoute);
 
     private _openAppOnTransfer: boolean = false;
     private _deleteListOnDevice: boolean = false;
@@ -27,7 +27,6 @@ export class ListsTransmissionPage extends PageBase {
     private _garminConnectIQ: boolean = true;
 
     private _listToSync?: number = undefined;
-    private _runningAnimation?: InteractionAnimation;
 
     public get OpenAppOnTransmit(): boolean {
         return this._openAppOnTransfer;
@@ -81,7 +80,7 @@ export class ListsTransmissionPage extends PageBase {
     }
 
     public override async ionViewDidEnter(): Promise<void> {
-        const synclist = this.Route.snapshot.queryParamMap.get("syncList");
+        const synclist = this._route.snapshot.queryParamMap.get("syncList");
         if (synclist !== null) {
             const id = Number(synclist);
             if (!Number.isNaN(id)) {

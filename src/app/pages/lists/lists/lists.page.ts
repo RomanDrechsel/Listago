@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/angular/standalone";
-import { provideTranslocoScope, TranslocoModule, TranslocoService } from "@jsverse/transloco";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { type Subscription } from "rxjs";
 import { type EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 import { MainToolbarListsCustomMenuComponent } from "src/app/components/main-toolbar-lists-custom-menu/main-toolbar-lists-custom-menu.component";
@@ -19,7 +19,7 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     styleUrls: ["./lists.page.scss"],
     changeDetection: ChangeDetectionStrategy.Default,
     imports: [IonCheckbox, IonLabel, IonReorderGroup, IonItemOption, IonItemOptions, IonItemSliding, IonIcon, IonFabButton, IonFab, IonItem, IonReorder, IonList, IonContent, MainToolbarComponent, PageAddNewComponent, CommonModule, FormsModule, TranslocoModule, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
-    providers: [provideTranslocoScope({ scope: "pages/lists/lists-page", alias: "page_lists" }, { scope: "common/date", alias: "date" })],
+    providers: [provideTranslocoScope({ scope: "pages/lists/lists-page", alias: "page_lists" }, { scope: "common/date", alias: "date" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
 })
 export class ListsPage extends AnimatedListPageBase {
     private _lists: List[] | undefined;
@@ -33,8 +33,6 @@ export class ListsPage extends AnimatedListPageBase {
         super();
         this._animationDirection = "top";
     }
-
-    private readonly _locale = inject(TranslocoService);
 
     public override async ionViewWillEnter(): Promise<void> {
         await super.ionViewWillEnter();
@@ -136,15 +134,15 @@ export class ListsPage extends AnimatedListPageBase {
     public getEditMenuActions(): EditMenuAction[] {
         let texts = [];
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getText(["comp-toolbar-edit-menu.list-transmit", "comp-toolbar-edit-menu.list-empty", "comp-toolbar-edit-menu.list-delete"]);
-            texts["transmit"] = texts["comp-toolbar-edit-menu.list-transmit"];
-            texts["delete"] = texts["comp-toolbar-edit-menu.list-delete"];
-            texts["empty"] = texts["comp-toolbar-edit-menu.list-empty"];
+            texts = this.Locale.getText(["edit-menu.list-transmit", "edit-menu.list-empty", "edit-menu.list-delete"]);
+            texts["transmit"] = texts["edit-menu.list-transmit"];
+            texts["delete"] = texts["edit-menu.list-delete"];
+            texts["empty"] = texts["edit-menu.list-empty"];
         } else {
-            texts = this.Locale.getText(["comp-toolbar-edit-menu.lists-transmit", "comp-toolbar-edit-menu.lists-empty", "comp-toolbar-edit-menu.lists-delete"], { num: this._selectedItems.length });
-            texts["transmit"] = texts["comp-toolbar-edit-menu.lists-transmit"];
-            texts["delete"] = texts["comp-toolbar-edit-menu.lists-delete"];
-            texts["empty"] = texts["comp-toolbar-edit-menu.lists-empty"];
+            texts = this.Locale.getText(["edit-menu.lists-transmit", "edit-menu.lists-empty", "edit-menu.lists-delete"], { num: this._selectedItems.length });
+            texts["transmit"] = texts["edit-menu.lists-transmit"];
+            texts["delete"] = texts["edit-menu.lists-delete"];
+            texts["empty"] = texts["edit-menu.lists-empty"];
         }
 
         return [

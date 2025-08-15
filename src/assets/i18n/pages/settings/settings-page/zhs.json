@@ -1,7 +1,6 @@
 {
     "page_title": "设置",
     "language": "应用语言",
-    "language_hint": "该应用程序已使用人工智能进行翻译。如果出现错误，请将错误报告至 <span class=\"no-wrap\">{{email}}</span>。",
     "translation_error_confirm": "您要报告翻译错误吗？",
     "translation_error_title": "中文译文（简体）中的错误",
     "animations": "动画",

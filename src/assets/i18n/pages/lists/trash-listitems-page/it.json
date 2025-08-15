@@ -1,4 +1,8 @@
 {
     "page_title": "Cestino",
-    "empty": "Il cestino della lista è vuoto."
+    "empty": "Il cestino della lista è vuoto.",
+    "erase": "Cancella",
+    "restore": "Ripristina",
+    "loading": "Il cestino sta caricando...",
+    "error": "Impossibile caricare il cestino!"
 }

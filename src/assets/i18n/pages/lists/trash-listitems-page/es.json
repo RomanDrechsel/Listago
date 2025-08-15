@@ -1,4 +1,8 @@
 {
     "page_title": "Papelera de lista",
-    "empty": "La papelera de la lista está vacía."
+    "empty": "La papelera de la lista está vacía.",
+    "loading": "Se carga la papelera de reciclaje...",
+    "error": "¡No se pudo cargar la papelera!",
+    "erase": "Eliminar",
+    "restore": "Restaurar"
 }

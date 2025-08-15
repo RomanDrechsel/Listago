@@ -1,16 +1,17 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonItem, IonList, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import type { ListSyncDevice } from "src/app/services/lists/list";
 import { ConnectIQDevice } from "./../../services/connectiq/connect-iq-device";
 import { ConnectIQService } from "./../../services/connectiq/connect-iq.service";
 
 @Component({
     selector: "app-device-select",
-    imports: [IonCheckbox, IonItem, IonList, IonIcon, IonButton, IonButtons, IonTitle, IonHeader, IonToolbar, TranslateModule, CommonModule],
+    imports: [IonCheckbox, IonItem, IonList, IonIcon, IonButton, IonButtons, IonTitle, IonHeader, IonToolbar, TranslocoModule, CommonModule],
     templateUrl: "./device-select.component.html",
     styleUrl: "./device-select.component.scss",
+    providers: [provideTranslocoScope({ scope: "components/device-select", alias: "comp-device-select" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class DeviceSelectComponent {
     private readonly modalCtrl = inject(ModalController);

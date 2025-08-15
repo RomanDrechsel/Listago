@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
 import { PageBase } from "../../page-base";
 
@@ -11,8 +11,9 @@ import { PageBase } from "../../page-base";
     selector: "app-privacy",
     templateUrl: "./privacy.page.html",
     styleUrls: ["./privacy.page.scss"],
-    imports: [IonIcon, IonLabel, IonNote, IonItem, IonList, IonContent, CommonModule, FormsModule, MainToolbarComponent, TranslateModule, RouterModule],
+    imports: [IonIcon, IonLabel, IonNote, IonItem, IonList, IonContent, CommonModule, FormsModule, MainToolbarComponent, TranslocoModule, RouterModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [provideTranslocoScope({ scope: "pages/privacy-policy/privacy-page", alias: "page_privacy" })],
 })
 export class PrivacyPage extends PageBase {
     public async admob_consent_form() {

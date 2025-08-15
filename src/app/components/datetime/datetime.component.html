@@ -8,11 +8,12 @@
     [value]="Params?.selectedDate?.toISOString() ?? undefined"
     [formatOptions]="{ date: { day: '2-digit', month: 'long' } }"
     (ionChange)="onChange($event.detail.value)"
-    #datetime>
+    #datetime
+    *transloco="let t">
     @if (Params?.title) { <span slot="title">{{ Params!.title }}</span> }
     <ion-buttons slot="buttons">
-        <ion-button color="secondary" (click)="selectToday()">{{ "date.today" | translate }}</ion-button>
-        <ion-button color="secondary" (click)="cancel()">{{ "cancel" | translate }}</ion-button>
-        <ion-button color="secondary" fill="solid" (click)="datetime.confirm()">{{ "select" | translate }}</ion-button>
+        <ion-button color="secondary" (click)="selectToday()">{{ t("date.today") }}</ion-button>
+        <ion-button color="secondary" (click)="cancel()">{{ t("buttons.cancel") }}</ion-button>
+        <ion-button color="secondary" fill="solid" (click)="datetime.confirm()">{{ t("buttons.select") }}</ion-button>
     </ion-buttons>
 </ion-datetime>

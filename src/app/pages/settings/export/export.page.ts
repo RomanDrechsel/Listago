@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { CapacitorException } from "@capacitor/core";
 import { Share } from "@capacitor/share";
 import { IonButton, IonButtons, IonCard, IonContent, IonIcon, IonLabel, IonList, IonProgressBar, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonText, IonToggle } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { Logger } from "src/app/services/logging/logger";
 import { ListsSqliteBackendService } from "src/app/services/storage/sqlite/lists/lists-sqlite-backend.service";
@@ -17,7 +17,8 @@ import { BackendExporter, ProgressListenerFactory } from "./../../../services/st
     templateUrl: "./export.page.html",
     styleUrls: ["./export.page.scss"],
     standalone: true,
-    imports: [IonSegmentButton, IonSegment, IonButtons, IonProgressBar, IonText, IonLabel, IonList, IonCard, IonButton, IonIcon, IonToggle, IonContent, IonSegmentView, IonSegmentContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
+    imports: [IonSegmentButton, IonSegment, IonButtons, IonProgressBar, IonText, IonLabel, IonList, IonCard, IonButton, IonIcon, IonToggle, IonContent, IonSegmentView, IonSegmentContent, CommonModule, FormsModule, TranslocoModule, MainToolbarComponent],
+    providers: [provideTranslocoScope({ scope: "pages/settings/export-page", alias: "page_settings_export" }, { scope: "pages/settings/im-export", alias: "im-export" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ExportPage extends PageBase {
     @ViewChild("segbtnLists", { static: false, read: ElementRef }) private _segbtnLists?: ElementRef;

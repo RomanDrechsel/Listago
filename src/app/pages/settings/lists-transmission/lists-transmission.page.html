@@ -1,11 +1,12 @@
-<app-main-toolbar back="/settings">{{'page_lists_transmission.page_title'|translate}}</app-main-toolbar>
-<ion-content #content>
+<app-main-toolbar back="/settings" *transloco="let t">{{t('page_lists_transmission.page_title')}}</app-main-toolbar>
+
+<ion-content #content *transloco="let t">
     <ion-list>
         <!-- garmin connect iq support -->
         <ion-item lines="full">
             <ion-label (click)="onSupportGarminConnectIQChanged(!SupportGarminConnectIQ)">
-                <div class="text" [innerHTML]="'page_lists_transmission.garminconnectiq'|translate"></div>
-                <ion-note [innerHTML]="'page_lists_transmission.garminconnectiq_note'|translate"></ion-note>
+                <div class="text" [innerHTML]="t('page_lists_transmission.garminconnectiq')"></div>
+                <ion-note [innerHTML]="t('page_lists_transmission.garminconnectiq_note')"></ion-note>
             </ion-label>
             <ion-toggle [checked]="SupportGarminConnectIQ" (ionChange)="onSupportGarminConnectIQChanged($event.target.checked)" slot="end"></ion-toggle>
         </ion-item>
@@ -13,8 +14,8 @@
         <!-- open app on transmitting list -->
         <ion-item lines="full" [disabled]="!SupportGarminConnectIQ">
             <ion-label (click)="onOpenAppOnTransmitChanged(!OpenAppOnTransmit)">
-                <div class="text" [innerHTML]="'page_lists_transmission.openontransmit'|translate"></div>
-                <ion-note [innerHTML]="'page_lists_transmission.openontransmit_note'|translate"></ion-note>
+                <div class="text" [innerHTML]="t('page_lists_transmission.openontransmit')"></div>
+                <ion-note [innerHTML]="t('page_lists_transmission.openontransmit_note')"></ion-note>
             </ion-label>
             <ion-toggle [checked]="OpenAppOnTransmit" (ionChange)="onOpenAppOnTransmitChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
@@ -22,8 +23,8 @@
         <!-- delete list on device when deleting on phone -->
         <ion-item lines="full" [disabled]="!SupportGarminConnectIQ">
             <ion-label (click)="onDeleteListOnDeviceChanged(!DeleteListOnDevice)">
-                <div class="text" [innerHTML]="'page_lists_transmission.deletelist'|translate"></div>
-                <ion-note [innerHTML]="'page_lists_transmission.deletelist_note'|translate"></ion-note>
+                <div class="text" [innerHTML]="t('page_lists_transmission.deletelist')"></div>
+                <ion-note [innerHTML]="t('page_lists_transmission.deletelist_note')"></ion-note>
             </ion-label>
             <ion-toggle [checked]="DeleteListOnDevice" (ionChange)="onDeleteListOnDeviceChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>
@@ -31,9 +32,9 @@
         <!-- synchronize lists -->
         <ion-item lines="full" [disabled]="!SupportGarminConnectIQ" #syncList>
             <ion-label (click)="onSyncListOnDeviceChanged(!SyncListOnDevice)">
-                <div class="text" [innerHTML]="'page_lists_transmission.synclist'|translate"></div>
-                <ion-note [innerHTML]="'page_lists_transmission.synclist_note'|translate"></ion-note><br />
-                <ion-note [innerHTML]="'page_lists_transmission.synclist_warning'|translate"></ion-note>
+                <div class="text" [innerHTML]="t('page_lists_transmission.synclist')"></div>
+                <ion-note [innerHTML]="t('page_lists_transmission.synclist_note')"></ion-note><br />
+                <ion-note [innerHTML]="t('page_lists_transmission.synclist_warning')"></ion-note>
             </ion-label>
             <ion-toggle [checked]="SyncListOnDevice" (ionChange)="onSyncListOnDeviceChanged($event.target.checked)" slot="end"> </ion-toggle>
         </ion-item>

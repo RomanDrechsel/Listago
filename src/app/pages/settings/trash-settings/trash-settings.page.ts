@@ -1,8 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { IonContent, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonToggle } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
 import { KeepInTrash } from "../../../services/lists/keep-in-trash";
 import { EPrefProperty } from "../../../services/storage/preferences.service";
@@ -13,7 +12,8 @@ import { PageBase } from "../../page-base";
     templateUrl: "./trash-settings.page.html",
     styleUrls: ["./trash-settings.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonLabel, IonNote, IonToggle, IonItem, IonList, IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
+    imports: [IonLabel, IonNote, IonToggle, IonItem, IonList, IonContent, IonSelect, IonSelectOption, CommonModule, TranslocoModule, MainToolbarComponent],
+    providers: [provideTranslocoScope({ scope: "pages/settings/trash-settings-page", alias: "page_settings_trash" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class TrashSettingsPage extends PageBase {
     private _useTrash: boolean = true;
@@ -58,14 +58,14 @@ export class TrashSettingsPage extends PageBase {
 
     public async onUseTrashChanged(checked: boolean) {
         this.UseTrash = checked;
-        if (checked == false) {
+        if (!checked) {
             await this.ListsService.WipeTrash(false, true);
         }
     }
 
     public async onUseTrashListitemsChanged(checked: boolean) {
         this.UseTrashListitems = checked;
-        if (checked == false) {
+        if (!checked) {
             await this.ListsService.WipeListitemTrash(false, true);
         }
     }

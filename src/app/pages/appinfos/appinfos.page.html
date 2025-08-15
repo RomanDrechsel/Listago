@@ -1,24 +1,24 @@
-<app-main-toolbar back="/lists">{{'page_appinfos.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/lists" *transloco="let t">{{t('page_appinfos.page_title')}}</app-main-toolbar>
 
-<ion-content>
+<ion-content *transloco="let t">
     <div class="flex">
         <div class="list">
             <ion-list>
                 <ion-item class="ion-align-items-start" lines="full">
                     <div>
-                        <ion-text>{{'page_appinfos.package'|translate}}</ion-text>
+                        <ion-text>{{t('page_appinfos.package')}}</ion-text>
                         <ion-note class="ion-text-end bundle">{{BundleId}}</ion-note>
                         <ion-grid>
                             <ion-row>
-                                <ion-col class="ion-text-end">{{'page_appinfos.version'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.version')}}</ion-col>
                                 <ion-col class="ion-text-end">{{Appversion}}</ion-col>
                             </ion-row>
                             <ion-row>
-                                <ion-col class="ion-text-end">{{'page_appinfos.build'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.build')}}</ion-col>
                                 <ion-col class="ion-text-end">{{Build}}</ion-col>
                             </ion-row>
                             <ion-row>
-                                <ion-col class="ion-text-end">{{'page_appinfos.platform'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.platform')}}</ion-col>
                                 <ion-col class="ion-text-end">{{Platform}}</ion-col>
                             </ion-row>
                         </ion-grid>
@@ -26,26 +26,26 @@
                 </ion-item>
                 <ion-item lines="full">
                     <div>
-                        <ion-text>{{'page_appinfos.backend'|translate}}</ion-text>
+                        <ion-text>{{t('page_appinfos.backend')}}</ion-text>
                         <ion-grid>
                             <ion-row>
-                                <ion-col class="ion-text-end">{{'page_appinfos.storage'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.storage')}}</ion-col>
                                 <ion-col class="ion-text-end">{{DatabaseFileSize}}</ion-col>
                             </ion-row>
                             <ion-row>
-                                <ion-col class="ion-text-end">{{'page_appinfos.database_lists'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.database_lists')}}</ion-col>
                                 <ion-col class="ion-text-end"><div [innerHTML]="DatabaseSizeLists"></div></ion-col>
                             </ion-row>
                             <ion-row>
-                                <ion-col class="ion-text-end">{{'page_appinfos.database_trash'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.database_trash')}}</ion-col>
                                 <ion-col class="ion-text-end"><div [innerHTML]="DatabaseSizeTrash"></div></ion-col>
                             </ion-row>
                             <ion-row class="margin-top">
-                                <ion-col class="ion-text-end">{{'page_appinfos.database_logs'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.database_logs')}}</ion-col>
                                 <ion-col class="ion-text-end"><div [innerHTML]="LogsSize"></div></ion-col>
                             </ion-row>
                             <ion-row class="margin-top">
-                                <ion-col class="ion-text-end">{{'page_appinfos.memory'|translate}}</ion-col>
+                                <ion-col class="ion-text-end">{{t('page_appinfos.memory')}}</ion-col>
                                 <ion-col class="ion-text-end">{{MemoryUsage}}</ion-col>
                             </ion-row>
                         </ion-grid>
@@ -54,17 +54,17 @@
             </ion-list>
         </div>
         <div class="support">
-            <div [innerHTML]="'page_appinfos.support'|translate" class="ion-text-center"></div>
+            <div [innerHTML]="t('page_appinfos.support')" class="ion-text-center"></div>
             <ion-img src="/assets/img/de-pp-logo-200px.png" class="paypal" (click)="paypal()" />
-            <div [innerHTML]="'page_appinfos.support2'|translate" class="ion-text-center"></div>
+            <div [innerHTML]="t('page_appinfos.support2')" class="ion-text-center"></div>
             <ion-img [src]="isDarkmode ? './assets/img/bmc_dark.png' : './assets/img/bmc.png'" (click)="bmc()" />
             <div class="review">
-                <div [innerHTML]="'page_appinfos.review'|translate" class="ion-text-center" (click)="writeReviewIQ()"></div>
-                <div [innerHTML]="'page_appinfos.review_google'|translate" class="ion-text-center" (click)="writeReviewGoogle()"></div>
+                <div [innerHTML]="t('page_appinfos.review')" class="ion-text-center" (click)="writeReviewIQ()"></div>
+                <div [innerHTML]="t('page_appinfos.review_google')" class="ion-text-center" (click)="writeReviewGoogle()"></div>
             </div>
-            <div [innerHTML]="'page_appinfos.thanks'|translate" class="ion-text-center"></div>
+            <div [innerHTML]="t('page_appinfos.thanks')" class="ion-text-center"></div>
             <div class="my-website" (click)="mywebsite()">
-                <div [innerHTML]="'page_appinfos.website'|translate" class="ion-text-center"></div>
+                <div [innerHTML]="t('page_appinfos.website')" class="ion-text-center"></div>
                 <div class="link">{{Homepage}}</div>
             </div>
         </div>

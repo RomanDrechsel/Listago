@@ -1,16 +1,17 @@
-<app-main-toolbar back="/">{{'page_devices.page_title'|translate}}</app-main-toolbar>
-<ion-content class="advertice">
+<app-main-toolbar back="/" *transloco="let t">{{t('page_devices.page_title')}}</app-main-toolbar>
+
+<ion-content *transloco="let t">
     <div>
         <ion-card>
             <ion-select
-                [label]="'page_devices.known_devices'|translate"
+                [label]="t('page_devices.known_devices')"
                 labelPlacement="stacked"
                 interface="alert"
                 fill="outline"
                 [disabled]="Devices.length == 0"
                 [color]="SelectedDevice?.State != 'Ready' ? 'medium' : undefined"
-                [okText]="'select'|translate"
-                [cancelText]="'cancel'|translate"
+                [okText]="t('buttons.select')"
+                [cancelText]="t('buttons.cancel')"
                 [value]=" SelectedDevice?.Identifier"
                 (ionChange)="onDeviceChanged($event.detail.value)"
                 [interfaceOptions]="{'cssClass': 'devices'}"
@@ -21,13 +22,13 @@
             </ion-select>
             <div style="clear: both"></div>
             <ion-checkbox labelPlacement="end" [checked]="AlwaysTransmitDeviceSelected" [disabled]="SelectedDevice == undefined || SelectedDevice.State == 'AppNotInstalled'" (ionChange)="onToggle($event.detail.checked)">
-                <div>{{'page_devices.toggle'|translate}}</div>
+                <div [innerHTML]="t('page_devices.toggle')"></div>
             </ion-checkbox>
             @if(SelectedDevice && SelectedDevice.State != 'Ready' && SelectedDevice.State != 'AppNotInstalled') {
             <div class="deviceState" [ngClass]="{'error': SelectedDevice.Error}">{{SelectedDevice.StateLocale}}</div>
             } @if(installHint) {
             <div class="install ion-text-center">
-                <ion-text (click)="openStore()" [innerHTML]="'page_devices.install_app'|translate"></ion-text>
+                <ion-text (click)="openStore()" [innerHTML]="t('page_devices.install_app')"></ion-text>
             </div>
             }
             <div style="clear: both"></div>

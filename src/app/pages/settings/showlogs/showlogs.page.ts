@@ -1,11 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FileInfo } from "@capacitor/filesystem";
 import { IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonSelect, IonSelectOption, IonText, ModalController, ScrollDetail, SelectCustomEvent } from "@ionic/angular/standalone";
 import { IonContentCustomEvent } from "@ionic/core";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { interval, Subscription } from "rxjs";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -19,7 +18,8 @@ import { PageBase } from "../../page-base";
     templateUrl: "./showlogs.page.html",
     styleUrls: ["./showlogs.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PageEmptyComponent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent, IonIcon, IonFabButton, IonFab, IonFabList, IonContent, IonSelect, IonSelectOption, IonText],
+    imports: [PageEmptyComponent, CommonModule, TranslocoModule, MainToolbarComponent, IonIcon, IonFabButton, IonFab, IonFabList, IonContent, IonSelect, IonSelectOption, IonText],
+    providers: [provideTranslocoScope({ scope: "pages/settings/showlogs-page", alias: "page_settings_showlogs" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ShowlogsPage extends PageBase {
     @ViewChild("fabButton", { read: ElementRef, static: false }) fabButton?: ElementRef;
@@ -40,9 +40,9 @@ export class ShowlogsPage extends PageBase {
 
     private _scrollPosition: "top" | "bottom" | number = "top";
 
-    private readonly ModaleCtrl = inject(ModalController);
-    private readonly Route = inject(ActivatedRoute);
-    private readonly Router = inject(Router);
+    private readonly _modaleCtrl = inject(ModalController);
+    private readonly _route = inject(ActivatedRoute);
+    private readonly _router = inject(Router);
 
     public get SelectedDayString(): string {
         return (this._selectedDate ?? new Date()).toLocaleDateString(this.Locale.CurrentLanguage.locale, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
@@ -94,9 +94,9 @@ export class ShowlogsPage extends PageBase {
                 }
             }
         });
-        const send_errorReport = this.Route.snapshot.queryParams["errorReport"];
+        const send_errorReport = this._route.snapshot.queryParams["errorReport"];
         if (send_errorReport) {
-            this.Router.navigate([], { queryParams: {}, replaceUrl: true });
+            this._router.navigate([], { queryParams: {}, replaceUrl: true });
             this.runningAnimation = new InteractionAnimation();
             this.runningAnimation.AddStep({
                 duration: 700,
@@ -132,12 +132,12 @@ export class ShowlogsPage extends PageBase {
 
     public async onDelete() {
         if (this.currentLogfile) {
-            const locale = this.Locale.getText(["yes", "no", "page_settings_showlogs.confirm_delete"], { filename: this.currentLogfile.Filename });
+            const locale = this.Locale.getText(["buttons.yes", "buttons.no", "page_settings_showlogs.confirm_delete"], { filename: this.currentLogfile.Filename });
             await this.Popups.Alert.YesNo({
                 message: locale["page_settings_showlogs.confirm_delete"],
-                button_no: locale["no"],
+                button_no: locale["buttons.no"],
                 button_yes: {
-                    text: locale["yes"],
+                    text: locale["buttons.yes"],
                     handler: async () => {
                         await FileUtils.DeleteFile(this.currentLogfile!.Path);
                         this.Popups.Toast.Success("page_settings_showlogs.toast_deleted");
@@ -150,7 +150,7 @@ export class ShowlogsPage extends PageBase {
 
     public async onSave() {
         if (this.currentLogfile) {
-            await ShareLogfile(this.ModaleCtrl, { file: this.currentLogfile, watch_logs_included: this.runningAnimation?.isRunning, do: this.runningAnimation?.isRunning ? "email" : undefined });
+            await ShareLogfile(this._modaleCtrl, { file: this.currentLogfile, watch_logs_included: this.runningAnimation?.isRunning, do: this.runningAnimation?.isRunning ? "email" : undefined });
         }
     }
 
@@ -169,7 +169,7 @@ export class ShowlogsPage extends PageBase {
             minimumDate.setDate(minimumDate.getDate() - this.Logger.AutoDelete);
         }
 
-        const date = await SelectDatetime(this.ModaleCtrl, { selectedDate: this._selectedDate, maximumDate: new Date(), minimumDate: minimumDate, title: this.Locale.getText("page_settings_showlogs.select_logday_title") });
+        const date = await SelectDatetime(this._modaleCtrl, { selectedDate: this._selectedDate, maximumDate: new Date(), minimumDate: minimumDate, title: this.Locale.getText("page_settings_showlogs.select_logday_title") });
         if (date) {
             this.selectLogDay(date);
         }

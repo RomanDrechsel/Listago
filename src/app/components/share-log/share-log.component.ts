@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, ViewChild } from "@angular/
 import { FileOpener } from "@capacitor-community/file-opener";
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { AccordionGroupCustomEvent, IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonItem, IonList, IonNote, IonSelect, IonSelectOption, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { FileUtils } from "../../classes/utils/file-utils";
 import { ShareUtil } from "../../classes/utils/share-utils";
 import { StringUtils } from "../../classes/utils/string-utils";
@@ -18,10 +18,11 @@ import { AppService } from "./../../services/app/app.service";
 
 @Component({
     selector: "app-share-log",
-    imports: [IonNote, IonList, IonCheckbox, IonItem, IonAccordionGroup, IonAccordion, IonButtons, IonButton, IonTitle, IonIcon, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslateModule],
+    imports: [IonNote, IonList, IonCheckbox, IonItem, IonAccordionGroup, IonAccordion, IonButtons, IonButton, IonTitle, IonIcon, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslocoModule],
     templateUrl: "./share-log.component.html",
     styleUrl: "./share-log.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [provideTranslocoScope({ scope: "components/share-log", alias: "comp-sharelog" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class StoreLogComponent {
     public Params!: ShareLogParams;
@@ -34,29 +35,29 @@ export class StoreLogComponent {
     @ViewChild("attachMetaGarmin", { read: IonCheckbox }) attachMetaGarmin?: IonCheckbox;
     @ViewChild("attachWatchLogs", { read: IonCheckbox }) attachWatchLogs?: IonCheckbox;
 
-    private readonly Locale = inject(LocalizationService);
-    private readonly Popups = inject(PopupsService);
-    private readonly modalCtrl = inject(ModalController);
-    private readonly AppService = inject(AppService);
-    private readonly WatchLogs = inject(WatchLoggingService);
-    private readonly Config = inject(ConfigService);
-    private readonly ConnectIQ = inject(ConnectIQService);
+    private readonly _locale = inject(LocalizationService);
+    private readonly _popups = inject(PopupsService);
+    private readonly _modalCtrl = inject(ModalController);
+    private readonly _appService = inject(AppService);
+    private readonly _watchLogs = inject(WatchLoggingService);
+    private readonly _config = inject(ConfigService);
+    private readonly _connectIQ = inject(ConnectIQService);
 
     public get IsWebApp(): boolean {
         return AppService.isWebApp;
     }
 
     public get ConnectIQInitialized(): boolean {
-        return this.ConnectIQ.Initialized;
+        return this._connectIQ.Initialized;
     }
 
     public cancel() {
-        this.modalCtrl.dismiss(null, "cancel");
+        this._modalCtrl.dismiss(null, "cancel");
     }
 
     public async storeFile() {
         if (this.attachWatchLogs?.checked && !this.Params.watch_logs_included) {
-            await this.WatchLogs.RequestGarminWatchLogs();
+            await this._watchLogs.RequestGarminWatchLogs();
         }
 
         if (this.Params.file) {
@@ -65,7 +66,7 @@ export class StoreLogComponent {
                 const meta_settings = this.attachMetaSettings?.checked ?? false;
                 const meta_storage = this.attachMetaStorage?.checked ?? false;
                 const meta_garmin = this.attachMetaGarmin?.checked ?? false;
-                const meta = await this.AppService.AppMetaInfo({ device: meta_device, settings: meta_settings, storage: meta_storage, garmin: meta_garmin });
+                const meta = await this._appService.AppMetaInfo({ device: meta_device, settings: meta_settings, storage: meta_storage, garmin: meta_garmin });
 
                 if (this.attachMeta?.checked === true) {
                     await this.addToLog(StringUtils.toString(meta));
@@ -79,32 +80,32 @@ export class StoreLogComponent {
                         Logger.Debug(`Stored log ${this.Params.file.Filename} in DOCUMENTS`);
 
                         await FileOpener.open({ filePath: result.uri, contentType: "text/plain" });
-                        this.Popups.Toast.Success("comp-sharelog.store_success");
-                        this.modalCtrl.dismiss(null, "confirm");
+                        this._popups.Toast.Success("comp-sharelog.store_success");
+                        this._modalCtrl.dismiss(null, "confirm");
                     } catch (error) {
                         Logger.Error(`Could not store log ${this.Params.file.Filename} in DOCUMENTS: `, error);
-                        this.modalCtrl.dismiss(null, "cancel");
-                        this.Popups.Toast.Error("comp-sharelog.store_error");
+                        this._modalCtrl.dismiss(null, "cancel");
+                        this._popups.Toast.Error("comp-sharelog.store_error");
                     }
                 } else if (this.do.value == "share") {
                     try {
                         if (await ShareUtil.ShareFile({ files: this.Params.file.Path })) {
                             Logger.Debug(`Shared log ${this.Params.file.Filename}`);
-                            this.modalCtrl.dismiss(null, "confirm");
+                            this._modalCtrl.dismiss(null, "confirm");
                         } else {
                             Logger.Error(`Could not share log ${this.Params.file.Filename}`);
-                            this.modalCtrl.dismiss(null, "cancel");
+                            this._modalCtrl.dismiss(null, "cancel");
                         }
                     } catch (error) {
                         Logger.Error(`Could not share log ${this.Params.file.Filename}: `, error);
-                        this.modalCtrl.dismiss(null, "cancel");
+                        this._modalCtrl.dismiss(null, "cancel");
                     }
                 } else if (this.do.value == "email") {
-                    const email_title = this.Locale.getText("comp-sharelog.share_email.title", { package: meta.Package?.Name, platform: meta.Device?.Platform, file: this.Params.file.Filename, size: FileUtils.File.FormatSize(this.Params.file.Size) });
-                    if (await ShareUtil.SendMail({ sendto: this.Config.EMailAddress, files: this.Params.file.Path, title: email_title, text: this.Locale.getText("comp-sharelog.share_email.text") })) {
+                    const email_title = this._locale.getText("comp-sharelog.share_email.title", { package: meta.Package?.Name, platform: meta.Device?.Platform, file: this.Params.file.Filename, size: FileUtils.File.FormatSize(this.Params.file.Size) });
+                    if (await ShareUtil.SendMail({ sendto: this._config.EMailAddress, files: this.Params.file.Path, title: email_title, text: this._locale.getText("comp-sharelog.share_email.text") })) {
                         Logger.Debug(`Shared log ${this.Params.file.Filename} via e-mail`);
                     }
-                    this.modalCtrl.dismiss(null, "confirm");
+                    this._modalCtrl.dismiss(null, "confirm");
                 }
             }
         }

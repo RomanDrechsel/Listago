@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, ViewEncapsulation, inject } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonContent, IonImg, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { firstValueFrom } from "rxjs";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
 import { Culture } from "../../../services/localization/localization.service";
@@ -15,11 +15,10 @@ import { PageBase } from "../../page-base";
     styleUrls: ["./policy.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
-    imports: [IonContent, IonSelect, IonSelectOption, IonImg, CommonModule, FormsModule, MainToolbarComponent, TranslateModule],
+    imports: [IonContent, IonSelect, IonSelectOption, IonImg, CommonModule, FormsModule, MainToolbarComponent, TranslocoModule],
+    providers: [provideTranslocoScope({ scope: "pages/privacy-policy/policy-page", alias: "page_policy" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class PolicyPage extends PageBase {
-    @ViewChild("policy", { read: ElementRef }) private _policy!: ElementRef;
-
     private readonly http = inject(HttpClient);
     private _selectedCulture?: Culture = undefined;
 
@@ -32,6 +31,7 @@ export class PolicyPage extends PageBase {
     }
 
     public override async ionViewWillEnter() {
+        await super.ionViewWillEnter();
         await this.changeLanguage(this.Locale.CurrentLanguage);
     }
 
@@ -44,7 +44,14 @@ export class PolicyPage extends PageBase {
             culture = this.Locale.FallbackCulture;
         }
         this._selectedCulture = culture;
-        this._policy.nativeElement.innerHTML = await firstValueFrom(this.http.get(`./assets/i18n/privacy-policy/${culture.gdpr}.html`, { responseType: "text" }));
-        this.cdr.detectChanges();
+        const observer = new MutationObserver(async () => {
+            const container = document.getElementById("policy-container");
+            if (container) {
+                container.innerHTML = await firstValueFrom(this.http.get(`./assets/i18n/privacy-policy/${culture.gdpr}.html`, { responseType: "text" }));
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 }

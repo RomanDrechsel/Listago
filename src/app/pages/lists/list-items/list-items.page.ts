@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, inject, ViewChild } from "@angular/core";
+import { Component, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { IonButton, IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonReorder, IonReorderGroup, IonTextarea, ItemReorderEventDetail } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { Subscription } from "rxjs";
 import { AppComponent } from "src/app/app.component";
 import type { EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
@@ -14,7 +14,6 @@ import { PageAddNewComponent } from "../../../components/page-add-new/page-add-n
 import { PageEmptyComponent } from "../../../components/page-empty/page-empty.component";
 import { List } from "../../../services/lists/list";
 import { Listitem } from "../../../services/lists/listitem";
-import { Locale } from "../../../services/localization/locale";
 import { EPrefProperty } from "../../../services/storage/preferences.service";
 import { AnimatedListPageBase } from "../animated-list-page-base";
 
@@ -22,8 +21,8 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     selector: "app-list-items",
     templateUrl: "./list-items.page.html",
     styleUrls: ["./list-items.page.scss"],
-    changeDetection: ChangeDetectionStrategy.Default,
-    imports: [IonLabel, IonCheckbox, IonButton, IonTextarea, IonFabButton, IonFab, IonReorder, IonItem, IonItemOptions, IonItemSliding, IonIcon, IonItemOption, IonReorderGroup, IonList, IonContent, CommonModule, FormsModule, TranslateModule, MainToolbarComponent, PageAddNewComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
+    imports: [IonLabel, IonCheckbox, IonButton, IonTextarea, IonFabButton, IonFab, IonReorder, IonItem, IonItemOptions, IonItemSliding, IonIcon, IonItemOption, IonReorderGroup, IonList, IonContent, CommonModule, FormsModule, TranslocoModule, MainToolbarComponent, PageAddNewComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
+    providers: [provideTranslocoScope({ scope: "pages/lists/list-items-page", alias: "page_listitems" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
 })
 export class ListItemsPage extends AnimatedListPageBase {
     @ViewChild("quickAdd", { read: IonTextarea, static: false }) private quickAdd?: IonTextarea;
@@ -47,9 +46,9 @@ export class ListItemsPage extends AnimatedListPageBase {
             if (this._listTitle?.length) {
                 return this._listTitle;
             } else if (this._itemsInitialized) {
-                return Locale.getText("page_listitems.page_title");
+                return this.Locale.getText("page_listitems.page_title");
             } else {
-                return Locale.getText("page_listitems.loading");
+                return this.Locale.getText("page_listitems.loading");
             }
         } else {
             return this._list.Name;
@@ -297,15 +296,15 @@ export class ListItemsPage extends AnimatedListPageBase {
 
         let texts = [];
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getText(["comp-toolbar-edit-menu.item-pin", "comp-toolbar-edit-menu.item-unpin", "comp-toolbar-edit-menu.item-hide", "comp-toolbar-edit-menu.item-show", "comp-toolbar-edit-menu.item-delete"]);
-            texts["pin"] = pin_items ? texts["comp-toolbar-edit-menu.item-pin"] : texts["comp-toolbar-edit-menu.item-unpin"];
-            texts["hide"] = hide_items ? texts["comp-toolbar-edit-menu.item-hide"] : texts["comp-toolbar-edit-menu.item-show"];
-            texts["delete"] = texts["comp-toolbar-edit-menu.item-delete"];
+            texts = this.Locale.getText(["edit-menu.item-pin", "edit-menu.item-unpin", "edit-menu.item-hide", "edit-menu.item-show", "edit-menu.item-delete"]);
+            texts["pin"] = pin_items ? texts["edit-menu.item-pin"] : texts["edit-menu.item-unpin"];
+            texts["hide"] = hide_items ? texts["edit-menu.item-hide"] : texts["edit-menu.item-show"];
+            texts["delete"] = texts["edit-menu.item-delete"];
         } else {
-            texts = this.Locale.getText(["comp-toolbar-edit-menu.items-pin", "comp-toolbar-edit-menu.items-unpin", "comp-toolbar-edit-menu.items-hide", "comp-toolbar-edit-menu.items-show", "comp-toolbar-edit-menu.items-delete"], { num: this._selectedItems.length });
-            texts["pin"] = pin_items ? texts["comp-toolbar-edit-menu.items-pin"] : texts["comp-toolbar-edit-menu.items-unpin"];
-            texts["hide"] = hide_items ? texts["comp-toolbar-edit-menu.items-hide"] : texts["comp-toolbar-edit-menu.items-show"];
-            texts["delete"] = texts["comp-toolbar-edit-menu.items-delete"];
+            texts = this.Locale.getText(["edit-menu.items-pin", "edit-menu.items-unpin", "edit-menu.items-hide", "edit-menu.items-show", "edit-menu.items-delete"], { num: this._selectedItems.length });
+            texts["pin"] = pin_items ? texts["edit-menu.items-pin"] : texts["edit-menu.items-unpin"];
+            texts["hide"] = hide_items ? texts["edit-menu.items-hide"] : texts["edit-menu.items-show"];
+            texts["delete"] = texts["edit-menu.items-delete"];
         }
 
         return [

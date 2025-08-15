@@ -1,10 +1,10 @@
-<app-main-toolbar back="/">{{'page_settings.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/" *transloco="let t">{{t('page_settings.page_title')}}</app-main-toolbar>
 
-<ion-content>
+<ion-content *transloco="let t">
     <ion-list>
         <!-- app language -->
         <ion-item lines="none">
-            <ion-select class="select-language" interface="action-sheet" [label]="'page_settings.language'|translate" label-placement="stacked" value="{{Locale.CurrentLanguage.locale}}" [okText]="'change'|translate" [cancelText]="'cancel'|translate" (ionChange)="onChangeLanguage($event)">
+            <ion-select class="select-language" interface="action-sheet" [label]="t('page_settings.language')" label-placement="stacked" [value]="Locale.CurrentLanguage.locale" [okText]="t('buttons.change')" [cancelText]="t('buttons.cancel')" (ionChange)="onChangeLanguage($event)">
                 <ion-img slot="start" [src]="Locale.CurrentLanguage.Icon"></ion-img>
                 @for (details of Locale.AvailableTranslations; track details.locale) {
                 <ion-select-option value="{{details.locale}}" (selected)="Locale.CurrentLanguage.locale == details.locale"> {{details.LocalizedString}} </ion-select-option>
@@ -14,15 +14,15 @@
 
         <!-- translation mistakes -->
         <ion-item lines="full" (click)="reportTranslationMistake()">
-            <ion-note [innerHTML]="'page_settings.language_hint'|translate : { 'email': Email}"></ion-note>
+            <ion-note [innerHTML]="t('service-locale.language_hint', { 'email': Email})"></ion-note>
             <ion-icon src="/assets/icons/info.svg" slot="end" class="info-icon"></ion-icon>
         </ion-item>
 
         <!-- animations -->
         <ion-item lines="full">
             <ion-label (click)="onAnimationsChanged(!UseAnimations)">
-                <div class="text" [innerHTML]="'page_settings.animations'|translate"></div>
-                <ion-note [innerHTML]="'page_settings.animations_note'|translate"></ion-note>
+                <div class="text" [innerHTML]="t('page_settings.animations')"></div>
+                <ion-note [innerHTML]="t('page_settings.animations_note')"></ion-note>
             </ion-label>
             <ion-toggle [checked]="UseAnimations" (ionChange)="onAnimationsChanged($event.target.checked)" slot="end"></ion-toggle>
         </ion-item>
@@ -30,8 +30,8 @@
         <!-- transmission settings -->
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/lists-transmission']" lines="full">
             <ion-label>
-                <div class="text">{{'page_settings.transmission'|translate}}</div>
-                <ion-note>{{'page_settings.transmission_note'|translate}}</ion-note>
+                <div class="text">{{t('page_settings.transmission')}}</div>
+                <ion-note>{{t('page_settings.transmission_note')}}</ion-note>
             </ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
@@ -39,8 +39,8 @@
         <!-- confirmations -->
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/confirmations']" lines="full">
             <ion-label>
-                <div class="text">{{'page_settings.confirm'|translate}}</div>
-                <ion-note>{{'page_settings.confirm_note'|translate}}</ion-note>
+                <div class="text">{{t('page_settings.confirm')}}</div>
+                <ion-note>{{t('page_settings.confirm_note')}}</ion-note>
             </ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
@@ -48,8 +48,8 @@
         <!-- trash -->
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/trash']" lines="full">
             <ion-label>
-                <div class="text">{{'page_settings.trash'|translate}}</div>
-                <ion-note>{{'page_settings.trash_note'|translate}}</ion-note>
+                <div class="text">{{t('page_settings.trash')}}</div>
+                <ion-note>{{t('page_settings.trash_note')}}</ion-note>
             </ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
@@ -57,8 +57,8 @@
         <!-- import / export -->
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/im-export']" lines="full">
             <ion-label>
-                <div>{{'page_settings.im_export'|translate}}</div>
-                <ion-note>{{'page_settings.im_export_note'|translate}}</ion-note>
+                <div>{{t('page_settings.im_export')}}</div>
+                <ion-note>{{t('page_settings.im_export_note')}}</ion-note>
             </ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
@@ -66,8 +66,8 @@
         <!-- advertisement -->
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/advertisement']" lines="full">
             <ion-label>
-                <div class="text">{{'page_settings.advertisement'|translate}}</div>
-                <ion-note>{{'page_settings.advertisement_note'|translate}}</ion-note>
+                <div class="text">{{t('page_settings.advertisement')}}</div>
+                <ion-note>{{t('page_settings.advertisement_note')}}</ion-note>
             </ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>
@@ -75,8 +75,8 @@
         <!-- logging -->
         <ion-item [button]="true" routerDirection="forward" [routerLink]="['/settings/logging']" lines="full">
             <ion-label>
-                <div class="text">{{'page_settings.logging'|translate}}</div>
-                <ion-note>{{'page_settings.logging_note'|translate}}</ion-note>
+                <div class="text">{{t('page_settings.logging')}}</div>
+                <ion-note>{{t('page_settings.logging_note')}}</ion-note>
             </ion-label>
             <ion-icon slot="end" src="./assets/icons/chevron_forward.svg"></ion-icon>
         </ion-item>

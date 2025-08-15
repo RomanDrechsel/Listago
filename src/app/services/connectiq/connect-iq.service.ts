@@ -51,15 +51,15 @@ export class ConnectIQService {
 
     private _initialized: boolean = false;
 
-    private readonly Preferences = inject(PreferencesService);
-    private readonly Config = inject(ConfigService);
-    private readonly Router = inject(Router);
-    private readonly Popup = inject(PopupsService);
-    private readonly Locale = inject(LocalizationService);
-    private readonly NavController = inject(NavController);
+    private readonly _preferences = inject(PreferencesService);
+    private readonly _config = inject(ConfigService);
+    private readonly _router = inject(Router);
+    private readonly _popups = inject(PopupsService);
+    private readonly _locale = inject(LocalizationService);
+    private readonly _navController = inject(NavController);
 
     public set AlwaysTransmitToDevice(device: ConnectIQDevice | undefined) {
-        this.Preferences.Set(EPrefProperty.AlwaysTransmitTo, device?.Identifier);
+        this._preferences.Set(EPrefProperty.AlwaysTransmitTo, device?.Identifier);
         this._alwaysTransmitToDevice = device;
     }
 
@@ -81,6 +81,7 @@ export class ConnectIQService {
      */
     public async Initialize(obj?: { simulator?: boolean; debug_app?: boolean }): Promise<boolean> {
         Logger.Debug(`Start initializing ConnectIQ service...`);
+        await this._locale.loadScope("services/connectiq/connectiq-service", "service-connectiq");
         const all_listeners = Array.from(this._watchListeners.values());
         for (let i = 0; i < all_listeners.length; i++) {
             for (let j = 0; j < all_listeners[i].length; j++) {
@@ -93,14 +94,14 @@ export class ConnectIQService {
         if (Capacitor.isNativePlatform()) {
             this.addListener(new PluginLogsListener(this));
             this.addListener(new DeviceStateListener(this));
-            this.addListener(new DeviceErrorReportListener(this, this.NavController, this.Popup));
-            this.addListener(new DeviceLogsListener(this, this.NavController, this.Popup));
+            this.addListener(new DeviceErrorReportListener(this, this._navController, this._popups));
+            this.addListener(new DeviceLogsListener(this, this._navController, this._popups));
             this._devices = [];
             const init = await ConnectIQ.Initialize({ simulator: obj?.simulator ?? this.useGarminSimulator, debug_app: obj?.debug_app ?? this.useGarminDebugApp });
             if (init.success === true) {
                 this.useGarminDebugApp = init.debug_app ?? false;
                 this.useGarminSimulator = init.simulator ?? false;
-                const defaultTransmitDevice = await this.Preferences.Get<number>(EPrefProperty.AlwaysTransmitTo, -1);
+                const defaultTransmitDevice = await this._preferences.Get<number>(EPrefProperty.AlwaysTransmitTo, -1);
                 if (defaultTransmitDevice > -1) {
                     this._alwaysTransmitToDevice = await this.GetDevice(defaultTransmitDevice);
                 } else {
@@ -109,7 +110,7 @@ export class ConnectIQService {
                 Logger.Debug("ConnectIQ initialized");
             } else {
                 Logger.Error(`Could not initialize ConnectIQ service`, init);
-                this.Popup.Toast.Error("service-connectiq.init_failed", undefined, true);
+                this._popups.Toast.Error("service-connectiq.init_failed", undefined, true);
             }
 
             this._initialized = init.success;
@@ -157,7 +158,7 @@ export class ConnectIQService {
         }
         MainToolbarComponent.ToggleProgressbar(true);
 
-        const defaultTransmitDevice = await this.Preferences.Get<number>(EPrefProperty.AlwaysTransmitTo, -1);
+        const defaultTransmitDevice = await this._preferences.Get<number>(EPrefProperty.AlwaysTransmitTo, -1);
         let devices: ConnectIQDevice[] = [];
 
         if (Capacitor.isNativePlatform()) {
@@ -227,7 +228,7 @@ export class ConnectIQService {
             return online[0];
         } else if (args?.select_device_if_undefined !== false) {
             return new Promise<ConnectIQDevice | undefined>(resolve => {
-                SelectGarminDevice({ router: this.Router, callback: async (device?: ConnectIQDevice) => resolve(device), submitRoute: undefined, buttonText: args?.btn_text });
+                SelectGarminDevice({ router: this._router, callback: async (device?: ConnectIQDevice) => resolve(device), submitRoute: undefined, buttonText: args?.btn_text });
             });
         } else {
             return undefined;
@@ -239,20 +240,21 @@ export class ConnectIQService {
      */
     public async openStore() {
         //await ConnectIQ.OpenStore();
-        await Browser.open({ url: `${Locale.currentLang().GarminAppStore()}/${this.Config.GarminAppStoreId}` });
+        await Browser.open({ url: `${Locale.currentLang().GarminAppStore()}/${this._config.GarminAppStoreId}` });
     }
 
     /**
      * opens the app on the watch
      */
     public async openApp(device?: ConnectIQDevice, show_toast?: boolean): Promise<boolean> {
+        await this.GetDefaultDevice({ select_device_if_undefined: true, btn_text: this._locale.getText("service-connectiq.openapp_btn") });
         if (!device || device.State != "Ready") {
-            device = await this.GetDefaultDevice({ select_device_if_undefined: true, btn_text: this.Locale.getText("service-connectiq.openapp_btn") });
+            device = await this.GetDefaultDevice({ select_device_if_undefined: true, btn_text: this._locale.getText("service-connectiq.openapp_btn") });
         }
 
         if (!device || device.State != "Ready") {
             if (show_toast) {
-                await this.Popup.Toast.Error("service-connectiq.openapp_nodevice", undefined, true);
+                await this._popups.Toast.Error("service-connectiq.openapp_nodevice", undefined, true);
             }
 
             return false;
@@ -260,7 +262,7 @@ export class ConnectIQService {
 
         await ConnectIQ.OpenApp({ device_id: String(device.Identifier) });
         if (show_toast) {
-            await this.Popup.Toast.Success("service-connectiq.openapp_success", undefined, true);
+            await this._popups.Toast.Success("service-connectiq.openapp_success", undefined, true);
         }
         return true;
     }
@@ -413,8 +415,8 @@ export class ConnectIQService {
         if (device.state == "Ready" && (device.version ?? 0) > 0 && !this._watchOutdatedNotice.includes(device.id)) {
             this._watchOutdatedNotice.push(device.id);
             type ignore_device = { device: number; version: number; check: number };
-            let all_ignore = await this.Preferences.Get<ignore_device[] | undefined>(EPrefProperty.IgnoreWatchOutdated, undefined);
-            if (!device.version || device.version < this.Config.GarminAppVersion) {
+            let all_ignore = await this._preferences.Get<ignore_device[] | undefined>(EPrefProperty.IgnoreWatchOutdated, undefined);
+            if (!device.version || device.version < this._config.GarminAppVersion) {
                 if (!Array.isArray(all_ignore)) {
                     all_ignore = [];
                 }
@@ -423,17 +425,17 @@ export class ConnectIQService {
                 all_ignore = all_ignore.filter(d => d.device == device.id || d.check > Date.now() - 1000 * 60 * 60 * 24 * 180);
 
                 const ignore = all_ignore.find(d => d.device == device.id);
-                if (!ignore || ignore.version < this.Config.GarminAppVersion) {
-                    Logger.Notice(`Old lists app found on device ${StringUtils.toString(device)}, up-to-date version is ${this.Config.GarminAppVersion}`);
-                    const res = await this.Popup.Alert.Show({
-                        message: this.Locale.getText("service-connectiq.watch_outdated", { device: device.name }),
+                if (!ignore || ignore.version < this._config.GarminAppVersion) {
+                    Logger.Notice(`Old lists app found on device ${StringUtils.toString(device)}, up-to-date version is ${this._config.GarminAppVersion}`);
+                    const res = await this._popups.Alert.Show({
+                        message: this._locale.getText("service-connectiq.watch_outdated", { device: device.name }),
                         buttons: [
                             {
-                                text: this.Locale.getText("service-connectiq.watch_outdated_ignore"),
+                                text: this._locale.getText("service-connectiq.watch_outdated_ignore"),
                                 role: "confirm",
                             },
                             {
-                                text: this.Locale.getText("service-connectiq.watch_outdated_button"),
+                                text: this._locale.getText("service-connectiq.watch_outdated_button"),
                                 handler: () => this.openStore(),
                                 role: "confirm",
                             },
@@ -441,7 +443,7 @@ export class ConnectIQService {
                         inputs: [
                             {
                                 type: "checkbox",
-                                label: this.Locale.getText("service-connectiq.watch_outdated_dontremind"),
+                                label: this._locale.getText("service-connectiq.watch_outdated_dontremind"),
                                 value: "ignore",
                                 checked: ignore != undefined,
                             },
@@ -451,12 +453,12 @@ export class ConnectIQService {
                         if (ignore) {
                             all_ignore?.forEach(d => {
                                 if (d.device == device.id) {
-                                    d.version = this.Config.GarminAppVersion;
+                                    d.version = this._config.GarminAppVersion;
                                     d.check = Date.now();
                                 }
                             });
                         } else {
-                            all_ignore.push({ device: device.id, version: this.Config.GarminAppVersion, check: Date.now() });
+                            all_ignore.push({ device: device.id, version: this._config.GarminAppVersion, check: Date.now() });
                         }
                     } else {
                         all_ignore = undefined;
@@ -464,9 +466,9 @@ export class ConnectIQService {
                 }
             }
             if (all_ignore && all_ignore.length > 0) {
-                await this.Preferences.Set(EPrefProperty.IgnoreWatchOutdated, all_ignore);
+                await this._preferences.Set(EPrefProperty.IgnoreWatchOutdated, all_ignore);
             } else {
-                await this.Preferences.Remove(EPrefProperty.IgnoreWatchOutdated);
+                await this._preferences.Remove(EPrefProperty.IgnoreWatchOutdated);
             }
         }
     }

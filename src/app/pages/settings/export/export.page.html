@@ -1,6 +1,6 @@
-<app-main-toolbar back="/settings/im-export">{{'page_settings_export.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/settings/im-export" *transloco="let t">{{t('page_settings_export.page_title')}}</app-main-toolbar>
 
-<ion-content class="page">
+<ion-content class="page" *transloco="let t">
     @if(!ExportDone) {
     <div class="container">
         <ion-segment-view>
@@ -8,41 +8,41 @@
                 <div class="content">
                     <ion-icon class="content-icon" src="/assets/icons/menu/lists.svg"></ion-icon>
 
-                    <div class="text first">{{'page_settings_export.lists'|translate}}</div>
+                    <div class="text first">{{t('page_settings_export.lists')}}</div>
                     <div class="bottom">
-                        <ion-toggle labelPlacement="start" [ngClass]="{'disabled': !ExportLists}" [checked]="ExportLists" (ionChange)="toggleLists($event.target.checked)"> {{'page_settings_export.lists_toggle'|translate}} </ion-toggle>
+                        <ion-toggle labelPlacement="start" [ngClass]="{'disabled': !ExportLists}" [checked]="ExportLists" (ionChange)="toggleLists($event.target.checked)"> {{t('page_settings_export.lists_toggle')}} </ion-toggle>
                     </div>
                 </div>
                 <div class="buttons">
-                    <ion-button (click)="toTrash()">{{'next' | translate}}</ion-button>
+                    <ion-button (click)="toTrash()">{{t('buttons.next')}}</ion-button>
                 </div>
             </ion-segment-content>
             <ion-segment-content id="trash">
                 <div class="content">
                     <ion-icon class="content-icon" src="/assets/icons/menu/trash.svg"></ion-icon>
 
-                    <div class="text first">{{'page_settings_export.trash'|translate}}</div>
+                    <div class="text first">{{t('page_settings_export.trash')}}</div>
                     <div class="bottom">
-                        <ion-toggle labelPlacement="start" [ngClass]="{'disabled': !ExportTrash}" [checked]="ExportTrash" (ionChange)="toggleTrash($event.target.checked)"> {{'page_settings_export.trash_toggle'|translate}} </ion-toggle>
+                        <ion-toggle labelPlacement="start" [ngClass]="{'disabled': !ExportTrash}" [checked]="ExportTrash" (ionChange)="toggleTrash($event.target.checked)"> {{t('page_settings_export.trash_toggle')}} </ion-toggle>
                     </div>
                 </div>
                 <div class="buttons multiple">
-                    <ion-button (click)="toLists()" fill="outline">{{'back' | translate}}</ion-button>
-                    <ion-button (click)="toSettings()">{{'next' | translate}}</ion-button>
+                    <ion-button (click)="toLists()" fill="outline">{{t('buttons.back')}}</ion-button>
+                    <ion-button (click)="toSettings()">{{t('buttons.next')}}</ion-button>
                 </div>
             </ion-segment-content>
             <ion-segment-content id="settings">
                 <div class="content">
                     <ion-icon class="content-icon" src="/assets/icons/menu/settings.svg"></ion-icon>
 
-                    <div class="text first">{{'page_settings_export.settings'|translate}}</div>
+                    <div class="text first">{{t('page_settings_export.settings')}}</div>
                     <div class="bottom">
-                        <ion-toggle labelPlacement="start" [ngClass]="{'disabled': !ExportSettings}" [checked]="ExportSettings" (ionChange)="toggleSettings($event.target.checked)"> {{'page_settings_export.settings_toggle'|translate}} </ion-toggle>
+                        <ion-toggle labelPlacement="start" [ngClass]="{'disabled': !ExportSettings}" [checked]="ExportSettings" (ionChange)="toggleSettings($event.target.checked)"> {{t('page_settings_export.settings_toggle')}} </ion-toggle>
                     </div>
                 </div>
                 <div class="buttons multiple">
-                    <ion-button (click)="toTrash()" fill="outline">{{'back' | translate}}</ion-button>
-                    <ion-button (click)="toFinish()">{{'next' | translate}}</ion-button>
+                    <ion-button (click)="toTrash()" fill="outline">{{t('buttons.back')}}</ion-button>
+                    <ion-button (click)="toFinish()">{{t('buttons.next')}}</ion-button>
                 </div>
             </ion-segment-content>
             <ion-segment-content id="finish">
@@ -50,7 +50,7 @@
                     <ion-icon class="content-icon" src="/assets/icons/store.svg"></ion-icon>
 
                     @if (SomethingEnabled) {
-                    <div class="text first">{{'page_settings_export.export_summary'|translate}}</div>
+                    <div class="text first">{{t('page_settings_export.export_summary')}}</div>
                     <div>
                         <ion-card class="export-list">
                             <ion-list>
@@ -58,7 +58,7 @@
                                 <ion-item lines="full" [ngClass]="['export-item', item.status]">
                                     <ion-icon slot="start" [src]="item.icon"></ion-icon>
                                     <ion-label>
-                                        <ion-text class="export-item-title">{{item.locale|translate}}</ion-text>
+                                        <ion-text class="export-item-title">{{t(item.locale)}}</ion-text>
                                         <ion-progress-bar [value]="item.done"></ion-progress-bar>
                                     </ion-label>
                                 </ion-item>
@@ -68,17 +68,17 @@
 
                         <ion-buttons>
                             @if (ExportRunning) {
-                            <ion-button (click)="stopExport()" color="secondary" fill="outline"> {{'cancel'|translate}} </ion-button>
+                            <ion-button (click)="stopExport()" color="secondary" fill="outline"> {{t('buttons.cancel')}} </ion-button>
                             }
                         </ion-buttons>
                     </div>
                     } @else {
-                    <div class="text margin">{{'page_settings_export.export_summary_nothing'|translate}}</div>
+                    <div class="text margin">{{t('page_settings_export.export_summary_nothing')}}</div>
                     }
                 </div>
                 <div class="buttons left">
-                    <ion-button (click)="toSettings()" fill="outline">{{'back' | translate}}</ion-button>
-                    <ion-button (click)="exportToZip()" color="secondary" [disabled]="ExportRunning || !SomethingEnabled"> {{'page_settings_export.export_to_zip'|translate}} </ion-button>
+                    <ion-button (click)="toSettings()" fill="outline">{{t('buttons.back')}}</ion-button>
+                    <ion-button (click)="exportToZip()" color="secondary" [disabled]="ExportRunning || !SomethingEnabled"> {{t('page_settings_export.export_to_zip')}} </ion-button>
                 </div>
             </ion-segment-content>
         </ion-segment-view>
@@ -103,12 +103,12 @@
     <div class="container done">
         <div class="content">
             <ion-icon src="/assets/icons/done.svg"></ion-icon>
-            <div class="text" [innerHTML]="'page_settings_export.export_success' | translate"></div>
-            <div class="text" [innerHTML]="'page_settings_export.export_success_share' | translate"></div>
+            <div class="text" [innerHTML]="t('page_settings_export.export_success')"></div>
+            <div class="text" [innerHTML]="t('page_settings_export.export_success_share')"></div>
         </div>
         <ion-buttons class="fixed-bottom buttons multiple">
-            <ion-button fill="outline" color="secondary" (click)="cancel()">{{ 'done' | translate }}</ion-button>
-            <ion-button fill="solid" color="secondary" (click)="Share()">{{ 'share' | translate }}</ion-button>
+            <ion-button fill="outline" color="secondary" (click)="cancel()">{{t('buttons.done') }}</ion-button>
+            <ion-button fill="solid" color="secondary" (click)="Share()">{{ t('buttons.share') }}</ion-button>
         </ion-buttons>
     </div>
     }

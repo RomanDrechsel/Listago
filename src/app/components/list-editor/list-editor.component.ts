@@ -3,7 +3,7 @@ import { Component, inject, type OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Keyboard } from "@capacitor/keyboard";
 import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { ListsService } from "src/app/services/lists/lists.service";
 import { ConnectIQService } from "../../services/connectiq/connect-iq.service";
 import { List, ListReset, type ListSyncDevice } from "../../services/lists/list";
@@ -15,9 +15,10 @@ import { AdmobService } from "./../../services/adverticing/admob.service";
 
 @Component({
     selector: "app-list-edit",
-    imports: [IonNote, IonText, IonList, IonAccordion, IonCheckbox, IonAccordionGroup, IonLabel, IonIcon, IonTitle, IonItem, IonInput, IonButton, IonButtons, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslateModule, ReactiveFormsModule, FormsModule],
+    imports: [IonNote, IonText, IonList, IonAccordion, IonCheckbox, IonAccordionGroup, IonLabel, IonIcon, IonTitle, IonItem, IonInput, IonButton, IonButtons, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslocoModule, ReactiveFormsModule, FormsModule],
     templateUrl: "./list-editor.component.html",
     styleUrl: "./list-editor.component.scss",
+    providers: [provideTranslocoScope({ scope: "components/list-editor", alias: "comp-listeditor" }, { scope: "components/select-interval", alias: "comp-select-interval" }, { scope: "common/buttons", alias: "buttons" }, { scope: "common/date", alias: "date" })],
 })
 export class ListEditorComponent implements OnInit {
     @ViewChild("listname", { read: IonInput }) private listname?: IonInput;
@@ -153,9 +154,9 @@ export class ListEditorComponent implements OnInit {
 
     public get Confirm(): string {
         if (this.Params?.list) {
-            return this.Locale.getText("save");
+            return this.Locale.getText("buttons.save");
         } else {
-            return this.Locale.getText("create");
+            return this.Locale.getText("buttons.create");
         }
     }
 
@@ -240,7 +241,7 @@ export class ListEditorComponent implements OnInit {
             }
         } else {
             const devices = await DeviceSelector(this.modalCtrl, { only_ready: true, preselect: this._listSyncDevices, devices: all_devices });
-            if (devices) {
+            if (devices && devices.length > 0) {
                 this._listSyncDevices = devices.map(device => ({ id: device.Identifier, name: device.Name }));
             } else {
                 this._listSyncDevices = undefined;

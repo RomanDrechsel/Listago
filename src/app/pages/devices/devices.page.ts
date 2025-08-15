@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, ViewChild } from "@angular/
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IonButton, IonCard, IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonSelect, IonSelectOption, IonText } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
 import { ConnectIQDevice } from "src/app/services/connectiq/connect-iq-device";
@@ -14,7 +14,8 @@ import { PageBase } from "../page-base";
     templateUrl: "./devices.page.html",
     styleUrls: ["./devices.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonCheckbox, IonFabButton, IonIcon, IonFab, IonText, IonButton, IonCard, IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, MainToolbarComponent, TranslateModule],
+    imports: [IonCheckbox, IonFabButton, IonIcon, IonFab, IonText, IonButton, IonCard, IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, MainToolbarComponent, TranslocoModule],
+    providers: [provideTranslocoScope({ scope: "pages/devices-page", alias: "page_devices" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class DevicesPage extends PageBase {
     @ViewChild("deviceSelect") private deviceSelect!: IonSelect;

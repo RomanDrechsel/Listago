@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { AfterViewInit, Component, inject } from "@angular/core";
 import { IonButton, IonButtons, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { ConnectIQDevice } from "../../services/connectiq/connect-iq-device";
 import { ConnectIQMessageType } from "../../services/connectiq/connect-iq-message-type";
 import { ConnectIQService } from "../../services/connectiq/connect-iq.service";
@@ -9,14 +9,15 @@ import { Logger } from "../../services/logging/logger";
 
 @Component({
     selector: "app-request-watch-log",
-    imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonIcon, IonHeader, CommonModule, TranslateModule],
+    imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonIcon, IonHeader, CommonModule, TranslocoModule],
     templateUrl: "./request-watch-log.component.html",
     styleUrl: "./request-watch-log.component.scss",
+    providers: [provideTranslocoScope({ scope: "components/request-watch-logs", alias: "comp-watchlogs" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class RequestWatchLogComponent implements AfterViewInit {
     public Params!: RequestWatchLogsParams;
-    private readonly modalCtrl = inject(ModalController);
-    private readonly ConnectIQ = inject(ConnectIQService);
+    private readonly _modalCtrl = inject(ModalController);
+    private readonly _connectIQ = inject(ConnectIQService);
     private _stop: boolean = true;
 
     public async ngAfterViewInit(): Promise<void> {
@@ -25,23 +26,23 @@ export class RequestWatchLogComponent implements AfterViewInit {
 
     public cancel() {
         this._stop = true;
-        this.modalCtrl.dismiss(undefined, "cancel");
+        this._modalCtrl.dismiss(undefined, "cancel");
     }
 
     public proceedWithoutLogs() {
         this._stop = true;
-        this.modalCtrl.dismiss(["Log request canceled"], "confirm");
+        this._modalCtrl.dismiss(["Log request canceled"], "confirm");
     }
 
     public async openApp() {
-        await this.ConnectIQ.openApp(this.Params.device);
+        await this._connectIQ.openApp(this.Params.device);
     }
 
     private async requestLog(): Promise<void> {
         this._stop = false;
         const logs = await new Promise<string[]>(async resolve => {
             while (!this._stop) {
-                const resp = await this.ConnectIQ.SendToDeviceTransaction({
+                const resp = await this._connectIQ.SendToDeviceTransaction({
                     device: this.Params.device,
                     messageType: ConnectIQMessageType.RequestWatchLogs,
                     data: undefined,
@@ -68,9 +69,9 @@ export class RequestWatchLogComponent implements AfterViewInit {
         this._stop = true;
 
         if (logs) {
-            this.modalCtrl.dismiss(logs, "confirm");
+            this._modalCtrl.dismiss(logs, "confirm");
         } else {
-            this.modalCtrl.dismiss(undefined, "cancel");
+            this._modalCtrl.dismiss(undefined, "cancel");
         }
     }
 }

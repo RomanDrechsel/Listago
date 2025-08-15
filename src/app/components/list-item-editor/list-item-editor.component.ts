@@ -3,22 +3,23 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from "@
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Keyboard } from "@capacitor/keyboard";
 import { IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonItem, IonLabel, IonTextarea, IonTitle, IonToggle, IonToolbar, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { ListsService } from "src/app/services/lists/lists.service";
+import { LocalizationService } from "src/app/services/localization/localization.service";
 import { AdmobService } from "../../services/adverticing/admob.service";
 import { ConnectIQService } from "../../services/connectiq/connect-iq.service";
 import { List } from "../../services/lists/list";
 import { Listitem } from "../../services/lists/listitem";
 import { PopupsService } from "../../services/popups/popups.service";
 import { EPrefProperty, PreferencesService } from "../../services/storage/preferences.service";
-import { Locale } from "./../../services/localization/locale";
 
 @Component({
     selector: "app-list-item-editor",
-    imports: [IonTextarea, IonIcon, IonButton, IonButtons, IonTitle, IonItem, IonToolbar, IonLabel, IonHeader, IonCheckbox, IonToggle, CommonModule, TranslateModule, ReactiveFormsModule, FormsModule],
+    imports: [IonTextarea, IonIcon, IonButton, IonButtons, IonTitle, IonItem, IonToolbar, IonLabel, IonHeader, IonCheckbox, IonToggle, CommonModule, TranslocoModule, ReactiveFormsModule, FormsModule],
     templateUrl: "./list-item-editor.component.html",
     styleUrl: "./list-item-editor.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [provideTranslocoScope({ scope: "components/list-item-editor", alias: "comp-listitemeditor" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ListItemEditorComponent implements OnInit {
     @ViewChild("itemname") private itemname!: IonTextarea;
@@ -27,31 +28,32 @@ export class ListItemEditorComponent implements OnInit {
     public Params?: EditorParams;
     public Form: FormGroup;
 
-    public readonly Popups = inject(PopupsService);
-    private readonly ListsService = inject(ListsService);
-    private readonly Preferences = inject(PreferencesService);
-    private readonly Admob = inject(AdmobService);
-    private readonly ConnectIQ = inject(ConnectIQService);
+    public readonly _popups = inject(PopupsService);
+    private readonly _listsService = inject(ListsService);
+    private readonly _preferences = inject(PreferencesService);
+    private readonly _admob = inject(AdmobService);
+    private readonly _connectIQ = inject(ConnectIQService);
+    private readonly _locale = inject(LocalizationService);
 
     private _listAdded = false;
 
     public get ConnectIQInitialized(): boolean {
-        return this.ConnectIQ.Initialized;
+        return this._connectIQ.Initialized;
     }
 
     public get Title(): string {
         if (this.Params?.item) {
-            return Locale.getText("comp-listitemeditor.title_edit");
+            return this._locale.getText("comp-listitemeditor.title_edit");
         } else {
-            return Locale.getText("comp-listitemeditor.title_new");
+            return this._locale.getText("comp-listitemeditor.title_new");
         }
     }
 
     public get Confirm(): string {
         if (this.Params?.item) {
-            return Locale.getText("save");
+            return this._locale.getText("buttons.save");
         } else {
-            return Locale.getText("create");
+            return this._locale.getText("buttons.create");
         }
     }
 
@@ -73,7 +75,7 @@ export class ListItemEditorComponent implements OnInit {
 
     public async ionViewWillEnter() {
         if (this.addmore) {
-            this.addmore.checked = await this.Preferences.Get(EPrefProperty.AddMoreItemsDialog, false);
+            this.addmore.checked = await this._preferences.Get(EPrefProperty.AddMoreItemsDialog, false);
         }
     }
 
@@ -116,7 +118,7 @@ export class ListItemEditorComponent implements OnInit {
             item.Hidden = hidden;
             item.Locked = locked;
         } else {
-            item = await this.ListsService.createNewListitem(this.Params!.list!, { item: title, note: note, hidden: hidden, locked: locked });
+            item = await this._listsService.createNewListitem(this.Params!.list!, { item: title, note: note, hidden: hidden, locked: locked });
         }
 
         if (this.Params?.onAddItem) {
@@ -134,7 +136,7 @@ export class ListItemEditorComponent implements OnInit {
     }
 
     public async onDelete() {
-        if (this.Params?.list && this.Params?.item && (await this.ListsService.DeleteListitem(this.Params.list, this.Params.item))) {
+        if (this.Params?.list && this.Params?.item && (await this._listsService.DeleteListitem(this.Params.list, this.Params.item))) {
             this.cancel();
         }
     }
@@ -149,7 +151,7 @@ export class ListItemEditorComponent implements OnInit {
 
     public async clickInfoHidden(event: any) {
         event?.stopImmediatePropagation();
-        await this.Popups.Alert.Info({
+        await this._popups.Alert.Info({
             message: "comp-listitemeditor.hidden_info",
             translate: true,
         });
@@ -157,18 +159,18 @@ export class ListItemEditorComponent implements OnInit {
 
     public async clickInfoLocked(event: any) {
         event?.stopImmediatePropagation();
-        await this.Popups.Alert.Info({
+        await this._popups.Alert.Info({
             message: "comp-listitemeditor.locked_info",
             translate: true,
         });
     }
 
     public async onAddMoreChanged(checked: boolean) {
-        await this.Preferences.Set(EPrefProperty.AddMoreItemsDialog, checked);
+        await this._preferences.Set(EPrefProperty.AddMoreItemsDialog, checked);
     }
 
     public async hideAds() {
-        await this.Admob.HideBanner();
+        await this._admob.HideBanner();
     }
 
     private resetForm() {

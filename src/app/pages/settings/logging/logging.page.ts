@@ -1,9 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonText, SelectCustomEvent } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { interval, Subscription } from "rxjs";
 import { FileUtils } from "../../../classes/utils/file-utils";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
@@ -13,7 +12,8 @@ import { PageBase } from "../../page-base";
     selector: "app-logging",
     templateUrl: "./logging.page.html",
     styleUrls: ["./logging.page.scss"],
-    imports: [IonNote, IonIcon, IonLabel, IonText, IonList, IonItem, IonContent, IonSelect, IonSelectOption, IonButton, RouterLink, CommonModule, FormsModule, TranslateModule, MainToolbarComponent],
+    imports: [IonNote, IonIcon, IonLabel, IonText, IonList, IonItem, IonContent, IonSelect, IonSelectOption, IonButton, RouterLink, CommonModule, TranslocoModule, MainToolbarComponent],
+    providers: [provideTranslocoScope({ scope: "pages/settings/logging-page", alias: "page_settings_logs" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class LoggingPage extends PageBase {
     public LogsSize?: string;

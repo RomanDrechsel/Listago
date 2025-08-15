@@ -1,7 +1,6 @@
 {
     "page_title": "Impostazioni",
     "language": "Lingua dell'app",
-    "language_hint": "Il tedesco è la mia lingua madre. Se trovi errori di traduzione, segnalali per favore a <span class=\"no-wrap\">{{email}}</span>",
     "translation_error_confirm": "Vuoi segnalare un errore di traduzione?",
     "translation_error_title": "Errore nella traduzione italiana",
     "animations": "Animazioni",

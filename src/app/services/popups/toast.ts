@@ -58,7 +58,7 @@ export class Toast {
             icon = "/assets/icons/toastsuccess.svg";
         }
 
-        const ok = this.Locale.getText("ok");
+        const ok = this.Locale.getText("buttons.ok");
 
         return {
             message: message,

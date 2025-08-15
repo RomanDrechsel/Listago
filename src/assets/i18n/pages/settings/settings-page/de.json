@@ -1,7 +1,6 @@
 {
     "page_title": "Einstellungen",
     "language": "Sprache der App",
-    "language_hint": "Deutsch ist meine Muttersprache. Solltest du trotzdem Rechschreibfehler finden, melde sie bitte an <span class=\"no-wrap\">{{email}}</span>",
     "translation_error_confirm": "Möchtest du mir einen Rechtschreibfehler melden?",
     "translation_error_title": "Fehler in der deutschen Übersetzung",
     "animations": "Animationen",

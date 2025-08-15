@@ -12,7 +12,7 @@ export class Alert {
     public async Show(opts: { message: string; buttons?: (string | AlertButton)[]; header?: string; inputs?: AlertInput[]; translate?: boolean; ok_action?: () => Promise<void>; cssClass?: string }): Promise<any> {
         //at least an ok button
         if (!opts.buttons || opts.buttons.length == 0) {
-            opts.buttons = opts.translate ? ["ok"] : [this.Locale.getText("ok")];
+            opts.buttons = opts.translate ? ["buttons.ok"] : [this.Locale.getText("buttons.ok")];
         }
 
         //translate if nessesary
@@ -79,11 +79,11 @@ export class Alert {
      */
     public async YesNo(opts: { message: string; header?: string; button_no?: AlertButton | string; button_yes?: AlertButton | string; button_yes_alternative?: AlertButton | string; inputs?: AlertInput[]; translate?: boolean }): Promise<any> {
         if (opts.translate) {
-            opts.button_yes ??= "yes";
-            opts.button_no ??= "no";
+            opts.button_yes ??= "buttons.yes";
+            opts.button_no ??= "buttons.no";
         } else {
-            opts.button_yes ??= this.Locale.getText("yes");
-            opts.button_no ??= this.Locale.getText("no");
+            opts.button_yes ??= this.Locale.getText("buttons.yes");
+            opts.button_no ??= this.Locale.getText("buttons.no");
         }
 
         const args = {

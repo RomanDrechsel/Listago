@@ -1,10 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IonContent, IonFab, IonFabButton, IonIcon, IonSelect, IonSelectOption, IonText, ScrollDetail, SelectCustomEvent } from "@ionic/angular/standalone";
 import { IonContentCustomEvent } from "@ionic/core";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { Subscription } from "rxjs";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
 import { PageEmptyComponent } from "../../../components/page-empty/page-empty.component";
@@ -17,7 +16,8 @@ import { PageBase } from "../../page-base";
     templateUrl: "./show-watch-logs.page.html",
     styleUrls: ["./show-watch-logs.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonFabButton, IonFab, IonText, IonIcon, IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, TranslateModule, MainToolbarComponent, PageEmptyComponent],
+    imports: [IonFabButton, IonFab, IonText, IonIcon, IonContent, IonSelect, IonSelectOption, CommonModule, TranslocoModule, MainToolbarComponent, PageEmptyComponent],
+    providers: [provideTranslocoScope({ scope: "pages/settings/show-watch-logs-page", alias: "page_settings_showwatchlogs" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ShowWatchLogsPage extends PageBase {
     @ViewChild("mainContent", { read: IonContent, static: false }) mainContent?: IonContent;
@@ -29,9 +29,9 @@ export class ShowWatchLogsPage extends PageBase {
 
     public availableDevices: ConnectIQDevice[] = [];
 
-    private readonly WatchLogs = inject(WatchLoggingService);
-    private readonly Route = inject(ActivatedRoute);
-    private readonly Router = inject(Router);
+    private readonly _watchLogs = inject(WatchLoggingService);
+    private readonly _route = inject(ActivatedRoute);
+    private readonly _router = inject(Router);
 
     private _deviceListener?: Subscription;
     private _scrollPosition: "top" | "bottom" | number = "top";
@@ -50,13 +50,11 @@ export class ShowWatchLogsPage extends PageBase {
 
     public override async ionViewWillEnter() {
         await super.ionViewWillEnter();
-        const logs = this.Route.snapshot.queryParams["watchLogs"];
+        const logs = this._route.snapshot.queryParams["watchLogs"];
         if (logs) {
-            this.Router.navigate([], { queryParams: {}, replaceUrl: true });
+            this._router.navigate([], { queryParams: {}, replaceUrl: true });
             this.DeviceLog = logs.join("\n");
-            this.cdr.detectChanges();
-            await new Promise(resolve => setTimeout(resolve, 1));
-            this.cdr.detectChanges();
+            await this.reload();
             this.ScrollToBottom();
         }
         this._deviceListener = this.ConnectIQ.onDeviceChanged$.subscribe(async () => {
@@ -72,14 +70,11 @@ export class ShowWatchLogsPage extends PageBase {
 
     public async loadLog() {
         if (this.Device) {
-            const logs = await this.WatchLogs.RequestGarminWatchLogs(this.Device.Identifier);
+            const logs = await this._watchLogs.RequestGarminWatchLogs(this.Device.Identifier);
             if (logs) {
                 this.DeviceLog = logs.join("\n");
-                this.cdr.detectChanges();
+                await this.reload();
                 this.ScrollToBottom();
-                /* else, scroll buttons won't be shown */
-                await new Promise(resolve => setTimeout(resolve, 1));
-                this.cdr.detectChanges();
                 return;
             }
         }

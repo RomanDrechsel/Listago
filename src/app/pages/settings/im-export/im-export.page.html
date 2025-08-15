@@ -1,13 +1,13 @@
-<app-main-toolbar back="/settings">{{'page_settings_imexport.page_title'|translate}}</app-main-toolbar>
+<app-main-toolbar back="/settings" *transloco="let t">{{t('page_settings_imexport.page_title')}}</app-main-toolbar>
 
-<ion-content>
+<ion-content *transloco="let t">
     <ion-list>
         <ion-item lines="none" routerDirection="forward" [routerLink]="['/settings/import']">
             <ion-label>
                 <ion-icon src="/assets/icons/import.svg"></ion-icon>
                 <div class="text">
-                    <div class="title">{{'page_settings_imexport.import'|translate}}</div>
-                    <div class="note">{{'page_settings_imexport.import_note'|translate}}</div>
+                    <div class="title">{{t('page_settings_imexport.import')}}</div>
+                    <div class="note">{{t('page_settings_imexport.import_note')}}</div>
                 </div>
             </ion-label>
         </ion-item>
@@ -15,8 +15,8 @@
             <ion-label>
                 <ion-icon src="/assets/icons/export.svg"></ion-icon>
                 <div class="text">
-                    <div class="title">{{'page_settings_imexport.export'|translate}}</div>
-                    <div class="note">{{'page_settings_imexport.export_note'|translate}}</div>
+                    <div class="title">{{t('page_settings_imexport.export')}}</div>
+                    <div class="note">{{t('page_settings_imexport.export_note')}}</div>
                 </div>
             </ion-label>
         </ion-item>

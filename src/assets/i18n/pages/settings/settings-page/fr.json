@@ -1,7 +1,6 @@
 {
     "page_title": "Paramètres",
     "language": "Langue de l'application",
-    "language_hint": "L'application a été traduite à l'aide de l'intelligence artificielle. Si des erreurs ont été commises, merci de les signaler à <span class=\"no-wrap\">{{email}}</span>.",
     "translation_error_confirm": "Voulez-vous me signaler une erreur de traduction ?",
     "translation_error_title": "Erreur dans la traduction française",
     "animations": "Animations",

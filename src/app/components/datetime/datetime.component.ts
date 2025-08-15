@@ -1,22 +1,21 @@
 import { CommonModule } from "@angular/common";
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild, ViewEncapsulation } from "@angular/core";
 import { IonButton, IonButtons, IonDatetime, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { timer } from "rxjs";
 import { LocalizationService } from "../../services/localization/localization.service";
 
 @Component({
-    selector: 'app-datetime',
-    imports: [
-        IonDatetime, IonButtons, IonButton, CommonModule, TranslateModule,
-    ],
-    templateUrl: './datetime.component.html',
-    styleUrl: './datetime.component.scss',
+    selector: "app-datetime",
+    imports: [IonDatetime, IonButtons, IonButton, CommonModule, TranslocoModule],
+    templateUrl: "./datetime.component.html",
+    styleUrl: "./datetime.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [provideTranslocoScope({ scope: "common/buttons", alias: "buttons" }, { scope: "common/date", alias: "date" })],
 })
 export class DatetimeComponent implements AfterViewInit {
-    @ViewChild('datetime', { read: ElementRef, static: false }) datetime?: ElementRef;
+    @ViewChild("datetime", { read: ElementRef, static: false }) datetime?: ElementRef;
 
     public selectedDate: string | undefined;
 
@@ -42,10 +41,10 @@ export class DatetimeComponent implements AfterViewInit {
         timer(200).subscribe(() => {
             const shadow: DocumentFragment = this.datetime?.nativeElement.shadowRoot;
             if (shadow) {
-                shadow.querySelector('.calendar-days-of-week')?.setAttribute('part', 'days-of-week');
-                shadow.querySelectorAll('.calendar-next-prev ion-button').forEach(el => el.setAttribute('part', 'calender-next-prev-button'));
-                shadow.querySelector('.datetime-header')?.setAttribute('part', 'header');
-                shadow.querySelector('ion-picker')?.setAttribute('part', 'picker');
+                shadow.querySelector(".calendar-days-of-week")?.setAttribute("part", "days-of-week");
+                shadow.querySelectorAll(".calendar-next-prev ion-button").forEach(el => el.setAttribute("part", "calender-next-prev-button"));
+                shadow.querySelector(".datetime-header")?.setAttribute("part", "header");
+                shadow.querySelector("ion-picker")?.setAttribute("part", "picker");
             }
         });
     }
@@ -63,16 +62,15 @@ export class DatetimeComponent implements AfterViewInit {
     }
 
     public async onChange(date: string | string[] | null | undefined) {
-        if (typeof (date) == "string") {
+        if (typeof date == "string") {
             this.ModalCtrl.dismiss(new Date(date), "confirm");
-        }
-        else {
+        } else {
             this.ModalCtrl.dismiss(null, "cancel");
         }
     }
 }
 
-export const SelectDatetime = async function(modalController: ModalController, params?: EditorParams): Promise<Date | undefined> {
+export const SelectDatetime = async function (modalController: ModalController, params?: EditorParams): Promise<Date | undefined> {
     const modal = await modalController.create({
         component: DatetimeComponent,
         componentProps: { Params: params },

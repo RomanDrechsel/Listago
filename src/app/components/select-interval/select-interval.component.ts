@@ -1,16 +1,17 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, ViewChild } from "@angular/core";
 import { IonButton, IonButtons, IonHeader, IonPicker, IonPickerColumn, IonPickerColumnOption, IonToolbar, ModalController } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { ListReset } from "../../services/lists/list";
 import { LocalizationService } from "../../services/localization/localization.service";
 import { EPrefProperty, PreferencesService } from "../../services/storage/preferences.service";
 
 @Component({
     selector: "app-select-interval",
-    imports: [IonPicker, IonButton, IonButtons, IonToolbar, IonHeader, IonPickerColumn, IonPickerColumnOption, CommonModule, TranslateModule],
+    imports: [IonPicker, IonButton, IonButtons, IonToolbar, IonHeader, IonPickerColumn, IonPickerColumnOption, CommonModule, TranslocoModule],
     templateUrl: "./select-interval.component.html",
     styleUrl: "./select-interval.component.scss",
+    providers: [provideTranslocoScope({ scope: "components/select-interval", alias: "comp-select-interval" }, { scope: "common/buttons", alias: "buttons" }, { scope: "common/date", alias: "date" })],
 })
 export class SelectIntervalComponent {
     @ViewChild("pickerHour", { read: IonPickerColumn }) pickerHour?: IonPickerColumn;
@@ -19,8 +20,8 @@ export class SelectIntervalComponent {
     @ViewChild("pickerWeekday", { read: IonPickerColumn }) pickerWeekday?: IonPickerColumn;
 
     public readonly Locale = inject(LocalizationService);
-    private readonly modalCtrl = inject(ModalController);
-    private readonly Preferences = inject(PreferencesService);
+    private readonly _modalCtrl = inject(ModalController);
+    private readonly _preferences = inject(PreferencesService);
 
     private _hours?: { v: number; s: string }[] = undefined;
     private _minutes?: { v: number; s: string }[] = undefined;
@@ -126,7 +127,7 @@ export class SelectIntervalComponent {
             this.pickerWeekday.value = this.Params.weekday ?? this.Locale.CurrentLanguage.firstDayOfWeek;
         }
 
-        this.Preferences.onPrefChanged$.subscribe(prop => {
+        this._preferences.onPrefChanged$.subscribe(prop => {
             if (prop.prop == EPrefProperty.AppLanguage) {
                 this._hours = undefined;
                 this._weekdays = undefined;
@@ -135,7 +136,7 @@ export class SelectIntervalComponent {
     }
 
     public async cancel() {
-        this.modalCtrl.dismiss(null, "cancel");
+        this._modalCtrl.dismiss(null, "cancel");
     }
 
     public async select() {
@@ -147,7 +148,7 @@ export class SelectIntervalComponent {
             day: (this.Params.interval == "monthly" ? Number(this.pickerDay?.value) ?? this.Params.day : this.Params.day) ?? 1,
             weekday: (this.Params.interval == "weekly" ? Number(this.pickerWeekday?.value) ?? this.Params.weekday : this.Params.weekday) ?? this.Locale.CurrentLanguage.firstDayOfWeek,
         };
-        this.modalCtrl.dismiss(obj, "confirm");
+        this._modalCtrl.dismiss(obj, "confirm");
     }
 }
 

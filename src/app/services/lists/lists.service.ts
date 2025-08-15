@@ -24,13 +24,13 @@ import { Listitem } from "./listitem";
     providedIn: "root",
 })
 export class ListsService {
-    private readonly Preferences = inject(PreferencesService);
-    private readonly ModalCtrl = inject(ModalController);
-    private readonly Popups = inject(PopupsService);
-    private readonly NavController = inject(NavController);
-    private readonly Locale = inject(LocalizationService);
-    private readonly ConnectIQ = inject(ConnectIQService);
-    public readonly BackendService = inject(ListsSqliteBackendService);
+    private readonly _preferences = inject(PreferencesService);
+    private readonly _modalCtrl = inject(ModalController);
+    private readonly _popups = inject(PopupsService);
+    private readonly _navController = inject(NavController);
+    private readonly _locale = inject(LocalizationService);
+    private readonly _connectIQ = inject(ConnectIQService);
+    public readonly _backendService = inject(ListsSqliteBackendService);
 
     private _keepInTrashStock: KeepInTrash.Enum = KeepInTrash.Default;
     private _syncLists: boolean = false;
@@ -61,16 +61,18 @@ export class ListsService {
     public onListsChanged$ = this.onListsChangedSubject.asObservable();
 
     public async Initialize() {
-        await this.BackendService.Initialize();
-        this._syncLists = await this.Preferences.Get<boolean>(EPrefProperty.SyncListOnDevice, false);
-        this.Preferences.onPrefChanged$.subscribe(arg => {
+        await this._locale.loadScope("services/lists/lists-service", "service-lists");
+        await this._locale.loadScope("common/buttons", "buttons");
+        await this._backendService.Initialize();
+        this._syncLists = await this._preferences.Get<boolean>(EPrefProperty.SyncListOnDevice, false);
+        this._preferences.onPrefChanged$.subscribe(arg => {
             if (arg.prop == EPrefProperty.TrashKeepinStock) {
                 this.removeOldTrash(arg.value);
             } else if (arg.prop == EPrefProperty.SyncListOnDevice) {
                 this._syncLists = arg.value;
             }
         });
-        await this.removeOldTrash(await this.Preferences.Get<number>(EPrefProperty.TrashKeepinStock, this._keepInTrashStock));
+        await this.removeOldTrash(await this._preferences.Get<number>(EPrefProperty.TrashKeepinStock, this._keepInTrashStock));
         Logger.Debug(`Lists service initialized`);
     }
 
@@ -81,7 +83,7 @@ export class ListsService {
      */
     public async GetLists(args?: { orderBy?: ListsOrder; orderDir?: ListsOrderDirection }): Promise<List[]> {
         MainToolbarComponent.ToggleProgressbar(true);
-        const lists = await this.BackendService.queryLists({ peek: true, trash: false, orderBy: args?.orderBy, orderDir: args?.orderDir });
+        const lists = await this._backendService.queryLists({ peek: true, trash: false, orderBy: args?.orderBy, orderDir: args?.orderDir });
         lists.forEach(l => {
             const list = this._listIndex.get(l.Id!);
             if (list) {
@@ -106,7 +108,7 @@ export class ListsService {
      */
     public async GetTrash(): Promise<List[]> {
         MainToolbarComponent.ToggleProgressbar(true);
-        const trash = await this.BackendService.queryLists({ peek: true, trash: true, orderBy: "deleted", orderDir: "DESC" });
+        const trash = await this._backendService.queryLists({ peek: true, trash: true, orderBy: "deleted", orderDir: "DESC" });
         this.onTrashDatasetChangedSubject.next(trash);
         MainToolbarComponent.ToggleProgressbar(false);
         return trash;
@@ -119,7 +121,7 @@ export class ListsService {
      */
     public async GetList(id: number): Promise<List | undefined> {
         MainToolbarComponent.ToggleProgressbar(true);
-        const list = await this.BackendService.queryList({ list: id });
+        const list = await this._backendService.queryList({ list: id });
         if (list) {
             const index = this._listIndex.get(list.Id);
             if (index) {
@@ -142,7 +144,7 @@ export class ListsService {
      */
     public async GetListitemTrash(id: number | List, fire_subscription: boolean = true): Promise<Listitem[] | undefined> {
         MainToolbarComponent.ToggleProgressbar(false);
-        const trash = await this.BackendService.queryListitems({ list: id, trash: true, itemsOrderBy: "deleted", itemsOrderDir: "DESC" });
+        const trash = await this._backendService.queryListitems({ list: id, trash: true, itemsOrderBy: "deleted", itemsOrderDir: "DESC" });
         if (fire_subscription) {
             this.onTrashItemsDatasetChangedSubject.next(id);
         }
@@ -154,17 +156,17 @@ export class ListsService {
      * opens the list editor to create a new list
      */
     public async NewList() {
-        const list = await ListEditor(this.ModalCtrl, {});
+        const list = await ListEditor(this._modalCtrl, {});
         if (list) {
             if (await this.StoreList(list)) {
                 Logger.Notice(`Created new list ${list.toLog()}`);
                 await this.addListToIndex(list);
                 await this.cleanOrderLists();
                 this.onListsChangedSubject.next(await this.GetLists());
-                this.NavController.navigateForward(`/lists/items/${list.Id}`);
+                this._navController.navigateForward(`/lists/items/${list.Id}`);
                 this.informAboutDisabledSyncPref(list);
             } else {
-                this.Popups.Toast.Error("service-lists.store_list_error");
+                this._popups.Toast.Error("service-lists.store_list_error");
             }
         }
     }
@@ -176,14 +178,14 @@ export class ListsService {
      * @returns true if the list was edited and stored, false is storage failed. undefined if no changes were made
      */
     public async EditList(list: List): Promise<boolean | undefined> {
-        const ret = await ListEditor(this.ModalCtrl, { list: list });
+        const ret = await ListEditor(this._modalCtrl, { list: list });
         if (ret) {
             const store = await this.StoreList(list);
             if (store === true) {
                 Logger.Notice(`Edited list ${list.toLog()}`);
                 this.informAboutDisabledSyncPref(list);
             } else if (store === false) {
-                this.Popups.Toast.Error("service-lists.store_list_error");
+                this._popups.Toast.Error("service-lists.store_list_error");
             }
             return store;
         }
@@ -197,22 +199,22 @@ export class ListsService {
      * @returns list deletion successful? undefined if the user canceled it
      */
     public async DeleteLists(lists: List | List[], no_prompt: boolean = false): Promise<boolean | undefined> {
-        const del_on_watch = await this.Preferences.Get(EPrefProperty.DeleteListOnDevice, false);
-        if (!no_prompt && (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmDeleteList, true))) {
+        const del_on_watch = await this._preferences.Get(EPrefProperty.DeleteListOnDevice, false);
+        if (!no_prompt && (await this._preferences.Get<boolean>(EPrefProperty.ConfirmDeleteList, true))) {
             let text = "";
             if (Array.isArray(lists) && lists.length > 1) {
-                text = this.Locale.getText("service-lists.delete_confirm_plural");
+                text = this._locale.getText("service-lists.delete_confirm_plural");
             } else {
-                text = this.Locale.getText("service-lists.delete_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) });
+                text = this._locale.getText("service-lists.delete_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) });
             }
 
             const checkbox: AlertInput = {
-                label: this.Locale.getText("service-lists.delete_confirm_watch"),
+                label: this._locale.getText("service-lists.delete_confirm_watch"),
                 type: "checkbox",
                 value: "del_on_watch",
                 checked: del_on_watch,
             };
-            const result = await this.Popups.Alert.YesNo({ message: text, inputs: [checkbox] });
+            const result = await this._popups.Alert.YesNo({ message: text, inputs: [checkbox] });
             if (result !== false) {
                 const del_on_watch = Array.isArray(result) && result.includes("del_on_watch") ? true : false;
                 return this.removeLists(lists, del_on_watch);
@@ -231,15 +233,15 @@ export class ListsService {
      * @returns deletion successful? undefined if user canceled it
      */
     public async EmptyLists(lists: List | List[], force: boolean = false): Promise<boolean | undefined> {
-        if (!force && (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmEmptyList, true))) {
+        if (!force && (await this._preferences.Get<boolean>(EPrefProperty.ConfirmEmptyList, true))) {
             let text = "";
             if (Array.isArray(lists) && lists.length > 1) {
-                text = this.Locale.getText("service-lists.empty_confirm_plural");
+                text = this._locale.getText("service-lists.empty_confirm_plural");
             } else {
-                text = this.Locale.getText("service-lists.empty_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) });
+                text = this._locale.getText("service-lists.empty_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) });
             }
 
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 return await this.emptyLists(lists);
             } else {
                 return undefined;
@@ -272,7 +274,7 @@ export class ListsService {
             Keyboard.show();
         }
         let added: boolean | undefined = undefined;
-        await ListItemEditorMultiple(this.ModalCtrl, {
+        await ListItemEditorMultiple(this._modalCtrl, {
             list: list,
             onAddItem: async (list: List, item: Listitem, add_more: boolean) => {
                 if (item) {
@@ -282,9 +284,9 @@ export class ListsService {
                     added = await this.StoreList(list, false, true, false);
                     if (add_more) {
                         if (added) {
-                            this.Popups.Toast.Success("service-lists.add_moreitems_success", undefined, true);
+                            this._popups.Toast.Success("service-lists.add_moreitems_success", undefined, true);
                         } else {
-                            this.Popups.Toast.Error("service-lists.add_moreitems_error", undefined, true);
+                            this._popups.Toast.Error("service-lists.add_moreitems_error", undefined, true);
                         }
                     }
                 }
@@ -316,7 +318,7 @@ export class ListsService {
      * @returns editing successful? undefined if user canceled it
      */
     public async EditListitem(list: List, item: Listitem): Promise<boolean | undefined> {
-        const obj = await ListItemEditor(this.ModalCtrl, { list: list, item: item });
+        const obj = await ListItemEditor(this._modalCtrl, { list: list, item: item });
         if (obj) {
             if (await this.StoreList(list, undefined, true, false)) {
                 Logger.Debug(`Edited listitem ${item.toLog()}`);
@@ -337,14 +339,14 @@ export class ListsService {
      * @returns deletion successful? undefined if user canceled it
      */
     public async DeleteListitem(list: List, items: Listitem | Listitem[], no_prompt: boolean = false, keep_locked: boolean = true): Promise<boolean | undefined> {
-        if (!no_prompt && (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmDeleteListitem, true))) {
+        if (!no_prompt && (await this._preferences.Get<boolean>(EPrefProperty.ConfirmDeleteListitem, true))) {
             let text = "";
             if (Array.isArray(items) && items.length > 1) {
-                text = this.Locale.getText("service-lists.delete_item_confirm_plural");
+                text = this._locale.getText("service-lists.delete_item_confirm_plural");
             } else {
-                text = this.Locale.getText("service-lists.delete_item_confirm", { name: StringUtils.shorten(Array.isArray(items) ? items[0].Item : items.Item, 40) });
+                text = this._locale.getText("service-lists.delete_item_confirm", { name: StringUtils.shorten(Array.isArray(items) ? items[0].Item : items.Item, 40) });
             }
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 return this.removeListitem(list, items, keep_locked);
             } else {
                 return undefined;
@@ -361,16 +363,16 @@ export class ListsService {
      * @returns erase successful, undefined if user canceled it
      */
     public async EraseListitemFromTrash(trash: List | number, items: Listitem | Listitem[]): Promise<boolean | undefined> {
-        if (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmEraseListitem, true)) {
+        if (await this._preferences.Get<boolean>(EPrefProperty.ConfirmEraseListitem, true)) {
             let text = "";
             if (Array.isArray(items) && items.length > 1) {
-                text = this.Locale.getText("service-lists.erase_item_confirm_plural");
+                text = this._locale.getText("service-lists.erase_item_confirm_plural");
             } else {
-                text = this.Locale.getText("service-lists.erase_item_confirm", { name: StringUtils.shorten(Array.isArray(items) ? items[0].Item : items.Item, 40) });
+                text = this._locale.getText("service-lists.erase_item_confirm", { name: StringUtils.shorten(Array.isArray(items) ? items[0].Item : items.Item, 40) });
             }
-            text += this.Locale.getText("service-lists.undo_warning");
+            text += this._locale.getText("service-lists.undo_warning");
 
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 return this.eraseListitemFromTrash(trash, items);
             } else {
                 return undefined;
@@ -386,17 +388,17 @@ export class ListsService {
      * @returns empty successfull, undefined if user canceled it
      */
     public async WipeTrash(no_prompt: boolean = false, prompt_anyway: boolean = false): Promise<boolean | undefined> {
-        if (prompt_anyway || (!no_prompt && (await this.Preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)))) {
+        if (prompt_anyway || (!no_prompt && (await this._preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)))) {
             let text;
-            const count = await this.BackendService.queryListsCount({ trash: true });
+            const count = await this._backendService.queryListsCount({ trash: true });
             if (count > 0) {
                 if (count == 1) {
-                    text = this.Locale.getText("service-lists.empty_trash_confirm_single");
+                    text = this._locale.getText("service-lists.empty_trash_confirm_single");
                 } else {
-                    text = this.Locale.getText("service-lists.empty_trash_confirm", { count: count });
+                    text = this._locale.getText("service-lists.empty_trash_confirm", { count: count });
                 }
-                text += this.Locale.getText("service-lists.undo_warning");
-                if (await this.Popups.Alert.YesNo({ message: text })) {
+                text += this._locale.getText("service-lists.undo_warning");
+                if (await this._popups.Alert.YesNo({ message: text })) {
                     return (await this.wipeListsTrash()) >= 0;
                 } else {
                     return undefined;
@@ -410,11 +412,11 @@ export class ListsService {
     }
 
     public async WipeListitemTrash(no_prompt: boolean = false, prompt_anyway: boolean = false): Promise<boolean | undefined> {
-        if (prompt_anyway || (!no_prompt && (await this.Preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)))) {
-            const count = await this.BackendService.queryListitemsCount({ list: "all", trash: true });
+        if (prompt_anyway || (!no_prompt && (await this._preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)))) {
+            const count = await this._backendService.queryListitemsCount({ list: "all", trash: true });
             if (
                 count > 0 &&
-                (await this.Popups.Alert.YesNo({
+                (await this._popups.Alert.YesNo({
                     message: "page_settings_trash.confirm_clearitemstrash",
                     button_yes: "page_settings_trash.confirm_clearitemstrash_ok",
                     button_no: "page_settings_trash.confirm_clearitemstrash_cancel",
@@ -435,22 +437,22 @@ export class ListsService {
      * @returns removal successful? undefined if the user canceled it
      */
     public async EmptyListitemTrash(trash: List | number): Promise<boolean | undefined> {
-        if (await this.Preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)) {
+        if (await this._preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)) {
             if (!(trash instanceof List)) {
                 trash = (await this.GetList(trash)) ?? trash;
             }
             let text;
             if (trash instanceof List) {
                 if (trash.ItemsInTrashCount == 1) {
-                    text = this.Locale.getText("service-lists.empty_trash_listitems_confirm_single");
+                    text = this._locale.getText("service-lists.empty_trash_listitems_confirm_single");
                 } else {
-                    text = this.Locale.getText("service-lists.empty_trash_listitems_confirm", { count: trash.ItemsInTrashCount });
+                    text = this._locale.getText("service-lists.empty_trash_listitems_confirm", { count: trash.ItemsInTrashCount });
                 }
             } else {
-                text = this.Locale.getText("service-lists.empty_trash_listitems_confirm_unknown");
+                text = this._locale.getText("service-lists.empty_trash_listitems_confirm_unknown");
             }
-            text += this.Locale.getText("service-lists.undo_warning");
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            text += this._locale.getText("service-lists.undo_warning");
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 return this.emptyListitemTrash(trash);
             } else {
                 return undefined;
@@ -507,15 +509,15 @@ export class ListsService {
      * @returns erase successful? undefined if user canceled it
      */
     public async EraseListFromTrash(lists: List | List[], force: boolean = false): Promise<boolean | undefined> {
-        if (!force && (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmEraseList, true))) {
-            let text = this.Locale.getText("service-lists.undo_warning");
+        if (!force && (await this._preferences.Get<boolean>(EPrefProperty.ConfirmEraseList, true))) {
+            let text = this._locale.getText("service-lists.undo_warning");
             if (!Array.isArray(lists) || lists.length == 1) {
-                text = this.Locale.getText("service-lists.erase_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) }) + text;
+                text = this._locale.getText("service-lists.erase_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) }) + text;
             } else {
-                text = this.Locale.getText("service-lists.erase_confirm_plural") + text;
+                text = this._locale.getText("service-lists.erase_confirm_plural") + text;
             }
 
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 return this.eraseListFromTrash(lists);
             } else {
                 return undefined;
@@ -531,14 +533,14 @@ export class ListsService {
      * @returns restore successful? undefined if user canceled it
      */
     public async RestoreListFromTrash(lists: List | List[]): Promise<boolean | undefined> {
-        if (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmRestoreList, true)) {
+        if (await this._preferences.Get<boolean>(EPrefProperty.ConfirmRestoreList, true)) {
             let text = "";
             if (!Array.isArray(lists) || lists.length == 1) {
-                text = this.Locale.getText("service-lists.restore_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) });
+                text = this._locale.getText("service-lists.restore_confirm", { name: StringUtils.shorten(Array.isArray(lists) ? lists[0].Name : lists.Name, 40) });
             } else {
-                text = this.Locale.getText("service-lists.restore_confirm_plural");
+                text = this._locale.getText("service-lists.restore_confirm_plural");
             }
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 return this.restoreListFromTrash(lists);
             } else {
                 return undefined;
@@ -555,15 +557,15 @@ export class ListsService {
      * @returns restore successful? undefined if user canceled it
      */
     public async RestoreListitemFromTrash(trash: List | number, items: Listitem | Listitem[]): Promise<boolean | undefined> {
-        if (await this.Preferences.Get<boolean>(EPrefProperty.ConfirmRestoreListitem, true)) {
+        if (await this._preferences.Get<boolean>(EPrefProperty.ConfirmRestoreListitem, true)) {
             let text = "";
             if (!Array.isArray(items) || items.length == 1) {
-                text = this.Locale.getText("service-lists.restore_item_confirm", { name: StringUtils.shorten(Array.isArray(items) ? items[0].Item : items.Item, 40) });
+                text = this._locale.getText("service-lists.restore_item_confirm", { name: StringUtils.shorten(Array.isArray(items) ? items[0].Item : items.Item, 40) });
             } else {
-                text = this.Locale.getText("service-lists.restore_item_confirm_plural");
+                text = this._locale.getText("service-lists.restore_item_confirm_plural");
             }
 
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 return this.restoreListitemFromTrash(trash, items);
             } else {
                 return undefined;
@@ -586,7 +588,7 @@ export class ListsService {
         let store: boolean | undefined;
         await this.cleanOrderListitems(list, false);
         if (!list.Id || list.Dirty || force) {
-            const list_id = await this.BackendService.storeList({ list: list, force: force });
+            const list_id = await this._backendService.storeList({ list: list, force: force });
             if (list_id === false) {
                 store = false;
             } else if (list_id) {
@@ -637,18 +639,18 @@ export class ListsService {
         }
 
         if (typeof device === "number") {
-            device = await this.ConnectIQ.GetDevice(device);
+            device = await this._connectIQ.GetDevice(device);
         }
 
         if (!device) {
-            device = await this.ConnectIQ.GetDefaultDevice({ select_device_if_undefined: true, btn_text: this.Locale.getText("service-lists.transmit_send_btn") });
+            device = await this._connectIQ.GetDefaultDevice({ select_device_if_undefined: true, btn_text: this._locale.getText("service-lists.transmit_send_btn") });
         }
 
         if (device && device.State == "Ready") {
             const text_key = lists.length > 1 ? "service-lists.transmit_confirm_plural" : "service-lists.transmit_confirm";
-            const confirm = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmTransmitList, true);
-            const locale = this.Locale.getText([text_key, "yes", "no"], { device: device.Name });
-            if (!confirm || (await this.Popups.Alert.YesNo({ message: locale[text_key], button_yes: locale["yes"], button_no: locale["no"] }))) {
+            const confirm = await this._preferences.Get<boolean>(EPrefProperty.ConfirmTransmitList, true);
+            const locale = this._locale.getText([text_key, "buttons.yes", "buttons.no"], { device: device.Name });
+            if (!confirm || (await this._popups.Alert.YesNo({ message: locale[text_key], button_yes: locale["buttons.yes"], button_no: locale["buttons.no"] }))) {
                 MainToolbarComponent.ToggleProgressbar(true);
 
                 let errors = 0;
@@ -664,7 +666,7 @@ export class ListsService {
                             }
                         }
                         const payload = l.toDeviceObject();
-                        const resp = await this.ConnectIQ.SendToDevice({ device: device, messageType: ConnectIQMessageType.List, data: payload });
+                        const resp = await this._connectIQ.SendToDevice({ device: device, messageType: ConnectIQMessageType.List, data: payload });
                         if (peek) {
                             l.PurgeDetails();
                         }
@@ -682,21 +684,21 @@ export class ListsService {
 
                 if (errors > 0) {
                     if (lists.length == 1) {
-                        this.Popups.Toast.Error("service-lists.transmit_error");
+                        this._popups.Toast.Error("service-lists.transmit_error");
                     } else if (errors == lists.length) {
-                        this.Popups.Toast.Error("service-lists.transmit_error_plural");
+                        this._popups.Toast.Error("service-lists.transmit_error_plural");
                     } else {
-                        this.Popups.Toast.Error("service-lists.transmit_error_partial");
+                        this._popups.Toast.Error("service-lists.transmit_error_partial");
                     }
                     return false;
                 } else {
                     if (lists.length == 1) {
-                        this.Popups.Toast.Success("service-lists.transmit_success");
+                        this._popups.Toast.Success("service-lists.transmit_success");
                     } else {
-                        this.Popups.Toast.Success("service-lists.transmit_success_plural");
+                        this._popups.Toast.Success("service-lists.transmit_success_plural");
                     }
-                    if (await this.Preferences.Get<boolean>(EPrefProperty.OpenAppOnTransmit, false)) {
-                        this.ConnectIQ.openApp(device);
+                    if (await this._preferences.Get<boolean>(EPrefProperty.OpenAppOnTransmit, false)) {
+                        this._connectIQ.openApp(device);
                     }
                     return true;
                 }
@@ -709,9 +711,9 @@ export class ListsService {
             Logger.Debug(`Could not transfer list ${lists.length} list(s), no device fould`);
         }
         if (lists.length == 1) {
-            this.Popups.Toast.Error("service-lists.transmit_error");
+            this._popups.Toast.Error("service-lists.transmit_error");
         } else {
-            this.Popups.Toast.Error("service-lists.transmit_error_plural");
+            this._popups.Toast.Error("service-lists.transmit_error_plural");
         }
         return false;
     }
@@ -746,7 +748,7 @@ export class ListsService {
         return new List(
             {
                 name: args.name,
-                order: args.order ?? (await this.BackendService.getNextListOrder()),
+                order: args.order ?? (await this._backendService.getNextListOrder()),
                 created: Date.now(),
                 modified: Date.now(),
                 sync_devices: args.sync ? JSON.stringify(args.sync) : undefined,
@@ -769,7 +771,7 @@ export class ListsService {
             list_id: typeof list === "number" ? list : list.Id,
             item: args.item,
             note: args.note,
-            order: args.order ?? (await this.BackendService.getNextListitemOrder({ list: list })),
+            order: args.order ?? (await this._backendService.getNextListitemOrder({ list: list })),
             created: Date.now(),
             modified: Date.now(),
             hidden: args.hidden ? 1 : 0,
@@ -805,7 +807,7 @@ export class ListsService {
         if (list instanceof List) {
             return list.Name;
         }
-        return await this.BackendService.queryListName(list);
+        return await this._backendService.queryListName(list);
     }
 
     private async addListToIndex(list: List) {
@@ -829,11 +831,11 @@ export class ListsService {
             return;
         }
 
-        const devices = (await this.ConnectIQ.getDevices()).filter(device => list.SyncDevices?.some(d => device.Identifier == d.id));
+        const devices = (await this._connectIQ.getDevices()).filter(device => list.SyncDevices?.some(d => device.Identifier == d.id));
         if (devices.length == 0) {
             Logger.Debug(`No device online for syncing ${list.toLog()}, skipping sync`);
             if (this._informedAboutNotReadyDeviceList != list.Id) {
-                this.Popups.Toast.Error("service-lists.sync_device_offline", undefined, true);
+                this._popups.Toast.Error("service-lists.sync_device_offline", undefined, true);
                 this._informedAboutNotReadyDeviceList = list.Id;
             }
             return;
@@ -858,7 +860,7 @@ export class ListsService {
         payload = ["issync", ...payload];
 
         const sendToDevicePromises = devices.map(device =>
-            this.ConnectIQ.SendToDevice({ device: device, messageType: ConnectIQMessageType.List, data: payload }).then(success => {
+            this._connectIQ.SendToDevice({ device: device, messageType: ConnectIQMessageType.List, data: payload }).then(success => {
                 if (success) {
                     Logger.Debug(`Sync list ${list.toLog()} to watch ${device.toLog()}`);
                 } else {
@@ -923,11 +925,11 @@ export class ListsService {
 
         MainToolbarComponent.ToggleProgressbar(true);
 
-        const use_trash = await this.Preferences.Get<boolean>(EPrefProperty.TrashLists, true);
+        const use_trash = await this._preferences.Get<boolean>(EPrefProperty.TrashLists, true);
 
         let deleted: number | false = false;
         if (use_trash) {
-            deleted = await this.BackendService.moveListsToTrash({ lists: lists });
+            deleted = await this._backendService.moveListsToTrash({ lists: lists });
             if (deleted === false) {
                 if (lists.length == 1) {
                     Logger.Error(`Could not move list {${lists[0].toLog()}} to trash`);
@@ -945,7 +947,7 @@ export class ListsService {
                 });
             }
         } else {
-            const del = await this.BackendService.deleteLists({ lists: lists, trash: false });
+            const del = await this._backendService.deleteLists({ lists: lists, trash: false });
             if (del === false) {
                 deleted = false;
                 if (lists.length == 1) {
@@ -971,7 +973,7 @@ export class ListsService {
             lists.forEach(l => {
                 this.onListChangedSubject.next(l);
                 if (delete_on_watch) {
-                    this.ConnectIQ.SendToDevice({ device: undefined, messageType: ConnectIQMessageType.DeleteList, data: l.Id });
+                    this._connectIQ.SendToDevice({ device: undefined, messageType: ConnectIQMessageType.DeleteList, data: l.Id });
                 }
             });
             this.onListsChangedSubject.next(await this.GetLists());
@@ -979,15 +981,15 @@ export class ListsService {
 
         if (deleted !== false) {
             if (deleted == 1) {
-                this.Popups.Toast.Success("service-lists.delete_success");
+                this._popups.Toast.Success("service-lists.delete_success");
             } else if (deleted > 1) {
-                this.Popups.Toast.Success("service-lists.delete_success_plural");
+                this._popups.Toast.Success("service-lists.delete_success_plural");
             }
         } else {
             if (lists.length == 1) {
-                this.Popups.Toast.Error("service-lists.delete_error");
+                this._popups.Toast.Error("service-lists.delete_error");
             } else {
-                this.Popups.Toast.Error("service-lists.delete_error_plural");
+                this._popups.Toast.Error("service-lists.delete_error_plural");
             }
         }
 
@@ -1012,14 +1014,14 @@ export class ListsService {
 
         MainToolbarComponent.ToggleProgressbar(true);
 
-        const use_trash = await this.Preferences.Get<boolean>(EPrefProperty.TrashListitems, true);
+        const use_trash = await this._preferences.Get<boolean>(EPrefProperty.TrashListitems, true);
 
         let errors = 0;
         let deleted: number | false = 0;
         for (let i = 0; i < lists.length; i++) {
             let list = lists[i];
             if (use_trash) {
-                deleted = await this.BackendService.moveListitemsToTrash({ list: list, force: false });
+                deleted = await this._backendService.moveListitemsToTrash({ list: list, force: false });
                 if (deleted === false) {
                     Logger.Error(`Could not empty list ${list.toLog()} and move items to trash`);
                     errors++;
@@ -1027,7 +1029,7 @@ export class ListsService {
                     Logger.Debug(`Emptied list ${list.toLog()} and moved ${deleted} items to trash`);
                 }
             } else {
-                deleted = await this.BackendService.deleteListitems({ list: list, items: undefined, trash: false, force: false });
+                deleted = await this._backendService.deleteListitems({ list: list, items: undefined, trash: false, force: false });
                 if (deleted === false) {
                     Logger.Error(`Could not empty list ${list.toLog()}`);
                     errors++;
@@ -1049,12 +1051,12 @@ export class ListsService {
 
         if (errors > 0) {
             if (lists.length == errors) {
-                this.Popups.Toast.Error("service-lists.empty_error");
+                this._popups.Toast.Error("service-lists.empty_error");
             } else {
-                this.Popups.Toast.Error("service-lists.empty_error_partial");
+                this._popups.Toast.Error("service-lists.empty_error_partial");
             }
         } else {
-            this.Popups.Toast.Success("service-lists.empty_success");
+            this._popups.Toast.Success("service-lists.empty_success");
         }
 
         MainToolbarComponent.ToggleProgressbar(false);
@@ -1076,15 +1078,15 @@ export class ListsService {
         }
 
         let deleted: number | false = false;
-        if (await this.Preferences.Get<boolean>(EPrefProperty.TrashListitems, true)) {
-            deleted = await this.BackendService.moveListitemsToTrash({ list: list, items: items, force: !keep_locked });
+        if (await this._preferences.Get<boolean>(EPrefProperty.TrashListitems, true)) {
+            deleted = await this._backendService.moveListitemsToTrash({ list: list, items: items, force: !keep_locked });
             if (deleted) {
                 Logger.Debug(`Moved ${items.length} listitem(s) of list ${list.toLog()} to trash`);
             } else {
                 Logger.Error(`Could not move ${items.length} listitem(s) of list ${list.toLog()} to trash`);
             }
         } else {
-            deleted = await this.BackendService.deleteListitems({ list: list, items: items, trash: false, force: !keep_locked });
+            deleted = await this._backendService.deleteListitems({ list: list, items: items, trash: false, force: !keep_locked });
             if (deleted) {
                 Logger.Debug(`Deleted ${deleted} listitem(s) from list ${list.toLog()}`);
             } else {
@@ -1100,9 +1102,9 @@ export class ListsService {
             await this.cleanOrderListitems(list, true);
             this.onListChangedSubject.next(list);
             this.onTrashItemsDatasetChangedSubject.next(list);
-            this.Popups.Toast.Success(items.length == 1 ? "service-lists.delete_item_success" : "service-lists.delete_item_success_plural", undefined, true);
+            this._popups.Toast.Success(items.length == 1 ? "service-lists.delete_item_success" : "service-lists.delete_item_success_plural", undefined, true);
         } else {
-            this.Popups.Toast.Error(items.length == 1 ? "service-lists.delete_item_error" : "service-lists.delete_item_error_plural", undefined, true);
+            this._popups.Toast.Error(items.length == 1 ? "service-lists.delete_item_error" : "service-lists.delete_item_error_plural", undefined, true);
         }
 
         MainToolbarComponent.ToggleProgressbar(false);
@@ -1120,17 +1122,17 @@ export class ListsService {
         if (!Array.isArray(items)) {
             items = [items];
         }
-        const del = await this.BackendService.deleteListitems({ list: trash, items: items, trash: true });
+        const del = await this._backendService.deleteListitems({ list: trash, items: items, trash: true });
 
         if (del) {
             Logger.Notice(`Erased ${del} listitem(s) from trash of list ${ListToLog(trash)}`);
             const text = !Array.isArray(items) || items.length == 1 ? "service-lists.erase_item_success" : "service-lists.erase_item_success_plural";
-            this.Popups.Toast.Success(text);
+            this._popups.Toast.Success(text);
             this.onTrashItemsDatasetChangedSubject.next(trash);
         } else {
             Logger.Error(`Could not erease ${items.length} listitem(s) from trash of list ${ListToLog(trash)}`);
             const text = !Array.isArray(items) || items.length == 1 ? "service-lists.erase_item_error" : "service-lists.erase_item_error_plural";
-            this.Popups.Toast.Error(text);
+            this._popups.Toast.Error(text);
         }
 
         MainToolbarComponent.ToggleProgressbar(false);
@@ -1143,13 +1145,13 @@ export class ListsService {
      */
     private async wipeListsTrash(): Promise<number> {
         MainToolbarComponent.ToggleProgressbar(true);
-        const del = await this.BackendService.deleteLists({ lists: undefined, trash: true });
+        const del = await this._backendService.deleteLists({ lists: undefined, trash: true });
         if (del !== false) {
             Logger.Notice(`Erased ${del.lists} list(s) with ${del.items} item(s) from trash`);
-            this.Popups.Toast.Success("service-lists.empty_trash_success");
+            this._popups.Toast.Success("service-lists.empty_trash_success");
         } else {
             Logger.Error("Could not wipe lists trash");
-            this.Popups.Toast.Error("service-lists.empty_trash_error");
+            this._popups.Toast.Error("service-lists.empty_trash_error");
         }
 
         MainToolbarComponent.ToggleProgressbar(false);
@@ -1158,13 +1160,13 @@ export class ListsService {
 
     private async wipeListitemTrash(): Promise<number> {
         MainToolbarComponent.ToggleProgressbar(true);
-        const del = await this.BackendService.wipeListitems({ trash: true });
+        const del = await this._backendService.wipeListitems({ trash: true });
         if (del !== false) {
             Logger.Debug(`All ${del} listitem(s) in trash were erased`);
-            this.Popups.Toast.Success("service-lists.erase_item_success_plural", undefined, true);
+            this._popups.Toast.Success("service-lists.erase_item_success_plural", undefined, true);
         } else {
             Logger.Error(`Could not wipe listitems trash`);
-            this.Popups.Toast.Error("service-lists.erase_item_error_plural", undefined, true);
+            this._popups.Toast.Error("service-lists.erase_item_error_plural", undefined, true);
         }
         MainToolbarComponent.ToggleProgressbar(false);
         return del ? del : -1;
@@ -1177,7 +1179,7 @@ export class ListsService {
      */
     private async emptyListitemTrash(trash: List | number): Promise<boolean> {
         MainToolbarComponent.ToggleProgressbar(true);
-        const ret = await this.BackendService.deleteListitems({ list: trash, items: undefined, force: true, trash: true });
+        const ret = await this._backendService.deleteListitems({ list: trash, items: undefined, force: true, trash: true });
         if (ret !== false) {
             if (trash instanceof List) {
                 trash.ItemsInTrash = [];
@@ -1187,7 +1189,7 @@ export class ListsService {
             } else {
                 Logger.Notice(`Erased trash of all lists`);
             }
-            this.Popups.Toast.Success("service-lists.empty_trash_success");
+            this._popups.Toast.Success("service-lists.empty_trash_success");
             if (ret > 0) {
                 this.onTrashItemsDatasetChangedSubject.next(trash);
             }
@@ -1197,7 +1199,7 @@ export class ListsService {
             } else {
                 Logger.Error(`Could not erase trash of all lists`);
             }
-            this.Popups.Toast.Error("service-lists.empty_trash_error");
+            this._popups.Toast.Error("service-lists.empty_trash_error");
         }
         MainToolbarComponent.ToggleProgressbar(false);
         return ret !== false;
@@ -1220,7 +1222,7 @@ export class ListsService {
         MainToolbarComponent.ToggleProgressbar(true);
 
         let success = false;
-        if (await this.BackendService.restoreListsFromTrash({ lists: lists })) {
+        if (await this._backendService.restoreListsFromTrash({ lists: lists })) {
             for (let i = 0; i < lists.length; i++) {
                 const list = lists[i];
                 await this.refreshList(list);
@@ -1233,19 +1235,19 @@ export class ListsService {
 
             if (lists.length == 1) {
                 Logger.Debug(`Restored list ${lists[0].toLog()} from trash`);
-                this.Popups.Toast.Success("service-lists.restore_success");
+                this._popups.Toast.Success("service-lists.restore_success");
             } else {
                 Logger.Debug(`Restored  ${lists.length} lists from trash`);
-                this.Popups.Toast.Success("service-lists.restore_success_plural");
+                this._popups.Toast.Success("service-lists.restore_success_plural");
             }
             success = true;
         } else {
             if (lists.length == 1) {
                 Logger.Error(`Could not restore list ${lists[0].toLog()} from trash`);
-                this.Popups.Toast.Error("service-lists.restore_error");
+                this._popups.Toast.Error("service-lists.restore_error");
             } else {
                 Logger.Error(`Could not restore ${lists.length} lists from trash`);
-                this.Popups.Toast.Error("service-lists.restore_error_plural");
+                this._popups.Toast.Error("service-lists.restore_error_plural");
             }
         }
         this.onListsChangedSubject.next(await this.GetLists());
@@ -1269,7 +1271,7 @@ export class ListsService {
             items = [items];
         }
 
-        const restore = await this.BackendService.restoreListitemsFromTrash({ list: list, items: items });
+        const restore = await this._backendService.restoreListitemsFromTrash({ list: list, items: items });
         if (restore && restore >= 0) {
             Logger.Debug(`Restored ${restore} listitem(s) from trash of list ${ListToLog(list)}`);
             if (!(list instanceof List)) {
@@ -1283,12 +1285,12 @@ export class ListsService {
                 this.onListChangedSubject.next(list);
             }
             const text = !Array.isArray(items) || items.length == 1 ? "service-lists.restore_item_success" : "service-lists.restore_item_success_plural";
-            this.Popups.Toast.Success(text);
+            this._popups.Toast.Success(text);
             this.onTrashItemsDatasetChangedSubject.next(list);
         } else {
             Logger.Error(`Could not restore ${items.length} listitem(s) from trash of list ${ListToLog(list)}`);
             const text = items.length == 1 ? "service-lists.restore_item_error" : "service-lists.restore_item_error_plural";
-            this.Popups.Toast.Error(text);
+            this._popups.Toast.Error(text);
         }
 
         MainToolbarComponent.ToggleProgressbar(false);
@@ -1304,15 +1306,15 @@ export class ListsService {
         if (!Array.isArray(lists)) {
             lists = [lists];
         }
-        const del = await this.BackendService.deleteLists({ lists: lists, trash: true });
+        const del = await this._backendService.deleteLists({ lists: lists, trash: true });
 
         if (del !== false) {
             if (del.lists > 0) {
                 if (del.lists == 1) {
-                    this.Popups.Toast.Success("service-lists.erase_success", undefined, true);
+                    this._popups.Toast.Success("service-lists.erase_success", undefined, true);
                     Logger.Debug(`Erased ${lists[0].toLog()} with ${del.items} item(s) from trash`);
                 } else {
-                    this.Popups.Toast.Success("service-lists.erase_success_plural", undefined, true);
+                    this._popups.Toast.Success("service-lists.erase_success_plural", undefined, true);
                     Logger.Debug(`Erased ${del.lists} lists with ${del.items} item(s) from trash`);
                 }
 
@@ -1321,10 +1323,10 @@ export class ListsService {
         } else {
             if (lists.length == 1) {
                 Logger.Error(`Could not erase list '${lists[0].toLog()}' from trash`);
-                this.Popups.Toast.Error("service-lists.erase_error", undefined, true);
+                this._popups.Toast.Error("service-lists.erase_error", undefined, true);
             } else {
                 Logger.Error(`Could not erased ${lists.length} lists from trash`);
-                this.Popups.Toast.Error("service-lists.erase_error_plural", undefined, true);
+                this._popups.Toast.Error("service-lists.erase_error_plural", undefined, true);
             }
         }
 
@@ -1348,15 +1350,15 @@ export class ListsService {
         if (KeepInTrash.StockPeriod(value)) {
             this._removeOldTrashEntriesTimer?.unsubscribe();
             this._removeOldTrashEntriesTimer = interval(value * 60 * 60 * 24).subscribe(() => {
-                this.BackendService.cleanUp({ olderThan: value * 60 * 60 * 24 });
+                this._backendService.cleanUp({ olderThan: value * 60 * 60 * 24 });
             });
-            await this.BackendService.cleanUp({ olderThan: value * 60 * 60 * 24 });
-            this.BackendService.MaxTrashCount = undefined;
+            await this._backendService.cleanUp({ olderThan: value * 60 * 60 * 24 });
+            this._backendService.MaxTrashCount = undefined;
         } else {
             this._removeOldTrashEntriesTimer?.unsubscribe();
             this._removeOldTrashEntriesTimer = undefined;
-            this.BackendService.MaxTrashCount = KeepInTrash.StockSize(value);
-            await this.BackendService.cleanUp({ maxCount: KeepInTrash.StockSize(value) });
+            this._backendService.MaxTrashCount = KeepInTrash.StockSize(value);
+            await this._backendService.cleanUp({ maxCount: KeepInTrash.StockSize(value) });
         }
     }
 
@@ -1365,9 +1367,9 @@ export class ListsService {
      * @param list the list which should be synced automatically
      */
     private async informAboutDisabledSyncPref(list: List): Promise<void> {
-        if (list.Sync == true && this._lastSyncInformList != list.Id && (await this.Preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
-            if (await this.Popups.Alert.YesNo({ message: "comp-listeditor.sync_settings", translate: true })) {
-                this.NavController.navigateForward("/settings/lists-transmission", { queryParams: { syncList: list.Id } });
+        if (list.Sync == true && this._lastSyncInformList != list.Id && (await this._preferences.Get(EPrefProperty.SyncListOnDevice, false)) == false) {
+            if (await this._popups.Alert.YesNo({ message: "comp-listeditor.sync_settings", translate: true })) {
+                this._navController.navigateForward("/settings/lists-transmission", { queryParams: { syncList: list.Id } });
             }
             this._lastSyncInformList = list.Id;
         }

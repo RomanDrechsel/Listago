@@ -1,9 +1,9 @@
-<app-main-toolbar [displayCustomMenu]="true" [displayMenu]="false">
-    {{'page_lists.page_title'|transloco}}
+<app-main-toolbar [displayCustomMenu]="true" [displayMenu]="false" *transloco="let t">
+    {{ t('page_lists.page_title') }}
     <app-main-toolbar-lists-custom-menu [(EditMode)]="EditMode" [EditMenuDisabled]="Lists.length <= 0" [EditModeMenuDisabled]="EditMenuDisabled()" [EditMenuActions]="getEditMenuActions()" slot="customMenu"></app-main-toolbar-lists-custom-menu>
 </app-main-toolbar>
 
-<ion-content fixed-slot-placement="before" scrollX="false" scrollEvents="true" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent>
+<ion-content fixed-slot-placement="before" scrollX="false" scrollEvents="true" overflow-scroll="false" (ionScroll)="onScroll($event)" #mainContent *transloco="let t">
     @if(Lists.length > 0) {
     <div class="list-content" #listContent>
         <ion-list id="animated-list" #itemsList>
@@ -34,18 +34,18 @@
                         @if(list.ItemsCount > 0) {
                         <ion-item-option color="danger" (click)="emptyLists(list)">
                             <ion-icon slot="start" src="./assets/icons/trash_bin_solid.svg"></ion-icon>
-                            {{'page_lists.empty'|transloco}}
+                            {{ t('page_lists.empty')}}
                         </ion-item-option>
                         }
                         <ion-item-option color="danger" expandable="true" (click)="deleteLists(list)">
                             <ion-icon slot="start" src="./assets/icons/trash_solid.svg"></ion-icon>
-                            {{'delete'|transloco}}
+                            {{t('buttons.delete')}}
                         </ion-item-option>
                     </ion-item-options>
                     <ion-item-options side="end" (ionSwipe)="onSwipeLeft(list)">
                         <ion-item-option color="secondary" expandable="true" (click)="transmitLists(list)">
                             <ion-icon slot="end" src="assets/icons/menu/devices.svg"></ion-icon>
-                            {{'page_lists.upload'|transloco}}
+                            {{t('page_lists.upload')}}
                         </ion-item-option>
                     </ion-item-options>
                 </ion-item-sliding>
@@ -54,19 +54,19 @@
         </ion-list>
     </div>
     } @else if (ItemsInitialized) {
-    <app-page-add-new>{{'page_lists.add_new_hint'|transloco}}</app-page-add-new>
+    <app-page-add-new>{{t('page_lists.add_new_hint')}}</app-page-add-new>
     } @else {
     <app-page-empty>
         <div slot="image">
             <ion-icon src="./assets/icons/hourglass.svg"></ion-icon>
         </div>
         <div slot="text">
-            <div [innerHTML]="'page_lists.loading'|transloco"></div>
+            <div [innerHTML]="t('page_lists.loading')"></div>
         </div>
     </app-page-empty>
     } @if(ShowAddButton) {
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button [ariaLabel]="'add'|transloco" (click)="addList()">
+        <ion-fab-button [ariaLabel]="t('buttons.add')" (click)="addList()">
             <ion-icon src="./assets/icons/add.svg"></ion-icon>
         </ion-fab-button>
     </ion-fab>

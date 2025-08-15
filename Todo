@@ -1,5 +1,9 @@
-WIP: localisation overhaul
+TEST: localisation overhaul
 TODO: python script to check if all translation are present
+BUG: close editMenu when changing page
+BUG: List-Editor -> info popup -> resize
+TODO: RELEASE
 TODO: in-app update
+TODO: RELEASE
 TODO: Notes support
 TEST: import from lists

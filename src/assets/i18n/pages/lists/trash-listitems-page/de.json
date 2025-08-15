@@ -1,4 +1,8 @@
 {
     "page_title": "Papierkorb",
-    "empty": "Der Papierkorb der Liste ist leer."
+    "empty": "Der Papierkorb der Liste ist leer.",
+    "loading": "Der Papierkorb wird geladen...",
+    "error": "Der Papierkorb konnte nicht geladen werden!",
+    "erase": "Entfernen",
+    "restore": "Wiederherstellen"
 }

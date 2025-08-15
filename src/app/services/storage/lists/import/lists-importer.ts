@@ -161,7 +161,7 @@ export class ListsImporter {
         listener.Init(files.length);
 
         // add the new Lists at the end
-        const next_order = await listsService.BackendService.getNextListOrder();
+        const next_order = await listsService._backendService.getNextListOrder();
 
         for (let i = 0; i < files.length; i++) {
             if (await this.importListFile({ file: files[i], order_offset: next_order, is_trash: false }, sqlite, listsService)) {

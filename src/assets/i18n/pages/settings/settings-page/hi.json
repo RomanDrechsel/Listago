@@ -1,7 +1,6 @@
 {
     "page_title": "सेटिंग्स",
     "language": "ऐप की भाषा",
-    "language_hint": "जर्मन मेरी मातृभाषा है। यदि आप फिर भी वर्तनी की गलतियां पाते हैं, तो कृपया उन्हें <span class=\"no-wrap\">{{email}}</span> पर रिपोर्ट करें।",
     "translation_error_confirm": "क्या आप मुझे वर्तनी की गलती रिपोर्ट करना चाहते हैं?",
     "translation_error_title": "जर्मन अनुवाद में त्रुटि",
     "animations": "एनीमेशन",

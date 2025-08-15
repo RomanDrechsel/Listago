@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonNote, IonText } from "@ionic/angular/standalone";
-import { TranslateModule } from "@ngx-translate/core";
+import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { Subscription } from "rxjs";
 import { AppComponent } from "src/app/app.component";
 import type { EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
@@ -17,7 +17,8 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     selector: "app-trash-lists",
     templateUrl: "./trash-lists.page.html",
     styleUrls: ["./trash-lists.page.scss"],
-    imports: [IonCheckbox, IonLabel, IonContent, IonText, IonNote, IonItem, IonImg, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonFab, IonFabButton, CommonModule, TranslateModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
+    imports: [IonCheckbox, IonLabel, IonContent, IonText, IonNote, IonItem, IonImg, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonFab, IonFabButton, CommonModule, TranslocoModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
+    providers: [provideTranslocoScope({ scope: "pages/lists/trash-lists-page", alias: "page_trash" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
 })
 export class TrashListsPage extends AnimatedListPageBase {
     public Lists: List[] = [];
@@ -111,13 +112,13 @@ export class TrashListsPage extends AnimatedListPageBase {
     protected override getEditMenuActions(): EditMenuAction[] {
         let texts = [];
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getText(["comp-toolbar-edit-menu.list-restore", "comp-toolbar-edit-menu.trash-list-delete"]);
-            texts["restore"] = texts["comp-toolbar-edit-menu.list-restore"];
-            texts["delete"] = texts["comp-toolbar-edit-menu.trash-list-delete"];
+            texts = this.Locale.getText(["edit-menu.list-restore", "edit-menu.trash-list-delete"]);
+            texts["restore"] = texts["edit-menu.list-restore"];
+            texts["delete"] = texts["edit-menu.trash-list-delete"];
         } else {
-            texts = this.Locale.getText(["comp-toolbar-edit-menu.lists-restore", "comp-toolbar-edit-menu.trash-lists-delete"], { num: this._selectedItems.length });
-            texts["restore"] = texts["comp-toolbar-edit-menu.lists-restore"];
-            texts["delete"] = texts["comp-toolbar-edit-menu.trash-lists-delete"];
+            texts = this.Locale.getText(["edit-menu.lists-restore", "edit-menu.trash-lists-delete"], { num: this._selectedItems.length });
+            texts["restore"] = texts["edit-menu.lists-restore"];
+            texts["delete"] = texts["edit-menu.trash-lists-delete"];
         }
         return [
             {
