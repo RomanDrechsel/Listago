@@ -1,8 +1,10 @@
 TEST: localisation overhaul
+BUG: settings-page: I-Popup for language empty!?
 TODO: python script to check if all translation are present
 TODO: flatten localisation
 BUG: close editMenu when changing page
 BUG: List-Editor -> info popup -> resize
+BUG: light mode -> Trash-Page -> Loading Icon wrong color
 TODO: RELEASE
 TODO: in-app update
 TODO: RELEASE

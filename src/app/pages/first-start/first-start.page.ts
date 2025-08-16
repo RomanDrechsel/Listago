@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Browser } from "@capacitor/browser";
-import { IonButton, IonContent, IonIcon, IonImg, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonText, IonToggle } from "@ionic/angular/standalone";
+import { IonButton, IonContent, IonIcon, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonSelect, IonSelectOption, IonText, IonToggle } from "@ionic/angular/standalone";
 import { SelectCustomEvent } from "@ionic/core";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { IntentsService } from "src/app/services/intents/intents.service";
@@ -14,7 +14,7 @@ import { PageBase } from "../page-base";
     templateUrl: "./first-start.page.html",
     styleUrls: ["./first-start.page.scss"],
     standalone: true,
-    imports: [IonSegmentButton, IonSegment, IonSegmentContent, IonSegmentView, IonButton, IonText, IonToggle, IonImg, IonContent, IonIcon, IonSelect, IonSelectOption, CommonModule, FormsModule, TranslocoModule],
+    imports: [IonSegmentButton, IonSegment, IonSegmentContent, IonSegmentView, IonButton, IonText, IonToggle, IonContent, IonIcon, IonSelect, IonSelectOption, CommonModule, FormsModule, TranslocoModule],
     providers: [provideTranslocoScope({ scope: "pages/first-start-page", alias: "page_firststart" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class FirstStartPage extends PageBase {

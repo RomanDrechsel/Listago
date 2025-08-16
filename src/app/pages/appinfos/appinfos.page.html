@@ -55,9 +55,9 @@
         </div>
         <div class="support">
             <div [innerHTML]="t('page_appinfos.support')" class="ion-text-center"></div>
-            <ion-img src="/assets/img/de-pp-logo-200px.png" class="paypal" (click)="paypal()" />
+            <img src="/assets/img/de-pp-logo-200px.png" class="paypal" (click)="paypal()" />
             <div [innerHTML]="t('page_appinfos.support2')" class="ion-text-center"></div>
-            <ion-img [src]="isDarkmode ? './assets/img/bmc_dark.png' : './assets/img/bmc.png'" (click)="bmc()" />
+            <img [src]="isDarkmode ? '/assets/img/bmc_dark.png' : '/assets/img/bmc.png'" (click)="bmc()" />
             <div class="review">
                 <div [innerHTML]="t('page_appinfos.review')" class="ion-text-center" (click)="writeReviewIQ()"></div>
                 <div [innerHTML]="t('page_appinfos.review_google')" class="ion-text-center" (click)="writeReviewGoogle()"></div>

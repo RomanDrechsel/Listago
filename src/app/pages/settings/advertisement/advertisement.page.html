@@ -17,9 +17,9 @@
 
         <ion-item lines="none" class="supports">
             <div class="support" [innerHTML]="t('page_settings_advertisement.support1')"></div>
-            <ion-img src="/assets/img/de-pp-logo-200px.png" class="paypal" (click)="paypal()" />
+            <img src="/assets/img/de-pp-logo-200px.png" class="paypal" (click)="paypal()" />
             <div class="support" [innerHTML]="t('page_settings_advertisement.support2')"></div>
-            <ion-img [src]="isDarkmode ? './assets/img/bmc_dark.png' : './assets/img/bmc.png'" (click)="bmc()" />
+            <img [src]="isDarkmode ? './assets/img/bmc_dark.png' : './assets/img/bmc.png'" (click)="bmc()" />
             <div class="support" [innerHTML]="t('page_settings_advertisement.support3')"></div>
         </ion-item>
 

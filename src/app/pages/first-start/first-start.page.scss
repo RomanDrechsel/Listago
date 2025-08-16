@@ -44,16 +44,11 @@
                     }
 
                     &#language {
-                        ion-img.language-icon {
+                        img.language-icon {
                             margin: 1em auto 0;
-
-                            &::part(image) {
-                                border: solid 1px var(--ion-color-light-shade);
-                                margin: 0 auto;
-                                width: 30%;
-                                height: auto;
-                                object-fit: fill;
-                            }
+                            border: solid 1px var(--ion-color-light-shade);
+                            width: 30%;
+                            height: auto;
                         }
 
                         ion-select {
@@ -197,7 +192,7 @@
                 ion-segment-view {
                     ion-segment-content {
                         &#garmin {
-                            ion-img {
+                            img {
                                 &.app-logo {
                                     height: 15vh;
                                 }

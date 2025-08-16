@@ -66,11 +66,15 @@
             }
         }
 
-        #main-applogo {
-            width: 110px;
-            height: 110px;
-            margin: 0 auto;
+        .header {
             padding-block: 10px;
+
+            .main-applogo {
+                width: 110px;
+                height: 110px;
+                margin: 0 auto;
+                display: block;
+            }
         }
     }
 

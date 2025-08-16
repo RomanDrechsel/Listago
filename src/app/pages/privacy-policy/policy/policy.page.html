@@ -4,7 +4,7 @@
     <div class="select-language">
         <ion-select interface="action-sheet" justify="end" [okText]="t('buttons.change')" [cancelText]="t('buttons.cancel')" [value]="this.SelectedCulture" (ionChange)="onSelectLanguage($event.target.value)">
             @if (SelectedCulture) {
-            <ion-img slot="start" [src]="this.SelectedCulture.Icon"></ion-img>
+            <img slot="start" [src]="this.SelectedCulture.Icon" />
             } @for (lang of Languages; track lang.locale) {
             <ion-select-option [value]="lang">{{lang.LocalizedString}}</ion-select-option>
             }

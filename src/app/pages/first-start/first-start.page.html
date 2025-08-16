@@ -3,12 +3,12 @@
         <ion-segment-view>
             <ion-segment-content id="language">
                 <div class="content">
-                    <ion-img class="logo" src="/assets/img/applogo.png"></ion-img>
+                    <img class="logo" src="/assets/img/applogo.png" />
 
                     <div class="text welcome" [innerHTML]="t('page_firststart.welcome')"></div>
                     <div class="text language1" [innerHTML]="t('page_firststart.language1')"></div>
 
-                    <ion-img class="language-icon" [src]="Locale.CurrentLanguage!.Icon" (click)="changeLanguage()"></ion-img>
+                    <img class="language-icon" [src]="Locale.CurrentLanguage!.Icon" (click)="changeLanguage()" />
                     <ion-select class="select-language" interface="action-sheet" fill="outline" value="{{Locale.CurrentLanguage.locale}}" [okText]="t('buttons.change')" [cancelText]="t('buttons.cancel')" (ionChange)="onChangeLanguage($event)" #selLanguage>
                         @for (details of Locale.AvailableTranslations; track details.locale) {
                         <ion-select-option value="{{details.locale}}" (selected)="Locale.CurrentLanguage.locale == details.locale"> {{details.LocalizedString}} </ion-select-option>
@@ -23,7 +23,7 @@
             </ion-segment-content>
             <ion-segment-content id="garmin">
                 <div class="content">
-                    <ion-img class="logo" src="/assets/img/garmin-connect.png"></ion-img>
+                    <img class="logo" src="/assets/img/garmin-connect.png" />
 
                     <ion-toggle [checked]="GarminActive" labelPlacement="start" (ionChange)="onGarminChange($event.target.checked)">
                         <ion-text class="text garmin1">{{t('page_firststart.garmin1')}}</ion-text>

@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonNote, IonText } from "@ionic/angular/standalone";
+import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonNote, IonText } from "@ionic/angular/standalone";
 import { provideTranslocoScope, type Translation, TranslocoModule } from "@jsverse/transloco";
 import { Subscription } from "rxjs";
 import { AppComponent } from "src/app/app.component";
@@ -17,7 +17,7 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     selector: "app-trash-lists",
     templateUrl: "./trash-lists.page.html",
     styleUrls: ["./trash-lists.page.scss"],
-    imports: [IonCheckbox, IonLabel, IonContent, IonText, IonNote, IonItem, IonImg, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonFab, IonFabButton, CommonModule, TranslocoModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
+    imports: [IonCheckbox, IonLabel, IonContent, IonText, IonNote, IonItem, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonFab, IonFabButton, CommonModule, TranslocoModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
     providers: [provideTranslocoScope({ scope: "pages/lists/trash-lists-page", alias: "page_trash" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
 })
 export class TrashListsPage extends AnimatedListPageBase {

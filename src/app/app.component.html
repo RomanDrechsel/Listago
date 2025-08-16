@@ -4,7 +4,7 @@
         <ion-menu contentId="main-content" type="overlay" [side]="menuSide" (ionWillOpen)="onMainMenuOpen()" #mainMenu>
             <ion-content>
                 <div class="header">
-                    <ion-img id="main-applogo" src="./assets/img/applogo.png" alt="Listago"></ion-img>
+                    <img class="main-applogo" src="/assets/img/applogo.png" alt="Listago" />
                 </div>
                 <ion-list id="page-list">
                     @for (p of appPages; track $index) {

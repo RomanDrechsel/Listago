@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { type AfterViewInit, ChangeDetectorRef, Component, inject, isDevMode, OnInit, ViewChild } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { App } from "@capacitor/app";
-import { IonApp, IonContent, IonFooter, IonIcon, IonImg, IonItem, IonLabel, IonList, IonMenu, IonRouterOutlet, IonSplitPane, IonToggle, NavController, Platform } from "@ionic/angular/standalone";
+import { IonApp, IonContent, IonFooter, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonRouterOutlet, IonSplitPane, IonToggle, NavController, Platform } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { EMenuItemType, MenuItem, MenuitemFactory, MenuitemFactoryList } from "./classes/menu-items";
 import type { MainToolbarComponent } from "./components/main-toolbar/main-toolbar.component";
@@ -14,7 +14,7 @@ import { EPrefProperty, PreferencesService } from "./services/storage/preference
     selector: "app-root",
     templateUrl: "app.component.html",
     styleUrls: ["app.component.scss"],
-    imports: [IonToggle, IonFooter, IonImg, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonRouterOutlet, TranslocoModule, RouterLink, RouterLinkActive, CommonModule],
+    imports: [IonToggle, IonFooter, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonRouterOutlet, TranslocoModule, RouterLink, RouterLinkActive, CommonModule],
     providers: [provideTranslocoScope({ scope: "common/mainmenu", alias: "mainmenu" })],
 })
 export class AppComponent implements OnInit, AfterViewInit {

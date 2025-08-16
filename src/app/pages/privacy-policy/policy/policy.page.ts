@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { IonContent, IonImg, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
+import { IonContent, IonSelect, IonSelectOption } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { firstValueFrom } from "rxjs";
 import { MainToolbarComponent } from "../../../components/main-toolbar/main-toolbar.component";
@@ -15,7 +15,7 @@ import { PageBase } from "../../page-base";
     styleUrls: ["./policy.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
-    imports: [IonContent, IonSelect, IonSelectOption, IonImg, CommonModule, FormsModule, MainToolbarComponent, TranslocoModule],
+    imports: [IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, MainToolbarComponent, TranslocoModule],
     providers: [provideTranslocoScope({ scope: "pages/privacy-policy/policy-page", alias: "page_policy" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class PolicyPage extends PageBase {

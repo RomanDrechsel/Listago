@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { InAppReview } from "@capacitor-community/in-app-review";
 import { Browser } from "@capacitor/browser";
 import { Device } from "@capacitor/device";
-import { IonCol, IonContent, IonGrid, IonImg, IonItem, IonList, IonNote, IonRow, IonText } from "@ionic/angular/standalone";
+import { IonCol, IonContent, IonGrid, IonItem, IonList, IonNote, IonRow, IonText } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -17,7 +17,7 @@ import { AppService } from "./../../services/app/app.service";
     selector: "app-appinfos",
     templateUrl: "./appinfos.page.html",
     styleUrls: ["./appinfos.page.scss"],
-    imports: [IonImg, IonNote, MainToolbarComponent, CommonModule, FormsModule, TranslocoModule, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol],
+    imports: [IonNote, MainToolbarComponent, CommonModule, FormsModule, TranslocoModule, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol],
     providers: [provideTranslocoScope({ scope: "pages/appinfos-page", alias: "page_appinfos" })],
 })
 export class AppinfosPage extends PageBase {

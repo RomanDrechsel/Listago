@@ -80,10 +80,10 @@ ion-content {
             text-align: center;
         }
 
-        ion-img {
-            margin-block: 1em;
-            margin-inline: auto;
+        img {
+            margin: 1em auto;
             max-width: 265px;
+            display: block;
 
             &.paypal {
                 max-width: 200px;
