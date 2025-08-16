@@ -649,7 +649,7 @@ export class ListsService {
         if (device && device.State == "Ready") {
             const text_key = lists.length > 1 ? "service-lists.transmit_confirm_plural" : "service-lists.transmit_confirm";
             const confirm = await this._preferences.Get<boolean>(EPrefProperty.ConfirmTransmitList, true);
-            const locale = this._locale.getText([text_key, "buttons.yes", "buttons.no"], { device: device.Name });
+            const locale = this._locale.getTexts([text_key, "buttons.yes", "buttons.no"], { device: device.Name });
             if (!confirm || (await this._popups.Alert.YesNo({ message: locale[text_key], button_yes: locale["buttons.yes"], button_no: locale["buttons.no"] }))) {
                 MainToolbarComponent.ToggleProgressbar(true);
 

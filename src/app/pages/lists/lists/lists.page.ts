@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/angular/standalone";
-import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
+import { provideTranslocoScope, type Translation, TranslocoModule } from "@jsverse/transloco";
 import { type Subscription } from "rxjs";
 import { type EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 import { MainToolbarListsCustomMenuComponent } from "src/app/components/main-toolbar-lists-custom-menu/main-toolbar-lists-custom-menu.component";
@@ -132,14 +132,14 @@ export class ListsPage extends AnimatedListPageBase {
     }
 
     public getEditMenuActions(): EditMenuAction[] {
-        let texts = [];
+        let texts: Translation = {};
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getText(["edit-menu.list-transmit", "edit-menu.list-empty", "edit-menu.list-delete"]);
+            texts = this.Locale.getTexts(["edit-menu.list-transmit", "edit-menu.list-empty", "edit-menu.list-delete"]);
             texts["transmit"] = texts["edit-menu.list-transmit"];
             texts["delete"] = texts["edit-menu.list-delete"];
             texts["empty"] = texts["edit-menu.list-empty"];
         } else {
-            texts = this.Locale.getText(["edit-menu.lists-transmit", "edit-menu.lists-empty", "edit-menu.lists-delete"], { num: this._selectedItems.length });
+            texts = this.Locale.getTexts(["edit-menu.lists-transmit", "edit-menu.lists-empty", "edit-menu.lists-delete"], { num: this._selectedItems.length });
             texts["transmit"] = texts["edit-menu.lists-transmit"];
             texts["delete"] = texts["edit-menu.lists-delete"];
             texts["empty"] = texts["edit-menu.lists-empty"];

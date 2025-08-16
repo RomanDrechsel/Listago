@@ -73,7 +73,7 @@ export class SelectIntervalComponent {
 
     public get Weekdays(): { v: number; s: string }[] {
         if (!this._weekdays || this._weekdays.length == 0) {
-            const locale = this.Locale.getText(["date.weekday.mon", "date.weekday.tue", "date.weekday.wed", "date.weekday.thu", "date.weekday.fri", "date.weekday.sat", "date.weekday.sun"]);
+            const locale = this.Locale.getTexts(["date.weekday.mon", "date.weekday.tue", "date.weekday.wed", "date.weekday.thu", "date.weekday.fri", "date.weekday.sat", "date.weekday.sun"]);
             this._weekdays = [];
             let day = this.Locale.CurrentLanguage.firstDayOfWeek;
             for (let i = 1; i <= 7; i++) {

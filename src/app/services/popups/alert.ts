@@ -29,7 +29,7 @@ export class Alert {
                 }
             });
 
-            const locale = this.Locale.getText(keys);
+            const locale = this.Locale.getTexts(keys);
             opts.message = locale[opts.message];
             if (opts.header) {
                 opts.header = locale[opts.header];

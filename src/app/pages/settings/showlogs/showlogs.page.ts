@@ -132,7 +132,7 @@ export class ShowlogsPage extends PageBase {
 
     public async onDelete() {
         if (this.currentLogfile) {
-            const locale = this.Locale.getText(["buttons.yes", "buttons.no", "page_settings_showlogs.confirm_delete"], { filename: this.currentLogfile.Filename });
+            const locale = this.Locale.getTexts(["buttons.yes", "buttons.no", "page_settings_showlogs.confirm_delete"], { filename: this.currentLogfile.Filename });
             await this.Popups.Alert.YesNo({
                 message: locale["page_settings_showlogs.confirm_delete"],
                 button_no: locale["buttons.no"],

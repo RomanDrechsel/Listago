@@ -2,8 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
-import { getBrowserCultureLang, TranslocoService } from "@jsverse/transloco";
-import { Translation } from "@ngx-translate/core";
+import { getBrowserCultureLang, type Translation, TranslocoService } from "@jsverse/transloco";
 import { AppService } from "../app/app.service";
 import { ConfigService } from "../config/config.service";
 import { Logger } from "../logging/logger";
@@ -135,20 +134,28 @@ export class LocalizationService {
     }
 
     /**
-     * get one or more text parts
-     * @param keys key or keys, which should be fetched
+     * get one text part
+     * @param key key, which should be fetched
      * @param params placeholder to me replaced in text
-     * @returns string or array of string from localization
+     * @returns string from localization
      */
-    public getText(keys: string | string[], params: Object | undefined = undefined): Translation | { [key: string]: Translation } {
-        if (Array.isArray(keys)) {
-            const ret: { [key: string]: Translation } = [];
-            for (const key of keys) {
-                ret[key] = this.Transloco.translate(key, params);
-            }
-            return ret;
+    public getText(key: string, params: Object | undefined = undefined): string {
+        return this.Transloco.translate(key, params);
+    }
+
+    /**
+     * get several text parts
+     * @param keys array of keys which should be fetched
+     * @param params placeholder to me replaced in text
+     * @returns array of string from localization
+     */
+    public getTexts(keys: string[], params: Object | undefined = undefined): Translation {
+        let ret: string | Translation = this.Transloco.translate(keys, params);
+        if (typeof ret === "string") {
+            ret = { [keys[0]]: ret };
         }
-        return this.Transloco.translate(keys, params);
+
+        return ret;
     }
 
     /**

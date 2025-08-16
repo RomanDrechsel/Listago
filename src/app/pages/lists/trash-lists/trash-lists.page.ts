@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonImg, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonNote, IonText } from "@ionic/angular/standalone";
-import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
+import { provideTranslocoScope, type Translation, TranslocoModule } from "@jsverse/transloco";
 import { Subscription } from "rxjs";
 import { AppComponent } from "src/app/app.component";
 import type { EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
@@ -110,13 +110,13 @@ export class TrashListsPage extends AnimatedListPageBase {
     }
 
     protected override getEditMenuActions(): EditMenuAction[] {
-        let texts = [];
+        let texts: Translation = {};
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getText(["edit-menu.list-restore", "edit-menu.trash-list-delete"]);
+            texts = this.Locale.getTexts(["edit-menu.list-restore", "edit-menu.trash-list-delete"]);
             texts["restore"] = texts["edit-menu.list-restore"];
             texts["delete"] = texts["edit-menu.trash-list-delete"];
         } else {
-            texts = this.Locale.getText(["edit-menu.lists-restore", "edit-menu.trash-lists-delete"], { num: this._selectedItems.length });
+            texts = this.Locale.getTexts(["edit-menu.lists-restore", "edit-menu.trash-lists-delete"], { num: this._selectedItems.length });
             texts["restore"] = texts["edit-menu.lists-restore"];
             texts["delete"] = texts["edit-menu.trash-lists-delete"];
         }

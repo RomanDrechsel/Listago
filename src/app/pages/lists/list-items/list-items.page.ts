@@ -3,7 +3,7 @@ import { Component, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { IonButton, IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonReorder, IonReorderGroup, IonTextarea, ItemReorderEventDetail } from "@ionic/angular/standalone";
-import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
+import { provideTranslocoScope, Translation, TranslocoModule } from "@jsverse/transloco";
 import { Subscription } from "rxjs";
 import { AppComponent } from "src/app/app.component";
 import type { EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
@@ -294,14 +294,14 @@ export class ListItemsPage extends AnimatedListPageBase {
             }
         }
 
-        let texts = [];
+        let texts: Translation = {};
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getText(["edit-menu.item-pin", "edit-menu.item-unpin", "edit-menu.item-hide", "edit-menu.item-show", "edit-menu.item-delete"]);
+            texts = this.Locale.getTexts(["edit-menu.item-pin", "edit-menu.item-unpin", "edit-menu.item-hide", "edit-menu.item-show", "edit-menu.item-delete"]);
             texts["pin"] = pin_items ? texts["edit-menu.item-pin"] : texts["edit-menu.item-unpin"];
             texts["hide"] = hide_items ? texts["edit-menu.item-hide"] : texts["edit-menu.item-show"];
             texts["delete"] = texts["edit-menu.item-delete"];
         } else {
-            texts = this.Locale.getText(["edit-menu.items-pin", "edit-menu.items-unpin", "edit-menu.items-hide", "edit-menu.items-show", "edit-menu.items-delete"], { num: this._selectedItems.length });
+            texts = this.Locale.getTexts(["edit-menu.items-pin", "edit-menu.items-unpin", "edit-menu.items-hide", "edit-menu.items-show", "edit-menu.items-delete"], { num: this._selectedItems.length });
             texts["pin"] = pin_items ? texts["edit-menu.items-pin"] : texts["edit-menu.items-unpin"];
             texts["hide"] = hide_items ? texts["edit-menu.items-hide"] : texts["edit-menu.items-show"];
             texts["delete"] = texts["edit-menu.items-delete"];
