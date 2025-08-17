@@ -13,6 +13,8 @@
     "trash_note": "ゴミ箱の設定",
     "transmission": "転送設定",
     "transmission_note": "ウォッチへのリスト転送設定",
+    "im_export": "インポートとバックアップ",
+    "im_export_note": "リストと設定をインポートまたはバックアップ",
     "advertisement": "広告",
     "advertisement_note": "広告でサポートするか、無効にしてください"
 }

@@ -13,6 +13,8 @@
     "trash_note": "垃圾桶使用設置",
     "transmission": "傳輸設置",
     "transmission_note": "向手錶傳輸清單的設置",
+    "im_export": "匯入與備份",
+    "im_export_note": "匯入或備份清單和設定",
     "advertisement": "廣告",
     "advertisement_note": "透過廣告支持我，或將其關閉"
 }

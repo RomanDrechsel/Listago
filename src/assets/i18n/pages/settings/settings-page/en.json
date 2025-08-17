@@ -13,6 +13,8 @@
     "trash_note": "Settings for usage of the trash",
     "transmission": "Transmission settings",
     "transmission_note": "Settings for transferring lists to your watch",
+    "im_export": "Import and Backup",
+    "im_export_note": "Import or Backup Lists and Settings",
     "advertisement": "Advertisement",
     "advertisement_note": "Support me through ads, or disable them"
 }

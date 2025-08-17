@@ -13,6 +13,8 @@
     "trash_note": "Impostazioni per l'utilizzo del cestino",
     "transmission": "Impostazioni di trasmissione",
     "transmission_note": "Configurazione per il trasferimento delle liste sul tuo orologio",
+    "im_export": "Importazione e Backup",
+    "im_export_note": "Importare o salvare liste e impostazioni",
     "advertisement": "Pubblicità",
     "advertisement_note": "Sostienimi con la pubblicità oppure disattivala"
 }

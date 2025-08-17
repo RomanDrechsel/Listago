@@ -13,6 +13,8 @@
     "trash_note": "Paramètres pour l'utilisation de la corbeille",
     "transmission": "Paramètres de transmission",
     "transmission_note": "Paramètres pour la transmission de listes à votre montre",
+    "im_export": "Importation et Sauvegarde",
+    "im_export_note": "Importer ou sauvegarder des listes et paramètres",
     "advertisement": "Publicité",
     "advertisement_note": "Soutiens-moi grâce à la publicité, ou désactive-la"
 }

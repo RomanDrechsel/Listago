@@ -13,6 +13,8 @@
     "trash_note": "Configuración para utilizar la papelera",
     "transmission": "Configuración de transmisión",
     "transmission_note": "Configuración para transmitir listas a tu reloj",
+    "im_export": "Importar y Copia de seguridad",
+    "im_export_note": "Importar o respaldar listas y configuraciones",
     "advertisement": "Publicidad",
     "advertisement_note": "Apóyame mediante la publicidad o desactívala"
 }

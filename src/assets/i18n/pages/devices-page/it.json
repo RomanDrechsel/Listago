@@ -9,7 +9,10 @@
         "ServiceUnavailable": "Il servizio ConnectIQ non è raggiungibile",
         "AppNotInstalled": "L'app non è installata su questo dispositivo",
         "CheckingApp": "Controllo app in corso...",
-        "CheckingAppComplete": "Controllo dell'app completato.",
-        "UnknownError": "Errore sconosciuto."
+        "ConnectionLost": "Il dispositivo è stato disconnesso",
+        "Initializing": "Il dispositivo si sta inizializzando...",
+        "InvalidState": "Il dispositivo si trova in uno stato non valido",
+        "NotConnected": "Impossibile connettersi al dispositivo",
+        "NotPaired": "Il dispositivo non è associato a Garmin Connect!"
     }
 }

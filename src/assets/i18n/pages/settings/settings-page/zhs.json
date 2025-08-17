@@ -13,6 +13,8 @@
     "trash_note": "回收站使用设置",
     "transmission": "传输设置",
     "transmission_note": "将列表传输到手表的设置",
+    "im_export": "导入和备份",
+    "im_export_note": "导入或备份列表和设置",
     "advertisement": "广告",
     "advertisement_note": "通过广告支持我，或者将其关闭"
 }
