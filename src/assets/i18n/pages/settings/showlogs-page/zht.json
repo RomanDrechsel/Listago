@@ -2,7 +2,7 @@
     "page_title": "日誌",
     "btn_delete": "刪除日誌",
     "btn_save": "保存日誌",
-    "confirm_delete": "確定要刪除日誌 <strong>{{filename}}</strong> 嗎？",
+    "confirm_delete": "確定要刪除日誌<br /><strong>{{filename}}</strong><br />嗎？",
     "toast_deleted": "日誌已刪除。",
     "select_logs": "選擇日誌檔案:",
     "select_logday_title": "選擇日誌檔案的日期:",

@@ -2,7 +2,7 @@
     "page_title": "Journaux",
     "btn_delete": "Supprimer le journal",
     "btn_save": "Enregistrer le journal",
-    "confirm_delete": "Voulez-vous vraiment supprimer le journal <strong>{{filename}}</strong> ?",
+    "confirm_delete": "Voulez-vous vraiment supprimer le journal <br /><strong>{{filename}}</strong> ?",
     "toast_deleted": "Le journal a été supprimé.",
     "select_logs": "Sélectionner le fichier journal :",
     "select_logday_title": "Sélectionnez les jours des fichiers journaux :",

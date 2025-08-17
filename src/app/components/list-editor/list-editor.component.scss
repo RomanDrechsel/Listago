@@ -15,6 +15,12 @@
         --inner-padding-end: 0;
     }
 
+    ion-textarea {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        min-height: 20px;
+    }
+
     ion-accordion-group {
         ion-accordion {
             &.list-settings {

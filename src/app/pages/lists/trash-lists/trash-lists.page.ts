@@ -44,8 +44,13 @@ export class TrashListsPage extends AnimatedListPageBase {
         });
     }
 
+    public override async ionViewWillLeave() {
+        await super.ionViewWillLeave();
+        this.editMenu?.leaveEditMode();
+    }
+
     public override async ionViewDidLeave() {
-        super.ionViewDidLeave();
+        await super.ionViewDidLeave();
         this._trashChangedSubscription?.unsubscribe();
         this._trashChangedSubscription = undefined;
     }
@@ -125,7 +130,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/undo.svg",
                 text: texts["restore"],
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     const restore = await this.restoreList(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (restore === true) {
                         this._selectedItems = [];
@@ -138,7 +143,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/trash.svg",
                 text: texts["delete"],
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     const del = await this.deleteList(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (del === true) {
                         this._selectedItems = [];

@@ -2,7 +2,7 @@
     "page_title": "Logs",
     "btn_delete": "Cancella log",
     "btn_save": "Salva log",
-    "confirm_delete": "Vuoi cancellare il log <strong>{{filename}}</strong>?",
+    "confirm_delete": "Vuoi cancellare il log<br /><strong>{{filename}}</strong>?",
     "toast_deleted": "Il log è stato cancellato.",
     "select_logs": "Seleziona file di log:",
     "select_logday_title": "Seleziona i giorni dei file di log:",

@@ -2,7 +2,7 @@
     "page_title": "Registros",
     "btn_delete": "Eliminar registro",
     "btn_save": "Guardar registro",
-    "confirm_delete": "¿Quieres eliminar el registro <strong>{{filename}}</strong>?",
+    "confirm_delete": "¿Quieres eliminar el registro<br /><strong>{{filename}}</strong>?",
     "toast_deleted": "El registro fue eliminado.",
     "select_logs": "Seleccione un archivo de registro:",
     "select_logday_title": "Seleccione los días del archivo de registros:",

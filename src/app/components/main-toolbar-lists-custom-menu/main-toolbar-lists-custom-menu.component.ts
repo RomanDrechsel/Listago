@@ -49,7 +49,7 @@ export class MainToolbarListsCustomMenuComponent {
         this.EditModeChange.emit(this.EditMode);
     }
 
-    public leaveEditMode(force: boolean = false): void {
+    public leaveEditMode(): void {
         this.EditMode = false;
         this.EditModeChange.emit(this.EditMode);
 

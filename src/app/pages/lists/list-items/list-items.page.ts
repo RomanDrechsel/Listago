@@ -113,6 +113,7 @@ export class ListItemsPage extends AnimatedListPageBase {
         this._preferencesSubscription?.unsubscribe();
         this._listSubscription?.unsubscribe();
         this._connectIQSubscription?.unsubscribe();
+        this.editMenu?.leaveEditMode();
     }
 
     public onSwipeRight(item: Listitem) {
@@ -312,7 +313,7 @@ export class ListItemsPage extends AnimatedListPageBase {
                 text: texts["pin"],
                 icon: `/assets/icons/${pin_items ? "pin" : "pin_off"}.svg`,
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     if (this.List) {
                         const pin = await this.PinItem(
                             this.List.Items.filter(l => this._selectedItems.indexOf(l.Id!) >= 0),
@@ -330,7 +331,7 @@ export class ListItemsPage extends AnimatedListPageBase {
                 text: texts["hide"],
                 icon: `/assets/icons/${hide_items ? "eye_off" : "eye"}.svg`,
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     if (this.List) {
                         const hide = await this.HideItem(
                             this.List.Items.filter(l => this._selectedItems.indexOf(l.Id!) >= 0),
@@ -348,7 +349,7 @@ export class ListItemsPage extends AnimatedListPageBase {
                 text: texts["delete"],
                 icon: "/assets/icons/menu/trash_items.svg",
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     if (this.List) {
                         const del = await this.DeleteItem(this.List.Items.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                         if (del === true) {

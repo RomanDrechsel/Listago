@@ -2,7 +2,7 @@
     "page_title": "Logs",
     "btn_delete": "Delete log",
     "btn_save": "Store log",
-    "confirm_delete": "Should the log <strong>{{filename}}</strong> be deleted?",
+    "confirm_delete": "Should the log<br /><strong>{{filename}}</strong><br />be deleted?",
     "toast_deleted": "The log was deleted.",
     "select_logs": "Select log file:",
     "select_logday_title": "Show log files of a certain day:",

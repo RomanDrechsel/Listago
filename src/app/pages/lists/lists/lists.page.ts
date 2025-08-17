@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonReorder, IonReorderGroup, ItemReorderEventDetail } from "@ionic/angular/standalone";
 import { provideTranslocoScope, type Translation, TranslocoModule } from "@jsverse/transloco";
@@ -17,7 +17,6 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     selector: "app-lists",
     templateUrl: "./lists.page.html",
     styleUrls: ["./lists.page.scss"],
-    changeDetection: ChangeDetectionStrategy.Default,
     imports: [IonCheckbox, IonLabel, IonReorderGroup, IonItemOption, IonItemOptions, IonItemSliding, IonIcon, IonFabButton, IonFab, IonItem, IonReorder, IonList, IonContent, MainToolbarComponent, PageAddNewComponent, CommonModule, FormsModule, TranslocoModule, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
     providers: [provideTranslocoScope({ scope: "pages/lists/lists-page", alias: "page_lists" }, { scope: "common/date", alias: "date" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
 })
@@ -55,6 +54,7 @@ export class ListsPage extends AnimatedListPageBase {
             this._listsSubscription.unsubscribe();
             this._listsSubscription = undefined;
         }
+        this.editMenu?.leaveEditMode();
     }
 
     public onSwipeRight(list: List) {
@@ -150,7 +150,7 @@ export class ListsPage extends AnimatedListPageBase {
                 text: texts["transmit"],
                 icon: "/assets/icons/menu/devices.svg",
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     const transmit = await this.transmitLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (transmit === true) {
                         this._selectedItems = [];
@@ -163,7 +163,7 @@ export class ListsPage extends AnimatedListPageBase {
                 text: texts["empty"],
                 icon: "/assets/icons/menu/empty.svg",
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     const empty = await this.emptyLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (empty === true) {
                         this._selectedItems = [];
@@ -176,7 +176,7 @@ export class ListsPage extends AnimatedListPageBase {
                 text: texts["delete"],
                 icon: "/assets/icons/trash.svg",
                 click: async () => {
-                    this.editMenu?.leaveEditMode(true);
+                    this.editMenu?.leaveEditMode();
                     const del = await this.deleteLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                     if (del === true) {
                         this._selectedItems = [];

@@ -76,6 +76,7 @@ export class TrashListitemsPage extends AnimatedListPageBase {
     public override async ionViewDidLeave() {
         await super.ionViewDidLeave();
         this._trashChangedSubscription?.unsubscribe();
+        this.editMenu?.leaveEditMode();
     }
 
     public override ModifyMainMenu(): MenuItem[] {
@@ -151,7 +152,7 @@ export class TrashListitemsPage extends AnimatedListPageBase {
                 text: texts["restore"],
                 click: async () => {
                     if (this._trashItems) {
-                        this.editMenu?.leaveEditMode(true);
+                        this.editMenu?.leaveEditMode();
                         const restore = await this.restoreItems(this._trashItems.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                         if (restore === true) {
                             this._selectedItems = [];
@@ -166,7 +167,7 @@ export class TrashListitemsPage extends AnimatedListPageBase {
                 text: texts["delete"],
                 click: async () => {
                     if (this._trashItems) {
-                        this.editMenu?.leaveEditMode(true);
+                        this.editMenu?.leaveEditMode();
                         const del = await this.deleteItems(this._trashItems.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
                         if (del === true) {
                             this._selectedItems = [];

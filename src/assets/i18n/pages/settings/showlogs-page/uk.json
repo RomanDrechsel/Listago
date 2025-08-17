@@ -2,7 +2,7 @@
     "page_title": "Логи",
     "btn_delete": "Видалити лог",
     "btn_save": "Зберегти лог",
-    "confirm_delete": "Підтвердити видалення логу <strong>{{filename}}</strong>?",
+    "confirm_delete": "Підтвердити видалення логу <br /><strong>{{filename}}</strong>?",
     "toast_deleted": "Лог видалено.",
     "select_logs": "Виберіть файл з логами:",
     "select_logday_title": "Оберіть дати файлів з логами:",

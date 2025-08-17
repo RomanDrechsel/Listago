@@ -1,7 +1,8 @@
 :host {
     ion-item {
         &.activate {
-            margin-block: 1em;
+            margin-block: 0;
+            padding-block: 0;
             font-size: 1.3em;
 
             .centered-toggle-wrapper {
@@ -17,15 +18,13 @@
 
         &.texts,
         &.supports {
-            margin-top: 1em;
-
             &::part(native) {
                 flex-direction: column;
             }
 
             .text {
                 font-size: 1.2em;
-                margin-bottom: 1em;
+                margin-top: 1em;
                 text-align: center;
 
                 &.listago {
@@ -35,23 +34,42 @@
             }
 
             .support {
+                &:first-of-type {
+                    margin-top: 1em;
+                }
                 font-size: 1.2em;
                 text-align: center;
             }
 
             img {
                 padding-block: 1.5em;
+
+                &.paypal {
+                    max-width: 200px;
+                }
             }
         }
 
         &.thanks {
-            margin-block: 2em;
-
             .thank {
                 width: 100%;
                 text-align: center;
                 font-size: 1.6em;
                 font-weight: bold;
+                margin-block: 1em;
+            }
+        }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    ion-item {
+        &.supports {
+            img.paypal {
+                background-color: #fff;
+                padding: 1em;
+                border-radius: 0.5em;
+                margin-block: 1.5em;
             }
         }
     }

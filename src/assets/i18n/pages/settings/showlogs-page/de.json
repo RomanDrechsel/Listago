@@ -2,7 +2,7 @@
     "page_title": "Logs",
     "btn_delete": "Log löschen",
     "btn_save": "Log speichern",
-    "confirm_delete": "Soll das Log <strong>{{filename}}</strong> wirklich gelöscht?",
+    "confirm_delete": "Soll das Log<br /><strong>{{filename}}</strong><br />wirklich gelöscht werden?",
     "toast_deleted": "Das Log wurde gelöscht.",
     "select_logs": "Log-Datei auswählen:",
     "select_logday_title": "Tage der Log-Dateien auswählen:",

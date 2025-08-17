@@ -21,13 +21,14 @@
             </ion-checkbox>
             <ion-icon src="/assets/icons/info.svg" slot="end" class="info-icon" (click)="clickInfoHidden($event)"></ion-icon>
         </ion-item>
-        }
+        } @if (true) {
         <ion-item lines="none">
             <ion-checkbox labelPlacement="end" justify="start" alignment="center" formControlName="locked">
                 {{ t("comp-listitemeditor.locked") }}
             </ion-checkbox>
             <ion-icon src="/assets/icons/info.svg" slot="end" class="info-icon" (click)="clickInfoLocked($event)"></ion-icon>
         </ion-item>
+        }
 
         <div class="buttons">
             @if(Params?.list && Params?.item) {

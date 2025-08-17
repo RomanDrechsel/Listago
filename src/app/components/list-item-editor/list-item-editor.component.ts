@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from "@angular/core";
+import { Component, inject, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Keyboard } from "@capacitor/keyboard";
 import { IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonItem, IonLabel, IonTextarea, IonTitle, IonToggle, IonToolbar, ModalController } from "@ionic/angular/standalone";
@@ -18,10 +18,9 @@ import { EPrefProperty, PreferencesService } from "../../services/storage/prefer
     imports: [IonTextarea, IonIcon, IonButton, IonButtons, IonTitle, IonItem, IonToolbar, IonLabel, IonHeader, IonCheckbox, IonToggle, CommonModule, TranslocoModule, ReactiveFormsModule, FormsModule],
     templateUrl: "./list-item-editor.component.html",
     styleUrl: "./list-item-editor.component.scss",
-    changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [provideTranslocoScope({ scope: "components/list-item-editor", alias: "comp-listitemeditor" }, { scope: "common/buttons", alias: "buttons" })],
 })
-export class ListItemEditorComponent implements OnInit {
+export class ListItemEditorComponent {
     @ViewChild("itemname") private itemname!: IonTextarea;
     @ViewChild("addmore") private addmore?: IonToggle;
 
@@ -66,17 +65,14 @@ export class ListItemEditorComponent implements OnInit {
         });
     }
 
-    public async ngOnInit() {
-        this.Form.get("item")?.setValue(this.Params?.item?.Item ?? "");
-        this.Form.get("note")?.setValue(this.Params?.item?.Note ?? "");
-        this.Form.get("locked")?.setValue(this.Params?.item?.Locked ?? false);
-        this.Form.get("hidden")?.setValue(this.Params?.item?.Hidden ?? false);
-    }
-
     public async ionViewWillEnter() {
         if (this.addmore) {
             this.addmore.checked = await this._preferences.Get(EPrefProperty.AddMoreItemsDialog, false);
         }
+        this.Form.get("item")?.setValue(this.Params?.item?.Item ?? "");
+        this.Form.get("note")?.setValue(this.Params?.item?.Note ?? "");
+        this.Form.get("locked")?.setValue(this.Params?.item?.Locked ?? false);
+        this.Form.get("hidden")?.setValue(this.Params?.item?.Hidden ?? false);
     }
 
     public async ionViewDidEnter() {

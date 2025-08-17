@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
-import { getBrowserCultureLang, type Translation, TranslocoService } from "@jsverse/transloco";
+import { getBrowserCultureLang, type Translation, TranslocoEvents, TranslocoService } from "@jsverse/transloco";
 import { AppService } from "../app/app.service";
 import { ConfigService } from "../config/config.service";
 import { Logger } from "../logging/logger";
@@ -93,6 +93,12 @@ export class LocalizationService {
             lang = this.FallbackCulture;
         }
 
+        this.Transloco.events$.subscribe((event: TranslocoEvents) => {
+            if (event.type == "translationLoadFailure") {
+                Logger.Error(`Could not load localization: `, event.payload);
+            }
+        });
+
         this.ChangeLanguage(lang, true);
         await this.loadScope("services/localization/localization-service", "service-locale");
         await this.loadScope("common/languages", "languages");
@@ -150,9 +156,9 @@ export class LocalizationService {
      * @returns array of string from localization
      */
     public getTexts(keys: string[], params: Object | undefined = undefined): Translation {
-        let ret: string | Translation = this.Transloco.translate(keys, params);
-        if (typeof ret === "string") {
-            ret = { [keys[0]]: ret };
+        let ret: string | Translation = {};
+        for (const key of keys) {
+            ret[key] = this.Transloco.translate(key, params);
         }
 
         return ret;
@@ -194,7 +200,6 @@ export class LocalizationService {
 
     private async reloadScopes() {
         const copy: { [key: string]: string | undefined } = { ...this._loadedScopes };
-        console.log("LOCALE-Reload: ", copy);
         this._loadedScopes = {};
         for (const [scope, alias] of Object.entries(copy)) {
             await this.loadScope(scope, alias);

@@ -438,11 +438,16 @@ export class ListsService {
      */
     public async EmptyListitemTrash(trash: List | number): Promise<boolean | undefined> {
         if (await this._preferences.Get(EPrefProperty.ConfirmEmptyTrash, true)) {
+            let get_items_in_trash = false;
             if (!(trash instanceof List)) {
                 trash = (await this.GetList(trash)) ?? trash;
+                get_items_in_trash = true;
             }
             let text;
             if (trash instanceof List) {
+                if (get_items_in_trash) {
+                    trash.ItemsInTrashCount = await this._backendService.queryListitemsCount({ list: trash.Id, trash: true });
+                }
                 if (trash.ItemsInTrashCount == 1) {
                     text = this._locale.getText("service-lists.empty_trash_listitems_confirm_single");
                 } else {

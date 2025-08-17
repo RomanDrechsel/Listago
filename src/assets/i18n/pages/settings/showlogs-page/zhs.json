@@ -2,7 +2,7 @@
     "page_title": "日志",
     "btn_delete": "删除日志",
     "btn_save": "保存日志",
-    "confirm_delete": "确定要删除日志 <strong>{{filename}}</strong>？",
+    "confirm_delete": "确定要删除日志<br /><strong>{{filename}}</strong>？",
     "toast_deleted": "日志已删除。",
     "select_logs": "选择日志文件：",
     "select_logday_title": "选择日志文件日期：",

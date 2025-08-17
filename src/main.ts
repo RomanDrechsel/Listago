@@ -35,7 +35,7 @@ bootstrapApplication(AppComponent, {
                 },
                 prodMode: !isDevMode(),
                 flatten: {
-                    aot: false,
+                    aot: !isDevMode(),
                 },
             },
             loader: HttpLoader,

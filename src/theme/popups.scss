@@ -30,12 +30,6 @@ ion-toast.toast {
     }
 }
 
-ion-loading.loading-overlay {
-    --backdrop-opacity: 0.8;
-    --min-height: 100px;
-    --min-width: 80%;
-}
-
 ion-modal.autosize-modal {
     --height: auto;
     backdrop-filter: blur(6px);
@@ -79,9 +73,28 @@ ion-alert {
     --max-height: 80%;
 
     &.info {
-        .alert-message {
-            font-size: 1.3em;
-            font-style: italic;
+        backdrop-filter: blur(6px);
+        --max-width: 90%;
+        --max-height: 90%;
+        --backdrop-opacity: 0.35;
+
+        &::part(content) {
+            max-width: 90%;
+            max-height: 100%;
+            box-shadow: 0 0 24px rgba(var(--color-shadow-rgb), 0.6);
+        }
+
+        .alert-wrapper {
+            height: max-content;
+
+            .alert-message {
+                font-size: 1.3em;
+                font-style: italic;
+
+                &.alert-message.sc-ion-alert-md {
+                    max-height: 90%;
+                }
+            }
         }
     }
 
