@@ -1,7 +1,7 @@
 import os
 import json
 
-ref_file = "de.json"
+reference_file = "de.json"
 required_files = ["en.json", "es.json", "fr.json", "hi.json", "it.json", "jp.json", "uk.json", "zhs.json", "zht.json"]
 base_dir = "../src/assets/i18n"
 
@@ -18,7 +18,7 @@ def extract_keys(obj, prefix=""):
 
 something_missing = False
 for root, dirs, files in os.walk(base_dir):
-    if ref_file in files:
+    if reference_file in files:
         missing = [f for f in required_files if f not in files]
         if missing:
             something_missing = True
@@ -27,7 +27,7 @@ for root, dirs, files in os.walk(base_dir):
                 print(f" - {m}")
         else:
             # check if all translations are in this file
-            ref_path = os.path.join(root, ref_file)
+            ref_path = os.path.join(root, reference_file)
 
             try:
                 with open(ref_path, "r", encoding="utf-8") as f:
@@ -49,13 +49,23 @@ for root, dirs, files in os.walk(base_dir):
                         continue
 
                     req_keys = extract_keys(req_json)
-                    missing_keys = [k for k in ref_keys if k not in req_keys]
 
+                    #check if keys are missing
+                    missing_keys = [k for k in ref_keys if k not in req_keys]
                     if missing_keys:
                         something_missing = True
                         print(f"\nFile '{req_path}' has missing translations:")
                         for k in missing_keys:
                             print(f" - {k}")
+
+                    #check if there are superfluous keys
+                    sup_keys = [k for k in req_keys if k not in ref_keys]
+                    if sup_keys:
+                        print(f"\nFile '{req_path}' has superfluous translations:")
+                        for k in sup_keys:
+                            print(f" - {k}")
+
+
 
 
 
