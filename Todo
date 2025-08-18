@@ -1,7 +1,5 @@
-TEST: localisation overhaul
-WIP: python script to check if all translation are present -> check if there are to many translation in files
-TODO: RELEASE
 TODO: in-app update
 TODO: RELEASE
 TODO: Notes support
 TEST: import from lists
+TEST: localisation overhaul

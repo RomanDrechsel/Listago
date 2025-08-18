@@ -30,13 +30,15 @@ import de.romandrechsel.listago.share.SharePlugin;
 import de.romandrechsel.listago.sysinfo.SysInfoPlugin;
 import de.romandrechsel.listago.utils.FileUtils;
 
-public class MainActivity extends BridgeActivity {
+public class MainActivity extends BridgeActivity
+{
     private Intent _pendingIntent;
     private static final String TAG = "MainActivity";
     private ArrayList<SysInfoPlugin.InitialAction> _initActions = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         registerPlugin(ConnectIQPlugin.class);
         registerPlugin(SysInfoPlugin.class);
         registerPlugin(SharePlugin.class);
@@ -50,28 +52,34 @@ public class MainActivity extends BridgeActivity {
     }
 
     @Override
-    public void onStart() {
+    public void onStart()
+    {
         super.onStart();
         EdgeToEdge.enable(this);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         WebView webView = this.getBridge().getWebView();
-        if (webView != null) {
+        if (webView != null)
+        {
             webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
             webView.setVerticalScrollBarEnabled(true);
         }
 
         SysInfoPlugin plugin = this.GetSysInfoPlugin();
-        if (plugin != null) {
+        if (plugin != null)
+        {
             int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             plugin.SetNightMode(currentNightMode == Configuration.UI_MODE_NIGHT_YES, true);
-            if (this._initActions != null) {
-                for (SysInfoPlugin.InitialAction action : this._initActions) {
+            if (this._initActions != null)
+            {
+                for (SysInfoPlugin.InitialAction action : this._initActions)
+                {
                     plugin.InitialActionDone(action);
                 }
                 this._initActions = null;
             }
-            if (this._pendingIntent != null) {
+            if (this._pendingIntent != null)
+            {
                 plugin.handleIntent(this._pendingIntent);
                 this._pendingIntent = null;
             }
@@ -79,33 +87,42 @@ public class MainActivity extends BridgeActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(Intent intent)
+    {
         super.onNewIntent(intent);
         setIntent(intent);
         this.handleIntent(intent);
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(Configuration newConfig)
+    {
         super.onConfigurationChanged(newConfig);
         boolean isNightMode;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+        {
             isNightMode = getResources().getConfiguration().isNightModeActive();
-        } else {
+        }
+        else
+        {
             int currentNightMode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
             isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
         }
 
         SysInfoPlugin plugin = this.GetSysInfoPlugin();
-        if (plugin != null) {
+        if (plugin != null)
+        {
             plugin.SetNightMode(isNightMode, false);
         }
     }
 
-    private SysInfoPlugin GetSysInfoPlugin() {
-        if (this.getBridge() != null) {
+    private SysInfoPlugin GetSysInfoPlugin()
+    {
+        if (this.getBridge() != null)
+        {
             PluginHandle handle = this.getBridge().getPlugin("SysInfo");
-            if (handle != null) {
+            if (handle != null)
+            {
                 return (SysInfoPlugin) handle.getInstance();
             }
 
@@ -113,55 +130,96 @@ public class MainActivity extends BridgeActivity {
         return null;
     }
 
-    private void handleIntent(@Nullable Intent intent) {
-        if (intent != null) {
+    private void handleIntent(@Nullable Intent intent)
+    {
+        if (intent != null)
+        {
             SysInfoPlugin plugin = this.GetSysInfoPlugin();
-            if (plugin != null) {
+            if (plugin != null)
+            {
                 plugin.handleIntent(intent);
-            } else {
+            }
+            else
+            {
                 this._pendingIntent = intent;
             }
         }
     }
 
-    private void handleAppUpdate() {
+    private void handleAppUpdate()
+    {
         long currentVersionCode = -1;
-        try {
+        String currentVersionName = null;
+
+        try
+        {
             PackageInfo packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
             currentVersionCode = packageInfo.getLongVersionCode();
-        } catch (PackageManager.NameNotFoundException e) {
+            currentVersionName = packageInfo.versionName;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
             Logger.Error(TAG, "Could not read package version number: ", e);
         }
 
-        if (currentVersionCode > 0) {
+        if (currentVersionCode > 0)
+        {
             SharedPreferences sharedPreferences = this.getSharedPreferences(this.getString(R.string.shared_pref), Context.MODE_PRIVATE);
             long lastVersionCode = sharedPreferences.getLong("lastVersionCode", -1);
 
-            if (currentVersionCode > lastVersionCode) {
-                sharedPreferences.edit().putLong("lastVersionCode", currentVersionCode).apply();
+            if (currentVersionCode > lastVersionCode)
+            {
+                String lastVersionName = sharedPreferences.getString("lastVersionName", null);
+                SharedPreferences.Editor pref = sharedPreferences.edit();
+                pref.putLong("lastVersionCode", currentVersionCode);
+                if (currentVersionName != null)
+                {
+                    pref.putString("lastVersionName", currentVersionName);
+                }
+                else
+                {
+                    pref.remove("lastVersionName");
+                }
+                pref.apply();
                 boolean success = false;
                 Exception ex = null;
-                try {
+                try
+                {
                     File webviewCache = new File(getApplicationContext().getCacheDir().getParent(), "app_webview");
                     success = FileUtils.DeleteDirectory(webviewCache, false).Success;
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Logger.Error(TAG, "Could not delete webview cache: ", e);
                     ex = e;
                 }
 
                 Map<String, Object> payload = new HashMap<>();
                 payload.put("success", success);
-                if (ex != null) {
+                if (ex != null)
+                {
                     payload.put("error", ex.getMessage());
                 }
                 payload.put("to", currentVersionCode);
+                if (currentVersionName != null)
+                {
+                    payload.put("toName", currentVersionName);
+                }
                 payload.put("from", lastVersionCode);
+                if (lastVersionName != null)
+                {
+                    payload.put("fromName", lastVersionName);
+                }
                 SysInfoPlugin.InitialAction action = new SysInfoPlugin.InitialAction("appUpdate", payload);
                 SysInfoPlugin plugin = this.GetSysInfoPlugin();
-                if (plugin != null) {
+                if (plugin != null)
+                {
                     plugin.InitialActionDone(action);
-                } else {
-                    if (this._initActions == null) {
+                }
+                else
+                {
+                    if (this._initActions == null)
+                    {
                         this._initActions = new ArrayList<>();
                     }
                     this._initActions.add(action);

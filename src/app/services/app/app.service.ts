@@ -267,9 +267,9 @@ export class AppService {
                         const fromVersion = action.payload.from ?? -1;
                         const toVersion = action.payload.to ?? -1;
                         if (action.payload.success) {
-                            this._logger.Notice(`Successfully updated app from version ${fromVersion} to ${toVersion}`);
+                            this._logger.Notice(`Successfully updated app from version ${fromVersion}${action.payload.fromName ? ` (${action.payload.fromName})` : ""} to ${toVersion}${action.payload.toName ? ` (${action.payload.toName})` : ""}`);
                         } else {
-                            this._logger.Error(`Updated app from version ${fromVersion} to ${toVersion}, but encountered errors.`, action.payload.error);
+                            this._logger.Error(`Updated app from version ${fromVersion}${action.payload.fromName ? ` (${action.payload.fromName})` : ""} to ${toVersion}${toVersion}${action.payload.toName ? ` (${action.payload.toName})` : ""}, but encountered errors.`, action.payload.error);
                         }
                     } else {
                         this._logger.Notice(`InitialAction '${action.action}' done`, action.payload);

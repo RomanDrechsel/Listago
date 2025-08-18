@@ -5,6 +5,7 @@
     "homepage": "https://roman-drechsel.de",
     "description": "Companion app for Lists app on your Garmin watch",
     "scripts": {
+        "liveRelease": "npx npm run ionic:build -- -- --configuration=liveRelease && npm run transloco:optimize && npx cap copy && npx cap sync",
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build",
