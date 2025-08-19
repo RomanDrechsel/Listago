@@ -61,8 +61,8 @@ export class ListsService {
     public onListsChanged$ = this.onListsChangedSubject.asObservable();
 
     public async Initialize() {
-        await this._locale.loadScope("services/lists/lists-service", "service-lists");
-        await this._locale.loadScope("common/buttons", "buttons");
+        await this._locale.loadScope("services/lists/lists-service", "service-lists", true);
+        await this._locale.loadScope("common/buttons", "buttons", true);
         await this._backendService.Initialize();
         this._syncLists = await this._preferences.Get<boolean>(EPrefProperty.SyncListOnDevice, false);
         this._preferences.onPrefChanged$.subscribe(arg => {

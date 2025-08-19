@@ -14,10 +14,6 @@ export class PopupsService {
     private readonly _alertCtrl = inject(AlertController);
     private readonly _preferences = inject(PreferencesService);
 
-    constructor() {
-        this._locale.loadScope("common/buttons", "buttons");
-    }
-
     /**
      * new Toast object
      */

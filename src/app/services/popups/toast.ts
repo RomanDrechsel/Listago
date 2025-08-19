@@ -10,7 +10,9 @@ export class Toast {
 
     private static _toastQueue: HTMLIonToastElement[] = [];
 
-    public constructor(private Controller: ToastController, private Locale: LocalizationService, private Preferences: PreferencesService) {}
+    public constructor(private Controller: ToastController, private Locale: LocalizationService, private Preferences: PreferencesService) {
+        this.Locale.loadScope("common/buttons", "buttons", false);
+    }
 
     public async Error(message: string, duration: number = Toast.DURATION_NORMAL, translate: boolean = true): Promise<HTMLIonToastElement> {
         const toast = await this.Controller.create(await this.getToastOptions(message, duration, "error", translate));

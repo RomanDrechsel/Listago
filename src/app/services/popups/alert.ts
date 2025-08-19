@@ -2,7 +2,9 @@ import { AlertButton, AlertController, AlertInput, AlertOptions } from "@ionic/a
 import { LocalizationService } from "../localization/localization.service";
 
 export class Alert {
-    public constructor(private Controller: AlertController, private Locale: LocalizationService) {}
+    public constructor(private Controller: AlertController, private Locale: LocalizationService) {
+        this.Locale.loadScope("common/buttons", "buttons", false);
+    }
 
     /**
      * show a alert popup

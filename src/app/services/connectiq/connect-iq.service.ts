@@ -81,7 +81,7 @@ export class ConnectIQService {
      */
     public async Initialize(obj?: { simulator?: boolean; debug_app?: boolean }): Promise<boolean> {
         Logger.Debug(`Start initializing ConnectIQ service...`);
-        await this._locale.loadScope("services/connectiq/connectiq-service", "service-connectiq");
+        await this._locale.loadScope("services/connectiq/connectiq-service", "service-connectiq", true);
         const all_listeners = Array.from(this._watchListeners.values());
         for (let i = 0; i < all_listeners.length; i++) {
             for (let j = 0; j < all_listeners[i].length; j++) {
@@ -145,6 +145,7 @@ export class ConnectIQService {
 
         this._initialized = false;
         this.onInitializedSubject.next(false);
+        this._locale.scopeNotProtectedAnymore("services/connectiq/connectiq-service", "service-connectiq");
     }
 
     /**

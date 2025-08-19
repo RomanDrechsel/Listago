@@ -39,6 +39,7 @@ export class LocalizationService {
     private _availableTranslations: Culture[] = [];
 
     private _loadedScopes: { [key: string]: string | undefined } = {};
+    private _protectedScopes: { [key: string]: string | undefined } = {};
 
     constructor() {
         this.Transloco.setAvailableLangs([...new Set<string>(this.AvailableTranslations.map(l => l.localeFile))]);
@@ -100,8 +101,8 @@ export class LocalizationService {
         });
 
         this.ChangeLanguage(lang, true);
-        await this.loadScope("services/localization/localization-service", "service-locale");
-        await this.loadScope("common/languages", "languages");
+        await this.loadScope("services/localization/localization-service", "service-locale", true);
+        await this.loadScope("common/languages", "languages", true);
 
         Logger.Debug("Locale initialized");
     }
@@ -130,7 +131,7 @@ export class LocalizationService {
                 if (init || this._currentCulture.localeFile != culture.localeFile) {
                     this._currentCulture = culture;
                     this.Transloco.setActiveLang(culture.localeFile);
-                    await this.reloadScopes();
+                    await this.reloadProtectedScopes();
                 }
             }
             await this._preferences.Set(EPrefProperty.AppLanguage, this._currentLocale);
@@ -175,7 +176,11 @@ export class LocalizationService {
         }
     }
 
-    public async loadScope(scope: string, alias?: string): Promise<void> {
+    public async loadScope(scope: string, alias?: string, protect?: boolean): Promise<void> {
+        if (protect === true) {
+            this._protectedScopes[scope] = alias;
+        }
+
         //check if scope is already loaded
         for (const [s, a] of Object.entries(this._loadedScopes)) {
             if (scope == s && alias == a) {
@@ -198,11 +203,19 @@ export class LocalizationService {
         });
     }
 
-    private async reloadScopes() {
-        const copy: { [key: string]: string | undefined } = { ...this._loadedScopes };
+    public async scopeNotProtectedAnymore(scope: string, alias?: string): Promise<void> {
+        for (const [s, a] of Object.entries(this._protectedScopes)) {
+            if (s == scope && a == alias) {
+                delete this._protectedScopes[s];
+                return;
+            }
+        }
+    }
+
+    private async reloadProtectedScopes() {
         this._loadedScopes = {};
-        for (const [scope, alias] of Object.entries(copy)) {
-            await this.loadScope(scope, alias);
+        for (const [scope, alias] of Object.entries(this._protectedScopes)) {
+            await this.loadScope(scope, alias, true);
         }
     }
 }

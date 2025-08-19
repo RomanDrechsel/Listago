@@ -49,8 +49,10 @@ export class AppUpdater {
             Logger.Notice(`New app update available in playstore: ${currentVersion} -> ${availableVersion}`);
             this._modal = await StartAppUpdate(this._modalCtrl, { updater: this });
         } else if (force) {
-            Logger.Debug(`The app is up-to-date (${currentVersion})`);
             await StartAppUpdate(this._modalCtrl, { updater: this, uptodate: true });
+            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${availableVersion})`);
+        } else {
+            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${availableVersion})`);
         }
     }
 
