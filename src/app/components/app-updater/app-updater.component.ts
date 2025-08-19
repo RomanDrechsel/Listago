@@ -58,4 +58,5 @@ export const StartAppUpdate = async function (modalController: ModalController, 
 
 export declare type UpdaterParams = {
     updater: AppUpdater;
+    uptodate?: boolean;
 };

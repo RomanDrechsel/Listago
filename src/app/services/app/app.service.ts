@@ -286,7 +286,7 @@ export class AppService {
     }
 
     public async CheckForUpdate(): Promise<void> {
-        await new AppUpdater(this._modalCtrl).CheckForUpdates();
+        await new AppUpdater(this._modalCtrl, this._preferences).CheckForUpdates();
     }
 
     private async handleNightmode(isNightMode?: boolean, silent: boolean = false) {

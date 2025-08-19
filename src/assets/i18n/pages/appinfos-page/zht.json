@@ -4,6 +4,7 @@
     "version": "版本：",
     "build": "構建：",
     "platform": "平台：",
+    "check-update": "檢查更新",
     "backend": "後端：",
     "storage": "儲存空間：",
     "database_lists": "清單：",

@@ -10,5 +10,6 @@
     "update-running": "La actualización se está instalando ...",
     "update-close": "Puedes cerrar la ventana, la actualización se ejecutará en segundo plano.",
     "update-success": "La actualización se instaló correctamente.",
-    "update-error": "¡No se pudo instalar la actualización!"
+    "update-error": "¡No se pudo instalar la actualización!",
+    "no-update": "La aplicación está actualizada"
 }

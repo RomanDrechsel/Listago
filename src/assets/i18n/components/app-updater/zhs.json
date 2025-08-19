@@ -10,5 +10,6 @@
     "update-running": "正在进行更新 ...",
     "update-close": "你可以关闭窗口，更新将在后台运行。",
     "update-success": "更新已成功完成。",
-    "update-error": "无法完成更新！"
+    "update-error": "无法完成更新！",
+    "no-update": "应用已是最新版本"
 }

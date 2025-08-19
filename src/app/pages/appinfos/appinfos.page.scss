@@ -65,6 +65,11 @@ ion-content {
                         }
                     }
                 }
+
+                .button {
+                    display: flex;
+                    justify-content: end;
+                }
             }
         }
     }

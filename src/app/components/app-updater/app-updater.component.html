@@ -1,3 +1,4 @@
+@if (Params.uptodate !== true) {
 <ion-header *transloco="let t">
     <ion-toolbar>
         <ion-title>
@@ -16,7 +17,15 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-@if (Params.updater.UpdateRunning) {
+} @if (Params.uptodate === true) {
+<div class="inner-content ion-padding success" *transloco="let t">
+    <ion-icon src="/assets/icons/done.svg" class="done success"></ion-icon>
+    <div class="text" [innerHTML]="t('comp-appupdater.no-update')"></div>
+    <div class="buttons">
+        <ion-button (click)="cancel()" fill="solid" color="secondary"> {{ t("buttons.close") }} </ion-button>
+    </div>
+</div>
+} @else if (Params.updater.UpdateRunning) {
 <div class="inner-content ion-padding" *transloco="let t">
     <ion-text [innerHTML]="t('comp-appupdater.update-running')"></ion-text>
     <div class="hint" [innerHTML]="t('comp-appupdater.update-close')"></div>

@@ -10,5 +10,6 @@
     "update-running": "La mise à jour est en cours d’installation ...",
     "update-close": "Vous pouvez fermer la fenêtre, la mise à jour s’exécutera en arrière-plan.",
     "update-success": "La mise à jour a été installée avec succès.",
-    "update-error": "La mise à jour n’a pas pu être installée !"
+    "update-error": "La mise à jour n’a pas pu être installée !",
+    "no-update": "L’application est à jour"
 }

@@ -10,5 +10,6 @@
     "update-running": "Das Update wird durchgeführt ...",
     "update-close": "Sie können das Fenster schließen, das Update wird im Hintergrund ausgeführt.",
     "update-success": "Das Update wurde erfolgreich durchgeführt.",
-    "update-error": "Das Update konnte nicht durchgeführt werden!"
+    "update-error": "Das Update konnte nicht durchgeführt werden!",
+    "no-update": "Die App ist aktuell"
 }

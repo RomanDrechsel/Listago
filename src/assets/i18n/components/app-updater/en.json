@@ -10,5 +10,6 @@
     "update-running": "The update is being installed ...",
     "update-close": "You can close the window, the update will run in the background.",
     "update-success": "The update was successfully installed.",
-    "update-error": "The update could not be installed!"
+    "update-error": "The update could not be installed!",
+    "no-update": "The app is up to date"
 }

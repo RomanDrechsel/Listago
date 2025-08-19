@@ -4,6 +4,7 @@
     "version": "Версія:",
     "build": "Білд:",
     "platform": "Платформа:",
+    "check-update": "Перевірити оновлення",
     "backend": "Бекенд:",
     "storage": "Сховище:",
     "database_lists": "Списки:",

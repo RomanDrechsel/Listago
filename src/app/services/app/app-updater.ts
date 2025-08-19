@@ -3,6 +3,7 @@ import { AppUpdate, AppUpdateAvailability, type AppUpdateInfo, FlexibleUpdateIns
 import { ModalController } from "@ionic/angular/standalone";
 import { StartAppUpdate } from "src/app/components/app-updater/app-updater.component";
 import { Logger } from "../logging/logger";
+import { EPrefProperty, type PreferencesService } from "../storage/preferences.service";
 
 export class AppUpdater {
     private _availableVersion?: number;
@@ -11,7 +12,8 @@ export class AppUpdater {
     private _modal?: HTMLIonModalElement;
     private _updateInfo?: AppUpdateInfo;
 
-    private _modalCtrl: ModalController;
+    private readonly _modalCtrl: ModalController;
+    private readonly _preferences: PreferencesService;
 
     public get AvailableVersion(): number {
         return this._availableVersion ?? -1;
@@ -25,17 +27,30 @@ export class AppUpdater {
         return this._updateSuccessful;
     }
 
-    constructor(modalCtrl: ModalController) {
+    constructor(modalCtrl: ModalController, pref: PreferencesService) {
         this._modalCtrl = modalCtrl;
+        this._preferences = pref;
     }
 
-    public async CheckForUpdates(): Promise<void> {
+    public async CheckForUpdates(force: boolean = false): Promise<void> {
         this._updateInfo = await AppUpdate.getAppUpdateInfo();
         const currentVersion = this._updateInfo.availableVersionCode ?? this._updateInfo.availableVersionName;
         const availableVersion = this._updateInfo.currentVersionCode ?? this._updateInfo.currentVersionName;
+
+        if (!force) {
+            const ignore = await this._preferences.Get(EPrefProperty.IgnoreUpdate, undefined);
+            if (ignore && ignore == availableVersion) {
+                //ingore this version
+                return;
+            }
+        }
+
         if (availableVersion && currentVersion && availableVersion > currentVersion) {
             Logger.Notice(`New app update available in playstore: ${currentVersion} -> ${availableVersion}`);
             this._modal = await StartAppUpdate(this._modalCtrl, { updater: this });
+        } else if (force) {
+            Logger.Debug(`The app is up-to-date (${currentVersion})`);
+            await StartAppUpdate(this._modalCtrl, { updater: this, uptodate: true });
         }
     }
 
@@ -66,6 +81,7 @@ export class AppUpdater {
                 listener?.onDone("success");
                 this._updateSuccessful = true;
                 reopen = true;
+                this._preferences.Remove(EPrefProperty.IgnoreUpdate);
             }
             if (!this._modal && reopen) {
                 //reopen popup with success message

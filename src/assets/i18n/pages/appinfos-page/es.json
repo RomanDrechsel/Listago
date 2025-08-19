@@ -4,6 +4,7 @@
     "version": "Versión:",
     "build": "Compilado:",
     "platform": "Plataforma:",
+    "check-update": "Buscar actualizaciones",
     "backend": "Backend:",
     "storage": "Almacenamiento:",
     "database_lists": "Listas:",
