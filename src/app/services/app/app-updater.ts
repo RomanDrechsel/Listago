@@ -6,7 +6,7 @@ import { Logger } from "../logging/logger";
 import { EPrefProperty, type PreferencesService } from "../storage/preferences.service";
 
 export class AppUpdater {
-    private _availableVersion?: number;
+    private _availableVersion?: string;
     private _updateRunning = false;
     private _updateSuccessful?: boolean;
     private _modal?: HTMLIonModalElement;
@@ -15,8 +15,8 @@ export class AppUpdater {
     private readonly _modalCtrl: ModalController;
     private readonly _preferences: PreferencesService;
 
-    public get AvailableVersion(): number {
-        return this._availableVersion ?? -1;
+    public get AvailableVersion(): string {
+        return this._availableVersion ?? "";
     }
 
     public get UpdateRunning(): boolean {
@@ -34,25 +34,26 @@ export class AppUpdater {
 
     public async CheckForUpdates(force: boolean = false): Promise<void> {
         this._updateInfo = await AppUpdate.getAppUpdateInfo();
-        const currentVersion = this._updateInfo.availableVersionCode ?? this._updateInfo.availableVersionName;
-        const availableVersion = this._updateInfo.currentVersionCode ?? this._updateInfo.currentVersionName;
+        this._availableVersion = this._updateInfo.availableVersionCode ?? this._updateInfo.availableVersionName;
+        const currentVersion = this._updateInfo.currentVersionCode ?? this._updateInfo.currentVersionName;
 
         if (!force) {
             const ignore = await this._preferences.Get(EPrefProperty.IgnoreUpdate, undefined);
-            if (ignore && ignore == availableVersion) {
+            if (ignore && ignore == this._availableVersion) {
                 //ingore this version
+                Logger.Debug(`New app update available, but the user ignores it (${currentVersion} -> ${this._availableVersion})`);
                 return;
             }
         }
 
-        if (availableVersion && currentVersion && availableVersion > currentVersion) {
-            Logger.Notice(`New app update available in playstore: ${currentVersion} -> ${availableVersion}`);
+        if (this._availableVersion && currentVersion && this._availableVersion > currentVersion) {
+            Logger.Notice(`New app update available in playstore: ${currentVersion} -> ${this._availableVersion}`);
             this._modal = await StartAppUpdate(this._modalCtrl, { updater: this });
         } else if (force) {
             await StartAppUpdate(this._modalCtrl, { updater: this, uptodate: true });
-            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${availableVersion})`);
+            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${this._availableVersion})`);
         } else {
-            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${availableVersion})`);
+            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${this._availableVersion})`);
         }
     }
 
