@@ -1,0 +1,14 @@
+{
+    "title": "Mise à jour disponible",
+    "title-success": "Mise à jour réussie",
+    "title-error": "Échec de la mise à jour",
+    "text": "J’ai publié une nouvelle mise à jour de l’application.<br /><br />Pour profiter de toutes les fonctionnalités, veuillez installer cette mise à jour.",
+    "toggle": "Ne plus afficher cette mise à jour",
+    "btn-ignore": "Ignorer la mise à jour",
+    "btn-googleplay": "Ouvrir PlayStore",
+    "btn-update": "Démarrer la mise à jour",
+    "update-running": "La mise à jour est en cours d’installation ...",
+    "update-close": "Vous pouvez fermer la fenêtre, la mise à jour s’exécutera en arrière-plan.",
+    "update-success": "La mise à jour a été installée avec succès.",
+    "update-error": "La mise à jour n’a pas pu être installée !"
+}

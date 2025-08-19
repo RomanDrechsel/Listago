@@ -1,0 +1,14 @@
+{
+    "title": "有可用更新",
+    "title-success": "更新成功",
+    "title-error": "更新失败",
+    "text": "我发布了一个新的应用更新。<br /><br />为了使用所有功能，请安装此更新。",
+    "toggle": "不再显示此更新",
+    "btn-ignore": "忽略更新",
+    "btn-googleplay": "打开PlayStore",
+    "btn-update": "开始更新",
+    "update-running": "正在进行更新 ...",
+    "update-close": "你可以关闭窗口，更新将在后台运行。",
+    "update-success": "更新已成功完成。",
+    "update-error": "无法完成更新！"
+}

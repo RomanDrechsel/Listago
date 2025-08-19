@@ -26,11 +26,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     private static _instance?: AppComponent;
 
     public readonly ConnectIQ = inject(ConnectIQService);
-    private readonly Platform = inject(Platform);
-    private readonly Preferences = inject(PreferencesService);
-    private readonly App = inject(AppService);
-    private readonly NavController = inject(NavController);
-    private readonly cdr = inject(ChangeDetectorRef);
+    private readonly _platform = inject(Platform);
+    private readonly _preferences = inject(PreferencesService);
+    private readonly _app = inject(AppService);
+    private readonly _navController = inject(NavController);
+    private readonly _cdr = inject(ChangeDetectorRef);
     private _currentToolbar?: MainToolbarComponent = undefined;
 
     @ViewChild("router_outlet") private routerOutlet!: IonRouterOutlet;
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     public get menuSide(): string {
-        return this.App.DeviceWidth < 1024 ? "end" : "start";
+        return this._app.DeviceWidth < 1024 ? "end" : "start";
     }
 
     public get FirstStart(): boolean {
@@ -56,30 +56,31 @@ export class AppComponent implements OnInit, AfterViewInit {
     public async ngOnInit() {
         AppComponent._instance = this;
         //exit app if back-stack is empty
-        this.Platform.backButton.subscribeWithPriority(-1, async () => {
+        this._platform.backButton.subscribeWithPriority(-1, async () => {
             await this.tapBack();
         });
 
-        this.Preferences.onPrefChanged$.subscribe(prop => {
+        this._preferences.onPrefChanged$.subscribe(prop => {
             if (prop.prop == EPrefProperty.TrashLists) {
                 this._useTrash = prop.value as boolean;
                 this.setAppPages();
             } else if (prop.prop == EPrefProperty.FirstStart) {
                 this._firstStart = prop.value as boolean;
-                this.cdr.detectChanges();
+                this._cdr.detectChanges();
             }
         });
         this.ConnectIQ.onInitialized$.subscribe(() => {
             this.setAppPages();
         });
 
-        this._useTrash = await this.Preferences.Get<boolean>(EPrefProperty.TrashLists, true);
-        this._firstStart = await this.Preferences.Get<boolean>(EPrefProperty.FirstStart, true);
+        this._useTrash = await this._preferences.Get<boolean>(EPrefProperty.TrashLists, true);
+        this._firstStart = await this._preferences.Get<boolean>(EPrefProperty.FirstStart, true);
         this.setAppPages();
     }
 
     public async ngAfterViewInit(): Promise<void> {
-        await this.App.AppIsReady();
+        await this._app.AppIsReady();
+        await this._app.CheckForUpdate();
     }
 
     public async onMenuItemClick(item: MenuItem) {
@@ -94,13 +95,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public onGarminSimulator(checked: boolean) {
         this.ConnectIQ.AlwaysTransmitToDevice = undefined;
-        this.Preferences.Set(EPrefProperty.DebugSimulator, checked);
+        this._preferences.Set(EPrefProperty.DebugSimulator, checked);
         this.ConnectIQ.Initialize({ simulator: checked });
     }
 
     public onGarminDebugApp(checked: boolean) {
         this.ConnectIQ.AlwaysTransmitToDevice = undefined;
-        this.Preferences.Set(EPrefProperty.DebugApp, checked);
+        this._preferences.Set(EPrefProperty.DebugApp, checked);
         this.ConnectIQ.Initialize({ debug_app: checked });
     }
 
@@ -127,7 +128,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         menu = menu.filter(m => m.Hidden !== true);
         this.appPages = menu;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     public setToolbar(toolbar?: MainToolbarComponent) {
@@ -149,8 +150,8 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (!this.routerOutlet.canGoBack()) {
                 const backlink = this._currentToolbar?.BackLink;
                 if (backlink) {
-                    if (!(await this.NavController.navigateBack(backlink))) {
-                        await this.NavController.navigateBack(backlink);
+                    if (!(await this._navController.navigateBack(backlink))) {
+                        await this._navController.navigateBack(backlink);
                     }
                 } else {
                     await App.minimizeApp();

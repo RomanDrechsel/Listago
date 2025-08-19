@@ -8,6 +8,7 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
+import { ModalController } from "@ionic/angular/standalone";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
@@ -23,6 +24,7 @@ import { Logger } from "../logging/logger";
 import { LoggingService } from "../logging/logging.service";
 import { PopupsService } from "../popups/popups.service";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
+import { AppUpdater } from "./app-updater";
 
 @Injectable({
     providedIn: "root",
@@ -38,6 +40,7 @@ export class AppService {
     private readonly _popups = inject(PopupsService);
     private readonly _intents = inject(IntentsService);
     private readonly _http = inject(HttpClient);
+    private readonly _modalCtrl = inject(ModalController);
     public static Popups: PopupsService;
 
     /** platform as short string (android, ios, web) */
@@ -280,6 +283,10 @@ export class AppService {
             }
         }
         this._logger.Debug(`App initialization completed`);
+    }
+
+    public async CheckForUpdate(): Promise<void> {
+        await new AppUpdater(this._modalCtrl).CheckForUpdates();
     }
 
     private async handleNightmode(isNightMode?: boolean, silent: boolean = false) {

@@ -1,0 +1,14 @@
+{
+    "title": "Aggiornamento disponibile",
+    "title-success": "Aggiornamento riuscito",
+    "title-error": "Aggiornamento non riuscito",
+    "text": "Ho pubblicato un nuovo aggiornamento per l’app.<br /><br />Per utilizzare tutte le funzionalità, ti prego di installare questo aggiornamento.",
+    "toggle": "Non mostrare più questo aggiornamento",
+    "btn-ignore": "Ignora aggiornamento",
+    "btn-googleplay": "Apri PlayStore",
+    "btn-update": "Avvia aggiornamento",
+    "update-running": "L’aggiornamento è in corso ...",
+    "update-close": "Puoi chiudere la finestra, l’aggiornamento verrà eseguito in background.",
+    "update-success": "L’aggiornamento è stato installato con successo.",
+    "update-error": "Impossibile installare l’aggiornamento!"
+}

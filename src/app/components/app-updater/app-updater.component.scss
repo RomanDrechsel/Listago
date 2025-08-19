@@ -1,0 +1,67 @@
+:host {
+    display: block;
+
+    .inner-content {
+        font-size: 1.1em;
+
+        &.success,
+        &.failed {
+            text-align: center;
+            font-size: 1.4em;
+
+            .buttons {
+                margin-top: 3em;
+            }
+        }
+
+        ion-checkbox {
+            margin: 1em 0.5em;
+            font-size: 0.9em;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: nowrap;
+
+            &.multiple {
+                justify-content: space-around;
+                margin-top: 1em;
+                gap: 0.5em;
+
+                ion-button {
+                    width: 50%;
+                }
+            }
+
+            &.single {
+                ion-button {
+                    width: 100%;
+                }
+            }
+        }
+
+        .hint {
+            font-size: 0.9em;
+            font-style: italic;
+            margin-block: 2em 1em;
+        }
+
+        ion-icon.done {
+            width: 50%;
+            max-width: 200px;
+            max-height: 20vh;
+            min-height: 64px;
+            height: auto;
+            aspect-ratio: 1/1;
+            margin: 1em auto 5vh;
+
+            &.success {
+                fill: var(--ion-color-success);
+            }
+
+            &.failed {
+                fill: var(--ion-color-danger);
+            }
+        }
+    }
+}

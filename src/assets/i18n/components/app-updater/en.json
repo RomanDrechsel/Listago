@@ -1,0 +1,14 @@
+{
+    "title": "Update available",
+    "title-success": "Update successful",
+    "title-error": "Update failed",
+    "text": "I have released a new update for the app.<br /><br />To use all features, please install this update.",
+    "toggle": "Do not show this update again",
+    "btn-ignore": "Ignore update",
+    "btn-googleplay": "Open PlayStore",
+    "btn-update": "Start update",
+    "update-running": "The update is being installed ...",
+    "update-close": "You can close the window, the update will run in the background.",
+    "update-success": "The update was successfully installed.",
+    "update-error": "The update could not be installed!"
+}

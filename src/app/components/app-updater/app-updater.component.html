@@ -1,0 +1,59 @@
+<ion-header *transloco="let t">
+    <ion-toolbar>
+        <ion-title>
+            @if (Params.updater.UpdateSuccessful=== true) {
+            <div class="ion-text-wrap" [innerHTML]="t('comp-appupdater.title-success')"></div>
+            } @else if (Params.updater.UpdateSuccessful === false) {
+            <div class="ion-text-wrap" [innerHTML]="t('comp-appupdater.title-error')"></div>
+            } @else {
+            <div class="ion-text-wrap" [innerHTML]="t('comp-appupdater.title')"></div>
+            }
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="cancel()" [ariaLabel]="t('buttons.cancel')">
+                <ion-icon src="/assets/icons/close.svg" slot="icon-only"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+@if (Params.updater.UpdateRunning) {
+<div class="inner-content ion-padding" *transloco="let t">
+    <ion-text [innerHTML]="t('comp-appupdater.update-running')"></ion-text>
+    <div class="hint" [innerHTML]="t('comp-appupdater.update-close')"></div>
+    <div class="buttons close">
+        <ion-button (click)="cancel()">{{ t("buttons.close") }}</ion-button>
+    </div>
+</div>
+} @else if (Params.updater.UpdateSuccessful === true) {
+<div class="inner-content ion-padding success" *transloco="let t">
+    <ion-icon src="/assets/icons/done.svg" class="done success"></ion-icon>
+    <div class="text" [innerHTML]="t('comp-appupdater.update-success')"></div>
+    <div class="buttons">
+        <ion-button (click)="cancel()" fill="solid" color="secondary"> {{ t("buttons.close") }} </ion-button>
+    </div>
+</div>
+} @else if (Params.updater.UpdateSuccessful === false) {
+<div class="inner-content ion-padding failed" *transloco="let t">
+    <ion-icon src="/assets/icons/failed.svg" class="done failed"></ion-icon>
+    <div class="text" [innerHTML]="t('comp-appupdater.update-error')"></div>
+    <div class="buttons">
+        <ion-button (click)="cancel()" fill="solid" color="secondary"> {{ t("buttons.close") }} </ion-button>
+    </div>
+</div>
+} @else {
+<div class="inner-content ion-padding" *transloco="let t">
+    <ion-text [innerHTML]="t('comp-appupdater.text')"></ion-text>
+    <div class="buttons multiple">
+        <ion-button (click)="cancel()" fill="outline" color="secondary">{{ t("comp-appupdater.btn-ignore") }}</ion-button>
+        <ion-button (click)="openGooglePlay()" fill="outline" color="secondary">{{ t("comp-appupdater.btn-googleplay") }}</ion-button>
+    </div>
+    <div class="buttons single">
+        <ion-button (click)="updateApp()" fill="solid" color="secondary"> {{ t("comp-appupdater.btn-update") }} </ion-button>
+    </div>
+    <ion-checkbox labelPlacement="end" (ionChange)="toggleSilent($event.target.checked)">
+        <div class="ion-text-wrap">
+            {{ t("comp-appupdater.toggle") }}
+        </div>
+    </ion-checkbox>
+</div>
+}

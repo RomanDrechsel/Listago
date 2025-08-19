@@ -34,6 +34,7 @@ export enum EPrefProperty {
     IgnoreWatchOutdated = "LISTAGO_IgnoreWatchOutdated",
     AdmobBannerHeight = "LISTAGO_AdmobBannerHeight",
     AdmobActive = "LISTAGO_AdmobActive",
+    IgnoreUpdate = "LISTAGO_IgnoreUpdate",
 }
 
 @Injectable({
