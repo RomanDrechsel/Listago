@@ -1,5 +1,5 @@
 import { App } from "@capacitor/app";
-import { AppUpdate, AppUpdateAvailability, type AppUpdateInfo, FlexibleUpdateInstallStatus, type FlexibleUpdateState } from "@capawesome/capacitor-app-update";
+import { AppUpdate, AppUpdateAvailability, type AppUpdateInfo, AppUpdateResultCode, FlexibleUpdateInstallStatus, type FlexibleUpdateState } from "@capawesome/capacitor-app-update";
 import { ModalController } from "@ionic/angular/standalone";
 import { StartAppUpdate } from "src/app/components/app-updater/app-updater.component";
 import { Logger } from "../logging/logger";
@@ -69,22 +69,23 @@ export class AppUpdater {
         }
 
         this._updateRunning = true;
+        listener?.onStart();
         AppUpdate.addListener("onFlexibleUpdateStateChange", (state: FlexibleUpdateState) => {
             let reopen = false;
             if (state.installStatus == FlexibleUpdateInstallStatus.CANCELED) {
                 Logger.Debug(`Update '${this._availableVersion}' was canceled by the user`);
-                listener?.onDone("canceled");
                 this._downloadSuccessful = false;
+                listener?.onDone("canceled");
                 reopen = true;
             } else if (state.installStatus == FlexibleUpdateInstallStatus.FAILED) {
                 Logger.Error(`Update '${this._availableVersion}' could not be installed`);
-                listener?.onDone("error");
                 this._downloadSuccessful = false;
+                listener?.onDone("error");
                 reopen = true;
             } else if (state.installStatus == FlexibleUpdateInstallStatus.DOWNLOADED) {
                 Logger.Debug(`Update '${this._availableVersion}' was downloaded successful and can be installed`);
-                listener?.onDone("success");
                 this._downloadSuccessful = true;
+                listener?.onDone("success");
                 reopen = true;
             }
             if (!this._modal && reopen) {
@@ -95,13 +96,26 @@ export class AppUpdater {
         if (this._updateInfo.flexibleUpdateAllowed) {
             await AppUpdate.startFlexibleUpdate();
         } else {
-            await AppUpdate.performImmediateUpdate();
+            const result = await AppUpdate.performImmediateUpdate();
+            switch (result.code) {
+                case AppUpdateResultCode.OK:
+                    listener?.onDone("success");
+                    break;
+                case AppUpdateResultCode.CANCELED:
+                    this._downloadSuccessful = false;
+                    listener?.onDone("canceled");
+                    break;
+                default:
+                    this._downloadSuccessful = false;
+                    listener?.onDone("error");
+                    break;
+            }
         }
         this._updateRunning = false;
     }
 
     public async FinishFlexibleUpdate() {
-        if (this._downloadSuccessful && (await AppUpdate.getAppUpdateInfo()).installStatus == FlexibleUpdateInstallStatus.DOWNLOADED) {
+        if ((await AppUpdate.getAppUpdateInfo()).installStatus == FlexibleUpdateInstallStatus.DOWNLOADED) {
             await AppUpdate.completeFlexibleUpdate();
         }
     }
@@ -112,5 +126,6 @@ export class AppUpdater {
 }
 
 export type AppUpdateListener = {
+    onStart: () => void;
     onDone: (finished: "success" | "canceled" | "error") => void;
 };

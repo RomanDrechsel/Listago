@@ -28,6 +28,9 @@ export class AppUpdaterComponent {
     public async updateApp() {
         const self = this;
         await this.Params.updater.StartAppUpdate({
+            onStart() {
+                self._cdr.detectChanges();
+            },
             onDone(finished) {
                 self._cdr.detectChanges();
             },

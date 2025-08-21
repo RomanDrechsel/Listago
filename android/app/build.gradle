@@ -13,8 +13,8 @@ android {
         applicationId "de.romandrechsel.listago"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 40
-        versionName '2025.8.2101'
+        versionCode 42
+        versionName '2025.8.2103'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
