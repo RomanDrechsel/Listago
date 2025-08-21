@@ -4,6 +4,7 @@ import { bootstrapApplication } from "@angular/platform-browser";
 import { PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading } from "@angular/router";
 import { IonicRouteStrategy, provideIonicAngular } from "@ionic/angular/standalone";
 import { provideTransloco } from "@jsverse/transloco";
+import { provideTranslocoPersistTranslations, TranslocoPersistTranslations } from "@jsverse/transloco-persist-translations";
 import { PageTransitionAnimation } from "./app/animations/page-transition.animation";
 import { AppComponent } from "./app/app.component";
 import { routes } from "./app/app.routes";
@@ -38,8 +39,14 @@ bootstrapApplication(AppComponent, {
                     aot: !isDevMode(),
                 },
             },
-            loader: HttpLoader,
         }),
+        provideTranslocoPersistTranslations({
+            loader: HttpLoader,
+            storage: { useValue: localStorage },
+            ttl: 60 * 60 * 24 * 365,
+            storageKey: "listago-i18n-cache",
+        }),
+        TranslocoPersistTranslations,
         provideAppInitializer(() => inject(AppService).InitializeApp()),
     ],
 }).catch(e => console.error("Error in main.ts", e));

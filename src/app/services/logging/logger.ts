@@ -63,8 +63,4 @@ export class Logger {
     static DebugNoLogcat(message: string, ...obj: any[]) {
         Logger.Service.DebugNoLogcat(message, ...obj);
     }
-
-    static Console(message: string, ...objs: any[]) {
-        Logger.Service.Console(message, ...objs);
-    }
 }

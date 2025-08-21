@@ -167,17 +167,6 @@ export class LoggingService {
     }
 
     /**
-     * log a debug message
-     * @param message message text
-     * @param obj additional objects
-     */
-    public Console(message: string, ...objs: any[]) {
-        if (this.LogLevel >= ELogType.Debug && isDevMode()) {
-            console.log(message, ...objs);
-        }
-    }
-
-    /**
      * writes a logcat entry to android
      * @param message message text
      * @param type logcat type
@@ -300,7 +289,7 @@ export class LoggingService {
                 break;
         }
 
-        message = `${prefix}${date}: ${message}`;
+        message = `${prefix}${date}:\n${message}`;
         if (objs.length > 0) {
             objs.forEach(obj => {
                 if (obj) {

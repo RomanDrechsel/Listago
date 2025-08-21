@@ -38,6 +38,10 @@ export class AppUpdaterComponent {
         await this.Params.updater.OpenGooglePlay();
     }
 
+    public async finishFlexibleUpdate() {
+        await this.Params.updater.FinishFlexibleUpdate();
+    }
+
     public async cancel() {
         await this._modalCtrl.dismiss(null, "cancel");
     }

@@ -8,7 +8,7 @@ import { EPrefProperty, type PreferencesService } from "../storage/preferences.s
 export class AppUpdater {
     private _availableVersion?: string;
     private _updateRunning = false;
-    private _updateSuccessful?: boolean;
+    private _downloadSuccessful?: boolean;
     private _modal?: HTMLIonModalElement;
     private _updateInfo?: AppUpdateInfo;
 
@@ -23,8 +23,8 @@ export class AppUpdater {
         return this._updateRunning;
     }
 
-    public get UpdateSuccessful(): boolean | undefined {
-        return this._updateSuccessful;
+    public get DownloadSuccessful(): boolean | undefined {
+        return this._downloadSuccessful;
     }
 
     constructor(modalCtrl: ModalController, pref: PreferencesService) {
@@ -58,12 +58,12 @@ export class AppUpdater {
     }
 
     public async StartAppUpdate(listener?: AppUpdateListener) {
-        this._updateSuccessful = undefined;
+        this._downloadSuccessful = undefined;
         if (!this._updateInfo) {
             this._updateInfo = await AppUpdate.getAppUpdateInfo();
         }
         if (this._updateInfo.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
-            this._updateSuccessful = true;
+            this._downloadSuccessful = true;
             listener?.onDone("success");
             return;
         }
@@ -72,19 +72,20 @@ export class AppUpdater {
         AppUpdate.addListener("onFlexibleUpdateStateChange", (state: FlexibleUpdateState) => {
             let reopen = false;
             if (state.installStatus == FlexibleUpdateInstallStatus.CANCELED) {
+                Logger.Debug(`Update '${this._availableVersion}' was canceled by the user`);
                 listener?.onDone("canceled");
-
-                this._updateSuccessful = false;
+                this._downloadSuccessful = false;
                 reopen = true;
             } else if (state.installStatus == FlexibleUpdateInstallStatus.FAILED) {
+                Logger.Error(`Update '${this._availableVersion}' could not be installed`);
                 listener?.onDone("error");
-                this._updateSuccessful = false;
+                this._downloadSuccessful = false;
                 reopen = true;
-            } else if (state.installStatus == FlexibleUpdateInstallStatus.INSTALLED) {
+            } else if (state.installStatus == FlexibleUpdateInstallStatus.DOWNLOADED) {
+                Logger.Debug(`Update '${this._availableVersion}' was downloaded successful and can be installed`);
                 listener?.onDone("success");
-                this._updateSuccessful = true;
+                this._downloadSuccessful = true;
                 reopen = true;
-                this._preferences.Remove(EPrefProperty.IgnoreUpdate);
             }
             if (!this._modal && reopen) {
                 //reopen popup with success message
@@ -97,6 +98,12 @@ export class AppUpdater {
             await AppUpdate.performImmediateUpdate();
         }
         this._updateRunning = false;
+    }
+
+    public async FinishFlexibleUpdate() {
+        if (this._downloadSuccessful && (await AppUpdate.getAppUpdateInfo()).installStatus == FlexibleUpdateInstallStatus.DOWNLOADED) {
+            await AppUpdate.completeFlexibleUpdate();
+        }
     }
 
     public async OpenGooglePlay() {

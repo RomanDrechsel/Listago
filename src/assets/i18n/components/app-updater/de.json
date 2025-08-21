@@ -1,15 +1,17 @@
 {
     "title": "Update verfügbar",
-    "title-success": "Update erfolgreich",
+    "title-success": "Download erfolgreich",
     "title-error": "Update fehlgeschlagen",
     "text": "Ich habe ein neues Update für die App veröffentlicht.<br /><br />Um alle Funktionen nutzen zu können, bitte ich dich dieses Update zu installieren.",
     "toggle": "Für dieses Update nicht wieder anzeigen",
     "btn-ignore": "Update ignorieren",
     "btn-googleplay": "PlayStore öffnen",
     "btn-update": "Update starten",
+    "btn-restart": "App neustarten",
     "update-running": "Das Update wird durchgeführt ...",
-    "update-close": "Sie können das Fenster schließen, das Update wird im Hintergrund ausgeführt.",
-    "update-success": "Das Update wurde erfolgreich durchgeführt.",
-    "update-error": "Das Update konnte nicht durchgeführt werden!",
+    "update-close": "Sie können das Fenster schließen, das Update wird im Hintergrund heruntergeladen.",
+    "download-success": "Das Update wurde heruntergeladen und kann jetzt installiert werden.",
+    "download-success2": "Dafür muss die App neu gestartet werden.",
+    "download-error": "Das Update konnte nicht durchgeführt werden!",
     "no-update": "Die App ist aktuell"
 }

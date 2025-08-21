@@ -9,6 +9,7 @@ import { StatusBar, Style } from "@capacitor/status-bar";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
 import { ModalController } from "@ionic/angular/standalone";
+import { TranslocoPersistTranslations } from "@jsverse/transloco-persist-translations";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
@@ -41,6 +42,8 @@ export class AppService {
     private readonly _intents = inject(IntentsService);
     private readonly _http = inject(HttpClient);
     private readonly _modalCtrl = inject(ModalController);
+    private readonly _translocoCache = inject(TranslocoPersistTranslations);
+
     public static Popups: PopupsService;
 
     /** platform as short string (android, ios, web) */
@@ -90,7 +93,7 @@ export class AppService {
                 await reserve.SetAdmobText();
             }
         });
-
+        this._translocoCache.clearCache();
         await this._platform.ready();
         await Logger.Initialize(this._logger);
 

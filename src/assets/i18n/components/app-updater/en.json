@@ -1,15 +1,17 @@
 {
     "title": "Update available",
-    "title-success": "Update successful",
+    "title-success": "Download successful",
     "title-error": "Update failed",
     "text": "I have released a new update for the app.<br /><br />To use all features, please install this update.",
     "toggle": "Do not show this update again",
     "btn-ignore": "Ignore update",
     "btn-googleplay": "Open PlayStore",
     "btn-update": "Start update",
+    "btn-restart": "Restart app",
     "update-running": "The update is being installed ...",
-    "update-close": "You can close the window, the update will run in the background.",
-    "update-success": "The update was successfully installed.",
-    "update-error": "The update could not be installed!",
+    "update-close": "You can close the window, the update will be downloaded in the background.",
+    "download-success": "The update has been downloaded and can now be installed.",
+    "download-success2": "For this, the app needs to be restarted.",
+    "download-error": "The update could not be installed!",
     "no-update": "The app is up to date"
 }
