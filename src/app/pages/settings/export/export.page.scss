@@ -218,6 +218,18 @@
         ion-content.page {
             --background: var(--ion-color-primary-shade);
 
+            .container {
+                ion-segment-view {
+                    ion-segment-content {
+                        .content {
+                            ion-icon.content-icon {
+                                fill: var(--ion-color-medium);
+                            }
+                        }
+                    }
+                }
+            }
+
             .container.done {
                 ion-icon {
                     fill: var(--ion-color-success-tint);

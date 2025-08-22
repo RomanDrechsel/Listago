@@ -14,3 +14,22 @@
         }
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    :host {
+        .content {
+            ion-picker {
+                ion-picker-column {
+                    ion-picker-column-option {
+                        --ion-color-base: var(--ion-color-secondary) !important;
+                        --ion-color-base-rgb: var(--ion-color-primary-rgb) !important;
+                        --ion-color-contrast: var(--ion-color-primary-contrast) !important;
+                        --ion-color-contrast-rgb: var(--ion-color-primary-contrast-rgb) !important;
+                        --ion-color-shade: var(--ion-color-primary-shade) !important;
+                        --ion-color-tint: var(--ion-color-primary-tint) !important;
+                    }
+                }
+            }
+        }
+    }
+}

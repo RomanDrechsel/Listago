@@ -6,9 +6,11 @@ import { Logger } from "../logging/logger";
 import { EPrefProperty, type PreferencesService } from "../storage/preferences.service";
 
 export class AppUpdater {
+    private static _instance?: AppUpdater;
+
     private _availableVersion?: string;
     private _updateRunning = false;
-    private _downloadSuccessful?: boolean;
+    private _downloadSuccessful?: boolean = true;
     private _modal?: HTMLIonModalElement;
     private _updateInfo?: AppUpdateInfo;
 
@@ -27,12 +29,23 @@ export class AppUpdater {
         return this._downloadSuccessful;
     }
 
-    constructor(modalCtrl: ModalController, pref: PreferencesService) {
+    private constructor(modalCtrl: ModalController, pref: PreferencesService) {
         this._modalCtrl = modalCtrl;
         this._preferences = pref;
     }
 
+    public static getInstance(modalCtrl: ModalController, pref: PreferencesService): AppUpdater {
+        if (!AppUpdater._instance) {
+            AppUpdater._instance = new AppUpdater(modalCtrl, pref);
+        }
+        return AppUpdater._instance;
+    }
+
     public async CheckForUpdates(force: boolean = false): Promise<void> {
+        if (AppUpdater._instance && AppUpdater.getInstance(this._modalCtrl, this._preferences)._modal) {
+            await AppUpdater.getInstance(this._modalCtrl, this._preferences)._modal!.present();
+            return;
+        }
         this._updateInfo = await AppUpdate.getAppUpdateInfo();
         this._availableVersion = this._updateInfo.availableVersionCode ?? this._updateInfo.availableVersionName;
         const currentVersion = this._updateInfo.currentVersionCode ?? this._updateInfo.currentVersionName;
@@ -49,12 +62,12 @@ export class AppUpdater {
         if (this._availableVersion && currentVersion && this._availableVersion > currentVersion) {
             Logger.Notice(`New app update available in playstore: ${currentVersion} -> ${this._availableVersion}`);
             this._modal = await StartAppUpdate(this._modalCtrl, { updater: this });
+            return;
         } else if (force) {
             await StartAppUpdate(this._modalCtrl, { updater: this, uptodate: true });
-            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${this._availableVersion})`);
-        } else {
-            Logger.Debug(`The app is up-to-date (${currentVersion} -> ${this._availableVersion})`);
         }
+        Logger.Debug(`The app is up-to-date (${currentVersion} -> ${this._availableVersion})`);
+        AppUpdater._instance = undefined;
     }
 
     public async StartAppUpdate(listener?: AppUpdateListener) {
@@ -113,6 +126,7 @@ export class AppUpdater {
                     listener?.updateStatus();
                     break;
             }
+            AppUpdater._instance = undefined;
         }
         this._updateRunning = false;
         await handle.remove();
@@ -121,6 +135,7 @@ export class AppUpdater {
     public async FinishFlexibleUpdate() {
         if ((await AppUpdate.getAppUpdateInfo()).installStatus == FlexibleUpdateInstallStatus.DOWNLOADED) {
             await AppUpdate.completeFlexibleUpdate();
+            AppUpdater._instance = undefined;
         }
     }
 

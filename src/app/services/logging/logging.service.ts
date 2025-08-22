@@ -289,7 +289,7 @@ export class LoggingService {
                 break;
         }
 
-        message = `${prefix}${date}:${message}`;
+        message = `${prefix}${date}: ${message}`;
         if (objs.length > 0) {
             objs.forEach(obj => {
                 if (obj) {

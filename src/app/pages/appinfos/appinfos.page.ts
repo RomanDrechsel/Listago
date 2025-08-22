@@ -87,7 +87,7 @@ export class AppinfosPage extends PageBase {
     }
 
     public async checkUpdate() {
-        await new AppUpdater(this._modalCtrl, this.Preferences).CheckForUpdates(true);
+        await AppUpdater.getInstance(this._modalCtrl, this.Preferences).CheckForUpdates(true);
     }
 
     private async requestStatistics() {
