@@ -56,6 +56,10 @@ export const StartAppUpdate = async function (modalController: ModalController, 
         showBackdrop: true,
         cssClass: "autosize-modal",
     });
+    modal.onDidDismiss().then(() => {
+        (modal as any).isOpen = false;
+    });
+
     modal.present();
     return modal;
 };

@@ -100,6 +100,8 @@ export class AppUpdater {
                 this._downloadSuccessful = true;
                 listener?.updateStatus();
                 reopen = true;
+            } else {
+                Logger.Debug(`Flexible update status changed: `, state.installStatus);
             }
             if (reopen && !this._modal?.isOpen) {
                 //reopen popup with success message
