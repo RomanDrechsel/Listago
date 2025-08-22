@@ -64,31 +64,31 @@ export class AppUpdater {
         }
         if (this._updateInfo.updateAvailability !== AppUpdateAvailability.UPDATE_AVAILABLE) {
             this._downloadSuccessful = true;
-            listener?.onDone("success");
+            listener?.updateStatus();
             return;
         }
 
         this._updateRunning = true;
-        listener?.onStart();
-        AppUpdate.addListener("onFlexibleUpdateStateChange", (state: FlexibleUpdateState) => {
+        listener?.updateStatus();
+        const handle = await AppUpdate.addListener("onFlexibleUpdateStateChange", (state: FlexibleUpdateState) => {
             let reopen = false;
             if (state.installStatus == FlexibleUpdateInstallStatus.CANCELED) {
-                Logger.Debug(`Update '${this._availableVersion}' was canceled by the user`);
+                Logger.Notice(`Flexible update '${this._availableVersion}' was canceled by the user`);
                 this._downloadSuccessful = false;
-                listener?.onDone("canceled");
+                listener?.updateStatus();
                 reopen = true;
             } else if (state.installStatus == FlexibleUpdateInstallStatus.FAILED) {
-                Logger.Error(`Update '${this._availableVersion}' could not be installed`);
+                Logger.Error(`Flexible update '${this._availableVersion}' could not be installed`);
                 this._downloadSuccessful = false;
-                listener?.onDone("error");
+                listener?.updateStatus();
                 reopen = true;
             } else if (state.installStatus == FlexibleUpdateInstallStatus.DOWNLOADED) {
-                Logger.Debug(`Update '${this._availableVersion}' was downloaded successful and can be installed`);
+                Logger.Debug(`Flexible update '${this._availableVersion}' was downloaded successful and can be installed`);
                 this._downloadSuccessful = true;
-                listener?.onDone("success");
+                listener?.updateStatus();
                 reopen = true;
             }
-            if (!this._modal && reopen) {
+            if (reopen && !this._modal?.isOpen) {
                 //reopen popup with success message
                 StartAppUpdate(this._modalCtrl, { updater: this });
             }
@@ -99,19 +99,23 @@ export class AppUpdater {
             const result = await AppUpdate.performImmediateUpdate();
             switch (result.code) {
                 case AppUpdateResultCode.OK:
-                    listener?.onDone("success");
+                    Logger.Notice(`Immediate update ${this._availableVersion} was installed successfil`);
+                    listener?.updateStatus();
                     break;
                 case AppUpdateResultCode.CANCELED:
+                    Logger.Notice(`Immediate update ${this._availableVersion} was canceled by user`);
                     this._downloadSuccessful = false;
-                    listener?.onDone("canceled");
+                    listener?.updateStatus();
                     break;
                 default:
+                    Logger.Error(`Immediate update ${this._availableVersion} failed (${result.code})`);
                     this._downloadSuccessful = false;
-                    listener?.onDone("error");
+                    listener?.updateStatus();
                     break;
             }
         }
         this._updateRunning = false;
+        await handle.remove();
     }
 
     public async FinishFlexibleUpdate() {
@@ -126,6 +130,5 @@ export class AppUpdater {
 }
 
 export type AppUpdateListener = {
-    onStart: () => void;
-    onDone: (finished: "success" | "canceled" | "error") => void;
+    updateStatus: () => void;
 };
