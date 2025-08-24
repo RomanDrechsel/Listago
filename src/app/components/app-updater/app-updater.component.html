@@ -1,10 +1,10 @@
-@if (Params.uptodate !== true) {
+@if (!AppUpdater.IsUpToDate) {
 <ion-header *transloco="let t">
     <ion-toolbar>
         <ion-title>
-            @if (Params.updater.DownloadSuccessful=== true) {
+            @if (AppUpdater.DownloadSuccessful === true) {
             <div class="ion-text-wrap" [innerHTML]="t('comp-appupdater.title-success')"></div>
-            } @else if (Params.updater.DownloadSuccessful === false) {
+            } @else if (AppUpdater.DownloadSuccessful === false) {
             <div class="ion-text-wrap" [innerHTML]="t('comp-appupdater.title-error')"></div>
             } @else {
             <div class="ion-text-wrap" [innerHTML]="t('comp-appupdater.title')"></div>
@@ -17,7 +17,7 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-} @if (Params.uptodate === true) {
+} @if (AppUpdater.IsUpToDate) {
 <div class="inner-content ion-padding success" *transloco="let t">
     <ion-icon src="/assets/icons/done.svg" class="done success"></ion-icon>
     <div class="text" [innerHTML]="t('comp-appupdater.no-update')"></div>
@@ -25,7 +25,7 @@
         <ion-button (click)="cancel()" fill="solid" color="secondary"> {{ t("buttons.close") }} </ion-button>
     </div>
 </div>
-} @else if (Params.updater.UpdateRunning) {
+} @else if (AppUpdater.UpdateRunning) {
 <div class="inner-content ion-padding" *transloco="let t">
     <ion-text [innerHTML]="t('comp-appupdater.update-running')"></ion-text>
     <div class="hint" [innerHTML]="t('comp-appupdater.update-close')"></div>
@@ -33,7 +33,7 @@
         <ion-button (click)="cancel()">{{ t("buttons.close") }}</ion-button>
     </div>
 </div>
-} @else if (Params.updater.DownloadSuccessful === true) {
+} @else if (AppUpdater.DownloadSuccessful === true) {
 <div class="inner-content ion-padding success" *transloco="let t">
     <ion-icon src="/assets/icons/done.svg" class="done success"></ion-icon>
     <div class="text" [innerHTML]="t('comp-appupdater.download-success')"></div>
@@ -42,7 +42,7 @@
         <ion-button (click)="finishFlexibleUpdate()" fill="solid" color="secondary"> {{ t("comp-appupdater.btn-restart") }} </ion-button>
     </div>
 </div>
-} @else if (Params.updater.DownloadSuccessful === false) {
+} @else if (AppUpdater.DownloadSuccessful === false) {
 <div class="inner-content ion-padding failed" *transloco="let t">
     <ion-icon src="/assets/icons/failed.svg" class="done failed"></ion-icon>
     <div class="text" [innerHTML]="t('comp-appupdater.download-error')"></div>
@@ -61,7 +61,7 @@
         <ion-button (click)="updateApp()" fill="solid" color="secondary"> {{ t("comp-appupdater.btn-update") }} </ion-button>
     </div>
     @if(true) {
-    <ion-checkbox labelPlacement="end" (ionChange)="toggleSilent($event.target.checked)">
+    <ion-checkbox labelPlacement="end" (ionChange)="toggleSilent($event.target.checked)" [checked]="ThisUpdateIgnored() | async">
         <div class="ion-text-wrap">
             {{ t("comp-appupdater.toggle") }}
         </div>

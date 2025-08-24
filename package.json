@@ -1,11 +1,11 @@
 {
     "name": "listago",
-    "version": "2025.8.2103",
+    "version": "2025.8.2401",
     "author": "Roman Drechsel",
     "homepage": "https://roman-drechsel.de",
     "description": "Companion app for Lists app on your Garmin watch",
     "scripts": {
-        "liveRelease": "npx npm run ionic:build -- -- --configuration=liveRelease && npm run transloco:optimize && npx cap copy && npx cap sync",
+        "liveRelease": "npx npm run ionic:build -- -- --configuration=liveRelease && npm run transloco:optimize && npx cap copy && npx cap sync && npx cap open android",
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build",
@@ -77,7 +77,7 @@
         "@types/jasmine": "5.1.9",
         "@typescript-eslint/eslint-plugin": "8.40.0",
         "@typescript-eslint/parser": "8.40.0",
-        "eslint": "9.33.0",
+        "eslint": "9.34.0",
         "eslint-plugin-import": "2.32.0",
         "eslint-plugin-jsdoc": "54.1.1",
         "eslint-plugin-prefer-arrow": "1.2.3",

@@ -1,33 +1,43 @@
+import { CommonModule } from "@angular/common";
 import { ChangeDetectorRef, Component, inject } from "@angular/core";
 import { IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
-import type { AppUpdater } from "src/app/services/app/app-updater";
+import { AppUpdaterService } from "src/app/services/app/app-updater.service";
 import { EPrefProperty, PreferencesService } from "src/app/services/storage/preferences.service";
 
 @Component({
     selector: "app-app-updater",
-    imports: [IonCheckbox, IonText, IonButton, IonButtons, IonIcon, IonTitle, IonToolbar, IonHeader, TranslocoModule],
+    imports: [IonCheckbox, IonText, IonButton, IonButtons, IonIcon, IonTitle, IonToolbar, IonHeader, TranslocoModule, CommonModule],
     templateUrl: "./app-updater.component.html",
     styleUrl: "./app-updater.component.scss",
     providers: [provideTranslocoScope({ scope: "components/app-updater", alias: "comp-appupdater" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class AppUpdaterComponent {
-    public Params!: UpdaterParams;
-    private _modalCtrl = inject(ModalController);
-    private _preferences = inject(PreferencesService);
-    private _cdr = inject(ChangeDetectorRef);
+    private readonly _modalCtrl = inject(ModalController);
+    private readonly _preferences = inject(PreferencesService);
+    private readonly _cdr = inject(ChangeDetectorRef);
+    private readonly _appupdater = inject(AppUpdaterService);
+
+    public get AppUpdater(): AppUpdaterService {
+        return this._appupdater;
+    }
 
     public async toggleSilent(checked: boolean) {
         if (checked) {
-            await this._preferences.Set(EPrefProperty.IgnoreUpdate, this.Params.updater.AvailableVersion);
+            await this._preferences.Set(EPrefProperty.IgnoreUpdate, this._appupdater.AvailableVersion);
         } else {
             await this._preferences.Remove(EPrefProperty.IgnoreUpdate);
         }
     }
 
+    public async ThisUpdateIgnored(): Promise<boolean> {
+        const ignore = await this._preferences.Get(EPrefProperty.IgnoreUpdate, undefined);
+        return ignore !== undefined && ignore == this._appupdater.AvailableVersion;
+    }
+
     public async updateApp() {
         const self = this;
-        await this.Params.updater.StartAppUpdate({
+        await this._appupdater.StartAppUpdate({
             updateStatus() {
                 self._cdr.detectChanges();
             },
@@ -35,11 +45,11 @@ export class AppUpdaterComponent {
     }
 
     public async openGooglePlay() {
-        await this.Params.updater.OpenGooglePlay();
+        await this._appupdater.OpenGooglePlay();
     }
 
     public async finishFlexibleUpdate() {
-        await this.Params.updater.FinishFlexibleUpdate();
+        await this._appupdater.FinishFlexibleUpdate();
     }
 
     public async cancel() {
@@ -47,10 +57,10 @@ export class AppUpdaterComponent {
     }
 }
 
-export const StartAppUpdate = async function (modalController: ModalController, params: UpdaterParams): Promise<HTMLIonModalElement> {
+export const StartAppUpdate = async function (modalController: ModalController): Promise<HTMLIonModalElement> {
     const modal = await modalController.create({
         component: AppUpdaterComponent,
-        componentProps: { Params: params },
+        componentProps: undefined,
         animated: true,
         backdropDismiss: true,
         showBackdrop: true,
@@ -62,9 +72,4 @@ export const StartAppUpdate = async function (modalController: ModalController, 
 
     modal.present();
     return modal;
-};
-
-export declare type UpdaterParams = {
-    updater: AppUpdater;
-    uptodate?: boolean;
 };

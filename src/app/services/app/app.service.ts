@@ -8,7 +8,6 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
-import { ModalController } from "@ionic/angular/standalone";
 import { TranslocoPersistTranslations } from "@jsverse/transloco-persist-translations";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
@@ -25,7 +24,7 @@ import { Logger } from "../logging/logger";
 import { LoggingService } from "../logging/logging.service";
 import { PopupsService } from "../popups/popups.service";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
-import { AppUpdater } from "./app-updater";
+import { AppUpdaterService } from "./app-updater.service";
 
 @Injectable({
     providedIn: "root",
@@ -41,8 +40,8 @@ export class AppService {
     private readonly _popups = inject(PopupsService);
     private readonly _intents = inject(IntentsService);
     private readonly _http = inject(HttpClient);
-    private readonly _modalCtrl = inject(ModalController);
     private readonly _translocoCache = inject(TranslocoPersistTranslations);
+    private readonly _appUpdater = inject(AppUpdaterService);
 
     public static Popups: PopupsService;
 
@@ -141,6 +140,7 @@ export class AppService {
         })();
 
         this._intents.Initialize();
+        await this._appUpdater.Initialize();
 
         await SplashScreen.hide({ fadeOutDuration: 500 });
     }
@@ -286,10 +286,6 @@ export class AppService {
             }
         }
         this._logger.Debug(`App initialization completed`);
-    }
-
-    public async CheckForUpdate(): Promise<void> {
-        await AppUpdater.getInstance(this._modalCtrl, this._preferences).CheckForUpdates();
     }
 
     private async handleNightmode(isNightMode?: boolean, silent: boolean = false) {
