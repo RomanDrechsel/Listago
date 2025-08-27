@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.romandrechsel.listago.appupdate.AppUpdatePlugin;
 import de.romandrechsel.listago.garmin.ConnectIQPlugin;
 import de.romandrechsel.listago.logging.Logger;
 import de.romandrechsel.listago.share.SharePlugin;
@@ -42,6 +43,7 @@ public class MainActivity extends BridgeActivity
         registerPlugin(ConnectIQPlugin.class);
         registerPlugin(SysInfoPlugin.class);
         registerPlugin(SharePlugin.class);
+        registerPlugin(AppUpdatePlugin.class);
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
         Window window = getWindow();
