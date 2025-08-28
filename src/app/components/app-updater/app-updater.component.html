@@ -61,7 +61,7 @@
         <ion-button (click)="updateApp()" fill="solid" color="secondary"> {{ t("comp-appupdater.btn-update") }} </ion-button>
     </div>
     @if(true) {
-    <ion-checkbox labelPlacement="end" (ionChange)="toggleSilent($event.target.checked)" [checked]="ThisUpdateIgnored() | async">
+    <ion-checkbox labelPlacement="end" (ionChange)="toggleSilent($event.target.checked)" [checked]="ThisUpdateIgnored">
         <div class="ion-text-wrap">
             {{ t("comp-appupdater.toggle") }}
         </div>

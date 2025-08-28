@@ -3,7 +3,6 @@ export type AppUpdateInfo = {
     availableVersionCode: number;
     updateAvailable: boolean;
     flexibleUpdateAllowed: boolean;
-    installStatus: number;
 };
 
 export type AppUpdateInfoError = {

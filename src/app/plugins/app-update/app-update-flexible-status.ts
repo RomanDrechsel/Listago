@@ -1,5 +1,5 @@
 export type AppUpdateFlexibleStatus = {
-    installStatus: AppUpdateFlexibleInstallStatus;
+    installStatus: number;
     bytesDownloaded?: number;
     totalBytesToDownload?: number;
 };

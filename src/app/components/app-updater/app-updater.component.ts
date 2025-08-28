@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { ChangeDetectorRef, Component, inject } from "@angular/core";
 import { IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonText, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
@@ -7,7 +6,7 @@ import { EPrefProperty, PreferencesService } from "src/app/services/storage/pref
 
 @Component({
     selector: "app-app-updater",
-    imports: [IonCheckbox, IonText, IonButton, IonButtons, IonIcon, IonTitle, IonToolbar, IonHeader, TranslocoModule, CommonModule],
+    imports: [IonCheckbox, IonText, IonButton, IonButtons, IonIcon, IonTitle, IonToolbar, IonHeader, TranslocoModule],
     templateUrl: "./app-updater.component.html",
     styleUrl: "./app-updater.component.scss",
     providers: [provideTranslocoScope({ scope: "components/app-updater", alias: "comp-appupdater" }, { scope: "common/buttons", alias: "buttons" })],
@@ -18,8 +17,18 @@ export class AppUpdaterComponent {
     private readonly _cdr = inject(ChangeDetectorRef);
     private readonly _appupdater = inject(AppUpdaterService);
 
+    private _ignoreUpdate?: number;
+
     public get AppUpdater(): AppUpdaterService {
         return this._appupdater;
+    }
+
+    public get ThisUpdateIgnored(): boolean {
+        return this._ignoreUpdate !== undefined && this._ignoreUpdate == this._appupdater.AvailableVersion;
+    }
+
+    public async ionViewWillEnter() {
+        this._ignoreUpdate = await this._preferences.Get<number | undefined>(EPrefProperty.IgnoreUpdate, undefined);
     }
 
     public async toggleSilent(checked: boolean) {
@@ -28,11 +37,6 @@ export class AppUpdaterComponent {
         } else {
             await this._preferences.Remove(EPrefProperty.IgnoreUpdate);
         }
-    }
-
-    public async ThisUpdateIgnored(): Promise<boolean> {
-        const ignore = await this._preferences.Get(EPrefProperty.IgnoreUpdate, undefined);
-        return ignore !== undefined && ignore == this._appupdater.AvailableVersion;
     }
 
     public async updateApp() {

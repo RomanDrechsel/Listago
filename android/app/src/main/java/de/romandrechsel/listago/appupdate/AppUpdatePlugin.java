@@ -34,15 +34,32 @@ import de.romandrechsel.listago.logging.Logger;
 @CapacitorPlugin(name = "AppUpdate")
 public class AppUpdatePlugin extends Plugin
 {
-    private AppUpdateManager appUpdateManager;
-    private AppUpdateInfo appUpdateInfo;
-    private InstallStateUpdatedListener listener;
+    private AppUpdateManager appUpdateManager = null;
+    private AppUpdateInfo appUpdateInfo = null;
+    private InstallStateUpdatedListener listener = null;
+    private PluginCall performUpdateCall = null;
+    private ActivityResultLauncher<IntentSenderRequest> activityResultLauncher = null;
 
     private static final String TAG = "AppUpdate";
 
     public void load()
     {
         this.appUpdateManager = AppUpdateManagerFactory.create(this.getContext());
+        this.activityResultLauncher = this.getActivity().registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result ->
+        {
+            if (this.performUpdateCall != null)
+            {
+                JSObject ret = new JSObject();
+                ret.put("type", this.appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) ? "flexible" : "immediate");
+                switch (result.getResultCode())
+                {
+                    case Activity.RESULT_OK -> ret.put("accepted", true);
+                    case Activity.RESULT_CANCELED -> ret.put("accepted", false);
+                }
+                this.performUpdateCall.resolve(ret);
+                this.performUpdateCall = null;
+            }
+        });
     }
 
     @PluginMethod
@@ -50,8 +67,7 @@ public class AppUpdatePlugin extends Plugin
     {
         try
         {
-            boolean isGooglePlayServicesAvailable = this.isGooglePlayServicesAvailable();
-            if (!isGooglePlayServicesAvailable)
+            if (!this.isGooglePlayServicesAvailable())
             {
                 Logger.Error(TAG, "Google Play Services not available");
                 JSObject ret = new JSObject();
@@ -71,7 +87,7 @@ public class AppUpdatePlugin extends Plugin
                 }
                 catch (PackageManager.NameNotFoundException e)
                 {
-                    Logger.Error(TAG, "Could not get app update info: ", e);
+                    Logger.Error(TAG, "Could not get app update info - package name not found: ", e);
                     JSObject ret = new JSObject();
                     ret.put("error", "FAILED");
                     call.resolve(ret);
@@ -82,7 +98,7 @@ public class AppUpdatePlugin extends Plugin
                 //ret.put("currentVersionName", pInfo.versionName);
                 ret.put("currentVersionCode", String.valueOf(pInfo.getLongVersionCode()));
                 ret.put("availableVersionCode", String.valueOf(appUpdateInfo.availableVersionCode()));
-                ret.put("updateAvailable", appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE);
+                ret.put("updateAvailable", (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE || appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS));
                 //ret.put("updatePriority", appUpdateInfo.updatePriority());
                 //ret.put("immediateUpdateAllowed", appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE));
                 ret.put("flexibleUpdateAllowed", appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE));
@@ -90,8 +106,8 @@ public class AppUpdatePlugin extends Plugin
                 if (clientVersionStalenessDays != null)
                 {
                     ret.put("clientVersionStalenessDays", clientVersionStalenessDays);
-                }*/
-                ret.put("installStatus", appUpdateInfo.installStatus());
+                }
+                ret.put("installStatus", appUpdateInfo.installStatus());*/
                 call.resolve(ret);
             });
             appUpdateInfoTask.addOnFailureListener(failure ->
@@ -116,10 +132,12 @@ public class AppUpdatePlugin extends Plugin
     {
         if (this.updateAvailable(call))
         {
+            this.performUpdateCall = call;
             if (this.appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
             {
                 this.listener = state ->
                 {
+                    Logger.Debug(TAG, "Flexible update state changed: ", state);
                     int installStatus = state.installStatus();
                     JSObject ret = new JSObject();
                     ret.put("installStatus", installStatus);
@@ -128,39 +146,15 @@ public class AppUpdatePlugin extends Plugin
                         ret.put("bytesDownloaded", state.bytesDownloaded());
                         ret.put("totalBytesToDownload", state.totalBytesToDownload());
                     }
+                    Logger.Debug(TAG, "Listeners notified: " + this.hasListeners("onFlexibleUpdateStateChange"));
                     this.notifyListeners("onFlexibleUpdateStateChange", ret);
                 };
                 this.appUpdateManager.registerListener(this.listener);
-
-                ActivityResultLauncher<IntentSenderRequest> activityResultLauncher = getActivity().registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result ->
-                {
-                    JSObject ret = new JSObject();
-                    ret.put("type", "flexible");
-                    switch (result.getResultCode())
-                    {
-                        case Activity.RESULT_OK -> ret.put("accepted", true);
-                        case Activity.RESULT_CANCELED -> ret.put("accepted", false);
-                    }
-                    call.resolve(ret);
-                });
-
-                this.appUpdateManager.startUpdateFlowForResult(this.appUpdateInfo, activityResultLauncher, AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build());
+                this.appUpdateManager.startUpdateFlowForResult(this.appUpdateInfo, this.activityResultLauncher, AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build());
             }
             else if (this.appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
             {
-                ActivityResultLauncher<IntentSenderRequest> activityResultLauncher = getActivity().registerForActivityResult(new ActivityResultContracts.StartIntentSenderForResult(), result ->
-                {
-                    JSObject ret = new JSObject();
-                    ret.put("type", "immediate");
-                    switch (result.getResultCode())
-                    {
-                        case Activity.RESULT_OK -> ret.put("accepted", true);
-                        case Activity.RESULT_CANCELED -> ret.put("accepted", false);
-                    }
-                    call.resolve(ret);
-                });
-
-                this.appUpdateManager.startUpdateFlowForResult(this.appUpdateInfo, activityResultLauncher, AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build());
+                this.appUpdateManager.startUpdateFlowForResult(this.appUpdateInfo, this.activityResultLauncher, AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build());
             }
             else
             {
@@ -174,10 +168,13 @@ public class AppUpdatePlugin extends Plugin
     @PluginMethod
     public void completeFlexibleUpdate(PluginCall call)
     {
-        if (this.appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
+        if (this.appUpdateInfo != null)
         {
-            this.unregisterListener();
-            this.appUpdateManager.completeUpdate();
+            if (this.appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
+            {
+                this.unregisterListener();
+                this.appUpdateManager.completeUpdate();
+            }
         }
         call.resolve();
     }
@@ -187,7 +184,7 @@ public class AppUpdatePlugin extends Plugin
     {
         try
         {
-            String packageName = this.getContext().getPackageName();
+            String packageName = this.getPackageName();
             Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
             try
             {
@@ -216,14 +213,13 @@ public class AppUpdatePlugin extends Plugin
 
     private PackageInfo getPackageInfo() throws PackageManager.NameNotFoundException
     {
-        String packageName = this.getContext().getPackageName();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
-            return this.getContext().getPackageManager().getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
+            return this.getContext().getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.PackageInfoFlags.of(0));
         }
         else
         {
-            return this.getContext().getPackageManager().getPackageInfo(packageName, 0);
+            return this.getContext().getPackageManager().getPackageInfo(this.getPackageName(), 0);
         }
     }
 
@@ -244,6 +240,16 @@ public class AppUpdatePlugin extends Plugin
             return false;
         }
         return true;
+    }
+
+    private String getPackageName()
+    {
+        String packageName = this.getContext().getPackageName();
+        if (packageName.endsWith(".dev"))
+        {
+            return packageName.substring(0, packageName.length() - 4);
+        }
+        return packageName;
     }
 
     private void unregisterListener()

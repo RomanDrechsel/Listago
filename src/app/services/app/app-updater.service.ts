@@ -58,7 +58,7 @@ export class AppUpdaterService {
     public async CheckForUpdates(force: boolean = false, silent: boolean = false): Promise<void> {
         if (silent && this._updateRunning) {
             //an update is running, ignore...
-            return await this.finish();
+            return;
         } else if (silent && this._lastSilentCheck && Date.now() - this._checkSilentEvery > this._lastSilentCheck) {
             //the last silent check was not at least one hour ago
             return await this.finish();
@@ -89,23 +89,7 @@ export class AppUpdaterService {
         }
 
         if (this.AvailableVersion > this.CurrentVersion) {
-            Logger.Notice(`New app update available in playstore: ${this.CurrentVersion} -> ${this.AvailableVersion}`);
-            switch (this._updateInfo!.installStatus) {
-                case AppUpdateFlexibleInstallStatus.Downloading:
-                case AppUpdateFlexibleInstallStatus.Installing:
-                case AppUpdateFlexibleInstallStatus.Pending:
-                    this._updateRunning = true;
-                    this._downloadSuccessful = undefined;
-                    break;
-                case AppUpdateFlexibleInstallStatus.Downloaded:
-                    this._updateRunning = false;
-                    this._downloadSuccessful = true;
-                    break;
-                case AppUpdateFlexibleInstallStatus.Failed:
-                    this._updateRunning = false;
-                    this._downloadSuccessful = false;
-                    break;
-            }
+            Logger.Notice(`New app update available in playstore: ${this.CurrentVersion} -> ${this.AvailableVersion}`, this._updateInfo);
 
             if (silent) {
                 this._lastSilentCheckVersion = this._updateInfo!.availableVersionCode;
@@ -131,8 +115,7 @@ export class AppUpdaterService {
         this._updateRunning = true;
         listener?.updateStatus();
         if (this._updateInfo.flexibleUpdateAllowed) {
-            await AppUpdate.addListener("onFlexibleUpdateStateChange", async (state: AppUpdateFlexibleStatus) => {
-                Logger.Debug(`Flexible update '${this.AvailableVersion}' checked status: `, state);
+            const handler = await AppUpdate.addListener("onFlexibleUpdateStateChange", (state: AppUpdateFlexibleStatus) => {
                 let reopen = false;
                 if (state.installStatus == AppUpdateFlexibleInstallStatus.Canceled) {
                     Logger.Notice(`Flexible update '${this.AvailableVersion}' was canceled by the user`);
@@ -155,13 +138,12 @@ export class AppUpdaterService {
                 }
                 if (reopen && !this._modal?.isOpen) {
                     //reopen popup with success message
-                    this._modal = await StartAppUpdate(this._modalCtrl);
+                    StartAppUpdate(this._modalCtrl);
                 }
             });
         }
 
         const res = await AppUpdate.performUpdate();
-        listener?.updateStatus();
         if (res.accepted) {
             Logger.Debug(`User started ${res.type} app update to ${this.AvailableVersion}`);
         } else {
@@ -179,6 +161,8 @@ export class AppUpdaterService {
 
     public async FinishFlexibleUpdate() {
         await AppUpdate.completeFlexibleUpdate();
+        this._updateRunning = false;
+        this._downloadSuccessful = undefined;
         await this.finish();
     }
 
@@ -187,7 +171,6 @@ export class AppUpdaterService {
     }
 
     private async finish() {
-        Logger.Debug(`Finish update process`);
         await AppUpdate.removeAllListeners();
         this._modal = undefined;
     }
@@ -195,7 +178,7 @@ export class AppUpdaterService {
     private async getAppUpdateInfo(): Promise<boolean> {
         const updateinfo = await AppUpdate.getAppUpdateInfo();
         if ("error" in updateinfo) {
-            Logger.Error(`Could not fetch app update: `, updateinfo.error);
+            Logger.Error(`Could not fetch app update: ${updateinfo.error}`);
             return false;
         }
         this._updateInfo = updateinfo;
