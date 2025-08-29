@@ -6,6 +6,7 @@ import { IonApp, IonContent, IonFooter, IonIcon, IonItem, IonLabel, IonList, Ion
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { EMenuItemType, MenuItem, MenuitemFactory, MenuitemFactoryList } from "./classes/menu-items";
 import type { MainToolbarComponent } from "./components/main-toolbar/main-toolbar.component";
+import { AppUpdaterService } from "./services/app/app-updater.service";
 import { AppService } from "./services/app/app.service";
 import { ConnectIQService } from "./services/connectiq/connect-iq.service";
 import { EPrefProperty, PreferencesService } from "./services/storage/preferences.service";
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private readonly _app = inject(AppService);
     private readonly _navController = inject(NavController);
     private readonly _cdr = inject(ChangeDetectorRef);
+    private readonly _appupdater = inject(AppUpdaterService);
     private _currentToolbar?: MainToolbarComponent = undefined;
 
     @ViewChild("router_outlet") private routerOutlet!: IonRouterOutlet;
@@ -80,7 +82,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public async ngAfterViewInit(): Promise<void> {
         await this._app.AppIsReady();
-        await this._app.CheckForUpdate();
+        await this._appupdater.CheckForUpdates(false, false);
     }
 
     public async onMenuItemClick(item: MenuItem) {

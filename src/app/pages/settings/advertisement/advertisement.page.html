@@ -1,6 +1,7 @@
 <app-main-toolbar back="/settings" *transloco="let t">{{t('page_settings_advertisement.page_title')}}</app-main-toolbar>
 
 <ion-content *transloco="let t">
+    @if (true) {
     <ion-list>
         <ion-item lines="full" class="activate">
             <div class="centered-toggle-wrapper">
@@ -27,4 +28,5 @@
             <div class="thank" [innerHTML]="t('page_settings_advertisement.thanks')"></div>
         </ion-item>
     </ion-list>
+    }
 </ion-content>

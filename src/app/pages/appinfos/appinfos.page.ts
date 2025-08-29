@@ -8,7 +8,7 @@ import { IonButton, IonCol, IonContent, IonGrid, IonItem, IonList, IonNote, IonR
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
-import { AppUpdater } from "src/app/services/app/app-updater";
+import { AppUpdaterService } from "src/app/services/app/app-updater.service";
 import { ListsSqliteBackendService } from "src/app/services/storage/sqlite/lists/lists-sqlite-backend.service";
 import { FileUtils } from "../../classes/utils/file-utils";
 import { PageBase } from "../page-base";
@@ -35,6 +35,7 @@ export class AppinfosPage extends PageBase {
 
     private readonly _backendService = inject(ListsSqliteBackendService);
     private readonly _modalCtrl = inject(ModalController);
+    private readonly _appupdater = inject(AppUpdaterService);
 
     public get Homepage(): string {
         return this.Config.Homepage;
@@ -87,7 +88,7 @@ export class AppinfosPage extends PageBase {
     }
 
     public async checkUpdate() {
-        await AppUpdater.getInstance(this._modalCtrl, this.Preferences).CheckForUpdates(true);
+        await this._appupdater.CheckForUpdates(true, false);
     }
 
     private async requestStatistics() {
