@@ -184,7 +184,7 @@ public class AppUpdatePlugin extends Plugin
     {
         try
         {
-            String packageName = this.getPackageName();
+            String packageName = this.getContext().getPackageName();
             Intent launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName));
             try
             {
@@ -213,13 +213,14 @@ public class AppUpdatePlugin extends Plugin
 
     private PackageInfo getPackageInfo() throws PackageManager.NameNotFoundException
     {
+        String packageName = this.getContext().getPackageName();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
-            return this.getContext().getPackageManager().getPackageInfo(this.getPackageName(), PackageManager.PackageInfoFlags.of(0));
+            return this.getContext().getPackageManager().getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
         }
         else
         {
-            return this.getContext().getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            return this.getContext().getPackageManager().getPackageInfo(packageName, 0);
         }
     }
 
@@ -240,16 +241,6 @@ public class AppUpdatePlugin extends Plugin
             return false;
         }
         return true;
-    }
-
-    private String getPackageName()
-    {
-        String packageName = this.getContext().getPackageName();
-        if (packageName.endsWith(".dev"))
-        {
-            return packageName.substring(0, packageName.length() - 4);
-        }
-        return packageName;
     }
 
     private void unregisterListener()

@@ -21,7 +21,8 @@
 <div class="inner-content ion-padding success" *transloco="let t">
     <ion-icon src="/assets/icons/done.svg" class="done success"></ion-icon>
     <div class="text" [innerHTML]="t('comp-appupdater.no-update')"></div>
-    <div class="buttons">
+    <div class="buttons multiple">
+        <ion-button (click)="openGooglePlay()" fill="outline" color="secondary">{{ t("comp-appupdater.btn-googleplay") }}</ion-button>
         <ion-button (click)="cancel()" fill="solid" color="secondary"> {{ t("buttons.close") }} </ion-button>
     </div>
 </div>
