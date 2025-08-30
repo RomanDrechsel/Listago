@@ -1,0 +1,13 @@
+@mixin badge-styles {
+    ion-badge {
+        position: absolute;
+        display: block;
+        top: calc(50% - 1em - 2px);
+        right: calc(50% - 1em - 2px);
+        width: 8px;
+        min-width: 8px;
+        height: 8px;
+        min-height: 8px;
+        border-radius: 50%;
+    }
+}

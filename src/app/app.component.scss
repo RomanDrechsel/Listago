@@ -43,6 +43,18 @@
                 ion-icon {
                     margin-inline-end: 10px;
                     fill: var(--ion-color-dark);
+                    width: 24px;
+                    height: 24px;
+                }
+
+                app-icon-with-badge {
+                    margin-inline-end: 10px;
+                    width: 24px;
+                    height: 24px;
+
+                    ion-icon {
+                        margin-inline-end: 0;
+                    }
                 }
             }
         }

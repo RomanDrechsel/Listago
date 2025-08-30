@@ -1,5 +1,15 @@
+@use "src/theme/content/main-toolbar/badge.scss" as badge;
+
 :host {
     display: block;
+
+    ion-buttons {
+        div {
+            position: relative;
+
+            @include badge.badge-styles;
+        }
+    }
 }
 
 ::ng-deep {

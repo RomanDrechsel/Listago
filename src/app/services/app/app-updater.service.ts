@@ -45,7 +45,7 @@ export class AppUpdaterService {
     }
 
     public get IsUpToDate(): boolean {
-        return this._updateInfo?.availableVersionCode == this._updateInfo?.currentVersionCode;
+        return this._updateInfo ? this._updateInfo?.availableVersionCode == this._updateInfo?.currentVersionCode : true;
     }
 
     public async Initialize() {

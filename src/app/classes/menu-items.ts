@@ -14,6 +14,7 @@ export enum EMenuItemType {
     "OpenApp",
     "AppInfo",
     "Privacy",
+    "InstallUpdate",
 }
 export const MenuitemFactory = function (itemtype: EMenuItemType, options?: { title_id?: string; url_addition?: string; disabled?: boolean; hidden?: boolean; onClick?: () => Promise<boolean> }): MenuItem {
     let url: string;
@@ -51,6 +52,8 @@ export const MenuitemFactory = function (itemtype: EMenuItemType, options?: { ti
         case EMenuItemType.Privacy:
             url = options?.url_addition ? FileUtils.JoinPaths("/privacy-policy/privacy", options.url_addition) : "/privacy-policy/privacy";
             return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.privacy", Icon: "./assets/icons/menu/privacy.svg", Url: url, Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, onClick: options?.onClick };
+        case EMenuItemType.InstallUpdate:
+            return { Id: itemtype, TitleId: options?.title_id ?? "mainmenu.install-update", Icon: "./assets/icons/menu/install-update.svg", Disabled: options?.disabled ?? false, Hidden: options?.hidden ?? false, Badge: true, onClick: options?.onClick };
     }
 };
 
@@ -65,5 +68,6 @@ export declare type MenuItem = {
     Hidden: boolean;
     Icon: string;
     Url?: string;
+    Badge?: boolean;
     onClick?: () => Promise<boolean>;
 };

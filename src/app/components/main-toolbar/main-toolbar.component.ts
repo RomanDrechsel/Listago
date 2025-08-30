@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, ViewChild } from "@angular/core";
-import { IonBackButton, IonButtons, IonMenuButton, IonProgressBar, IonTitle, IonToolbar } from "@ionic/angular/standalone";
+import { Component, inject, Input, ViewChild } from "@angular/core";
+import { IonBackButton, IonBadge, IonButtons, IonMenuButton, IonProgressBar, IonTitle, IonToolbar } from "@ionic/angular/standalone";
+import { AppUpdaterService } from "src/app/services/app/app-updater.service";
 
 @Component({
     selector: "app-main-toolbar",
-    imports: [IonProgressBar, CommonModule, IonToolbar, IonButtons, IonMenuButton, IonBackButton, IonTitle],
+    imports: [IonBadge, IonProgressBar, CommonModule, IonToolbar, IonButtons, IonMenuButton, IonBackButton, IonTitle],
     templateUrl: "./main-toolbar.component.html",
     styleUrl: "./main-toolbar.component.scss",
 })
@@ -17,8 +18,14 @@ export class MainToolbarComponent {
 
     private static _activeProgressbars: number = 0;
 
+    private readonly _appUpdater = inject(AppUpdaterService);
+
     public get ShowProgressbar(): boolean {
         return MainToolbarComponent._activeProgressbars > 0;
+    }
+
+    public get menuBadge(): boolean {
+        return !this._appUpdater.IsUpToDate;
     }
 
     public set ShowProgressbar(v: boolean) {
