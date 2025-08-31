@@ -1,4 +1,5 @@
 TEST: in-app update
+WIP: if update is canceled, can't be restarted...
 TODO: Notes support
 TEST: import from lists
 TEST: localisation overhaul

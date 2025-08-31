@@ -16,7 +16,6 @@ import { EPrefProperty, PreferencesService } from "../storage/preferences.servic
 export class AppUpdaterService {
     private _updateRunning = false;
     private _downloadSuccessful?: boolean;
-    private _modal?: HTMLIonModalElement;
     private _updateInfo?: AppUpdateInfo;
 
     private _lastSilentCheck?: number;
@@ -94,10 +93,10 @@ export class AppUpdaterService {
             if (silent) {
                 this._lastSilentCheckVersion = this._updateInfo!.availableVersionCode;
             }
-            this._modal = await StartAppUpdate(this._modalCtrl);
+            await this.openPopup();
             return;
         } else if (force) {
-            await StartAppUpdate(this._modalCtrl);
+            await this.openPopup();
         }
         Logger.Debug(`The app is up-to-date (${this.CurrentVersion} -> ${this.AvailableVersion})`);
         return await this.finish();
@@ -136,9 +135,9 @@ export class AppUpdaterService {
                     listener?.updateStatus();
                     reopen = true;
                 }
-                if (reopen && !this._modal?.isOpen) {
+                if (reopen) {
                     //reopen popup with success message
-                    StartAppUpdate(this._modalCtrl);
+                    this.openPopup();
                 }
             });
         }
@@ -155,6 +154,7 @@ export class AppUpdaterService {
             } else {
                 Logger.Notice(`App update could not be started (${res.type})`);
             }
+            this._downloadSuccessful = undefined;
             await this.finish();
         }
     }
@@ -170,9 +170,12 @@ export class AppUpdaterService {
         await AppUpdate.openAppStore();
     }
 
+    public Reset() {
+        this._downloadSuccessful = undefined;
+    }
+
     private async finish() {
         await AppUpdate.removeAllListeners();
-        this._modal = undefined;
     }
 
     private async getAppUpdateInfo(): Promise<boolean> {
@@ -183,6 +186,10 @@ export class AppUpdaterService {
         }
         this._updateInfo = updateinfo;
         return true;
+    }
+
+    private async openPopup(): Promise<void> {
+        await StartAppUpdate(this._modalCtrl);
     }
 }
 

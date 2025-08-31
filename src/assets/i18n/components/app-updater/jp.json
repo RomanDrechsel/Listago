@@ -13,5 +13,6 @@
     "download-success": "アップデートがダウンロードされ、インストール可能です。",
     "download-success2": "このためにはアプリを再起動する必要があります。",
     "download-error": "アップデートを実行できませんでした！",
-    "no-update": "アプリは最新です"
+    "no-update": "アプリは最新です",
+    "restart": "再起動"
 }

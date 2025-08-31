@@ -13,5 +13,6 @@
     "download-success": "更新已下載，現在可以安裝。",
     "download-success2": "為此需要重新啟動應用程式。",
     "download-error": "無法完成更新！",
-    "no-update": "應用程式已是最新版本"
+    "no-update": "應用程式已是最新版本",
+    "restart": "重新啟動"
 }

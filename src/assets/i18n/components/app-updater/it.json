@@ -13,5 +13,6 @@
     "download-success": "L'aggiornamento è stato scaricato e ora può essere installato.",
     "download-success2": "Per questo, l'app deve essere riavviata.",
     "download-error": "Impossibile completare l'aggiornamento!",
-    "no-update": "L'app è aggiornata"
+    "no-update": "L'app è aggiornata",
+    "restart": "Riavvia"
 }

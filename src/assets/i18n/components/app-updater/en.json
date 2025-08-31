@@ -13,5 +13,6 @@
     "download-success": "The update has been downloaded and can now be installed.",
     "download-success2": "For this, the app needs to be restarted.",
     "download-error": "The update could not be installed!",
-    "no-update": "The app is up to date"
+    "no-update": "The app is up to date",
+    "restart": "Restart"
 }

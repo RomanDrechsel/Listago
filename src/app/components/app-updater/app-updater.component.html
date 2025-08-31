@@ -47,7 +47,8 @@
 <div class="inner-content ion-padding failed" *transloco="let t">
     <ion-icon src="/assets/icons/failed.svg" class="done failed"></ion-icon>
     <div class="text" [innerHTML]="t('comp-appupdater.download-error')"></div>
-    <div class="buttons">
+    <div class="buttons multiple">
+        <ion-button (click)="restart()" fill="solid" color="secondary">{{ t("comp-appupdater.restart") }}</ion-button>
         <ion-button (click)="cancel()" fill="solid" color="secondary"> {{ t("buttons.close") }} </ion-button>
     </div>
 </div>
