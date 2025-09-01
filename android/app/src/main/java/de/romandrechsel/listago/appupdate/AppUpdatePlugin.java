@@ -168,13 +168,13 @@ public class AppUpdatePlugin extends Plugin
     @PluginMethod
     public void completeFlexibleUpdate(PluginCall call)
     {
-        if (this.appUpdateInfo != null)
+        this.unregisterListener();
+        try
         {
-            if (this.appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
-            {
-                this.unregisterListener();
-                this.appUpdateManager.completeUpdate();
-            }
+            this.appUpdateManager.completeUpdate();
+        }
+        catch (Exception ignored)
+        {
         }
         call.resolve();
     }

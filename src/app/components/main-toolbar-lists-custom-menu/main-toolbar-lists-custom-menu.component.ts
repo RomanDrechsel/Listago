@@ -25,7 +25,7 @@ export class MainToolbarListsCustomMenuComponent {
     private readonly _appUpdater = inject(AppUpdaterService);
 
     public get menuBadge(): boolean {
-        return !this._appUpdater.IsUpToDate;
+        return !this._appUpdater.IsUpToDate && !this._appUpdater.UpdateRunning;
     }
 
     public async ToggleEditMenu(): Promise<void> {

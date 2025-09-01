@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public get SystemPages(): MenuItem[] {
         const ret: MenuItem[] = [];
-        if (!this._appupdater.IsUpToDate) {
+        if (!this._appupdater.IsUpToDate && !this._appupdater.UpdateRunning) {
             ret.push(
                 MenuitemFactory(EMenuItemType.InstallUpdate, {
                     onClick: async () => {

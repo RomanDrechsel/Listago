@@ -25,7 +25,7 @@ export class MainToolbarComponent {
     }
 
     public get menuBadge(): boolean {
-        return !this._appUpdater.IsUpToDate;
+        return !this._appUpdater.IsUpToDate && !this._appUpdater.UpdateRunning;
     }
 
     public set ShowProgressbar(v: boolean) {
