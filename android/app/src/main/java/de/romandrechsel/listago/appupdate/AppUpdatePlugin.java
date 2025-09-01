@@ -42,6 +42,7 @@ public class AppUpdatePlugin extends Plugin
 
     private static final String TAG = "AppUpdate";
 
+    @Override
     public void load()
     {
         this.appUpdateManager = AppUpdateManagerFactory.create(this.getContext());
@@ -137,7 +138,6 @@ public class AppUpdatePlugin extends Plugin
             {
                 this.listener = state ->
                 {
-                    Logger.Debug(TAG, "Flexible update state changed: ", state);
                     int installStatus = state.installStatus();
                     JSObject ret = new JSObject();
                     ret.put("installStatus", installStatus);
@@ -206,8 +206,7 @@ public class AppUpdatePlugin extends Plugin
 
     private boolean isGooglePlayServicesAvailable()
     {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(bridge.getContext());
+        int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(bridge.getContext());
         return resultCode == ConnectionResult.SUCCESS;
     }
 
