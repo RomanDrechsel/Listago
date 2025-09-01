@@ -26,12 +26,14 @@ import java.util.Map;
 import java.util.Set;
 
 import de.romandrechsel.listago.logging.Logger;
-import de.romandrechsel.listago.utils.FileUtils;
 
 @CapacitorPlugin(name = "SysInfo")
-public class SysInfoPlugin extends Plugin {
-    public static class InitialAction {
-        public InitialAction(String action, Map<String, Object> payload) {
+public class SysInfoPlugin extends Plugin
+{
+    public static class InitialAction
+    {
+        public InitialAction(String action, Map<String, Object> payload)
+        {
             this.action = action;
             this.payload = payload;
         }
@@ -47,9 +49,9 @@ public class SysInfoPlugin extends Plugin {
     private Intent _pendingIntent = null;
     private ArrayList<InitialAction> _initActions = null;
 
-
     @PluginMethod
-    public void DisplayDensity(PluginCall call) {
+    public void DisplayDensity(PluginCall call)
+    {
         Context context = this.getContext();
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         float density = metrics.density;
@@ -59,18 +61,22 @@ public class SysInfoPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void NightMode(PluginCall call) {
+    public void NightMode(PluginCall call)
+    {
         JSObject ret = new JSObject();
         ret.put("isNightMode", this._isNightMode);
         call.resolve(ret);
     }
 
     @PluginMethod
-    public void Logcat(PluginCall call) {
+    public void Logcat(PluginCall call)
+    {
         String level = call.getString("level", "n");
         String message = call.getString("message", null);
-        if (message != null && level != null) {
-            switch (level) {
+        if (message != null && level != null)
+        {
+            switch (level)
+            {
                 case "d":
                     Log.d(TAG, message);
                     break;
@@ -89,36 +95,32 @@ public class SysInfoPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void ClearAppCache(PluginCall call) {
-        FileUtils.DeleteDirResult result = this.DeleteCache();
-
-        JSObject ret = new JSObject();
-        ret.put("success", result.Success);
-        ret.put("directories", result.Directories);
-        ret.put("files", result.Files);
-        ret.put("size", result.Size);
-        call.resolve(ret);
-    }
-
-    @PluginMethod
-    public void AppInstalled(PluginCall call) {
+    public void AppInstalled(PluginCall call)
+    {
         String packageName = call.getString("packageName", null);
         Boolean silent = call.getBoolean("silent", false);
-        if (silent == null) {
+        if (silent == null)
+        {
             silent = false;
         }
 
         boolean installed = false;
-        if (packageName != null) {
+        if (packageName != null)
+        {
             PackageManager pm = this.getContext().getPackageManager();
-            try {
+            try
+            {
                 pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
                 installed = true;
-                if (!silent) {
+                if (!silent)
+                {
                     Logger.Debug(TAG, "App '" + packageName + "' is installed");
                 }
-            } catch (PackageManager.NameNotFoundException e) {
-                if (!silent) {
+            }
+            catch (PackageManager.NameNotFoundException e)
+            {
+                if (!silent)
+                {
                     Logger.Debug(TAG, "App '" + packageName + "' is NOT installed");
                 }
             }
@@ -130,22 +132,27 @@ public class SysInfoPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void AppIsReady(PluginCall call) {
+    public void AppIsReady(PluginCall call)
+    {
         this._appIsReady = true;
-        if (this._pendingIntent != null) {
+        if (this._pendingIntent != null)
+        {
             this.handleIntent(this._pendingIntent);
             this._pendingIntent = null;
         }
         JSObject ret = new JSObject();
-        if (this._initActions != null && !this._initActions.isEmpty()) {
+        if (this._initActions != null && !this._initActions.isEmpty())
+        {
             Gson gson = new Gson();
             ArrayList<String> actions = new ArrayList<>();
-            for (InitialAction action : this._initActions) {
+            for (InitialAction action : this._initActions)
+            {
                 Map<String, Object> actionMap = new HashMap<>();
                 actionMap.put("action", action.action);
                 actionMap.put("payload", action.payload);
                 String json = gson.toJson(actionMap);
-                if (json != null) {
+                if (json != null)
+                {
                     actions.add(json);
                 }
             }
@@ -155,9 +162,12 @@ public class SysInfoPlugin extends Plugin {
         call.resolve(ret);
     }
 
-    public void SetNightMode(@NonNull Boolean isNightMode, boolean force) {
-        if (force || this._isNightMode != isNightMode) {
-            if (this._isNightMode != null) {
+    public void SetNightMode(@NonNull Boolean isNightMode, boolean force)
+    {
+        if (force || this._isNightMode != isNightMode)
+        {
+            if (this._isNightMode != null)
+            {
                 JSObject data = new JSObject();
                 data.put("isNightMode", isNightMode);
                 data.put("silent", !force);
@@ -167,12 +177,15 @@ public class SysInfoPlugin extends Plugin {
         }
     }
 
-    public void handleIntent(Intent intent) {
+    public void handleIntent(Intent intent)
+    {
         String action = intent.getAction();
-        if (action == null || action.equals(Intent.ACTION_MAIN)) {
+        if (action == null || action.equals(Intent.ACTION_MAIN))
+        {
             return;
         }
-        if (!this._appIsReady) {
+        if (!this._appIsReady)
+        {
             this._pendingIntent = intent;
             return;
         }
@@ -181,26 +194,34 @@ public class SysInfoPlugin extends Plugin {
         data.put("action", intent.getAction());
         data.put("type", intent.getType());
         Bundle extras = intent.getExtras();
-        if (extras != null) {
+        if (extras != null)
+        {
             JSObject extrasJson = new JSObject();
             Set<String> keys = extras.keySet();
-            for (String key : keys) {
+            for (String key : keys)
+            {
                 Object value = extras.get(key);
-                if (key.equals("android.intent.extra.STREAM")) {
+                if (key.equals("android.intent.extra.STREAM"))
+                {
                     Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                    if (fileUri != null && fileUri.getPath() != null) {
-                        try {
+                    if (fileUri != null && fileUri.getPath() != null)
+                    {
+                        try
+                        {
                             Context context = this.getContext();
                             InputStream inputStream = context.getContentResolver().openInputStream(fileUri);
-                            if (inputStream == null) {
+                            if (inputStream == null)
+                            {
                                 Logger.Error(TAG, "Received file stream, but could not open it: ", fileUri.toString());
                                 continue;
                             }
 
                             File cacheDir = context.getCacheDir();
                             File receivedDir = new File(cacheDir, "received");
-                            if (!receivedDir.exists()) {
-                                if (!receivedDir.mkdirs()) {
+                            if (!receivedDir.exists())
+                            {
+                                if (!receivedDir.mkdirs())
+                                {
                                     Logger.Error(TAG, "Failed to create directory '" + receivedDir.getAbsolutePath() + "'");
                                     continue;
                                 }
@@ -211,22 +232,31 @@ public class SysInfoPlugin extends Plugin {
                             FileOutputStream outputStream = new FileOutputStream(destFile);
                             byte[] buffer = new byte[1024];
                             int len;
-                            while ((len = inputStream.read(buffer)) > 0) {
+                            while ((len = inputStream.read(buffer)) > 0)
+                            {
                                 outputStream.write(buffer, 0, len);
                             }
 
                             inputStream.close();
                             outputStream.close();
                             extrasJson.put("android.intent.extra.STREAM", destFile.getAbsolutePath());
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e)
+                        {
                             Logger.Error(TAG, "Failed to import file: " + fileUri, e);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         Logger.Error(TAG, "Failed to import file: file not found at '" + value + "'");
                     }
-                } else if (value instanceof String || value instanceof Number || value instanceof Boolean) {
+                }
+                else if (value instanceof String || value instanceof Number || value instanceof Boolean)
+                {
                     extrasJson.put(key, value);
-                } else if (value != null) {
+                }
+                else if (value != null)
+                {
                     extrasJson.put(key, value.toString());
                 }
             }
@@ -235,21 +265,17 @@ public class SysInfoPlugin extends Plugin {
         this.notifyListeners("INTENT", data);
     }
 
-    public void InitialActionDone(InitialAction action) {
-        if (this._appIsReady) {
+    public void InitialActionDone(InitialAction action)
+    {
+        if (this._appIsReady)
+        {
             return;
         }
 
-        if (this._initActions == null) {
+        if (this._initActions == null)
+        {
             this._initActions = new ArrayList<>();
         }
         this._initActions.add(action);
     }
-
-    private FileUtils.DeleteDirResult DeleteCache() {
-        File dir = getContext().getCacheDir();
-        Logger.Debug(TAG, "Clear app cache at " + dir.getAbsolutePath());
-        return FileUtils.DeleteDirectory(dir, false);
-    }
-
 }

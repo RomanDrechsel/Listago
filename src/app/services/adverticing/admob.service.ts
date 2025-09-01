@@ -55,18 +55,24 @@ export class AdmobService {
         });
 
         this._admobBannerChangedListener = await AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: AdMobBannerSize) => {
+            if (size.height > 0) {
+                this._bannerIsShown = true;
+            } else {
+                this._bannerIsShown = false;
+            }
             this.resizeContainer(size.height);
         });
 
         this._admobBannerFailedListener = await AdMob.addListener(BannerAdPluginEvents.FailedToLoad, (error: any) => {
             Logger.Error(`Admob banner error: `, error);
-            this.resizeContainer(0);
             this._bannerIsShown = false;
+            this.resizeContainer(0);
         });
 
         this._admobBannerClosedListener = await AdMob.addListener(BannerAdPluginEvents.Closed, () => {
             Logger.Debug(`Admob banner closed`);
             this._bannerIsShown = false;
+            this.resizeContainer(0);
         });
 
         if (environment.publicRelease === true) {
@@ -144,8 +150,8 @@ export class AdmobService {
         if (this._bannerIsShown === true) {
             await AdMob.hideBanner();
         }
-        this.resizeContainer(0);
         this._bannerIsShown = false;
+        this.resizeContainer(0);
     }
 
     /**
@@ -241,7 +247,7 @@ export class AdmobService {
                 this._preferences.Set(EPrefProperty.AdmobBannerHeight, height);
             }
         }
-        await new ReserveSpace(this._http).SetAdmobHeight(height);
+        await (await new ReserveSpace(this._http).SetAdmobHeight(height)).ToggleContent(!this._bannerIsShown);
     }
 
     private async saveAreaBottom(): Promise<number> {

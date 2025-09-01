@@ -13,7 +13,9 @@
         <ng-content select="[slot='customMenu']"></ng-content>
         } @if (displayMenu) {
         <ion-menu-button></ion-menu-button>
-        }
+        @if (menuBadge) {
+        <ion-badge color="danger"></ion-badge>
+        } }
     </ion-buttons>
     } @if (ShowProgressbar) {
     <ion-progress-bar type="indeterminate"></ion-progress-bar>

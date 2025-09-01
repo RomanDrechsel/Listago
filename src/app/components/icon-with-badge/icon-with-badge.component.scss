@@ -1,0 +1,21 @@
+:host {
+    display: block;
+    position: relative;
+
+    ion-icon {
+        width: 100%;
+        height: 100%;
+    }
+
+    ion-badge {
+        display: block;
+        position: absolute;
+        right: 0;
+        top: -2px;
+        width: 8px;
+        min-width: 8px;
+        height: 8px;
+        min-height: 8px;
+        border-radius: 50%;
+    }
+}

@@ -1,5 +1,5 @@
 <ion-app>
-    <ion-split-pane contentId="main-content">
+    <ion-split-pane contentId="main-content" *transloco="let t">
         @if (!FirstStart) {
         <ion-menu contentId="main-content" type="overlay" [side]="menuSide" (ionWillOpen)="onMainMenuOpen()" #mainMenu>
             <ion-content>
@@ -7,10 +7,10 @@
                     <img class="main-applogo" src="/assets/img/applogo.png" alt="Listago" />
                 </div>
                 <ion-list id="page-list">
-                    @for (p of appPages; track $index) {
+                    @for (p of AppPages; track $index) {
                     <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" [button]="true" detail="false">
-                        <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
-                        <ion-label>{{ p.TitleId | transloco }}</ion-label>
+                        <ion-icon aria-hidden="true" slot="start" [src]="p.Icon" [ngClass]="{ badge: p.Badge }"></ion-icon>
+                        <ion-label>{{ t(p.TitleId) }}</ion-label>
                     </ion-item>
                     }
                 </ion-list>
@@ -24,10 +24,16 @@
                     <ion-item lines="full">
                         <ion-toggle labelPlacement="end" justify="start" [checked]="ConnectIQ.useGarminDebugApp" (ionChange)="onGarminDebugApp($event.target.checked)">Debug App</ion-toggle>
                     </ion-item>
-                    } @for (p of systemPages; track $index) {
+                    } @for (p of SystemPages; track $index) {
                     <ion-item routerDirection="forward" [disabled]="p.Disabled" [routerLink]="!p.onClick ? p.Url : undefined" (click)="onMenuItemClick(p)" routerLinkActive="selected" lines="full" detail="false" [button]="true">
+                        @if (p.Badge) {
+                        <app-icon-with-badge badgeColor="danger" slot="start">
+                            <ion-icon [src]="p.Icon" aria-hidden="true" slot="icon"></ion-icon>
+                        </app-icon-with-badge>
+                        }@else {
                         <ion-icon aria-hidden="true" slot="start" [src]="p.Icon"></ion-icon>
-                        <ion-label>{{ p.TitleId | transloco }}</ion-label>
+                        }
+                        <ion-label>{{ t(p.TitleId) }}</ion-label>
                     </ion-item>
                     }
                 </ion-list>

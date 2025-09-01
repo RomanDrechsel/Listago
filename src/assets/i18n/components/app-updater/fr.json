@@ -13,5 +13,6 @@
     "download-success": "La mise à jour a été téléchargée et peut maintenant être installée.",
     "download-success2": "Pour cela, l'application doit être redémarrée.",
     "download-error": "La mise à jour n'a pas pu être effectuée !",
-    "no-update": "L'application est à jour"
+    "no-update": "L'application est à jour",
+    "restart": "Redémarrer"
 }

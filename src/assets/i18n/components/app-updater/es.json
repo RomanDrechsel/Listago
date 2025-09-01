@@ -13,5 +13,6 @@
     "download-success": "La actualización se ha descargado y ahora se puede instalar.",
     "download-success2": "Para esto, la aplicación debe reiniciarse.",
     "download-error": "¡La actualización no pudo completarse!",
-    "no-update": "La aplicación está actualizada"
+    "no-update": "La aplicación está actualizada",
+    "restart": "Reiniciar"
 }

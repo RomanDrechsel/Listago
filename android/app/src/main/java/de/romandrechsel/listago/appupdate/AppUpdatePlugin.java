@@ -42,6 +42,7 @@ public class AppUpdatePlugin extends Plugin
 
     private static final String TAG = "AppUpdate";
 
+    @Override
     public void load()
     {
         this.appUpdateManager = AppUpdateManagerFactory.create(this.getContext());
@@ -137,7 +138,6 @@ public class AppUpdatePlugin extends Plugin
             {
                 this.listener = state ->
                 {
-                    Logger.Debug(TAG, "Flexible update state changed: ", state);
                     int installStatus = state.installStatus();
                     JSObject ret = new JSObject();
                     ret.put("installStatus", installStatus);
@@ -168,13 +168,13 @@ public class AppUpdatePlugin extends Plugin
     @PluginMethod
     public void completeFlexibleUpdate(PluginCall call)
     {
-        if (this.appUpdateInfo != null)
+        this.unregisterListener();
+        try
         {
-            if (this.appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE))
-            {
-                this.unregisterListener();
-                this.appUpdateManager.completeUpdate();
-            }
+            this.appUpdateManager.completeUpdate();
+        }
+        catch (Exception ignored)
+        {
         }
         call.resolve();
     }
@@ -206,8 +206,7 @@ public class AppUpdatePlugin extends Plugin
 
     private boolean isGooglePlayServicesAvailable()
     {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(bridge.getContext());
+        int resultCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(bridge.getContext());
         return resultCode == ConnectionResult.SUCCESS;
     }
 

@@ -5,6 +5,7 @@ import { App } from "@capacitor/app";
 import { IonApp, IonContent, IonFooter, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonRouterOutlet, IonSplitPane, IonToggle, NavController, Platform } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { EMenuItemType, MenuItem, MenuitemFactory, MenuitemFactoryList } from "./classes/menu-items";
+import { IconWithBadgeComponent } from "./components/icon-with-badge/icon-with-badge.component";
 import type { MainToolbarComponent } from "./components/main-toolbar/main-toolbar.component";
 import { AppUpdaterService } from "./services/app/app-updater.service";
 import { AppService } from "./services/app/app.service";
@@ -15,12 +16,11 @@ import { EPrefProperty, PreferencesService } from "./services/storage/preference
     selector: "app-root",
     templateUrl: "app.component.html",
     styleUrls: ["app.component.scss"],
-    imports: [IonToggle, IonFooter, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonRouterOutlet, TranslocoModule, RouterLink, RouterLinkActive, CommonModule],
+    imports: [IonToggle, IonFooter, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonItem, IonIcon, IonLabel, IonRouterOutlet, TranslocoModule, RouterLink, RouterLinkActive, CommonModule, IconWithBadgeComponent],
     providers: [provideTranslocoScope({ scope: "common/mainmenu", alias: "mainmenu" })],
 })
 export class AppComponent implements OnInit, AfterViewInit {
-    public appPages: MenuItem[] = [];
-    public systemPages: MenuItem[] = MenuitemFactoryList([EMenuItemType.Settings, EMenuItemType.AppInfo, EMenuItemType.Privacy]);
+    private _appPages: MenuItem[] = [];
     private _useTrash: boolean = true;
     private _firstStart: boolean = true;
 
@@ -49,6 +49,26 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     public get FirstStart(): boolean {
         return this._firstStart;
+    }
+
+    public get SystemPages(): MenuItem[] {
+        const ret: MenuItem[] = [];
+        if (!this._appupdater.IsUpToDate && !this._appupdater.UpdateRunning) {
+            ret.push(
+                MenuitemFactory(EMenuItemType.InstallUpdate, {
+                    onClick: async () => {
+                        this._appupdater.CheckForUpdates(true, false);
+                        return true;
+                    },
+                }),
+            );
+        }
+        ret.push(...MenuitemFactoryList([EMenuItemType.Settings, EMenuItemType.AppInfo, EMenuItemType.Privacy]));
+        return ret;
+    }
+
+    public get AppPages(): MenuItem[] {
+        return this._appPages;
     }
 
     public static get Instance(): AppComponent | undefined {
@@ -128,8 +148,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 menu?.unshift(required[i]);
             }
         }
-        menu = menu.filter(m => m.Hidden !== true);
-        this.appPages = menu;
+        this._appPages = menu.filter(m => m.Hidden !== true);
         this._cdr.detectChanges();
     }
 

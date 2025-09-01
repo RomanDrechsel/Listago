@@ -29,6 +29,7 @@ export class AppUpdaterComponent {
 
     public async ionViewWillEnter() {
         this._ignoreUpdate = await this._preferences.Get<number | undefined>(EPrefProperty.IgnoreUpdate, undefined);
+        component = this;
     }
 
     public async toggleSilent(checked: boolean) {
@@ -56,24 +57,39 @@ export class AppUpdaterComponent {
         await this._appupdater.FinishFlexibleUpdate();
     }
 
+    public async restart() {
+        this._appupdater.Reset();
+        await this._appupdater.CheckForUpdates(true, false);
+    }
+
     public async cancel() {
         await this._modalCtrl.dismiss(null, "cancel");
     }
+
+    public reloadUI() {
+        this._cdr.detectChanges();
+    }
 }
 
-export const StartAppUpdate = async function (modalController: ModalController): Promise<HTMLIonModalElement> {
-    const modal = await modalController.create({
-        component: AppUpdaterComponent,
-        componentProps: undefined,
-        animated: true,
-        backdropDismiss: true,
-        showBackdrop: true,
-        cssClass: "autosize-modal",
-    });
-    modal.onDidDismiss().then(() => {
-        (modal as any).isOpen = false;
-    });
+let static_modal: HTMLIonModalElement | undefined = undefined;
+let component: AppUpdaterComponent | undefined = undefined;
 
-    modal.present();
-    return modal;
+export const StartAppUpdate = async function (modalController: ModalController): Promise<void> {
+    if (!static_modal) {
+        static_modal = await modalController.create({
+            component: AppUpdaterComponent,
+            componentProps: undefined,
+            animated: true,
+            backdropDismiss: true,
+            showBackdrop: true,
+            cssClass: "autosize-modal",
+        });
+        static_modal.present();
+
+        await static_modal.onDidDismiss();
+        static_modal = undefined;
+        component = undefined;
+    } else {
+        component?.reloadUI();
+    }
 };

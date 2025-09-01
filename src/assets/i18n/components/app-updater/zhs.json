@@ -13,5 +13,6 @@
     "download-success": "更新已下载，现在可以安装。",
     "download-success2": "为此需要重新启动应用。",
     "download-error": "无法完成更新！",
-    "no-update": "应用已是最新版本"
+    "no-update": "应用已是最新版本",
+    "restart": "重新启动"
 }

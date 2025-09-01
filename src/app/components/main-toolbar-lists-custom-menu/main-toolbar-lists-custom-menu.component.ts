@@ -1,12 +1,13 @@
 import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, inject, Input, Output } from "@angular/core";
-import { IonButton, IonButtons, IonIcon, IonMenuButton, ModalController } from "@ionic/angular/standalone";
+import { IonBadge, IonButton, IonButtons, IonIcon, IonMenuButton, ModalController } from "@ionic/angular/standalone";
 import { CreateEditMenuModalAnimation } from "src/app/animations/edit-menu-modal.animation";
+import { AppUpdaterService } from "src/app/services/app/app-updater.service";
 import { type EditMenuAction, MainToolbarEditMenuModalComponent } from "../main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 
 @Component({
     selector: "app-main-toolbar-lists-custom-menu",
-    imports: [IonButton, IonButtons, IonIcon, IonMenuButton, CommonModule],
+    imports: [IonBadge, IonButton, IonButtons, IonIcon, IonMenuButton, CommonModule],
     templateUrl: "./main-toolbar-lists-custom-menu.component.html",
     styleUrl: "./main-toolbar-lists-custom-menu.component.scss",
 })
@@ -21,6 +22,11 @@ export class MainToolbarListsCustomMenuComponent {
     protected _editMenuModal?: HTMLIonModalElement;
 
     protected readonly _modalCtrl = inject(ModalController);
+    private readonly _appUpdater = inject(AppUpdaterService);
+
+    public get menuBadge(): boolean {
+        return !this._appUpdater.IsUpToDate && !this._appUpdater.UpdateRunning;
+    }
 
     public async ToggleEditMenu(): Promise<void> {
         if (this._editMenuModal) {

@@ -19,7 +19,7 @@ export class ReserveSpace {
         return this._bannerDiv;
     }
 
-    public async SetAdmobHeight(height?: number) {
+    public async SetAdmobHeight(height?: number): Promise<ReserveSpace> {
         if (height === undefined) {
             const pref = (await Preferences.get({ key: EPrefProperty.AdmobBannerHeight })).value;
             if (pref) {
@@ -47,9 +47,10 @@ export class ReserveSpace {
 
             observer.observe(document.body, { childList: true, subtree: true });
         }
+        return this;
     }
 
-    public async SetAdmobText() {
+    public async SetAdmobText(): Promise<ReserveSpace> {
         const textDiv = this.bannerDiv?.querySelector(".text");
         if (textDiv) {
             let locale = (await Preferences.get({ key: EPrefProperty.AppLanguage })).value;
@@ -81,5 +82,18 @@ export class ReserveSpace {
                 textDiv.innerHTML = content.loading;
             }
         }
+
+        return this;
+    }
+
+    public async ToggleContent(show: boolean): Promise<ReserveSpace> {
+        if (this._bannerDiv) {
+            for (const child of Array.from(this._bannerDiv.children)) {
+                if (child instanceof HTMLElement) {
+                    (child as HTMLElement).style.visibility = show ? "visible" : "hidden";
+                }
+            }
+        }
+        return this;
     }
 }

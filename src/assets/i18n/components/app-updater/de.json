@@ -13,5 +13,6 @@
     "download-success": "Das Update wurde heruntergeladen und kann jetzt installiert werden.",
     "download-success2": "Dafür muss die App neu gestartet werden.",
     "download-error": "Das Update konnte nicht durchgeführt werden!",
-    "no-update": "Die App ist aktuell"
+    "no-update": "Die App ist aktuell",
+    "restart": "Neu starten"
 }
