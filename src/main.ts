@@ -24,14 +24,15 @@ bootstrapApplication(AppComponent, {
         provideTransloco({
             config: {
                 reRenderOnLangChange: true,
-                fallbackLang: undefined,
-                defaultLang: undefined,
+                fallbackLang: "en",
+                defaultLang: "en",
+                failedRetries: 2,
                 scopes: {
                     keepCasing: true,
                 },
                 missingHandler: {
                     useFallbackTranslation: false,
-                    logMissingKey: true,
+                    logMissingKey: isDevMode(),
                     allowEmpty: true,
                 },
                 prodMode: !isDevMode(),
