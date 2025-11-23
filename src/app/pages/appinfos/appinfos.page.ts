@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { InAppReview } from "@capacitor-community/in-app-review";
@@ -18,7 +18,7 @@ import { AppService } from "./../../services/app/app.service";
     selector: "app-appinfos",
     templateUrl: "./appinfos.page.html",
     styleUrls: ["./appinfos.page.scss"],
-    imports: [IonButton, IonNote, MainToolbarComponent, CommonModule, FormsModule, TranslocoModule, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol],
+    imports: [IonButton, IonNote, MainToolbarComponent, FormsModule, TranslocoModule, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol, IonContent, IonList, IonItem, IonText, IonGrid, IonRow, IonCol],
     providers: [provideTranslocoScope({ scope: "pages/appinfos-page", alias: "page_appinfos" })],
 })
 export class AppinfosPage extends PageBase {

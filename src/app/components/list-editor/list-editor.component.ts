@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject, type OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Keyboard } from "@capacitor/keyboard";
@@ -15,7 +15,7 @@ import { AdmobService } from "./../../services/adverticing/admob.service";
 
 @Component({
     selector: "app-list-edit",
-    imports: [IonNote, IonText, IonList, IonAccordion, IonCheckbox, IonAccordionGroup, IonLabel, IonIcon, IonTitle, IonItem, IonInput, IonButton, IonButtons, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslocoModule, ReactiveFormsModule, FormsModule],
+    imports: [IonNote, IonText, IonList, IonAccordion, IonCheckbox, IonAccordionGroup, IonLabel, IonIcon, IonTitle, IonItem, IonInput, IonButton, IonButtons, IonToolbar, IonHeader, IonSelect, IonSelectOption, TranslocoModule, ReactiveFormsModule, FormsModule],
     templateUrl: "./list-editor.component.html",
     styleUrl: "./list-editor.component.scss",
     providers: [provideTranslocoScope({ scope: "components/list-editor", alias: "comp-listeditor" }, { scope: "components/select-interval", alias: "comp-select-interval" }, { scope: "common/buttons", alias: "buttons" }, { scope: "common/date", alias: "date" })],

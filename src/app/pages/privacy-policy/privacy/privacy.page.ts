@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -11,7 +11,7 @@ import { PageBase } from "../../page-base";
     selector: "app-privacy",
     templateUrl: "./privacy.page.html",
     styleUrls: ["./privacy.page.scss"],
-    imports: [IonIcon, IonLabel, IonNote, IonItem, IonList, IonContent, CommonModule, FormsModule, MainToolbarComponent, TranslocoModule, RouterModule],
+    imports: [IonIcon, IonLabel, IonNote, IonItem, IonList, IonContent, FormsModule, MainToolbarComponent, TranslocoModule, RouterModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [provideTranslocoScope({ scope: "pages/privacy-policy/privacy-page", alias: "page_privacy" })],
 })

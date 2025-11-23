@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, inject, Input, Output } from "@angular/core";
 import { IonBadge, IonButton, IonButtons, IonIcon, IonMenuButton, ModalController } from "@ionic/angular/standalone";
 import { CreateEditMenuModalAnimation } from "src/app/animations/edit-menu-modal.animation";
@@ -7,7 +7,7 @@ import { type EditMenuAction, MainToolbarEditMenuModalComponent } from "../main-
 
 @Component({
     selector: "app-main-toolbar-lists-custom-menu",
-    imports: [IonBadge, IonButton, IonButtons, IonIcon, IonMenuButton, CommonModule],
+    imports: [IonBadge, IonButton, IonButtons, IonIcon, IonMenuButton],
     templateUrl: "./main-toolbar-lists-custom-menu.component.html",
     styleUrl: "./main-toolbar-lists-custom-menu.component.scss",
 })

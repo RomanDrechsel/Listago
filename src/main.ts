@@ -1,5 +1,5 @@
 import { provideHttpClient } from "@angular/common/http";
-import { inject, isDevMode, provideAppInitializer } from "@angular/core";
+import { inject, isDevMode, provideAppInitializer, provideZoneChangeDetection } from "@angular/core";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading } from "@angular/router";
 import { IonicRouteStrategy, provideIonicAngular } from "@ionic/angular/standalone";
@@ -13,7 +13,7 @@ import { HttpLoader } from "./app/services/localization/transloco-loader";
 
 bootstrapApplication(AppComponent, {
     providers: [
-        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        provideZoneChangeDetection(),{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         provideIonicAngular({
             navAnimation: PageTransitionAnimation,
             innerHTMLTemplatesEnabled: true,

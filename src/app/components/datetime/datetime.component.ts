@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild, ViewEncapsulation } from "@angular/core";
 import { IonButton, IonButtons, IonDatetime, ModalController } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
@@ -7,7 +7,7 @@ import { LocalizationService } from "../../services/localization/localization.se
 
 @Component({
     selector: "app-datetime",
-    imports: [IonDatetime, IonButtons, IonButton, CommonModule, TranslocoModule],
+    imports: [IonDatetime, IonButtons, IonButton, TranslocoModule],
     templateUrl: "./datetime.component.html",
     styleUrl: "./datetime.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,

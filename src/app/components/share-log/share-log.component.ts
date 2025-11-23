@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { ChangeDetectionStrategy, Component, inject, ViewChild } from "@angular/core";
 import { FileOpener } from "@capacitor-community/file-opener";
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
@@ -18,7 +18,7 @@ import { AppService } from "./../../services/app/app.service";
 
 @Component({
     selector: "app-share-log",
-    imports: [IonNote, IonList, IonCheckbox, IonItem, IonAccordionGroup, IonAccordion, IonButtons, IonButton, IonTitle, IonIcon, IonToolbar, IonHeader, IonSelect, IonSelectOption, CommonModule, TranslocoModule],
+    imports: [IonNote, IonList, IonCheckbox, IonItem, IonAccordionGroup, IonAccordion, IonButtons, IonButton, IonTitle, IonIcon, IonToolbar, IonHeader, IonSelect, IonSelectOption, TranslocoModule],
     templateUrl: "./share-log.component.html",
     styleUrl: "./share-log.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,

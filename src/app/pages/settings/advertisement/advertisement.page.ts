@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, ViewChild } from "@angular/core";
 import { Browser } from "@capacitor/browser";
 import { IonContent, IonItem, IonList, IonToggle } from "@ionic/angular/standalone";
@@ -13,7 +13,7 @@ import { PageBase } from "../../page-base";
     templateUrl: "./advertisement.page.html",
     styleUrls: ["./advertisement.page.scss"],
     standalone: true,
-    imports: [IonList, IonItem, IonToggle, IonContent, MainToolbarComponent, TranslocoModule, CommonModule],
+    imports: [IonList, IonItem, IonToggle, IonContent, MainToolbarComponent, TranslocoModule],
     providers: [provideTranslocoScope({ scope: "pages/settings/advertisement-page", alias: "page_settings_advertisement" })],
 })
 export class AdvertisementPage extends PageBase {

@@ -1,10 +1,10 @@
-import { CommonModule } from "@angular/common";
+
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { AppService } from "../../services/app/app.service";
 
 @Component({
     selector: "app-page-add-new",
-    imports: [CommonModule],
+    imports: [],
     templateUrl: "./page-add-new.component.html",
     styleUrl: "./page-add-new.component.scss",
     changeDetection: ChangeDetectionStrategy.OnPush,

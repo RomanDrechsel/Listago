@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Keyboard } from "@capacitor/keyboard";
@@ -15,7 +15,7 @@ import { EPrefProperty, PreferencesService } from "../../services/storage/prefer
 
 @Component({
     selector: "app-list-item-editor",
-    imports: [IonTextarea, IonIcon, IonButton, IonButtons, IonTitle, IonItem, IonToolbar, IonLabel, IonHeader, IonCheckbox, IonToggle, CommonModule, TranslocoModule, ReactiveFormsModule, FormsModule],
+    imports: [IonTextarea, IonIcon, IonButton, IonButtons, IonTitle, IonItem, IonToolbar, IonLabel, IonHeader, IonCheckbox, IonToggle, TranslocoModule, ReactiveFormsModule, FormsModule],
     templateUrl: "./list-item-editor.component.html",
     styleUrl: "./list-item-editor.component.scss",
     providers: [provideTranslocoScope({ scope: "components/list-item-editor", alias: "comp-listitemeditor" }, { scope: "common/buttons", alias: "buttons" })],

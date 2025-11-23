@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { IonContent, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonToggle } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
@@ -12,7 +12,7 @@ import { PageBase } from "../../page-base";
     templateUrl: "./trash-settings.page.html",
     styleUrls: ["./trash-settings.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonLabel, IonNote, IonToggle, IonItem, IonList, IonContent, IonSelect, IonSelectOption, CommonModule, TranslocoModule, MainToolbarComponent],
+    imports: [IonLabel, IonNote, IonToggle, IonItem, IonList, IonContent, IonSelect, IonSelectOption, TranslocoModule, MainToolbarComponent],
     providers: [provideTranslocoScope({ scope: "pages/settings/trash-settings-page", alias: "page_settings_trash" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class TrashSettingsPage extends PageBase {

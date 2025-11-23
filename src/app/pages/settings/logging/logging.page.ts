@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonText, SelectCustomEvent } from "@ionic/angular/standalone";
@@ -12,7 +12,7 @@ import { PageBase } from "../../page-base";
     selector: "app-logging",
     templateUrl: "./logging.page.html",
     styleUrls: ["./logging.page.scss"],
-    imports: [IonNote, IonIcon, IonLabel, IonText, IonList, IonItem, IonContent, IonSelect, IonSelectOption, IonButton, RouterLink, CommonModule, TranslocoModule, MainToolbarComponent],
+    imports: [IonNote, IonIcon, IonLabel, IonText, IonList, IonItem, IonContent, IonSelect, IonSelectOption, IonButton, RouterLink, TranslocoModule, MainToolbarComponent],
     providers: [provideTranslocoScope({ scope: "pages/settings/logging-page", alias: "page_settings_logs" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class LoggingPage extends PageBase {

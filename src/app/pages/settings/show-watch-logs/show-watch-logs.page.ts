@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IonContent, IonFab, IonFabButton, IonIcon, IonSelect, IonSelectOption, IonText, ScrollDetail, SelectCustomEvent } from "@ionic/angular/standalone";
@@ -16,7 +16,7 @@ import { PageBase } from "../../page-base";
     templateUrl: "./show-watch-logs.page.html",
     styleUrls: ["./show-watch-logs.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonFabButton, IonFab, IonText, IonIcon, IonContent, IonSelect, IonSelectOption, CommonModule, TranslocoModule, MainToolbarComponent, PageEmptyComponent],
+    imports: [IonFabButton, IonFab, IonText, IonIcon, IonContent, IonSelect, IonSelectOption, TranslocoModule, MainToolbarComponent, PageEmptyComponent],
     providers: [provideTranslocoScope({ scope: "pages/settings/show-watch-logs-page", alias: "page_settings_showwatchlogs" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ShowWatchLogsPage extends PageBase {

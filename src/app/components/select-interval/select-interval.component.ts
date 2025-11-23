@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject, ViewChild } from "@angular/core";
 import { IonButton, IonButtons, IonHeader, IonPicker, IonPickerColumn, IonPickerColumnOption, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
@@ -8,7 +8,7 @@ import { EPrefProperty, PreferencesService } from "../../services/storage/prefer
 
 @Component({
     selector: "app-select-interval",
-    imports: [IonPicker, IonButton, IonButtons, IonToolbar, IonHeader, IonPickerColumn, IonPickerColumnOption, CommonModule, TranslocoModule],
+    imports: [IonPicker, IonButton, IonButtons, IonToolbar, IonHeader, IonPickerColumn, IonPickerColumnOption, TranslocoModule],
     templateUrl: "./select-interval.component.html",
     styleUrl: "./select-interval.component.scss",
     providers: [provideTranslocoScope({ scope: "components/select-interval", alias: "comp-select-interval" }, { scope: "common/buttons", alias: "buttons" }, { scope: "common/date", alias: "date" })],

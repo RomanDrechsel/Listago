@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonContent, IonItem, IonLabel, IonList, IonNote, IonToggle } from "@ionic/angular/standalone";
@@ -12,7 +12,7 @@ import { PageBase } from "../../page-base";
     templateUrl: "./confirmations.page.html",
     styleUrls: ["./confirmations.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [IonLabel, IonToggle, IonNote, IonItem, IonList, IonContent, CommonModule, FormsModule, TranslocoModule, MainToolbarComponent],
+    imports: [IonLabel, IonToggle, IonNote, IonItem, IonList, IonContent, FormsModule, TranslocoModule, MainToolbarComponent],
     providers: [provideTranslocoScope({ scope: "pages/settings/confirmations-page", alias: "page_settings_confirm" })],
 })
 export class ConfirmationsPage extends PageBase {
