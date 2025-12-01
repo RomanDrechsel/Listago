@@ -22,28 +22,49 @@ import com.google.gson.LongSerializationPolicy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.romandrechsel.listago.logging.Logger;
 import de.romandrechsel.listago.utils.DeviceUtils;
 
-public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQApplicationEventListener {
+public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQApplicationEventListener
+{
     private static final String TAG = "IQDevice";
 
-    public enum DeviceState {Initializing, Ready, AppNotInstalled, CheckingApp, NotConnected, ConnectionLost, NotPaired, InvalidState, ServiceUnavailable}
+    public enum DeviceState
+    {Initializing, Ready, AppNotInstalled, CheckingApp, NotConnected, ConnectionLost, NotPaired, InvalidState, ServiceUnavailable}
 
-    public enum EMessageSendResult {Success, NotSend, Timeout, Failed, DeviceNotFound, InvalidState, ServiceUnavailable, MessageEmpty, InvalidPayload}
+    public enum EMessageSendResult
+    {Success, NotSend, Timeout, Failed, DeviceNotFound, InvalidState, ServiceUnavailable, MessageEmpty, InvalidPayload}
 
-    public interface IMessageSendListener {
+    public interface IMessageSendListener
+    {
         void onMessageSendResult(@NonNull EMessageSendResult result, @Nullable ConnectIQ.IQMessageStatus iq_status);
     }
 
-    public interface IAppOpenedListener {
+    public interface IAppOpenedListener
+    {
         void onAppOpenResponse(@Nullable DeviceInfo device, boolean success);
     }
 
-    public interface IDeviceInitializedListener {
+    public interface IDeviceInitializedListener
+    {
         void onDeviceInitialized(@NonNull DeviceInfo device, boolean successful);
+    }
+
+    public static class SendToDeviceQueueItem
+    {
+        @NonNull
+        public ArrayList<String> Data;
+        @Nullable
+        public IMessageSendListener Listener;
+
+        public SendToDeviceQueueItem(@NonNull ArrayList<String> data, @Nullable IMessageSendListener listener)
+        {
+            this.Data = data;
+            this.Listener = listener;
+        }
     }
 
     @NonNull
@@ -60,28 +81,40 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
     @Nullable
     private IDeviceInitializedListener _initListener = null;
 
+    @Nullable
+    private LinkedList<SendToDeviceQueueItem> _sendQueue = null;
 
-    public DeviceInfo(@NonNull IQDevice device, @NonNull DeviceManager manager, @Nullable IDeviceInitializedListener listener) {
+    public DeviceInfo(@NonNull IQDevice device, @NonNull DeviceManager manager, @Nullable IDeviceInitializedListener listener)
+    {
         this.Manager = manager;
         this.setDevice(device, listener);
     }
 
     @Override
-    public void onDeviceStatusChanged(IQDevice iqDevice, IQDevice.IQDeviceStatus iqDeviceStatus) {
-        if (iqDeviceStatus == IQDevice.IQDeviceStatus.CONNECTED) {
+    public void onDeviceStatusChanged(IQDevice iqDevice, IQDevice.IQDeviceStatus iqDeviceStatus)
+    {
+        if (iqDeviceStatus == IQDevice.IQDeviceStatus.CONNECTED)
+        {
             this.setState(DeviceState.CheckingApp);
 
-            try {
-                this.Manager.connectIQ.getApplicationInfo(DeviceManager.AppId, this.device, new IQApplicationInfoListener() {
+            try
+            {
+                this.Manager.connectIQ.getApplicationInfo(DeviceManager.AppId, this.device, new IQApplicationInfoListener()
+                {
                     @Override
-                    public void onApplicationInfoReceived(IQApp iqApp) {
+                    public void onApplicationInfoReceived(IQApp iqApp)
+                    {
                         DeviceInfo.this.deviceApp = iqApp;
-                        if (DeviceInfo.this.state != DeviceState.Ready) {
+                        if (DeviceInfo.this.state != DeviceState.Ready)
+                        {
                             DeviceInfo.this.setState(DeviceState.Ready);
-                            try {
+                            try
+                            {
                                 DeviceInfo.this.Manager.connectIQ.registerForAppEvents(iqDevice, iqApp, DeviceInfo.this);
                                 Logger.Debug(TAG, "Listening for ConnectIQ app messages for device " + DeviceInfo.this);
-                            } catch (InvalidStateException ex) {
+                            }
+                            catch (InvalidStateException ex)
+                            {
                                 Logger.Error(TAG, "Could not register for ConnectIQ app events for device " + DeviceInfo.this + ", invalid state", ex);
                                 DeviceInfo.this.setState(DeviceState.InvalidState);
                             }
@@ -89,85 +122,120 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
                     }
 
                     @Override
-                    public void onApplicationNotInstalled(String s) {
+                    public void onApplicationNotInstalled(String s)
+                    {
                         DeviceInfo.this.setState(DeviceState.AppNotInstalled);
                     }
                 });
-            } catch (InvalidStateException e) {
+            }
+            catch (InvalidStateException e)
+            {
                 Log.e(TAG, "ConnectIQ not in valid state!");
                 this.setState(DeviceState.InvalidState);
-            } catch (ServiceUnavailableException e) {
+            }
+            catch (ServiceUnavailableException e)
+            {
                 Log.e(TAG, "ConnectIQ Service unavailable!");
                 this.setState(DeviceState.ServiceUnavailable);
             }
-        } else if (iqDeviceStatus == IQDevice.IQDeviceStatus.NOT_CONNECTED) {
-            if (this.state == DeviceState.Ready) {
+        }
+        else if (iqDeviceStatus == IQDevice.IQDeviceStatus.NOT_CONNECTED)
+        {
+            if (this.state == DeviceState.Ready)
+            {
                 this.setState(DeviceState.ConnectionLost);
-            } else {
+            }
+            else
+            {
                 this.setState(DeviceState.NotConnected);
             }
-        } else {
+        }
+        else
+        {
             this.setState(DeviceState.NotPaired);
         }
     }
 
     @Override
-    public void onMessageReceived(IQDevice iqDevice, IQApp iqApp, List<Object> data, ConnectIQ.IQMessageStatus iqMessageStatus) {
-        if (iqDevice.getDeviceIdentifier() != this.getDeviceIdentifier() || !iqApp.getApplicationId().equals(this.deviceApp.getApplicationId())) {
+    public void onMessageReceived(IQDevice iqDevice, IQApp iqApp, List<Object> data, ConnectIQ.IQMessageStatus iqMessageStatus)
+    {
+        if (iqDevice.getDeviceIdentifier() != this.getDeviceIdentifier() || (this.deviceApp != null && !iqApp.getApplicationId().equals(this.deviceApp.getApplicationId())))
+        {
             String device_string = iqDevice.getDeviceIdentifier() + " (" + iqDevice.getFriendlyName() + ")";
             Logger.Debug(TAG, "Received data from other device " + device_string + " - ignoring for device " + this);
             return;
         }
 
-        if (iqMessageStatus != ConnectIQ.IQMessageStatus.SUCCESS || data == null) {
+        if (iqMessageStatus != ConnectIQ.IQMessageStatus.SUCCESS || data == null)
+        {
             Logger.Error(TAG, "Could not receive data from device " + this + ": " + iqMessageStatus.name());
-        } else {
+        }
+        else
+        {
             DeviceMessage msg = DeviceUtils.DeserializeStringArray(data.get(0));
-            if (msg != null) {
+            if (msg != null)
+            {
                 Logger.Debug(TAG, "Received data from device " + this + ": " + msg.Size + " bytes");
                 JSObject event_args = new JSObject();
                 event_args.put("device", this.toJSObject());
                 event_args.put("message", msg.Json());
                 this.Manager.Plugin.emitJsEvent("RECEIVE", event_args);
-            } else {
+            }
+            else
+            {
                 Logger.Error(TAG, "Received invalid data from device " + this);
             }
         }
     }
 
-    public void setDevice(@NonNull IQDevice device, @Nullable IDeviceInitializedListener listener) {
-        if (device != this.device) {
+    public void setDevice(@NonNull IQDevice device, @Nullable IDeviceInitializedListener listener)
+    {
+        if (device != this.device)
+        {
             this.disconnect();
             this._initListener = listener;
             this.device = device;
             this.setState(DeviceState.Initializing);
 
-            try {
+            try
+            {
                 this.onDeviceStatusChanged(device, this.Manager.connectIQ.getDeviceStatus(device));
                 this.Manager.connectIQ.registerForDeviceEvents(device, this);
-            } catch (InvalidStateException e) {
+            }
+            catch (InvalidStateException e)
+            {
                 Log.e(TAG, "ConnectIQ not in valid state!");
                 this.setState(DeviceState.InvalidState);
-            } catch (ServiceUnavailableException e) {
+            }
+            catch (ServiceUnavailableException e)
+            {
                 Log.e(TAG, "ConnectIQ Service unavailable!");
                 this.setState(DeviceState.ServiceUnavailable);
             }
-        } else {
+        }
+        else
+        {
             this._initListener = listener;
         }
 
-        if (DeviceInfo.isFinalState(this.state)) {
+        if (DeviceInfo.isFinalState(this.state))
+        {
             this.initDone();
         }
     }
 
-    public void disconnect() {
-        if (this.device != null) {
-            try {
+    public void disconnect()
+    {
+        if (this.device != null)
+        {
+            try
+            {
                 this.Manager.connectIQ.unregisterForEvents(this.device);
                 this.setState(DeviceState.NotConnected);
                 this._initListener = null;
-            } catch (InvalidStateException e) {
+            }
+            catch (InvalidStateException e)
+            {
                 this.setState(DeviceState.InvalidState);
             }
             this.device = null;
@@ -178,31 +246,41 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
      * sends an object to a device
      *
      * @param message_type type of the message, will always be in line 0 of the send string array
-     * @param data         data object
+     * @param data data object
      * @param sendListener listener for send success or failure
      */
-    public void Send(@Nullable String message_type, @Nullable Object data, @Nullable IMessageSendListener sendListener) {
-        if (this.device == null) {
+    public void Send(@Nullable String message_type, @Nullable Object data, @Nullable IMessageSendListener sendListener)
+    {
+        if (this.device == null)
+        {
             Logger.Debug(TAG, "Could not send to undefined device");
             return;
         }
 
         ArrayList<String> send;
-        if (data != null) {
+        if (data != null)
+        {
             send = DeviceUtils.SerializeToStringArray(data);
-        } else {
+        }
+        else
+        {
             send = new ArrayList<>();
         }
 
-        if (message_type != null && !message_type.isEmpty()) {
+        if (message_type != null && !message_type.isEmpty())
+        {
             send.add(0, message_type);
         }
 
-        if (send.isEmpty()) {
-            if (sendListener != null) {
+        if (send.isEmpty())
+        {
+            if (sendListener != null)
+            {
                 sendListener.onMessageSendResult(EMessageSendResult.MessageEmpty, null);
             }
-        } else {
+        }
+        else
+        {
             this.transmitToDevice(send, sendListener);
         }
     }
@@ -211,23 +289,31 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
      * sends a json object to a device
      *
      * @param message_type type of the message, will always be in line 0 of the send string array
-     * @param json         json data string
+     * @param json json data string
      * @param sendListener listener for send success or failure
      */
-    public void SendJson(@Nullable String message_type, @Nullable String json, @Nullable IMessageSendListener sendListener) {
+    public void SendJson(@Nullable String message_type, @Nullable String json, @Nullable IMessageSendListener sendListener)
+    {
         Object obj;
-        if (json != null) {
-            try {
+        if (json != null)
+        {
+            try
+            {
                 Gson gson = new GsonBuilder().setLongSerializationPolicy(LongSerializationPolicy.STRING).create(); //parse long numbers as string
                 obj = gson.fromJson(json, JsonElement.class);
-            } catch (JsonSyntaxException ex) {
+            }
+            catch (JsonSyntaxException ex)
+            {
                 Logger.Error(TAG, "Could not deserialize json data: " + ex.getMessage());
-                if (sendListener != null) {
+                if (sendListener != null)
+                {
                     sendListener.onMessageSendResult(EMessageSendResult.InvalidPayload, null);
                 }
                 return;
             }
-        } else {
+        }
+        else
+        {
             obj = null;
         }
         this.Send(message_type, obj, sendListener);
@@ -239,49 +325,68 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
      * @param listener listener if the app was open successful
      * @return true, if the request was send to the device, else false
      */
-    public boolean openApp(@Nullable IAppOpenedListener listener) {
-        if (this.device == null || this.deviceApp == null) {
+    public boolean openApp(@Nullable IAppOpenedListener listener)
+    {
+        if (this.device == null || this.deviceApp == null)
+        {
             return false;
         }
 
-        if (this.Manager.connectIQ != null && this.Manager.sdkReady) {
-            try {
+        if (this.Manager.connectIQ != null && this.Manager.sdkReady)
+        {
+            try
+            {
                 this.Manager.connectIQ.openApplication(this.device, this.deviceApp, (device, app, status) ->
                 {
                     boolean success = false;
-                    if (status == ConnectIQ.IQOpenApplicationStatus.APP_IS_ALREADY_RUNNING || status == ConnectIQ.IQOpenApplicationStatus.PROMPT_SHOWN_ON_DEVICE) {
+                    if (status == ConnectIQ.IQOpenApplicationStatus.APP_IS_ALREADY_RUNNING || status == ConnectIQ.IQOpenApplicationStatus.PROMPT_SHOWN_ON_DEVICE)
+                    {
                         success = true;
                         Logger.Debug(TAG, "Opened App on device " + this + ":", status);
-
-                    } else {
+                    }
+                    else
+                    {
                         Logger.Error(TAG, "Could not open app on device " + this + ":", status);
                     }
-                    if (listener != null) {
+                    if (listener != null)
+                    {
                         listener.onAppOpenResponse(this, success);
                     }
                 });
                 return true;
-            } catch (InvalidStateException ex) {
+            }
+            catch (InvalidStateException ex)
+            {
                 Logger.Error(TAG, "Could not open app on device " + this + ": invalid state", ex);
-            } catch (ServiceUnavailableException ex) {
+            }
+            catch (ServiceUnavailableException ex)
+            {
                 Logger.Error(TAG, "Could not open app on device " + this + ": service unavailable", ex);
             }
-        } else {
+        }
+        else
+        {
             Logger.Error(TAG, "Could not open app on device " + this + ": sdk not ready");
         }
         return false;
     }
 
-    public long getDeviceIdentifier() {
-        if (this.device != null) {
+    public long getDeviceIdentifier()
+    {
+        if (this.device != null)
+        {
             return this.device.getDeviceIdentifier();
-        } else {
+        }
+        else
+        {
             return -1;
         }
     }
 
-    public JSObject toJSObject() {
-        if (this.device != null) {
+    public JSObject toJSObject()
+    {
+        if (this.device != null)
+        {
             JSObject ret = new JSObject();
             ret.put("id", this.device.getDeviceIdentifier());
             ret.put("name", this.device.getFriendlyName());
@@ -295,22 +400,29 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
 
     @NonNull
     @Override
-    public String toString() {
-        if (this.device != null) {
+    public String toString()
+    {
+        if (this.device != null)
+        {
             return this.getDeviceIdentifier() + " (" + this.device.getFriendlyName() + ")";
-        } else {
+        }
+        else
+        {
             return "undefined";
         }
     }
 
-    public boolean isReady() {
+    public boolean isReady()
+    {
         return this.state == DeviceState.Ready;
     }
 
-    private void setState(DeviceState state) {
+    private void setState(DeviceState state)
+    {
         this.state = state;
         this.Manager.notifyDeviceStateChanged(this);
-        if (DeviceInfo.isFinalState(state)) {
+        if (DeviceInfo.isFinalState(state))
+        {
             this.initDone();
         }
     }
@@ -318,78 +430,155 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
     /**
      * transmits data to the device
      *
-     * @param data     data map of type Array<String>
-     *                 other formats are known to fail to send on some devices
+     * @param data data map of type Array<String>
+     * other formats are known to fail to send on some devices
      * @param listener listener for result
      */
-    private void transmitToDevice(@NonNull ArrayList<String> data, @Nullable IMessageSendListener listener) {
-        if (this.state == DeviceState.Ready && !data.isEmpty()) {
-            final Handler timeoutHandler = new Handler(Looper.getMainLooper());
-            final boolean[] messageSent = {false};
-
-            Runnable timeoutRunnable = () ->
+    private void transmitToDevice(@NonNull ArrayList<String> data, @Nullable IMessageSendListener listener)
+    {
+        if (!data.isEmpty())
+        {
+            if (this._sendQueue == null)
             {
-                if (!messageSent[0]) {
-                    Logger.Error(TAG, "Timeout: Failed to transmit data to device " + this + " within 30 seconds");
-                    if (listener != null) {
-                        listener.onMessageSendResult(EMessageSendResult.Timeout, null);
-                    }
-                }
-            };
-            timeoutHandler.postDelayed(timeoutRunnable, 30000); // 30 Sekunden Timeout
-            try {
-                Logger.Debug(TAG, "Trying to transmit data to device " + this + ": ", data.get(0));
-
-                this.Manager.connectIQ.sendMessage(this.device, this.deviceApp, data, (device, app, status) ->
-                {
-                    messageSent[0] = true;
-                    timeoutHandler.removeCallbacks(timeoutRunnable);
-                    if (status == ConnectIQ.IQMessageStatus.SUCCESS) {
-                        Logger.Debug(TAG, "Transmitted data to device " + this);
-
-                    } else {
-                        Logger.Error(TAG, "Failed to transmit data to device " + this + ": " + status.name());
-                    }
-
-                    if (listener != null) {
-                        listener.onMessageSendResult(status == ConnectIQ.IQMessageStatus.SUCCESS ? EMessageSendResult.Success : EMessageSendResult.Failed, status);
-                    }
-                });
-            } catch (InvalidStateException e) {
-                Logger.Error(TAG, "Failed to transmit data to device " + this + ": Invalid state");
-                timeoutHandler.removeCallbacks(timeoutRunnable);
-                if (listener != null) {
-                    listener.onMessageSendResult(EMessageSendResult.InvalidState, null);
-                }
-            } catch (ServiceUnavailableException e) {
-                Logger.Error(TAG, "Failed to transmit data to device " + this + ": Service unavailable");
-                timeoutHandler.removeCallbacks(timeoutRunnable);
-                if (listener != null) {
-                    listener.onMessageSendResult(EMessageSendResult.ServiceUnavailable, null);
-                }
-            } catch (Exception ex) {
-                Logger.Error(TAG, "Failed to transmit data to device " + this + ": " + ex.getMessage());
-                timeoutHandler.removeCallbacks(timeoutRunnable);
-                if (listener != null) {
-                    listener.onMessageSendResult(EMessageSendResult.Failed, null);
-                }
+                this._sendQueue = new LinkedList<>();
+                this._sendQueue.add(new SendToDeviceQueueItem(data, listener));
+                this.transmitNextQueueToDevice();
             }
-        } else {
-            Logger.Error(TAG, "Failed to transmit data to device " + this + ": Device is in state " + this.state);
-            if (listener != null) {
-                listener.onMessageSendResult(EMessageSendResult.Failed, ConnectIQ.IQMessageStatus.FAILURE_INVALID_DEVICE);
+            else
+            {
+                //sending already in progress
+                this._sendQueue.add(new SendToDeviceQueueItem(data, listener));
             }
+        }
+        else
+        {
+            Logger.Error(TAG, "Can't send empty data to device " + this);
         }
     }
 
-    private void initDone() {
-        if (this._initListener != null) {
+    /**
+     * transmit the next data in queue to the device
+     */
+    private void transmitNextQueueToDevice()
+    {
+        if (this._sendQueue == null)
+        {
+            return;
+        }
+        SendToDeviceQueueItem queueItem = this._sendQueue.poll();
+        if (queueItem == null)
+        {
+            this._sendQueue = null;
+            return;
+        }
+
+        if (this.state == DeviceState.Ready)
+        {
+            final Handler timeoutHandler = new Handler(Looper.getMainLooper());
+            final boolean[] messageSent = {false};
+
+            SendToDeviceQueueItem finalQueueItem = queueItem;
+            Runnable timeoutRunnable = () ->
+            {
+                if (!messageSent[0])
+                {
+                    Logger.Error(TAG, "Timeout: Failed to transmit data to device " + this + " within 30 seconds");
+                    if (finalQueueItem.Listener != null)
+                    {
+                        finalQueueItem.Listener.onMessageSendResult(EMessageSendResult.Timeout, null);
+                    }
+                }
+            };
+            timeoutHandler.postDelayed(timeoutRunnable, 30000); // 30 seconds Timeout
+            try
+            {
+                Logger.Debug(TAG, "Trying to transmit data to device " + this + ": ", queueItem.Data.get(0));
+
+                this.Manager.connectIQ.sendMessage(this.device, this.deviceApp, finalQueueItem.Data, (device, app, status) ->
+                {
+                    messageSent[0] = true;
+                    timeoutHandler.removeCallbacks(timeoutRunnable);
+                    if (status == ConnectIQ.IQMessageStatus.SUCCESS)
+                    {
+                        Logger.Debug(TAG, "Transmitted data to device " + this);
+                    }
+                    else
+                    {
+                        Logger.Error(TAG, "Failed to transmit data to device " + this + ": " + status.name());
+                    }
+
+                    if (finalQueueItem.Listener != null)
+                    {
+                        finalQueueItem.Listener.onMessageSendResult(status == ConnectIQ.IQMessageStatus.SUCCESS ? EMessageSendResult.Success : EMessageSendResult.Failed, status);
+                    }
+                    this.transmitNextQueueToDevice();
+                });
+            }
+            catch (InvalidStateException e)
+            {
+                Logger.Error(TAG, "Failed to transmit data to device " + this + ": Invalid state");
+                timeoutHandler.removeCallbacks(timeoutRunnable);
+                if (finalQueueItem.Listener != null)
+                {
+                    finalQueueItem.Listener.onMessageSendResult(EMessageSendResult.InvalidState, null);
+                }
+                this.transmitNextQueueToDevice();
+            }
+            catch (ServiceUnavailableException e)
+            {
+                Logger.Error(TAG, "Failed to transmit data to device " + this + ": Service unavailable");
+                timeoutHandler.removeCallbacks(timeoutRunnable);
+                if (finalQueueItem.Listener != null)
+                {
+                    finalQueueItem.Listener.onMessageSendResult(EMessageSendResult.ServiceUnavailable, null);
+                }
+                while (queueItem != null)
+                {
+                    if (queueItem.Listener != null)
+                    {
+                        queueItem.Listener.onMessageSendResult(EMessageSendResult.Failed, ConnectIQ.IQMessageStatus.FAILURE_INVALID_DEVICE);
+                    }
+                    queueItem = this._sendQueue.poll();
+                }
+                this._sendQueue = null;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(TAG, "Failed to transmit data to device " + this + ": " + ex.getMessage());
+                timeoutHandler.removeCallbacks(timeoutRunnable);
+                if (finalQueueItem.Listener != null)
+                {
+                    finalQueueItem.Listener.onMessageSendResult(EMessageSendResult.Failed, null);
+                }
+                this.transmitNextQueueToDevice();
+            }
+        }
+        else
+        {
+            Logger.Error(TAG, "Failed to transmit data to device " + this + ": Device is in state " + this.state);
+            while (queueItem != null)
+            {
+                if (queueItem.Listener != null)
+                {
+                    queueItem.Listener.onMessageSendResult(EMessageSendResult.Failed, ConnectIQ.IQMessageStatus.FAILURE_INVALID_DEVICE);
+                }
+                queueItem = this._sendQueue.poll();
+            }
+            this._sendQueue = null;
+        }
+    }
+
+    private void initDone()
+    {
+        if (this._initListener != null)
+        {
             this._initListener.onDeviceInitialized(this, this.isReady());
             this._initListener = null;
         }
     }
 
-    private static boolean isFinalState(DeviceState state) {
+    private static boolean isFinalState(DeviceState state)
+    {
         return !Arrays.asList(DeviceState.CheckingApp, DeviceState.Initializing).contains(state);
     }
 }
