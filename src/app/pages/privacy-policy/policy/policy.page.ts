@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { HttpClient } from "@angular/common/http";
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from "@angular/core";
 import { FormsModule } from "@angular/forms";
@@ -15,7 +15,7 @@ import { PageBase } from "../../page-base";
     styleUrls: ["./policy.page.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
-    imports: [IonContent, IonSelect, IonSelectOption, CommonModule, FormsModule, MainToolbarComponent, TranslocoModule],
+    imports: [IonContent, IonSelect, IonSelectOption, FormsModule, MainToolbarComponent, TranslocoModule],
     providers: [provideTranslocoScope({ scope: "pages/privacy-policy/policy-page", alias: "page_policy" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class PolicyPage extends PageBase {

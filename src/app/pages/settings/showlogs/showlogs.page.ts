@@ -88,7 +88,7 @@ export class ShowlogsPage extends PageBase {
                     this.cdr.detectChanges();
                     if (scroll_to_bottom) {
                         setTimeout(() => {
-                            this.ScrollToBottom(false);
+                            this.ScrollToBottom();
                         }, 1);
                     }
                 }
@@ -190,9 +190,9 @@ export class ShowlogsPage extends PageBase {
         this.cdr.detectChanges();
     }
 
-    public async ScrollToBottom(instant: boolean = true) {
-        await this.mainContent?.scrollToBottom(instant ? 0 : 300);
-        this.cdr.detectChanges();
+    public async ScrollToBottom() {
+        await this.mainContent?.scrollToBottom(300);
+        //this.cdr.detectChanges();
     }
 
     private async selectLogDay(date: Date | undefined) {
@@ -209,15 +209,42 @@ export class ShowlogsPage extends PageBase {
         }
     }
 
-    private async loadLogfile(filename: string | undefined) {
+    private async loadLogfile(filename: string | undefined): Promise<void> {
         if (filename) {
+            const waitForMutations = () =>
+                new Promise<void>(resolve => {
+                    const el = this.logContent?.nativeElement;
+                    if (!el) {
+                        resolve();
+                        return;
+                    }
+
+                    let timer: any = null;
+                    const obs = new MutationObserver(() => {
+                        if (timer) clearTimeout(timer);
+                        timer = setTimeout(() => {
+                            obs.disconnect();
+                            resolve();
+                        }, 100);
+                    });
+
+                    obs.observe(el, { childList: true, subtree: true, characterData: true });
+                    setTimeout(() => {
+                        try {
+                            obs.disconnect();
+                        } catch {}
+                        resolve();
+                    }, 5000);
+                });
+
+            const mutationPromise = waitForMutations();
             this.currentLogfile = await this.Logger.GetLogfile(filename);
+            this.cdr.detectChanges();
+            await mutationPromise;
+            this.ScrollToBottom();
         } else {
             this.currentLogfile = undefined;
+            this.cdr.detectChanges();
         }
-
-        setTimeout(() => {
-            this.ScrollToBottom(true);
-        }, 1);
     }
 }

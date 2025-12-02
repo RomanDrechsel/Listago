@@ -77,6 +77,8 @@ export class LocalizationService {
      * initialize service
      */
     public async Initialize() {
+        this.Transloco.setFallbackLangForMissingTranslation({ fallbackLang: this.FallbackCulture.localeFile });
+
         let lang: string | Culture | undefined = await this._preferences.Get<string>(EPrefProperty.AppLanguage, "");
         if (lang.length == 0) {
             if (Capacitor.isNativePlatform()) {
@@ -94,7 +96,7 @@ export class LocalizationService {
             lang = this.FallbackCulture;
         }
 
-        this.Transloco.events$.subscribe((event: TranslocoEvents) => {
+        this.Transloco.events$.subscribe(async (event: TranslocoEvents) => {
             if (event.type == "translationLoadFailure") {
                 Logger.Error(`Could not load localization: `, event.payload);
             }
@@ -124,7 +126,7 @@ export class LocalizationService {
         }
 
         locale = typeof locale == "string" ? locale : culture.locale;
-        if (locale != this._currentLocale) {
+        if (locale != this._currentLocale || init) {
             this._currentLocale = locale;
 
             if (!this._currentCulture.Match(this._currentLocale)) {

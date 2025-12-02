@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
@@ -12,7 +12,7 @@ import { PageBase } from "../../page-base";
     selector: "app-lists-transmission",
     templateUrl: "./lists-transmission.page.html",
     styleUrls: ["./lists-transmission.page.scss"],
-    imports: [IonLabel, IonNote, IonItem, IonToggle, IonList, IonContent, CommonModule, FormsModule, TranslocoModule, MainToolbarComponent],
+    imports: [IonLabel, IonNote, IonItem, IonToggle, IonList, IonContent, FormsModule, TranslocoModule, MainToolbarComponent],
     providers: [provideTranslocoScope({ scope: "pages/settings/lists-transmission-page", alias: "page_lists_transmission" })],
 })
 export class ListsTransmissionPage extends PageBase {

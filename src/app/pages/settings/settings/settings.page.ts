@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -15,7 +15,7 @@ import { PageBase } from "../../page-base";
     selector: "app-settings",
     templateUrl: "./settings.page.html",
     styleUrls: ["./settings.page.scss"],
-    imports: [IonToggle, IonNote, IonIcon, IonLabel, MainToolbarComponent, CommonModule, TranslocoModule, FormsModule, RouterModule, IonContent, IonList, IonItem, IonSelect, IonSelectOption],
+    imports: [IonToggle, IonNote, IonIcon, IonLabel, MainToolbarComponent, TranslocoModule, FormsModule, RouterModule, IonContent, IonList, IonItem, IonSelect, IonSelectOption],
     providers: [provideTranslocoScope({ scope: "pages/settings/settings-page", alias: "page_settings" }, { scope: "common/buttons", alias: "buttons" }, { scope: "services/localization/localization-service", alias: "service-locale" })],
 })
 export class SettingsPage extends PageBase {

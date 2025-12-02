@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { AfterViewInit, Component, inject } from "@angular/core";
 import { IonButton, IonButtons, IonHeader, IonIcon, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
@@ -9,7 +9,7 @@ import { Logger } from "../../services/logging/logger";
 
 @Component({
     selector: "app-request-watch-log",
-    imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonIcon, IonHeader, CommonModule, TranslocoModule],
+    imports: [IonButton, IonButtons, IonTitle, IonToolbar, IonIcon, IonHeader, TranslocoModule],
     templateUrl: "./request-watch-log.component.html",
     styleUrl: "./request-watch-log.component.scss",
     providers: [provideTranslocoScope({ scope: "components/request-watch-logs", alias: "comp-watchlogs" }, { scope: "common/buttons", alias: "buttons" })],

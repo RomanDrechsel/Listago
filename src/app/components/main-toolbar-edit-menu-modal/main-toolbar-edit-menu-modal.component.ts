@@ -1,10 +1,10 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject } from "@angular/core";
 import { IonIcon, IonItem, IonLabel, IonList, ModalController } from "@ionic/angular/standalone";
 
 @Component({
     selector: "app-main-toolbar-edit-menu-modal",
-    imports: [IonIcon, IonLabel, IonItem, IonList, CommonModule],
+    imports: [IonIcon, IonLabel, IonItem, IonList],
     templateUrl: "./main-toolbar-edit-menu-modal.component.html",
     styleUrl: "./main-toolbar-edit-menu-modal.component.scss",
 })

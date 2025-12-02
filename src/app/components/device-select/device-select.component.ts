@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject } from "@angular/core";
 import { IonButton, IonButtons, IonCheckbox, IonHeader, IonIcon, IonItem, IonList, IonTitle, IonToolbar, ModalController } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
@@ -8,7 +8,7 @@ import { ConnectIQService } from "./../../services/connectiq/connect-iq.service"
 
 @Component({
     selector: "app-device-select",
-    imports: [IonCheckbox, IonItem, IonList, IonIcon, IonButton, IonButtons, IonTitle, IonHeader, IonToolbar, TranslocoModule, CommonModule],
+    imports: [IonCheckbox, IonItem, IonList, IonIcon, IonButton, IonButtons, IonTitle, IonHeader, IonToolbar, TranslocoModule],
     templateUrl: "./device-select.component.html",
     styleUrl: "./device-select.component.scss",
     providers: [provideTranslocoScope({ scope: "components/device-select", alias: "comp-device-select" }, { scope: "common/buttons", alias: "buttons" })],

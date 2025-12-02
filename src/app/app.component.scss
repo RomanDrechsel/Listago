@@ -128,7 +128,15 @@
 
     @media only screen and (min-width: 768px) {
         ion-menu {
-            max-width: 350px;
+            --min-width: 55%;
+            --side-max-width: 55%;
+        }
+    }
+
+    @media only screen and (min-width: 1024px) {
+        ion-menu {
+            --min-width: 22%;
+            --side-max-width: 22%;
         }
     }
 }
