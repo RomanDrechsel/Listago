@@ -248,9 +248,12 @@ ion-toggle {
     --color: var(--ion-color-secondary);
     --track-background-checked: rgba(var(--ion-color-secondary-rgb, 0, 84, 233), 0.5);
     --handle-background-checked: var(--ion-color-secondary);
+    display: flex;
 }
 
 ion-datetime {
+    max-width: 100%;
+
     ion-buttons {
         flex-wrap: wrap;
         justify-content: end;

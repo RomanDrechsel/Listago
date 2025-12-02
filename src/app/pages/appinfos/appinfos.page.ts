@@ -1,10 +1,9 @@
-
 import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { InAppReview } from "@capacitor-community/in-app-review";
 import { Browser } from "@capacitor/browser";
 import { Device } from "@capacitor/device";
-import { IonButton, IonCol, IonContent, IonGrid, IonItem, IonList, IonNote, IonRow, IonText, ModalController } from "@ionic/angular/standalone";
+import { IonButton, IonCol, IonContent, IonGrid, IonItem, IonList, IonNote, IonRow, IonText } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
 import { interval, Subscription } from "rxjs";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -34,7 +33,6 @@ export class AppinfosPage extends PageBase {
     private timerSubscription?: Subscription;
 
     private readonly _backendService = inject(ListsSqliteBackendService);
-    private readonly _modalCtrl = inject(ModalController);
     private readonly _appupdater = inject(AppUpdaterService);
 
     public get Homepage(): string {
@@ -98,6 +96,8 @@ export class AppinfosPage extends PageBase {
         } else {
             this.LogsSize = this.Locale.getText("page_appinfos.database_logs_txt1", { size: FileUtils.File.FormatSize(logs.size), files: logs.files });
         }
+
+        console.log("LogsSize: ", this.LogsSize);
 
         const backendsize = await this._backendService.DatabaseSize();
         if (backendsize > 0) {

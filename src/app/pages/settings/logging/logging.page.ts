@@ -1,4 +1,3 @@
-
 import { Component } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonText, SelectCustomEvent } from "@ionic/angular/standalone";
@@ -27,7 +26,7 @@ export class LoggingPage extends PageBase {
 
     public override async ionViewDidEnter() {
         await super.ionViewDidEnter();
-        this.timerSubscription = interval(5000).subscribe(() => {
+        this.timerSubscription = interval(3000).subscribe(() => {
             this.requestLogsSize();
         });
     }
@@ -56,13 +55,7 @@ export class LoggingPage extends PageBase {
             } else {
                 text = this.Locale.getText("page_settings_logs.deleteall_confirm_single");
             }
-            if (
-                await this.Popups.Alert.YesNo({
-                    message: text,
-                    button_yes: this.Locale.getText("yes"),
-                    button_no: this.Locale.getText("no"),
-                })
-            ) {
+            if (await this.Popups.Alert.YesNo({ message: text })) {
                 const del = await this.Logger.DeleteLogs(-1);
                 if (del != 1) {
                     this.Popups.Toast.Success(this.Locale.getText("page_settings_logs.deleteall_done", { count: del }));
