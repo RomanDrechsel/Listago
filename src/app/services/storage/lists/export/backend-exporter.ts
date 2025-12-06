@@ -200,6 +200,10 @@ export class BackendExporter {
     }
 
     public async ExportSettings(service: PreferencesService): Promise<boolean> {
+        if (!(await this.createTempDirectory(""))) {
+            return false;
+        }
+
         const filename = FileUtils.JoinPaths(this._tmpPath, this._settingsFile);
         const json = await service.Export();
         try {
