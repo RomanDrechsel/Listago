@@ -192,7 +192,6 @@ export class ListsSqliteBackendService {
     /**
      * stores a list in backend
      * @param args.list list object to store
-     * @param args.force force storing the list, even if it is not dirty
      * @returns id of the list, or false on error, undefined if nothing needs to be stored
      */
     public async storeList(args: { list: List; force?: boolean }): Promise<number | false | undefined> {
@@ -211,8 +210,21 @@ export class ListsSqliteBackendService {
 
         const transaction_result = await this._sqliteService.Transaction(async (conn: SQLiteDBConnection) => {
             let list_id: number | undefined = undefined;
-            if (args.list.isVirtual) {
+
+            let action: "insert" | "update" = args.list.isVirtual ? "insert" : "update";
+            if (!args.list.isVirtual) {
+                //check if the list exists
+                const check = await conn.query("SELECT 1 FROM `lists` WHERE `id` = ? LIMIT 1", [args.list.Id]);
+                if (check.values?.length) {
+                    action = "update";
+                } else {
+                    action = "insert";
+                }
+            } else {
                 backend.delete("id");
+            }
+
+            if (action == "insert") {
                 const keys = "`" + Array.from(backend.keys()).join("`, `") + "`";
                 const qms = Array.from(backend.keys())
                     .map(() => "?")
