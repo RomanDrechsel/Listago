@@ -219,6 +219,13 @@ export class BackendExporter {
 
     private async createTempDirectory(fullpath: string): Promise<boolean> {
         fullpath = FileUtils.JoinPaths(this._tmpPath, fullpath);
+
+        try {
+            await Filesystem.stat({ path: fullpath, directory: this._exportDir });
+            // Directory already exists.
+            return true;
+        } catch {}
+
         try {
             await Filesystem.mkdir({ path: fullpath, directory: this._exportDir, recursive: true });
         } catch (e) {
