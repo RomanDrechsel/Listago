@@ -224,8 +224,9 @@ export class ShowlogsPage extends PageBase {
                         if (timer) clearTimeout(timer);
                         timer = setTimeout(() => {
                             obs.disconnect();
+                            this.ScrollToBottom();
                             resolve();
-                        }, 100);
+                        }, 200);
                     });
 
                     obs.observe(el, { childList: true, subtree: true, characterData: true });
@@ -236,10 +237,9 @@ export class ShowlogsPage extends PageBase {
                         resolve();
                     }, 5000);
                 });
-
+            waitForMutations();
             this.currentLogfile = await this.Logger.GetLogfile(filename);
             this.cdr.detectChanges();
-            await waitForMutations();
             this.ScrollToBottom();
             await new Promise(resolve => {
                 setTimeout(() => {

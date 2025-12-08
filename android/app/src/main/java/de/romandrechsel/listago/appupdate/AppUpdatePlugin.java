@@ -146,7 +146,6 @@ public class AppUpdatePlugin extends Plugin
                         ret.put("bytesDownloaded", state.bytesDownloaded());
                         ret.put("totalBytesToDownload", state.totalBytesToDownload());
                     }
-                    Logger.Debug(TAG, "Listeners notified: " + this.hasListeners("onFlexibleUpdateStateChange"));
                     this.notifyListeners("onFlexibleUpdateStateChange", ret);
                 };
                 this.appUpdateManager.registerListener(this.listener);
