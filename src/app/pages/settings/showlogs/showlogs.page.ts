@@ -237,10 +237,15 @@ export class ShowlogsPage extends PageBase {
                     }, 5000);
                 });
 
-            const mutationPromise = waitForMutations();
             this.currentLogfile = await this.Logger.GetLogfile(filename);
             this.cdr.detectChanges();
-            await mutationPromise;
+            await waitForMutations();
+            this.ScrollToBottom();
+            await new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(true);
+                }, 100);
+            });
             this.ScrollToBottom();
         } else {
             this.currentLogfile = undefined;

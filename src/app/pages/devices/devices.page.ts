@@ -18,7 +18,7 @@ import { PageBase } from "../page-base";
     providers: [provideTranslocoScope({ scope: "pages/devices-page", alias: "page_devices" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class DevicesPage extends PageBase {
-    @ViewChild("deviceSelect") private deviceSelect!: IonSelect;
+    @ViewChild("deviceSelect") private deviceSelect?: IonSelect;
 
     public SelectedDevice?: ConnectIQDevice;
     public ListUuid?: string;
@@ -153,7 +153,7 @@ export class DevicesPage extends PageBase {
             }
         }
 
-        this.deviceSelect.writeValue(this.SelectedDevice?.Identifier);
+        this.deviceSelect?.writeValue(this.SelectedDevice?.Identifier);
         this.cdr.detectChanges();
     }
 }

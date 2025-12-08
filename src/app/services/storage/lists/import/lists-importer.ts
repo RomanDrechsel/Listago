@@ -328,7 +328,7 @@ export class ListsImporter {
                 list.Order += args.order_offset;
                 const is_new = list.isVirtual;
 
-                const store = await listsService.StoreList(list, true, true, false);
+                const store = await listsService.StoreList(list, true, true, false, false);
                 if (store === true) {
                     if (is_new) {
                         Logger.Debug(`Importer: imported new list: ${list.toLog()} (legacy_uuid: ${list.LegacyUuid}) with ${list.Items.length} item(s)` + (args.is_trash ? " in trash" : ""));

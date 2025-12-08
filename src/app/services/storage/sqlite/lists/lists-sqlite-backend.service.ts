@@ -247,7 +247,18 @@ export class ListsSqliteBackendService {
                     if (item.isVirtual || item.Dirty || args.force) {
                         const itemBackend = item.toBackend();
                         itemBackend.set("list_id", list_id);
-                        if (item.isVirtual) {
+
+                        action = item.isVirtual ? "insert" : "update";
+                        if (!item.isVirtual) {
+                            const check = await conn.query("SELECT 1 FROM `listitems` WHERE `id` = ? AND `list_id` = ?  LIMIT 1", [item.Id, list_id]);
+                            if (check.values?.length) {
+                                action = "update";
+                            } else {
+                                action = "insert";
+                            }
+                        }
+
+                        if (action == "insert") {
                             itemBackend.delete("id");
                             const keys = "`" + Array.from(itemBackend.keys()).join("`, `") + "`";
                             const qms = Array.from(itemBackend.keys())

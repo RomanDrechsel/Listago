@@ -586,7 +586,7 @@ export class ListsService {
      * @param force store the list, even if there are no changes
      * @returns storage successful, undefined if no storage was needed
      */
-    public async StoreList(list: List, force: boolean = false, fire_event: boolean = true, progressbar: boolean = true): Promise<boolean | undefined> {
+    public async StoreList(list: List, force: boolean = false, fire_event: boolean = true, progressbar: boolean = true, sync: boolean = true): Promise<boolean | undefined> {
         if (progressbar) {
             MainToolbarComponent.ToggleProgressbar(true);
         }
@@ -609,7 +609,7 @@ export class ListsService {
             if (fire_event) {
                 this.onListChangedSubject.next(list);
             }
-            if (store !== undefined) {
+            if (sync && store !== undefined) {
                 //only sync, if the list was dirty
                 this.syncListToWatch(list);
             }
