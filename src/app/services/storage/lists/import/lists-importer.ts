@@ -1,4 +1,5 @@
-import { Directory, Encoding, type FileInfo, Filesystem } from "@capacitor/filesystem";
+import { Directory, Encoding, Filesystem, type FileInfo } from "@capacitor/filesystem";
+import { AsyncUnzipInflate, Unzip } from "fflate";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -57,11 +58,30 @@ export class ListsImporter {
             const create = await FileUtils.MkDir(path, Directory.Cache);
             if (create) {
                 try {
-                    /*await Zip.unzip({
-                        sourceFile: archive,
-                        destinationPath: create,
-                    });*/
-                    //TODO: fflate
+                    const file = await FileUtils.GetFile(archive);
+                    if (!file.Exists) {
+                        Logger.Error(`Importer: could not find zip archive '${archive}'`);
+                        return false;
+                    }
+                    const base64 = await file.Base64Content();
+                    if (!base64) {
+                        Logger.Error(`Importer: could not read base64 content of zip archive '${archive}'`);
+                        return false;
+                    }
+                    const binaryString = atob(base64);
+                    const len = binaryString.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+
+                    const unzipper = new Unzip(stream => {
+                        console.log("Unzipping file: ", stream);
+                    });
+                    unzipper.register(AsyncUnzipInflate);
+                    unzipper.push(bytes, true);
+
+                    //WIP: fflate
                     this._importPath = create;
                 } catch (e) {
                     Logger.Error(`Importer: could not unzip archive:`, e);
