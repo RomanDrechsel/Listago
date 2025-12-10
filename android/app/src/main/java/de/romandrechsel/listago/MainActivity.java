@@ -21,6 +21,7 @@ import com.getcapacitor.PluginHandle;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,10 +41,12 @@ public class MainActivity extends BridgeActivity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        registerPlugin(ConnectIQPlugin.class);
-        registerPlugin(SysInfoPlugin.class);
-        registerPlugin(SharePlugin.class);
-        registerPlugin(AppUpdatePlugin.class);
+        this.registerPlugins(Arrays.asList(
+            ConnectIQPlugin.class,
+            SysInfoPlugin.class,
+            SharePlugin.class,
+            AppUpdatePlugin.class
+        ));
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
         Window window = getWindow();
@@ -118,6 +121,7 @@ public class MainActivity extends BridgeActivity
         }
     }
 
+    @Nullable
     private SysInfoPlugin GetSysInfoPlugin()
     {
         if (this.getBridge() != null)
@@ -127,7 +131,6 @@ public class MainActivity extends BridgeActivity
             {
                 return (SysInfoPlugin) handle.getInstance();
             }
-
         }
         return null;
     }

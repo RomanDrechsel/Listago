@@ -1,5 +1,5 @@
-import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
-import { Zip } from "capa-zip";
+import { Directory, Filesystem } from "@capacitor/filesystem";
+import { strToU8, zip, type DeflateOptions } from "fflate";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
 import { Listitem, type ListitemModel } from "src/app/services/lists/listitem";
@@ -11,17 +11,16 @@ import { ListitemToModel, ListToModel } from "./to-model";
 
 export class BackendExporter {
     private _isRunning = false;
-    private _exportPath = "export";
     private _exportDir = Directory.Cache;
+    private _exportPath = "export";
     private _archiveBasename = "lists-export";
     private _archiveExtension = ".zip";
     private _archiveFilename?: string = undefined;
     private _settingsFile = "settings.json";
     private _cancelRequested = false;
 
-    private get _tmpPath(): string {
-        return FileUtils.JoinPaths(this._exportPath, "temp");
-    }
+    private _zipData: Map<string, Uint8Array> = new Map();
+    private readonly _zipOptions: DeflateOptions = { level: 9, mem: 8 };
 
     private get _exportArchive(): string {
         return this._archiveFilename ?? this._archiveBasename + this._archiveExtension;
@@ -32,63 +31,79 @@ export class BackendExporter {
     }
 
     public async Initialize(): Promise<boolean> {
-        //remove old export files if any exist
-        if (!(await this.removeExportFolder())) {
-            return false;
-        }
+        this._zipData.clear();
+        await this.CleanUp();
         this._isRunning = true;
+        this._cancelRequested = false;
         return true;
     }
 
     public async Stop() {
         this._cancelRequested = true;
-        await this.CleanUp();
+        this._isRunning = false;
     }
 
-    public async CleanUp(delete_archive: boolean = false) {
-        if (delete_archive) {
-            await this.removeExportFolder();
-        } else {
-            await this.removeOldFiles();
-        }
+    public async CleanUp() {
+        try {
+            await Filesystem.rmdir({ path: this._exportPath, directory: this._exportDir, recursive: true });
+        } catch {}
     }
 
     public async Finalize(): Promise<false | string> {
         if (this._isRunning) {
-            let source,
-                destination = "";
-            try {
-                source = (await Filesystem.getUri({ path: this._tmpPath, directory: this._exportDir })).uri;
-                destination = (await Filesystem.getUri({ path: FileUtils.JoinPaths(this._exportPath, this._exportArchive, "/"), directory: this._exportDir })).uri;
-
-                await Zip.zip({
-                    sourcePath: source,
-                    destinationPath: destination,
-                });
-                Logger.Notice(`Export: created archive at ${destination}`);
-            } catch (e) {
-                Logger.Error(`Export: could not export '${source}' to '${destination}': `, e);
-                await this.Stop();
-                return false;
-            }
-
             try {
                 if (await FileUtils.FileExists(this._exportArchive, Directory.Documents)) {
                     const now = new Date();
                     const tmp = `_${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDay()).padStart(2, "0")}_${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
                     this._archiveFilename = this._archiveBasename + tmp + this._archiveExtension;
                 }
-
-                await Filesystem.copy({ from: destination, to: this._exportArchive, toDirectory: Directory.Documents });
-                Logger.Notice(`Export: copied archive '${destination}' to '${this._exportArchive}' in '${Directory.Documents}'`);
             } catch (e) {
-                Logger.Error(`Export: could not copy archive '${destination}' to '${this._exportArchive}' in DOCUMENTS`, e);
+                Logger.Error(`Export: could not copy zip archive to '${this._exportArchive}' in CACHE`, e);
                 return false;
             }
+            const structure: { [key: string]: Uint8Array } = Object.fromEntries(this._zipData.entries());
 
-            await this.Stop();
+            const data = await new Promise<Uint8Array>((resolve, reject) => {
+                zip(structure, this._zipOptions, (err, data) => {
+                    if (err) {
+                        Logger.Error(`Export: could not create zip archive: ${err}`);
+                        reject();
+                    } else {
+                        resolve(data);
+                    }
+                });
+            });
 
-            return destination;
+            let archive: string | boolean = false;
+
+            try {
+                await Filesystem.mkdir({ path: this._exportPath, directory: this._exportDir, recursive: true });
+            } catch {}
+
+            if (data) {
+                try {
+                    //write file to CACHE folder
+                    const res = await Filesystem.writeFile({
+                        path: FileUtils.JoinPaths(this._exportPath, this._exportArchive),
+                        directory: this._exportDir,
+                        data: btoa(String.fromCharCode(...data)),
+                    });
+                    archive = res.uri;
+                    Logger.Debug(`Export: created zip archive at '${archive}'`);
+                } catch (e) {
+                    Logger.Error(`Export: could not store zip archive to '${this._exportArchive}' in '${this._exportDir}': `, e);
+                }
+
+                try {
+                    //copy it to DOCUMENTS folder
+                    const res = await Filesystem.copy({ from: FileUtils.JoinPaths(this._exportPath, this._exportArchive), directory: this._exportDir, to: this._exportArchive, toDirectory: Directory.Documents });
+                    Logger.Debug(`Export: copied zip archive to '${res.uri}'`);
+                } catch (e) {
+                    Logger.Error("Export: could not copy zip archive to DOCUMENTS folder: ", e);
+                }
+            }
+
+            return archive;
         }
         return false;
     }
@@ -97,30 +112,24 @@ export class BackendExporter {
         const lists = await listsService.queryLists({ peek: false, trash: false });
         listener?.Init(lists.length);
 
-        if (lists.length > 0) {
-            if (!(await this.createTempDirectory("lists/lists"))) {
+        for (const list of lists) {
+            if (this._cancelRequested) {
+                this.cancel();
                 return false;
             }
+            const json = JSON.stringify(ListToModel(list), null, 2);
+            const filename = `${list.Id}-${StringUtils.shorten(StringUtils.FilesaveString(list.Name), 20, false)}.json`;
+            const dir = FileUtils.JoinPaths("lists", "lists", filename);
 
-            for (const list of lists) {
-                if (this._cancelRequested) {
-                    await this.CleanUp();
-                    return false;
-                }
-                const json = JSON.stringify(ListToModel(list), null, 2);
-                const filename = `${list.Id}-${StringUtils.shorten(StringUtils.FilesaveString(list.Name), 20, false)}.json`;
-                const filepath = FileUtils.JoinPaths(this._tmpPath, "lists", "lists", filename);
-
-                try {
-                    const write = await Filesystem.writeFile({ path: filepath, directory: this._exportDir, encoding: Encoding.UTF8, recursive: true, data: json });
-                    Logger.Debug(`Export: stored list '${list.toLog()}' at '${write.uri}'`);
-                    listener?.oneSuccess();
-                } catch (e) {
-                    Logger.Error(`Export: could not store list '${list.toLog()}' at '${filepath}' in '${this._exportDir}': `, e);
-                    listener?.oneFailed();
-                }
-                listener?.oneDone();
+            try {
+                this._zipData.set(dir, strToU8(json, false));
+                Logger.Debug(`Export: stored list '${list.toLog()}' at '${dir}' in zip archive`);
+                listener?.oneSuccess();
+            } catch (e) {
+                Logger.Error(`Export: could not store list '${list.toLog()}' at '${dir}' in zip archive:`, e);
+                listener?.oneFailed();
             }
+            listener?.oneDone();
         }
 
         return true;
@@ -133,37 +142,27 @@ export class BackendExporter {
 
         listener?.Init(lists.length + (models?.length ?? 0));
 
-        if (lists.length > 0) {
-            if (!(await this.createTempDirectory("lists/trash"))) {
+        for (const list of lists) {
+            if (this._cancelRequested) {
+                this.cancel();
                 return false;
             }
+            const json = JSON.stringify(ListToModel(list), null, 2);
+            const filename = `${list.Id}-${StringUtils.shorten(StringUtils.FilesaveString(list.Name), 20, false)}.json`;
+            const dir = FileUtils.JoinPaths("lists", "trash", filename);
 
-            for (const list of lists) {
-                if (this._cancelRequested) {
-                    await this.CleanUp();
-                    return false;
-                }
-                const json = JSON.stringify(ListToModel(list), null, 2);
-                const filename = `${list.Id}-${StringUtils.shorten(StringUtils.FilesaveString(list.Name), 20, false)}.json`;
-                const filepath = FileUtils.JoinPaths(this._tmpPath, "lists", "trash", filename);
-
-                try {
-                    const write = await Filesystem.writeFile({ path: filepath, directory: this._exportDir, encoding: Encoding.UTF8, recursive: true, data: json });
-                    Logger.Debug(`Export: stored list '${list.toLog()}' at '${write.uri}'`);
-                    listener?.oneSuccess();
-                } catch (e) {
-                    Logger.Error(`Export: could not store list '${list.toLog()}' at '${filepath}' in '${this._exportDir}': `, e);
-                    listener?.oneFailed();
-                }
-                listener?.oneDone();
+            try {
+                this._zipData.set(dir, strToU8(json, false));
+                Logger.Debug(`Export: stored list '${list.toLog()}' at '${dir}' in zip archive`);
+                listener?.oneSuccess();
+            } catch (e) {
+                Logger.Error(`Export: could not store list '${list.toLog()}' at '${dir}' in zip archive: `, e);
+                listener?.oneFailed();
             }
+            listener?.oneDone();
         }
 
         if (models) {
-            if (!(await this.createTempDirectory("lists/trash/items"))) {
-                return false;
-            }
-
             const trashMap = new Map<number, ListitemModel[]>();
 
             for (const model of models) {
@@ -174,7 +173,7 @@ export class BackendExporter {
 
             for (const [list_id, models] of trashMap.entries()) {
                 if (this._cancelRequested) {
-                    await this.CleanUp();
+                    this.cancel();
                     return false;
                 }
                 const obj = {
@@ -183,13 +182,13 @@ export class BackendExporter {
                 };
                 const json = JSON.stringify(obj, null, 2);
                 const filename = `${list_id}.json`;
-                const filepath = FileUtils.JoinPaths(this._tmpPath, "lists", "trash", "items", filename);
+                const dir = FileUtils.JoinPaths("lists", "trash", "items", filename);
                 try {
-                    const write = await Filesystem.writeFile({ path: filepath, directory: this._exportDir, encoding: Encoding.UTF8, recursive: true, data: json });
-                    Logger.Debug(`Export: stored listitems in trash for list '${list_id}' at '${write.uri}'`);
-                    listener?.oneSuccess(models.length);
+                    this._zipData.set(dir, strToU8(json, false));
+                    Logger.Debug(`Export: stored listitems in trash for list '${list_id}' at '${dir}' in zip archive`);
+                    listener?.oneSuccess();
                 } catch (e) {
-                    Logger.Error(`Export: could not store listitems in trash for list  '${list_id} at '${filepath}' in '${this._exportDir}': `, e);
+                    Logger.Error(`Export: could not store listitems in trash for list  '${list_id} at '${dir}' in zip archive: `, e);
                     listener?.oneFailed(models.length);
                 }
                 listener?.oneDone(models.length);
@@ -200,91 +199,21 @@ export class BackendExporter {
     }
 
     public async ExportSettings(service: PreferencesService): Promise<boolean> {
-        if (!(await this.createTempDirectory(""))) {
-            return false;
-        }
-
-        const filename = FileUtils.JoinPaths(this._tmpPath, this._settingsFile);
         const json = await service.Export();
+
         try {
-            const write = await Filesystem.writeFile({ path: filename, directory: this._exportDir, data: json, encoding: Encoding.UTF8 });
-            Logger.Debug(`Export: saved app settings to '${write.uri}'`);
+            this._zipData.set(this._settingsFile, strToU8(json, false));
+            Logger.Debug(`Export: saved app settings to '${this._settingsFile}' in zip archive`);
         } catch (e) {
-            Logger.Error(`Export failed: could not write settings file to '${filename}' in '${this._exportDir}': `, e);
+            Logger.Error(`Export failed: could not write settings file to '${this._settingsFile}' in zip archive: `, e);
             return false;
         }
 
         return true;
     }
 
-    private async createTempDirectory(fullpath: string): Promise<boolean> {
-        fullpath = FileUtils.JoinPaths(this._tmpPath, fullpath);
-
-        try {
-            await Filesystem.stat({ path: fullpath, directory: this._exportDir });
-            // Directory already exists.
-            return true;
-        } catch {}
-
-        try {
-            await Filesystem.mkdir({ path: fullpath, directory: this._exportDir, recursive: true });
-        } catch (e) {
-            Logger.Error(`Export failed: could not create temporary directory at '${fullpath}' in '${this._exportDir}': `, e);
-            return false;
-        }
-
-        return true;
-    }
-
-    private async removeOldFiles(fullpath?: string): Promise<boolean> {
-        let directory;
-        try {
-            directory = await Filesystem.stat({ path: this._tmpPath, directory: this._exportDir });
-        } catch {
-            //direcory does not exist
-            return true;
-        }
-
-        const exportPath = fullpath?.length ? FileUtils.JoinPaths(this._tmpPath, fullpath) : this._tmpPath;
-        try {
-            if (directory.type == "directory") {
-                const files = (await Filesystem.readdir({ path: exportPath, directory: this._exportDir })).files;
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    if (file.type == "file") {
-                        const path = FileUtils.JoinPaths(exportPath, file.name);
-                        await Filesystem.deleteFile({ path: path, directory: this._exportDir });
-                    } else {
-                        const path = fullpath?.length ? FileUtils.JoinPaths(fullpath, file.name) : file.name;
-                        await this.removeOldFiles(path);
-                    }
-                }
-                await Filesystem.rmdir({ path: exportPath, directory: this._exportDir, recursive: true });
-            } else {
-                await Filesystem.deleteFile({ path: exportPath, directory: this._exportDir });
-            }
-        } catch (e) {
-            Logger.Error(`Export failed: could not remove old export files from '${(await Filesystem.getUri({ path: exportPath, directory: this._exportDir })).uri}':`, e);
-            return false;
-        }
-
-        return true;
-    }
-
-    private async removeExportFolder(): Promise<boolean> {
-        try {
-            await Filesystem.stat({ path: this._exportPath, directory: this._exportDir });
-        } catch {
-            //diretory does not exist...
-            return true;
-        }
-        try {
-            await Filesystem.rmdir({ path: this._exportPath, directory: this._exportDir, recursive: true });
-            return true;
-        } catch (e) {
-            Logger.Error(`Could not remove export files from '${this._exportPath}' in '${this._exportDir}':`, e);
-        }
-        return false;
+    private cancel() {
+        this._zipData.clear();
     }
 }
 

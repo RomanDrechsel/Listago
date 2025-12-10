@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { Keyboard } from "@capacitor/keyboard";
 import { AlertInput, ModalController, NavController } from "@ionic/angular/standalone";
-import { BehaviorSubject, interval, type Subscription } from "rxjs";
+import { BehaviorSubject, interval, Subject, type Subscription } from "rxjs";
 import { HelperUtils } from "src/app/classes/utils/helper-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
 import { ListEditor } from "src/app/components/list-editor/list-editor.component";
@@ -35,7 +35,6 @@ export class ListsService {
     private _keepInTrashStock: KeepInTrash.Enum = KeepInTrash.Default;
     private _syncLists: boolean = false;
     private _removeOldTrashEntriesTimer?: Subscription;
-    private readonly _listIndex: Map<number, List> = new Map();
 
     /**
      * if automatic syncing is enabled for a list, but no sync-device is online,
@@ -57,7 +56,7 @@ export class ListsService {
     private onListChangedSubject = new BehaviorSubject<List | undefined>(undefined);
     public onListChanged$ = this.onListChangedSubject.asObservable();
 
-    private onListsChangedSubject = new BehaviorSubject<List[] | undefined>(undefined);
+    private onListsChangedSubject = new Subject();
     public onListsChanged$ = this.onListsChangedSubject.asObservable();
 
     public async Initialize() {
@@ -84,20 +83,6 @@ export class ListsService {
     public async GetLists(args?: { orderBy?: ListsOrder; orderDir?: ListsOrderDirection }): Promise<List[]> {
         MainToolbarComponent.ToggleProgressbar(true);
         const lists = await this._backendService.queryLists({ peek: true, trash: false, orderBy: args?.orderBy, orderDir: args?.orderDir });
-        lists.forEach(l => {
-            const list = this._listIndex.get(l.Id!);
-            if (list) {
-                list.clone(l);
-            } else {
-                this._listIndex.set(l.Id!, l);
-            }
-        });
-        Array.from(this._listIndex.keys()).forEach(id => {
-            if (!lists.some(l => l.Id == id)) {
-                this._listIndex.delete(id);
-            }
-        });
-
         MainToolbarComponent.ToggleProgressbar(false);
         return lists;
     }
@@ -122,19 +107,8 @@ export class ListsService {
     public async GetList(id: number): Promise<List | undefined> {
         MainToolbarComponent.ToggleProgressbar(true);
         const list = await this._backendService.queryList({ list: id });
-        if (list) {
-            const index = this._listIndex.get(list.Id);
-            if (index) {
-                index.clone(list);
-            } else {
-                this._listIndex.set(list.Id, list);
-            }
-        } else {
-            this._listIndex.delete(id);
-        }
         MainToolbarComponent.ToggleProgressbar(false);
-
-        return this._listIndex.get(id);
+        return list;
     }
 
     /**
@@ -160,9 +134,8 @@ export class ListsService {
         if (list) {
             if (await this.StoreList(list)) {
                 Logger.Notice(`Created new list ${list.toLog()}`);
-                await this.addListToIndex(list);
                 await this.cleanOrderLists();
-                this.onListsChangedSubject.next(await this.GetLists());
+                this.onListsChangedSubject.next(undefined);
                 this._navController.navigateForward(`/lists/items/${list.Id}`);
                 this.informAboutDisabledSyncPref(list);
             } else {
@@ -304,7 +277,7 @@ export class ListsService {
     public async AddNewListitem(list: List, args: { item: string; order?: number; locked?: boolean; hidden?: boolean }): Promise<boolean> {
         list.AddItem({ id: HelperUtils.RandomNegativNumber(), list_id: list.Id, item: args.item, order: args.order ?? -1, locked: args.locked ? 1 : 0, hidden: args.hidden ? 1 : 0, created: Date.now(), modified: Date.now() });
         if (await this.StoreList(list, false, true, true)) {
-            this.onListsChangedSubject.next(await this.GetLists());
+            this.onListsChangedSubject.next(undefined);
             return true;
         }
 
@@ -724,15 +697,6 @@ export class ListsService {
     }
 
     /**
-     * purges all details of lists in memory
-     */
-    public PurgeListDetails() {
-        this._listIndex.forEach(l => {
-            l.PurgeDetails();
-        });
-    }
-
-    /**
      * remove automatic synchronization from all lists
      */
     public async PurgeAllSyncs(): Promise<void> {
@@ -799,8 +763,7 @@ export class ListsService {
 
     public async ReloadListsDataset(datasets?: ("lists" | "trash")[]): Promise<void> {
         if (!datasets || datasets.includes("lists")) {
-            const lists = await this.GetLists();
-            this.onListsChangedSubject.next(lists);
+            this.onListsChangedSubject.next(undefined);
         }
         if (datasets?.includes("trash")) {
             const trash = await this.GetTrash();
@@ -813,17 +776,6 @@ export class ListsService {
             return list.Name;
         }
         return await this._backendService.queryListName(list);
-    }
-
-    private async addListToIndex(list: List) {
-        if (!list.Id) {
-            await this.StoreList(list, true, true, true);
-        }
-        if (list.Id) {
-            this._listIndex.set(list.Id, list);
-        } else {
-            Logger.Error(`Could not store list ${list.toLog()} in index, no Uuid`);
-        }
     }
 
     /**
@@ -878,15 +830,14 @@ export class ListsService {
     }
 
     /**
-     * set the 'Order' property of all lists, as they are in the given list
+     * set the 'Order' property of all lists
      * @param lists list to reset the 'Order' property
      * @param force_event publish the list with the signal
      */
     private async cleanOrderLists(force_event: boolean = false, fire_event: boolean = true) {
         let order = 0;
         let changed = false;
-        let lists = Array.from(this._listIndex.values());
-        lists = lists.sort((a: List, b: List) => a.Order - b.Order);
+        const lists = (await this.GetLists()).sort((a: List, b: List) => a.Order - b.Order);
         for (let i = 0; i < lists.length; i++) {
             const list = lists[i];
             list.Order = order++;
@@ -897,7 +848,7 @@ export class ListsService {
         }
 
         if (fire_event && (force_event || changed)) {
-            this.onListsChangedSubject.next(await this.GetLists());
+            this.onListsChangedSubject.next(undefined);
         }
     }
 
@@ -971,9 +922,6 @@ export class ListsService {
         }
 
         if (deleted && deleted > 0) {
-            lists.forEach(l => {
-                this._listIndex.delete(l.Id);
-            });
             await this.cleanOrderLists();
             lists.forEach(l => {
                 this.onListChangedSubject.next(l);
@@ -981,7 +929,7 @@ export class ListsService {
                     this._connectIQ.SendToDevice({ device: undefined, messageType: ConnectIQMessageType.DeleteList, data: l.Id });
                 }
             });
-            this.onListsChangedSubject.next(await this.GetLists());
+            this.onListsChangedSubject.next(undefined);
         }
 
         if (deleted !== false) {
@@ -1052,7 +1000,7 @@ export class ListsService {
             }
         }
 
-        this.onListsChangedSubject.next(await this.GetLists());
+        this.onListsChangedSubject.next(undefined);
 
         if (errors > 0) {
             if (lists.length == errors) {
@@ -1231,7 +1179,6 @@ export class ListsService {
             for (let i = 0; i < lists.length; i++) {
                 const list = lists[i];
                 await this.refreshList(list);
-                await this.addListToIndex(list);
             }
             await this.cleanOrderLists(false, false);
             for (let i = 0; i < lists.length; i++) {
@@ -1255,7 +1202,7 @@ export class ListsService {
                 this._popups.Toast.Error("service-lists.restore_error_plural");
             }
         }
-        this.onListsChangedSubject.next(await this.GetLists());
+        this.onListsChangedSubject.next(undefined);
         this.onTrashDatasetChangedSubject.next(await this.GetTrash());
 
         MainToolbarComponent.ToggleProgressbar(false);

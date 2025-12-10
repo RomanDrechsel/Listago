@@ -61,9 +61,16 @@ export class TrashListitemsPage extends AnimatedListPageBase {
             this._listUuid = listid;
             this._listName = await this.ListsService.GetListName(listid);
             this._trashItems = await this.ListsService.GetListitemTrash(this._listUuid, true);
+            this.onItemsChanged();
+            AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
         }
+        this._itemsInitialized = true;
 
         this._trashChangedSubscription = this.ListsService.onTrashItemsDatasetChanged$.subscribe(async trash => {
+            if (this._initialSubscription) {
+                this._initialSubscription = false;
+                return;
+            }
             if (trash && ((trash instanceof List && this._listUuid == trash.Id) || trash == this._listUuid)) {
                 this._trashItems = await this.ListsService.GetListitemTrash(this._listUuid, false);
                 this._itemsInitialized = true;

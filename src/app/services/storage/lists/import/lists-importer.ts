@@ -1,5 +1,4 @@
 import { Directory, Encoding, type FileInfo, Filesystem } from "@capacitor/filesystem";
-import { Zip } from "capa-zip";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
@@ -58,10 +57,11 @@ export class ListsImporter {
             const create = await FileUtils.MkDir(path, Directory.Cache);
             if (create) {
                 try {
-                    await Zip.unzip({
+                    /*await Zip.unzip({
                         sourceFile: archive,
                         destinationPath: create,
-                    });
+                    });*/
+                    //TODO: fflate
                     this._importPath = create;
                 } catch (e) {
                     Logger.Error(`Importer: could not unzip archive:`, e);

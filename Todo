@@ -1,3 +1,5 @@
+WIP: Use fflate instead of capa-zip
+
 TODO: Notes support
 TEST: in-app update
 TEST: import from lists

@@ -68,23 +68,18 @@ export class ListItemsPage extends AnimatedListPageBase {
             this._listTitle = listtitle;
         }
 
-        if (!this._list || this._list.isPeek) {
-            (async () => {
-                // no wait
-                const id = Number(this.Route.snapshot.paramMap.get("id"));
-                if (id != Number.NaN) {
-                    this._list = await this.ListsService.GetList(id);
-                    if (this._list) {
-                        this.Preferences.Set(EPrefProperty.OpenedList, this._list.Id);
-                        this.onItemsChanged();
-                    }
-                    this._itemsInitialized = true;
-                    AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
-                }
-            })();
-        } else {
+        // no wait
+        const id = Number(this.Route.snapshot.paramMap.get("id"));
+        if (id != Number.NaN) {
+            this._list = await this.ListsService.GetList(id);
+            if (this._list) {
+                this.Preferences.Set(EPrefProperty.OpenedList, this._list.Id);
+                this.onItemsChanged();
+            }
             this._itemsInitialized = true;
+            AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
         }
+        this._itemsInitialized;
 
         this._useTrash = await this.Preferences.Get<boolean>(EPrefProperty.TrashListitems, true);
         this._preferencesSubscription = this.Preferences.onPrefChanged$.subscribe(prop => {
@@ -94,6 +89,10 @@ export class ListItemsPage extends AnimatedListPageBase {
         });
 
         this._listSubscription = this.ListsService.onListChanged$.subscribe(async list => {
+            if (this._initialSubscription) {
+                this._initialSubscription = false;
+                return;
+            }
             if (list && list.equals(this._list) && list.isPeek == false) {
                 this._list = list;
                 AppComponent.Instance?.setAppPages(this.ModifyMainMenu());

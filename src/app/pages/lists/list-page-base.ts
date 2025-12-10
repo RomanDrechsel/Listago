@@ -23,6 +23,8 @@ export abstract class ListPageBase extends PageBase {
     protected _scrollPosition: "top" | "bottom" | number = "top";
     protected _itemsInitialized = false;
 
+    protected _initialSubscription = true;
+
     protected _editMode = true;
     protected _selectedItems: (Number | String)[] = [];
 

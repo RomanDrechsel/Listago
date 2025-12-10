@@ -81,6 +81,15 @@ export class ExportPage extends PageBase {
         ];
     }
 
+    public override async ionViewWillLeave(): Promise<void> {
+        await super.ionViewWillLeave();
+        if (this._exporter) {
+            await this._exporter.Stop();
+            await this._exporter.CleanUp();
+            this._exporter = undefined;
+        }
+    }
+
     public toLists() {
         this._segbtnLists?.nativeElement?.click();
     }
@@ -121,9 +130,7 @@ export class ExportPage extends PageBase {
         }
     }
 
-    public async cancel(delete_archive: boolean = true) {
-        this._exporter?.CleanUp(delete_archive);
-        this._exporter = undefined;
+    public async done() {
         this.NavController.back();
     }
 
@@ -216,7 +223,7 @@ export class ExportPage extends PageBase {
                 i.status = "failed";
             }
         });
-        await this._exporter?.CleanUp();
+        await this._exporter?.Stop();
         this._exporter = undefined;
         await this.Popups.Toast.Error("page_settings_export.export_error", undefined, true);
     }

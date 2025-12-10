@@ -35,15 +35,16 @@ export class ListsPage extends AnimatedListPageBase {
 
     public override async ionViewWillEnter(): Promise<void> {
         await super.ionViewWillEnter();
-        this.ListsService.PurgeListDetails();
         this._lists = await this.ListsService.GetLists({ orderBy: "order", orderDir: "ASC" });
         this._itemsInitialized = true;
-        this._listsSubscription = this.ListsService.onListsChanged$.subscribe(lists => {
-            if (lists) {
-                this._lists = lists;
-                this._itemsInitialized = true;
-                this.onItemsChanged();
+        this._listsSubscription = this.ListsService.onListsChanged$.subscribe(async _ => {
+            if (this._initialSubscription) {
+                this._initialSubscription = false;
+                return;
             }
+            this._lists = await this.ListsService.GetLists({ orderBy: "order", orderDir: "ASC" });
+            this._itemsInitialized = true;
+            this.onItemsChanged();
         });
         this.onItemsChanged();
     }
