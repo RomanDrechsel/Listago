@@ -79,10 +79,6 @@
                             "namedChunks": true,
                             "fileReplacements": [
                                 {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.public.ts"
-                                },
-                                {
                                     "replace": "src/app/services/lists/lists.service.screenshot.ts",
                                     "with": "src/empty.ts"
                                 },

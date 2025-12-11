@@ -9,12 +9,16 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import de.romandrechsel.listago.logging.Logger;
@@ -152,6 +156,176 @@ public class ZipPlugin extends Plugin
         JSObject ret = new JSObject();
         ret.put("success", success);
         ret.put("path", outputPath);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void Unzip(final PluginCall call)
+    {
+        boolean success = true;
+        int num_files = 0;
+        int num_dirs = 0;
+        String sourcePath = call.getString("archive");
+        String targetPath = call.getString("outputPath");
+        JSObject ret = new JSObject();
+
+        if (sourcePath == null || targetPath == null)
+        {
+            Logger.Error(TAG, "Could not unzip: sourcePath or targetPath is null");
+            success = false;
+        }
+        else
+        {
+            File sourceFile;
+            try
+            {
+                sourceFile = new File(new URI(sourcePath));
+            }
+            catch (Exception e)
+            {
+                sourceFile = new File(sourcePath);
+            }
+            File targetDir;
+            try
+            {
+                targetDir = new File(new URI(targetPath));
+            }
+            catch (Exception e)
+            {
+                targetDir = new File(targetPath);
+            }
+
+            if (!sourceFile.exists())
+            {
+                Logger.Error(TAG, "Could not unzip: source file '" + sourceFile.getAbsolutePath() + "' does not exist");
+                success = false;
+            }
+            else
+            {
+                if (!targetDir.exists())
+                {
+                    boolean create = targetDir.mkdirs();
+                    if (!create)
+                    {
+                        Logger.Error(TAG, "Could not unzip: output directory '" + targetDir.getAbsolutePath() + "' could not be created");
+                        success = false;
+                    }
+                    else
+                    {
+                        FileInputStream fis;
+                        try
+                        {
+                            fis = new FileInputStream(sourceFile);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error(TAG, "Could not unzip: could not open source file '" + sourceFile.getAbsolutePath() + "': " + e.getMessage());
+                            ret.put("success", false);
+                            call.resolve(ret);
+                            return;
+                        }
+                        ZipInputStream zis = new ZipInputStream(new BufferedInputStream(fis));
+                        ZipEntry entry = null;
+                        byte[] buffer = new byte[4096];
+
+                        do
+                        {
+                            try
+                            {
+                                entry = zis.getNextEntry();
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.Error(TAG, "Could not unzip: could not read zip entry: " + e.getMessage());
+                                success = false;
+                            }
+
+                            if (entry != null)
+                            {
+                                File outFile = new File(targetDir, entry.getName());
+
+                                if (entry.isDirectory())
+                                {
+                                    create = outFile.mkdirs();
+                                    if (!create)
+                                    {
+                                        Logger.Error(TAG, "Could not unzip: output directory '" + outFile.getAbsolutePath() + "' could not be created");
+                                        success = false;
+                                    }
+                                    else
+                                    {
+                                        num_dirs++;
+                                    }
+                                }
+                                else
+                                {
+                                    File parent = outFile.getParentFile();
+                                    if (parent != null && !parent.exists())
+                                    {
+                                        create = parent.mkdirs();
+                                        if (!create)
+                                        {
+                                            Logger.Error(TAG, "Could not unzip: output directory '" + parent.getAbsolutePath() + "' could not be created");
+                                            success = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            num_dirs++;
+                                        }
+                                    }
+
+                                    FileOutputStream fos;
+                                    try
+                                    {
+
+                                        fos = new FileOutputStream(outFile);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Logger.Error(TAG, "Could not unzip: could not open output file '" + outFile.getAbsolutePath() + "': " + e.getMessage());
+                                        success = false;
+                                        continue;
+                                    }
+
+                                    int len;
+                                    try
+                                    {
+                                        while ((len = zis.read(buffer)) > 0)
+                                        {
+                                            fos.write(buffer, 0, len);
+                                        }
+                                        fos.close();
+                                        num_files++;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Logger.Error(TAG, "Could not unzip: could not read zip entry: " + e.getMessage());
+                                        success = false;
+                                        continue;
+                                    }
+                                }
+                                try
+                                {
+                                    zis.closeEntry();
+                                }
+                                catch (Exception e)
+                                {
+                                    Logger.Error(TAG, "Could not unzip: could not close zip entry: " + e.getMessage());
+                                    success = false;
+                                }
+                            }
+                        }
+                        while (entry != null);
+                    }
+                }
+            }
+        }
+
+        ret.put("success", success);
+        ret.put("path", targetPath);
+        ret.put("numFiles", num_files);
+        ret.put("numFolders", num_dirs);
         call.resolve(ret);
     }
 

@@ -1,8 +1,8 @@
 import { Directory, Encoding, Filesystem, type FileInfo } from "@capacitor/filesystem";
-import { AsyncUnzipInflate, Unzip } from "fflate";
 import { FileUtils } from "src/app/classes/utils/file-utils";
 import { StringUtils } from "src/app/classes/utils/string-utils";
 import { MainToolbarComponent } from "src/app/components/main-toolbar/main-toolbar.component";
+import ZipPlugin from "src/app/plugins/zip/zip-plugin";
 import { ConnectIQService } from "src/app/services/connectiq/connect-iq.service";
 import type { ListitemModel } from "src/app/services/lists/listitem";
 import type { ListsService } from "src/app/services/lists/lists.service";
@@ -49,42 +49,21 @@ export class ListsImporter {
         } else if (archive.endsWith(".zip")) {
             MainToolbarComponent.ToggleProgressbar(true);
             const path = "import/unzip";
-            if (await FileUtils.DirExists(path, Directory.Cache)) {
-                await FileUtils.EmptyDir(path, Directory.Cache, undefined, true);
-            } else if (await FileUtils.FileExists(path, Directory.Cache)) {
-                await FileUtils.DeleteFile(path, Directory.Cache);
+            await FileUtils.DeleteDir(path, Directory.Cache);
+
+            let fullpath;
+            try {
+                const uri = await Filesystem.getUri({ path: path, directory: Directory.Cache });
+                fullpath = uri.uri;
+            } catch (e) {
+                Logger.Error(`Importer: could not get unzip directory for '${path}' in CACHE`);
             }
-
-            const create = await FileUtils.MkDir(path, Directory.Cache);
-            if (create) {
-                try {
-                    const file = await FileUtils.GetFile(archive);
-                    if (!file.Exists) {
-                        Logger.Error(`Importer: could not find zip archive '${archive}'`);
-                        return false;
-                    }
-                    const base64 = await file.Base64Content();
-                    if (!base64) {
-                        Logger.Error(`Importer: could not read base64 content of zip archive '${archive}'`);
-                        return false;
-                    }
-                    const binaryString = atob(base64);
-                    const len = binaryString.length;
-                    const bytes = new Uint8Array(len);
-                    for (let i = 0; i < len; i++) {
-                        bytes[i] = binaryString.charCodeAt(i);
-                    }
-
-                    const unzipper = new Unzip(stream => {
-                        console.log("Unzipping file: ", stream);
-                    });
-                    unzipper.register(AsyncUnzipInflate);
-                    unzipper.push(bytes, true);
-
-                    //WIP: fflate
-                    this._importPath = create;
-                } catch (e) {
-                    Logger.Error(`Importer: could not unzip archive:`, e);
+            if (fullpath) {
+                const unzip = await ZipPlugin.Unzip({ archive: archive, outputPath: fullpath });
+                if (unzip.success || (unzip.numFiles ?? 0) > 0) {
+                    Logger.Debug(`Importer: unzipped '${archive}' to '${fullpath}' with ${unzip.numFiles ?? 0} files and ${unzip.numFolders ?? 0} folders`);
+                    this._importPath = unzip.path;
+                } else {
                     ret = false;
                 }
             } else {
@@ -324,13 +303,11 @@ export class ListsImporter {
 
     public async CleanUp() {
         this._importRunning = false;
-
-        if (this._importPath && environment.production) {
-            try {
-                await Filesystem.rmdir({ path: this._importPath, recursive: true });
-            } catch (e) {
-                Logger.Error(`Importer: could not clean up import directory at '${this._importPath}': `, e);
-            }
+        const path = environment.production ? "import" : "import/unzip";
+        if (await FileUtils.DeleteDir(path, Directory.Cache)) {
+            Logger.Debug(`Importer: cleaned up '${path}'`);
+        } else {
+            Logger.Debug(`Importer: could not clean up '${path}'`);
         }
     }
 

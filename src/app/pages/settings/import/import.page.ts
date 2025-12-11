@@ -100,11 +100,12 @@ export class ImportPage extends PageBase {
         await super.ionViewWillLeave();
         if (this._importer?.isImportRunning) {
             this._leftPageWhileRunning = true;
+        } else {
+            await this._importer?.CleanUp();
         }
     }
 
     public async back() {
-        this._importer?.CleanUp();
         await this.NavController.navigateBack("settings/im-export");
     }
 

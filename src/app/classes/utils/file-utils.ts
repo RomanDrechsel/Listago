@@ -111,10 +111,32 @@ export namespace FileUtils {
      * removes a file
      * @param path path to the file
      * @param dir Capacitor-directory
+     * @returns true if the directory was deleted successfully, false otherwise
      */
     export async function DeleteFile(path: string, dir: Directory | undefined = undefined): Promise<boolean> {
         try {
             await Filesystem.deleteFile({ path: path, directory: dir });
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * removes a directory recursively
+     * @param path path to the directory
+     * @param dir Capacitor-directory
+     * @returns true if the directory was deleted successfully, false otherwise
+     */
+    export async function DeleteDir(path: string, dir: Directory | undefined = undefined): Promise<boolean> {
+        try {
+            await Filesystem.stat({ path: path, directory: dir });
+        } catch {
+            return true;
+        }
+
+        try {
+            await Filesystem.rmdir({ path: path, directory: dir, recursive: true });
             return true;
         } catch {
             return false;
@@ -174,9 +196,7 @@ export namespace FileUtils {
                     const tmppath = FileUtils.JoinPaths(path, file.name);
                     count += await EmptyDir(tmppath, dir, keep_newer_than, recursive);
                     try {
-                        if ((await Filesystem.readdir({ path: path, directory: dir })).files.length == 0) {
-                            await Filesystem.rmdir({ path: path, directory: dir });
-                        }
+                        await Filesystem.rmdir({ path: tmppath, directory: dir, recursive: true });
                     } catch (e) {
                         Logger.Error(`Could not delete direcory '${file.uri}':`, e);
                     }

@@ -97,8 +97,6 @@ export class AppinfosPage extends PageBase {
             this.LogsSize = this.Locale.getText("page_appinfos.database_logs_txt1", { size: FileUtils.File.FormatSize(logs.size), files: logs.files });
         }
 
-        console.log("LogsSize: ", this.LogsSize);
-
         const backendsize = await this._backendService.DatabaseSize();
         if (backendsize > 0) {
             this.DatabaseFileSize = FileUtils.File.FormatSize(backendsize);
