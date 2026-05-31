@@ -1,14 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, isDevMode } from "@angular/core";
 import { App } from "@capacitor/app";
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, SystemBars, SystemBarsStyle } from "@capacitor/core";
 import { Device } from "@capacitor/device";
 import { Preferences } from "@capacitor/preferences";
 import { SplashScreen } from "@capacitor/splash-screen";
-import { StatusBar, Style } from "@capacitor/status-bar";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
 import { TranslocoPersistTranslations } from "@jsverse/transloco-persist-translations";
+import { InsetsEventArgs } from "src/app/plugins/sysinfo/event-args/insets-event-args";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
@@ -92,15 +92,20 @@ export class AppService {
                 await reserve.SetAdmobText();
             }
         });
+
         this._translocoCache.clearCache();
         await this._platform.ready();
         await Logger.Initialize(this._logger);
 
-        await EdgeToEdge.enable();
-        this.handleNightmode((await SysInfo.NightMode()).isNightMode);
+        await this.handleNightmode((await SysInfo.NightMode()).isNightMode);
         SysInfo.addListener<NightModeEventArgs>("NIGHTMODE", (data: NightModeEventArgs) => {
             this.handleNightmode(data.isNightMode, data.silent);
         });
+        await SysInfo.addListener<InsetsEventArgs>("SAFE_INSETS", (data: InsetsEventArgs) => {
+            this.handleSafeInsets(data);
+        });
+
+        SysInfo.requestApplyInsets();
 
         await Locale.Initialize(this._locale);
 
@@ -292,15 +297,21 @@ export class AppService {
         if (!silent) {
             this._logger.Debug(`NightMode set to '${isNightMode}'`);
         }
-        if (isNightMode === true) {
-            await EdgeToEdge.setBackgroundColor({ color: "#002794" });
-            await StatusBar.setStyle({ style: Style.Dark });
-            await StatusBar.setBackgroundColor({ color: "#002794" });
-        } else {
-            await EdgeToEdge.setBackgroundColor({ color: "#0050d8" });
-            await StatusBar.setStyle({ style: Style.Dark });
-            await StatusBar.setBackgroundColor({ color: "#0050d8" });
-        }
+        const color = isNightMode === true ? "#002794" : "#0050d8";
+        await SystemBars.setStyle({ style: SystemBarsStyle.Dark });
+        await EdgeToEdge.setNavigationBarColor({ color: color });
+        await EdgeToEdge.setStatusBarColor({ color: color });
+        document.documentElement.style.setProperty("--systembar-status-background", color);
+        document.documentElement.style.setProperty("--systembar-nav-background", color);
+    }
+
+    private handleSafeInsets(insets: InsetsEventArgs) {
+        document.documentElement.style.setProperty("--safe-area-inset-top", `${insets.top / insets.density}px`);
+        document.documentElement.style.setProperty("--safe-area-inset-right", `${insets.right / insets.density}px`);
+        document.documentElement.style.setProperty("--safe-area-inset-bottom", `${insets.bottom / insets.density}px`);
+        document.documentElement.style.setProperty("--safe-area-inset-left", `${insets.left / insets.density}px`);
+
+        this._logger.Debug("Handle new safe insets: ", insets);
     }
 }
 

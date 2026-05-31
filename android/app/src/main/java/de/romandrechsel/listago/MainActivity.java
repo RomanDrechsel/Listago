@@ -8,13 +8,13 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Window;
+import android.view.View;
 import android.webkit.WebView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.PluginHandle;
@@ -51,10 +51,14 @@ public class MainActivity extends BridgeActivity
         ));
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
-        Window window = getWindow();
-        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
-        insetsController.setAppearanceLightStatusBars(false);
+        EdgeToEdge.enable(this);
 
+        WindowCompat.setDecorFitsSystemWindows(this.getWindow(), false);
+        SysInfoPlugin plugin = this.GetSysInfoPlugin();
+        if (plugin != null)
+        {
+            plugin.Init();
+        }
         this.handleIntent(this.getIntent());
     }
 
@@ -62,8 +66,6 @@ public class MainActivity extends BridgeActivity
     public void onStart()
     {
         super.onStart();
-        EdgeToEdge.enable(this);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         WebView webView = this.getBridge().getWebView();
         if (webView != null)
@@ -91,6 +93,17 @@ public class MainActivity extends BridgeActivity
                 this._pendingIntent = null;
             }
         }
+    }
+
+    @Override
+    protected void onResume(Intent intent)
+    {
+        super.onResume();
+        View root = getWindow().getDecorView();
+        root.post(() ->
+        {
+            ViewCompat.requestApplyInsets(root);
+        });
     }
 
     @Override

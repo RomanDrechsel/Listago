@@ -22,16 +22,10 @@ const config: CapacitorConfig = {
             layoutName: "launch_screen",
             useDialog: false,
         },
-        StatusBar: {
-            overlaysWebView: true,
-        },
         Keyboard: {
-            resize: KeyboardResize.Native,
+            resize: KeyboardResize.Ionic,
             style: KeyboardStyle.Default,
             resizeOnFullScreen: false,
-        },
-        EdgeToEdge: {
-            backgroundColor: "#ffffff",
         },
         CapacitorSQLite: {
             androidIsEncryption: false,
@@ -39,6 +33,13 @@ const config: CapacitorConfig = {
                 biometricAuth: false,
             },
         },
+        SystemBars: {
+            insetsHandling: "disable",
+        },
+        StatusBar: {
+            overlaysWebView: true,
+        },
+        EdgeToEdge: {},
     },
 };
 

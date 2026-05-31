@@ -3,9 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { AdMob, AdMobBannerSize, AdmobConsentDebugGeography, AdmobConsentInfo, AdmobConsentRequestOptions, AdmobConsentStatus, BannerAdOptions, BannerAdPluginEvents, BannerAdPosition, BannerAdSize } from "@capacitor-community/admob";
 import type { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
-import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import type { Subscription } from "rxjs";
-import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
 import { Logger } from "../logging/logger";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
@@ -130,7 +128,7 @@ export class AdmobService {
                 adId: "ca-app-pub-4693945059643494/6924249345",
                 adSize: BannerAdSize.ADAPTIVE_BANNER,
                 position: BannerAdPosition.BOTTOM_CENTER,
-                margin: await this.saveAreaBottom(),
+                margin: parseFloat(document.documentElement.style.getPropertyValue("--safe-area-inset-bottom") ?? "0"),
                 isTesting: environment.publicRelease !== true,
                 //npa: true
             };
@@ -217,7 +215,7 @@ export class AdmobService {
      * hide the ad, if the keyboard is too big
      * @param info height of the keyboard
      */
-    private async onKeyboardShow(info: KeyboardInfo): Promise<void> {
+    private async onKeyboardShow(_info: KeyboardInfo): Promise<void> {
         await this.HideBanner();
     }
 
@@ -248,15 +246,5 @@ export class AdmobService {
             }
         }
         await (await new ReserveSpace(this._http).SetAdmobHeight(height)).ToggleContent(!this._bannerIsShown);
-    }
-
-    private async saveAreaBottom(): Promise<number> {
-        const result = await EdgeToEdge.getInsets();
-        const density = await SysInfo.DisplayDensity();
-        if (density.density < 1) {
-            Logger.Error(`Could not get screen density: `, density);
-            return 0;
-        }
-        return result.bottom / density.density;
     }
 }
