@@ -8,13 +8,12 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
 import { TranslocoPersistTranslations } from "@jsverse/transloco-persist-translations";
-import { InsetsEventArgs } from "src/app/plugins/sysinfo/event-args/insets-event-args";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
 import { StringUtils } from "../../classes/utils/string-utils";
+import { AdmobReserveSpace } from "../adverticing/admob-reserve-space";
 import { AdmobService } from "../adverticing/admob.service";
-import { ReserveSpace } from "../adverticing/reserve-space";
 import { ConnectIQService } from "../connectiq/connect-iq.service";
 import { IntentsService } from "../intents/intents.service";
 import { ListsService } from "../lists/lists.service";
@@ -87,9 +86,8 @@ export class AppService {
             }
 
             if (admob) {
-                const reserve = new ReserveSpace(this._http);
-                await reserve.SetAdmobHeight();
-                await reserve.SetAdmobText();
+                await AdmobReserveSpace.SetAdmobHeight();
+                await AdmobReserveSpace.SetAdmobText(this._http);
             }
         });
 
@@ -101,11 +99,6 @@ export class AppService {
         SysInfo.addListener<NightModeEventArgs>("NIGHTMODE", (data: NightModeEventArgs) => {
             this.handleNightmode(data.isNightMode, data.silent);
         });
-        await SysInfo.addListener<InsetsEventArgs>("SAFE_INSETS", (data: InsetsEventArgs) => {
-            this.handleSafeInsets(data);
-        });
-
-        SysInfo.requestApplyInsets();
 
         await Locale.Initialize(this._locale);
 
@@ -301,17 +294,6 @@ export class AppService {
         await SystemBars.setStyle({ style: SystemBarsStyle.Dark });
         await EdgeToEdge.setNavigationBarColor({ color: color });
         await EdgeToEdge.setStatusBarColor({ color: color });
-        document.documentElement.style.setProperty("--systembar-status-background", color);
-        document.documentElement.style.setProperty("--systembar-nav-background", color);
-    }
-
-    private handleSafeInsets(insets: InsetsEventArgs) {
-        document.documentElement.style.setProperty("--safe-area-inset-top", `${insets.top / insets.density}px`);
-        document.documentElement.style.setProperty("--safe-area-inset-right", `${insets.right / insets.density}px`);
-        document.documentElement.style.setProperty("--safe-area-inset-bottom", `${insets.bottom / insets.density}px`);
-        document.documentElement.style.setProperty("--safe-area-inset-left", `${insets.left / insets.density}px`);
-
-        this._logger.Debug("Handle new safe insets: ", insets);
     }
 }
 

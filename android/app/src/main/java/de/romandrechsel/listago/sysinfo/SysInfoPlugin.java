@@ -1,18 +1,13 @@
 package de.romandrechsel.listago.sysinfo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -52,39 +47,6 @@ public class SysInfoPlugin extends Plugin
     private Boolean _appIsReady = false;
     private Intent _pendingIntent = null;
     private ArrayList<InitialAction> _initActions = null;
-
-    public void Init()
-    {
-        View decorView = this.getActivity().getWindow().getDecorView();
-
-        ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, windowInsets) ->
-        {
-            Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            boolean isVisible = windowInsets.isVisible(WindowInsetsCompat.Type.systemBars());
-            JSObject data = new JSObject();
-
-            if (isVisible)
-            {
-                data.put("top", bars.top);
-                data.put("right", bars.right);
-                data.put("bottom", bars.bottom);
-                data.put("left", bars.left);
-            }
-            else
-            {
-                data.put("top", 0);
-                data.put("right", 0);
-                data.put("bottom", 0);
-                data.put("left", 0);
-            }
-
-            data.put("density", this.getDisplayDensity());
-            notifyListeners("SAFE_INSETS", data);
-            
-            return windowInsets;
-        });
-    }
 
     @PluginMethod
     public void NightMode(PluginCall call)
@@ -157,17 +119,6 @@ public class SysInfoPlugin extends Plugin
             this._initActions = null;
         }
         call.resolve(ret);
-    }
-
-    @PluginMethod
-    public void requestApplyInsets(PluginCall call)
-    {
-        Activity activity = this.getActivity();
-        activity.runOnUiThread(() ->
-        {
-            ViewCompat.requestApplyInsets(activity.getWindow().getDecorView());
-        });
-        call.resolve();
     }
 
     public void SetNightMode(@NonNull Boolean isNightMode, boolean force)
@@ -293,12 +244,4 @@ public class SysInfoPlugin extends Plugin
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return metrics.density;
     }
-
-    /*private boolean isColorLight(int color)
-    {
-        double brightness = (0.299 * Color.red(color) +
-            0.587 * Color.green(color) +
-            0.114 * Color.blue(color)) / 255;
-        return brightness > 0.6;
-    }*/
 }

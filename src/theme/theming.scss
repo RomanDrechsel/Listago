@@ -2,27 +2,42 @@ html {
     --ion-default-font: "Roboto", Helvetica, Arial, sans-serif !important;
 }
 
-#systembar-status,
-#systembar-nav {
+#admob-placeholder {
     position: fixed;
     width: 100%;
-}
-
-#systembar-status {
-    top: 0;
-    height: var(--safe-area-inset-top, 0px);
-    background: var(--systembar-status-background, var(--systembar-background, #000000));
-}
-
-#systembar-nav {
-    height: var(--safe-area-inset-bottom, 0px);
     bottom: 0;
-    background: var(--systembar-nav-background, var(--systembar-background, #000000));
+    height: var(--admob-placeholder-height, 0px);
+    z-index: 9999;
+    background: #0050d8;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    overflow: hidden;
+
+    .img {
+        height: calc(100% - 20px);
+        max-height: 80px;
+        width: auto;
+        max-width: 64px;
+        aspect-ratio: 8 / 10;
+        background-image: url("src/assets/img/ad-loading.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin: 10px 0 10px 12px;
+    }
+
+    .text {
+        margin: 10px 12px 10px 0;
+        color: #ffffff;
+        text-align: center;
+    }
 }
 
 ion-app.ion-page {
     top: var(--safe-area-inset-top, 0px);
-    bottom: var(--safe-area-inset-bottom, 0px);
+    bottom: calc(var(--safe-area-inset-bottom, 0px) + var(--admob-placeholder-height, 0px));
 }
 
 ion-list {
@@ -317,6 +332,10 @@ ion-card {
 }
 
 @media (prefers-color-scheme: dark) {
+    #admob-reserved-space {
+        background: #002794;
+    }
+
     ion-toolbar {
         --background: linear-gradient(to bottom, #002794, #00144c);
     }

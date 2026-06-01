@@ -23,7 +23,7 @@ const config: CapacitorConfig = {
             useDialog: false,
         },
         Keyboard: {
-            resize: KeyboardResize.Ionic,
+            resize: KeyboardResize.Body,
             style: KeyboardStyle.Default,
             resizeOnFullScreen: false,
         },
@@ -39,7 +39,6 @@ const config: CapacitorConfig = {
         StatusBar: {
             overlaysWebView: true,
         },
-        EdgeToEdge: {},
     },
 };
 

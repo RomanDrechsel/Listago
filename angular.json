@@ -33,7 +33,7 @@
                                 "output": "assets"
                             }
                         ],
-                        "styles": ["src/global.scss", "src/theme/variables.scss", "src/theme/theming.scss", "src/theme/popups.scss", "src/theme/content/admob.scss"],
+                        "styles": ["src/global.scss", "src/theme/variables.scss", "src/theme/theming.scss", "src/theme/popups.scss"],
                         "scripts": [],
                         "browser": "src/main.ts"
                     },
@@ -97,8 +97,8 @@
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "4kb",
-                                    "maximumError": "8kb"
+                                    "maximumWarning": "8kb",
+                                    "maximumError": "12kb"
                                 }
                             ],
                             "fileReplacements": [

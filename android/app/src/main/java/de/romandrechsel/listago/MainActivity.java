@@ -11,10 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.PluginHandle;
@@ -51,14 +49,6 @@ public class MainActivity extends BridgeActivity
         ));
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-
-        WindowCompat.setDecorFitsSystemWindows(this.getWindow(), false);
-        SysInfoPlugin plugin = this.GetSysInfoPlugin();
-        if (plugin != null)
-        {
-            plugin.Init();
-        }
         this.handleIntent(this.getIntent());
     }
 

@@ -7,7 +7,7 @@ import type { Subscription } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { Logger } from "../logging/logger";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
-import { ReserveSpace } from "./reserve-space";
+import { AdmobReserveSpace } from "./admob-reserve-space";
 
 @Injectable({
     providedIn: "root",
@@ -81,7 +81,7 @@ export class AdmobService {
 
         this._preferencesSubscription = this._preferences.onPrefChanged$.subscribe(async pref => {
             if (pref.prop == EPrefProperty.AppLanguage) {
-                await new ReserveSpace(this._http).SetAdmobText();
+                await AdmobReserveSpace.SetAdmobText(this._http);
             }
         });
 
@@ -128,7 +128,7 @@ export class AdmobService {
                 adId: "ca-app-pub-4693945059643494/6924249345",
                 adSize: BannerAdSize.ADAPTIVE_BANNER,
                 position: BannerAdPosition.BOTTOM_CENTER,
-                margin: parseFloat(document.documentElement.style.getPropertyValue("--safe-area-inset-bottom") ?? "0"),
+                margin: AdmobReserveSpace.marginBottom,
                 isTesting: environment.publicRelease !== true,
                 //npa: true
             };
@@ -245,6 +245,7 @@ export class AdmobService {
                 this._preferences.Set(EPrefProperty.AdmobBannerHeight, height);
             }
         }
-        await (await new ReserveSpace(this._http).SetAdmobHeight(height)).ToggleContent(!this._bannerIsShown);
+        await AdmobReserveSpace.SetAdmobHeight(height);
+        await AdmobReserveSpace.ToggleContent(!this._bannerIsShown);
     }
 }
