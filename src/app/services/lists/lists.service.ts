@@ -200,6 +200,26 @@ export class ListsService {
     }
 
     /**
+     * Dublicates a list
+     * @param list list to dublicate
+     * @param no_prompt don't let the user confirm, if he want to dublicate the list
+     * @param list_args additiinal properties for the new list, different from the original list
+     * @returns was the dublication successful? undefined if user canceled it
+     */
+    public async CopyList(args: { list: List; list_args: CopyListArgs; no_prompt?: boolean }): Promise<boolean | undefined> {
+        if (!args.no_prompt && (await this._preferences.Get<boolean>(EPrefProperty.ConfirmCopyList, true))) {
+            const text = this._locale.getText("service-lists.copy_list_confirm", { name: StringUtils.shorten(args.list.Name, 40) });
+            const result = await this._popups.Alert.YesNo({ message: text });
+            if (result !== false) {
+                return this.copyList(args.list, args.list_args);
+            } else {
+                return undefined;
+            }
+        }
+        return this.copyList(args.list, args.list_args);
+    }
+
+    /**
      * prompts the user to delete all items of a list
      * @param lists list to be emptied
      * @param force empty the list without prompt
@@ -952,6 +972,26 @@ export class ListsService {
     }
 
     /**
+     * dublicate a list and navigate to the new list
+     * @param list list to dublicate
+     * @returns was the dublicate successful
+     */
+    private async copyList(list: List, list_args?: CopyListArgs): Promise<boolean> {
+        MainToolbarComponent.ToggleProgressbar(true);
+        const success = await this._backendService.dublicateList({ list: list, changes: list_args });
+        MainToolbarComponent.ToggleProgressbar(false);
+        if (success === false) {
+            this._popups.Toast.Error("service-lists.copy_list_error");
+            Logger.Debug(`Could not dublicate list ${list.toLog()}`);
+        } else {
+            this._popups.Toast.Success("service-lists.copy_list_success");
+            this._navController.navigateForward(`/lists/items/${success}`);
+        }
+
+        return success !== false;
+    }
+
+    /**
      * deletes all listitems in the list
      * @param lists list to be emptied
      * @returns was the list stored successful after emptying?
@@ -1327,3 +1367,9 @@ export class ListsService {
         }
     }
 }
+
+export type CopyListArgs = {
+    name?: string;
+    reset?: ListReset;
+    sync_devices?: ListSyncDevice[];
+};

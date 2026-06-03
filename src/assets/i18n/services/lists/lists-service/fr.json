@@ -56,5 +56,8 @@
     "transmit_send_btn": "Envoyer à l'appareil",
     "add_moreitems_success": "Élément ajouté.",
     "add_moreitems_error": "Impossible d'ajouter l'élément !",
-    "sync_device_offline": "La liste n’a pas pu être synchronisée, l’appareil n’est pas prêt !"
+    "sync_device_offline": "La liste n’a pas pu être synchronisée, l’appareil n’est pas prêt !",
+    "copy_list_confirm": "Voulez-vous vraiment créer une copie de la liste <strong>{{name}}</strong> ?",
+    "copy_list_success": "Une copie de la liste a été créée.",
+    "copy_list_error": "Impossible de créer une copie de la liste !"
 }

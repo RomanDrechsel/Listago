@@ -56,5 +56,8 @@
     "transmit_send_btn": "Enviar a dispositivo",
     "add_moreitems_success": "Elemento añadido.",
     "add_moreitems_error": "¡No se pudo añadir el elemento!",
-    "sync_device_offline": "No se pudo sincronizar la lista, ¡el dispositivo no está listo!"
+    "sync_device_offline": "No se pudo sincronizar la lista, ¡el dispositivo no está listo!",
+    "copy_list_confirm": "¿Realmente deseas crear una copia de la lista <strong>{{name}}</strong>?",
+    "copy_list_success": "Se ha creado una copia de la lista.",
+    "copy_list_error": "¡No se pudo crear una copia de la lista!"
 }

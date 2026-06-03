@@ -12,6 +12,16 @@
             <ion-toggle [checked]="TransmitList" (ionChange)="onTransmitListChanged($event.target.checked)" slot="end"></ion-toggle>
         </ion-item>
         }
+
+        <!-- copy list -->
+        <ion-item lines="full">
+            <ion-label (click)="onCopyListChanged(!CopyList)">
+                <div class="text" [innerHTML]="t('page_settings_confirm.copy_list')"></div>
+                <ion-note [innerHTML]="t('page_settings_confirm.copy_list_note')"></ion-note>
+            </ion-label>
+            <ion-toggle [checked]="CopyList" (ionChange)="onCopyListChanged($event.target.checked)" slot="end"> </ion-toggle>
+        </ion-item>
+
         <!-- delete list -->
         <ion-item lines="full">
             <ion-label (click)="onDeleteListChanged(!DeleteList)">

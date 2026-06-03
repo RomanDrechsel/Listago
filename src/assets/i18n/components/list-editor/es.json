@@ -12,5 +12,8 @@
     "sync": "Sincronizar lista con el reloj",
     "sync_info": "Cuando realices cambios en la lista, como agregar o eliminar elementos, estos cambios se transferirán automáticamente a tu reloj en segundo plano.<br /><br />Tenga en cuenta que el espacio de almacenamiento de la aplicación en su reloj es limitado y que la sincronización puede agotar la carga de la batería del reloj más rápidamente.<br />No sincronice demasiadas listas al mismo tiempo.",
     "sync_settings": "Para activar la sincronización automática, debes activar la opción correspondiente en la configuración.<br />¿Te gustaría ir a la configuración?",
-    "delete": "Eliminar lista"
+    "delete": "Eliminar lista",
+    "copy": "Crear una copia de la lista",
+    "copy_info": "Al copiar, no se guarda la lista original. En su lugar, se crea una copia de la lista. La nueva lista tiene los mismos elementos y ajustes que la lista original.",
+    "copy_list_suffix": "Copia"
 }

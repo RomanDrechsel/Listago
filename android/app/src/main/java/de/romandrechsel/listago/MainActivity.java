@@ -8,11 +8,9 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebView;
 
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.PluginHandle;
@@ -83,17 +81,6 @@ public class MainActivity extends BridgeActivity
                 this._pendingIntent = null;
             }
         }
-    }
-
-    @Override
-    protected void onResume(Intent intent)
-    {
-        super.onResume();
-        View root = getWindow().getDecorView();
-        root.post(() ->
-        {
-            ViewCompat.requestApplyInsets(root);
-        });
     }
 
     @Override

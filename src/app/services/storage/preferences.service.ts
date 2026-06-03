@@ -21,6 +21,7 @@ export enum EPrefProperty {
     ConfirmEmptyTrash = "LISTAGO_ConfirmEmptyTrash",
     ConfirmRestoreList = "LISTAGO_ConfirmRestoreList",
     ConfirmRestoreListitem = "LISTAGO_ConfirmRestoreListitem",
+    ConfirmCopyList = "LISTAGO_ConfirmCopyList",
     TrashLists = "LISTAGO_TrashLists",
     TrashListitems = "LISTAGO_TrashListitems",
     TrashKeepinStock = "LISTAGO_TrashKeepInStock",

@@ -5,10 +5,6 @@ import { EPrefProperty } from "../storage/preferences.service";
 import { AdmobService } from "./admob.service";
 
 export class AdmobReserveSpace {
-    public static get marginBottom(): number {
-        return parseFloat(document.documentElement.style.getPropertyValue("--safe-area-inset-bottom") ?? "0");
-    }
-
     private static get _bannerPlaceholder(): HTMLElement | null {
         return document.getElementById("admob-placeholder") as HTMLElement | null;
     }

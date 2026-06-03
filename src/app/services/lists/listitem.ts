@@ -221,11 +221,33 @@ export class Listitem {
         }
         return other.Id === this.Id;
     }
+
+    /**
+     * creates a copy of the given listitem
+     * @param original listitem, a copy should be created
+     * @returns new listitem as copy of original
+     */
+    public static Copy(original: Listitem): Listitem {
+        const copy = new Listitem({
+            id: HelperUtils.RandomNegativNumber(),
+            item: original._item,
+            note: original._note,
+            order: original._order,
+            hidden: original._hidden ? 1 : 0,
+            locked: original._locked ? 1 : 0,
+            created: Date.now(),
+            modified: Date.now(),
+            deleted: original._deleted,
+            legacy_uuid: undefined,
+        });
+        copy._dirty = true;
+        return copy;
+    }
 }
 
 export type ListitemModel = {
     id: number;
-    list_id: number;
+    list_id?: number;
     item: string;
     note?: string;
     order: number;

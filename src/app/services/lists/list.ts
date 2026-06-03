@@ -356,8 +356,54 @@ export class List {
     }
 
     /**
-     * copys all information from the model to this list
-     * @param model model to copy
+     * creates a new List Object as dublicate of the given list.
+     * @param original list to copy
+     * @returns new list object
+     */
+    public static Copy(original: List): List {
+        const copy = new List(
+            {
+                id: HelperUtils.RandomNegativNumber(),
+                name: original._name,
+                order: original._order,
+                created: Date.now(),
+                modified: Date.now(),
+                deleted: original._deleted,
+                legacy_uuid: undefined,
+            },
+            undefined,
+            original._itemsCount,
+            true,
+        );
+        copy._itemsInTrash = original._itemsInTrash;
+        copy._trashItemsCount = original._trashItemsCount;
+
+        if (original._items) {
+            copy._items = original._items.map(item => Listitem.Copy(item));
+        } else {
+            copy._items = undefined;
+        }
+
+        if (original._reset) {
+            copy._reset = structuredClone(original._reset);
+        } else {
+            copy._reset = undefined;
+        }
+
+        if (original._syncDevices) {
+            copy._syncDevices = original._syncDevices.map(d => structuredClone(d));
+        } else {
+            copy._syncDevices = undefined;
+        }
+
+        copy._dirty;
+
+        return copy;
+    }
+
+    /**
+     * copys all information from the other list to this list
+     * @param other list to copy
      * @returns true if data was updated
      */
     public clone(other: List) {

@@ -128,10 +128,11 @@ export class AdmobService {
                 adId: "ca-app-pub-4693945059643494/6924249345",
                 adSize: BannerAdSize.ADAPTIVE_BANNER,
                 position: BannerAdPosition.BOTTOM_CENTER,
-                margin: AdmobReserveSpace.marginBottom,
+                margin: 0,
                 isTesting: environment.publicRelease !== true,
                 //npa: true
             };
+            console.log("DEBUG", options);
             try {
                 await AdMob.removeBanner();
                 await AdMob.showBanner(options);

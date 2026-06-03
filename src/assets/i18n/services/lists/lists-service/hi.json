@@ -56,5 +56,8 @@
     "transmit_send_btn": "डिवाइस पर भेजें",
     "add_moreitems_success": "आइटम जोड़ा गया।",
     "add_moreitems_error": "आइटम जोड़ने में असफल!",
-    "sync_device_offline": "सूची को सिंक नहीं किया जा सका, डिवाइस तैयार नहीं है!"
+    "sync_device_offline": "सूची को सिंक नहीं किया जा सका, डिवाइस तैयार नहीं है!",
+    "copy_list_confirm": "क्या आप वास्तव में सूची <strong>{{name}}</strong> की एक प्रतिलिपि बनाना चाहते हैं?",
+    "copy_list_success": "सूची की एक प्रतिलिपि बना दी गई है।",
+    "copy_list_error": "सूची की प्रतिलिपि नहीं बनाई जा सकी!"
 }

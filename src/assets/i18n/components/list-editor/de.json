@@ -12,5 +12,8 @@
     "sync": "Liste mit Uhr synchronisieren",
     "sync_info": "Wenn du Änderungen an der Liste vornimmst, z.B. das Hinzufügen oder Löschen von Listenpunkten, werden diese Änderungen im Hintergrund automatisch auf deine Uhr übertragen.<br /><br />Beachte bitte, dass der Speicherplatz der App auf deiner Uhr begrenzt ist und dass durch die Synchronisierung die Akku-Ladung der Uhr schneller verbraucht werden kann.<br />Synchronisiere nicht zu viele Listen gleichzeitg.",
     "sync_settings": "Um das automatische Synchronisieren zu aktivieren, musst du die entsprechende Option in den Einstellungen aktivieren.<br />Möchtest du zu den Einstellungen wechseln?",
-    "delete": "Liste löschen"
+    "delete": "Liste löschen",
+    "copy": "Kopie der Liste erstellen",
+    "copy_info": "Beim Kopieren wird nicht die Original-Liste gespeichert, sondern es wird eine Kopie der Liste erstellt. Die neue Liste hat die gleichen Punkte und Einstellungen wie die Originalliste.",
+    "copy_list_suffix": "Kopie"
 }

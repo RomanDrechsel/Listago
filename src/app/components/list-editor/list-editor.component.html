@@ -16,54 +16,62 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="Form">
         <ion-input [label]="t('comp-listeditor.listname')" labelPlacement="floating" fill="outline" counter="true" maxlength="100" autocapitalize="sentence" spellcheck="true" enterkeyhint="enter" required="true" formControlName="listname" (ionFocus)="hideAds()" #listname></ion-input>
         @if (ConnectIQInitialized) {
-        <ion-accordion-group>
-            <ion-accordion class="list-settings">
-                <ion-item slot="header">
-                    <ion-label>{{ t("comp-listeditor.settings") }}</ion-label>
-                </ion-item>
-                <div slot="content">
-                    <ion-list>
-                        <ion-item lines="none">
-                            <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (ionChange)="toggleReset($event)" #reset>
-                                {{ t("comp-listeditor.reset") }}
-                            </ion-checkbox>
-                            <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
-                        </ion-item>
+            <ion-accordion-group>
+                <ion-accordion class="list-settings">
+                    <ion-item slot="header" lines="none">
+                        <ion-label>{{ t("comp-listeditor.settings") }}</ion-label>
+                    </ion-item>
+                    <div slot="content">
+                        <ion-list>
+                            <ion-item lines="none">
+                                <ion-checkbox labelPlacement="end" justify="start" [checked]="ResetActive" (ionChange)="toggleReset($event)">
+                                    {{ t("comp-listeditor.reset") }}
+                                </ion-checkbox>
+                                <ion-icon src="/assets/icons/info.svg" slot="end" (click)="resetInfo($event)" class="info-icon"></ion-icon>
+                            </ion-item>
 
-                        @if (ResetActive) {
-                        <ion-item lines="none">
-                            <ion-select [label]="t('comp-listeditor.reset_interval')" label-placement="stacked" [value]="ResetInteval" [okText]="'buttons.ok' | transloco" [cancelText]="t('buttons.cancel')" (ionChange)="onResetIntervalChanged($event.target.value)" #resetinterval>
-                                <ion-select-option value="daily">{{ t("comp-listeditor.reset_daily") }}</ion-select-option>
-                                <ion-select-option value="weekly">{{ t("comp-listeditor.reset_weekly") }}</ion-select-option>
-                                <ion-select-option value="monthly">{{ t("comp-listeditor.reset_monthly") }}</ion-select-option>
-                            </ion-select>
-                        </ion-item>
+                            @if (ResetActive) {
+                                <ion-item lines="none">
+                                    <ion-select [label]="t('comp-listeditor.reset_interval')" label-placement="stacked" [value]="ResetInteval" [okText]="'buttons.ok' | transloco" [cancelText]="t('buttons.cancel')" (ionChange)="onResetIntervalChanged($event.target.value)" #resetinterval>
+                                        <ion-select-option value="daily">{{ t("comp-listeditor.reset_daily") }}</ion-select-option>
+                                        <ion-select-option value="weekly">{{ t("comp-listeditor.reset_weekly") }}</ion-select-option>
+                                        <ion-select-option value="monthly">{{ t("comp-listeditor.reset_monthly") }}</ion-select-option>
+                                    </ion-select>
+                                </ion-item>
 
-                        <ion-item (click)="selectResetDate()" class="select-resetdate" lines="none">
-                            <ion-text>{{ ResetString }}</ion-text>
-                        </ion-item>
-                        }
+                                <ion-item (click)="selectResetDate()" class="select-resetdate" lines="none">
+                                    <ion-text>{{ ResetString }}</ion-text>
+                                </ion-item>
+                            }
 
-                        <ion-item lines="none">
-                            <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (click)="toggleSync($event)" #sync>
-                                <div [innerHTML]="t('comp-listeditor.sync')"></div>
-                                @if (SyncActive && ListSyncDevices.length > 0 ) {
-                                <ion-note>{{ ListSyncDevices }}</ion-note>
-                                }
-                            </ion-checkbox>
-                            <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>
-                        </ion-item>
-                    </ion-list>
-                </div>
-            </ion-accordion>
-        </ion-accordion-group>
+                            <ion-item lines="none">
+                                <ion-checkbox labelPlacement="end" justify="start" [checked]="SyncActive" (click)="toggleSync($event)" #sync>
+                                    <div [innerHTML]="t('comp-listeditor.sync')"></div>
+                                    @if (SyncActive && ListSyncDevices.length > 0) {
+                                        <ion-note>{{ ListSyncDevices }}</ion-note>
+                                    }
+                                </ion-checkbox>
+                                <ion-icon src="/assets/icons/info.svg" slot="end" (click)="syncInfo($event)" class="info-icon"></ion-icon>
+                            </ion-item>
+                        </ion-list>
+                    </div>
+                </ion-accordion>
+            </ion-accordion-group>
+        }
+        @if (Params?.list) {
+            <ion-item lines="inset" class="checkbox">
+                <ion-checkbox labelPlacement="end" justify="start" (ionChange)="onCopyClick($event)" formControlName="copy_list">
+                    {{ t("comp-listeditor.copy") }}
+                </ion-checkbox>
+                <ion-icon src="/assets/icons/info.svg" slot="end" (click)="copyInfo($event)" class="info-icon"></ion-icon>
+            </ion-item>
         }
 
         <div class="buttons">
             @if (Params?.list) {
-            <ion-button class="ion-float-end" fill="outline" (click)="onDelete()">
-                {{ t("comp-listeditor.delete") }}
-            </ion-button>
+                <ion-button class="ion-float-end" fill="outline" (click)="onDelete()">
+                    {{ t("comp-listeditor.delete") }}
+                </ion-button>
             }
             <ion-button class="ion-float-end" [disabled]="!Form.valid" (click)="onSubmit()">
                 {{ Confirm }}

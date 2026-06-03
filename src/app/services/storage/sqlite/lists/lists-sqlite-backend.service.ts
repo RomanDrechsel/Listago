@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import type { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { List, ListToLog } from "src/app/services/lists/list";
+import type { CopyListArgs } from "src/app/services/lists/lists.service";
 import { Logger } from "src/app/services/logging/logger";
 import { type ListModel } from "../../../lists/list";
 import { Listitem, ListitemModel } from "../../../lists/listitem";
@@ -286,7 +287,7 @@ export class ListsSqliteBackendService {
 
                 //delete all old items, that are no longer is this list...
                 const item_ids = args.list.Items.map(i => i.Id);
-                const query = `DELETE FROM \`listitems\` WHERE \`list_id\`=? AND \`id\` NOT IN (${item_ids.map(id => "?").join(", ")}) AND \`deleted\` IS NULL`;
+                const query = `DELETE FROM \`listitems\` WHERE \`list_id\`=? AND \`id\` NOT IN (${item_ids.map(_ => "?").join(", ")}) AND \`deleted\` IS NULL`;
                 await conn.run(query, [args.list.Id, ...item_ids], false);
 
                 args.list.Clean();
@@ -312,7 +313,7 @@ export class ListsSqliteBackendService {
         const list_ids = args.lists?.map(l => (l instanceof List ? l.Id : l)) ?? [];
         let query = `UPDATE \`lists\` SET \`deleted\` = ? WHERE \`deleted\` IS NULL`;
         if (list_ids.length > 0) {
-            query += ` AND \`id\` IN (${list_ids.map(u => `?`).join(", ")})`;
+            query += ` AND \`id\` IN (${list_ids.map(_ => `?`).join(", ")})`;
         }
 
         const res = await this._sqliteService.Execute(query, [Date.now(), ...list_ids]);
@@ -377,6 +378,29 @@ export class ListsSqliteBackendService {
     }
 
     /**
+     * creates a dublicate of the list in the database
+     * @param args the list to dublicate
+     * @returns id of the new list, of false if something failed
+     */
+    public async dublicateList(args: { list: List; changes?: CopyListArgs }): Promise<false | number> {
+        const new_list = List.Copy(args.list);
+        if (args.changes) {
+            if (args.changes.name?.length) {
+                new_list.Name = args.changes.name;
+            }
+            new_list.SyncDevices = args.changes.sync_devices;
+            new_list.Reset = args.changes.reset;
+        }
+        const store = await this.storeList({ list: new_list, force: true });
+
+        if (typeof store === "number") {
+            return store;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * move listitems to trash
      * @param args.list list, to which the items should be moved
      * @param args.items list of items to move, or all items in the list
@@ -389,7 +413,7 @@ export class ListsSqliteBackendService {
 
         let query = "UPDATE `listitems` SET `deleted` = ? WHERE `list_id` = ? AND `deleted` IS NULL";
         if (args.items?.length) {
-            query += ` AND \`id\` IN (` + item_ids.map(i => "?").join(", ") + `)`;
+            query += ` AND \`id\` IN (` + item_ids.map(_ => "?").join(", ") + `)`;
         }
         if (args.force !== true) {
             query += " AND `locked` <> 1";
@@ -421,7 +445,7 @@ export class ListsSqliteBackendService {
         let query = `DELETE FROM \`listitems\` WHERE \`list_id\` = ? AND \`deleted\` ${args.trash === true ? "IS NOT NULL" : "IS NULL"}`;
 
         if (item_ids.length > 0) {
-            query += " AND `id` IN (" + item_ids.map(i => "?").join(", ") + ")";
+            query += " AND `id` IN (" + item_ids.map(_ => "?").join(", ") + ")";
         }
         if (args.trash !== true && args.force !== true) {
             query += " AND `locked` <> 1";
@@ -481,7 +505,7 @@ export class ListsSqliteBackendService {
             const item_ids = args.items?.map(i => (typeof i === "number" ? i : i.Id)) || [];
             let query = "UPDATE `listitems` SET `deleted` = NULL WHERE `list_id` = ?";
             if (item_ids.length > 0) {
-                query += ` AND \`id\` IN (${item_ids.map(i => "?").join(", ")})`;
+                query += ` AND \`id\` IN (${item_ids.map(_ => "?").join(", ")})`;
             }
             let updated = 0;
 
@@ -686,6 +710,11 @@ export class ListsSqliteBackendService {
         return 0;
     }
 
+    /**
+     * gets the list name by its id
+     * @param list list id
+     * @returns list name or undefined, if the id was not found
+     */
     public async queryListName(list: number): Promise<string | undefined> {
         const query = "SELECT `name` FROM `lists` WHERE `id`=? LIMIT 1";
         const ret = await this._sqliteService.Query(query, [list]);

@@ -12,5 +12,8 @@
     "sync": "Sync list with watch",
     "sync_info": "When you make changes to the list, such as adding or deleting list items, these changes will be automatically transferred to your watch in the background.<br /><br />Please note that the storage of the app on your watch is limited and that synchronisation can drain up the battery charge of the watch more quickly.<br />Do not synchronise too many lists at the same time.",
     "sync_settings": "To activate automatic synchronisation, you must activate the corresponding option in the settings.<br />Would you like to go to the settings?",
-    "delete": "Delete"
+    "delete": "Delete",
+    "copy": "Create a copy of the list",
+    "copy_info": "When copying, the original list is not saved. Instead, a copy of the list is created. The new list has the same items and settings as the original list.",
+    "copy_list_suffix": "Copy"
 }

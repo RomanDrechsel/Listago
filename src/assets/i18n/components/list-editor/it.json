@@ -12,5 +12,8 @@
     "sync": "Sincronizza elenco con l'orologio",
     "sync_info": "Quando apporti modifiche all'elenco, ad esempio aggiungendo o eliminando elementi, queste modifiche verranno trasferite automaticamente al tuo orologio in background.<br /><br />Si prega di notare che lo spazio di memoria dell'app sull'orologio è limitato e che la sincronizzazione può consumare più rapidamente la carica della batteria dell'orologio.<br />Non sincronizzare troppi elenchi contemporaneamente.",
     "sync_settings": "Per attivare la sincronizzazione automatica, devi attivare l'opzione corrispondente nelle impostazioni.<br />Vuoi andare alle impostazioni?",
-    "delete": "Cancellare la lista"
+    "delete": "Cancellare la lista",
+    "copy": "Crea una copia della lista",
+    "copy_info": "Durante la copia, la lista originale non viene salvata. Viene invece creata una copia della lista. La nuova lista contiene gli stessi elementi e le stesse impostazioni della lista originale.",
+    "copy_list_suffix": "Copia"
 }

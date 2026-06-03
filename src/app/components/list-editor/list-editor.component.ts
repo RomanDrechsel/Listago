@@ -1,4 +1,3 @@
-
 import { Component, inject, type OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Keyboard } from "@capacitor/keyboard";
@@ -22,7 +21,6 @@ import { AdmobService } from "./../../services/adverticing/admob.service";
 })
 export class ListEditorComponent implements OnInit {
     @ViewChild("listname", { read: IonInput }) private listname?: IonInput;
-    @ViewChild("reset", { read: IonCheckbox }) private reset?: IonCheckbox;
     @ViewChild("resetinterval", { read: IonSelect }) private resetinterval?: IonSelect;
     @ViewChild("sync", { read: IonCheckbox }) private sync?: IonCheckbox;
     public Params?: EditorParams;
@@ -43,6 +41,7 @@ export class ListEditorComponent implements OnInit {
     constructor() {
         this.Form = this.FormBuilder.group({
             listname: ["", [Validators.required]],
+            copy_list: [false],
         });
     }
 
@@ -154,6 +153,10 @@ export class ListEditorComponent implements OnInit {
 
     public get Confirm(): string {
         if (this.Params?.list) {
+            if (this.Form.get("copy_list")?.value === true) {
+                return this.Locale.getText("buttons.copy");
+            }
+
             return this.Locale.getText("buttons.save");
         } else {
             return this.Locale.getText("buttons.create");
@@ -191,17 +194,27 @@ export class ListEditorComponent implements OnInit {
             return this.cancel();
         }
 
-        let list: List;
-        if (this.Params?.list) {
-            list = this.Params.list;
-            list.Name = listname;
-            list.Reset = this._listReset;
-            list.SyncDevices = this._listSyncDevices ?? undefined;
+        if (this.Form.get("copy_list")?.value) {
+            if (this.Params?.list) {
+                const success = await this.ListsService.CopyList({ list: this.Params?.list, list_args: { name: this.Form.get("listname")?.value, reset: this._listReset, sync_devices: this._listSyncDevices } });
+                if (success) {
+                    return this.cancel();
+                }
+            }
+            return undefined;
         } else {
-            list = await this.ListsService.createNewList({ name: listname, reset: this._listReset, sync: this._listSyncDevices });
-        }
+            let list: List;
+            if (this.Params?.list) {
+                list = this.Params.list;
+                list.Name = listname;
+                list.Reset = this._listReset;
+                list.SyncDevices = this._listSyncDevices ?? undefined;
+            } else {
+                list = await this.ListsService.createNewList({ name: listname, reset: this._listReset, sync: this._listSyncDevices });
+            }
 
-        return this.modalCtrl.dismiss(list, "confirm");
+            return this.modalCtrl.dismiss(list, "confirm");
+        }
     }
 
     public async onDelete() {
@@ -214,20 +227,20 @@ export class ListEditorComponent implements OnInit {
         return this.modalCtrl.dismiss(null, "cancel");
     }
 
-    public toggleReset(event: any) {
+    public toggleReset(event: CustomEvent) {
         event?.stopImmediatePropagation();
 
         if (this._listReset) {
-            this._listReset.active = event.target.checked;
+            this._listReset.active = event.detail.checked;
         }
     }
 
-    public async resetInfo(event: any) {
+    public async resetInfo(event: PointerEvent) {
         event?.stopImmediatePropagation();
         await this.Popups.Alert.Info({ message: "comp-listeditor.reset_info", translate: true });
     }
 
-    public async toggleSync(event: any) {
+    public async toggleSync(event: PointerEvent) {
         event?.stopImmediatePropagation();
         event?.preventDefault();
 
@@ -249,10 +262,37 @@ export class ListEditorComponent implements OnInit {
         }
     }
 
+    public async onCopyClick(event: CustomEvent) {
+        const input_listname = this.Form.get("listname")?.value;
+        if (input_listname && this.Params?.list?.Name) {
+            const suffix = this.Locale.getText("comp-listeditor.copy_list_suffix");
+            const copy_name = `${this.Params.list.Name} - ${suffix}`;
+            if (event.detail.checked) {
+                if (input_listname == this.Params.list.Name) {
+                    if (suffix != "comp-listeditor.copy_list_suffix") {
+                        this.Form.get("listname")?.setValue(copy_name);
+                    }
+                }
+            } else {
+                if (input_listname == copy_name) {
+                    this.Form.get("listname")?.setValue(this.Params.list.Name);
+                }
+            }
+        }
+    }
+
     public async syncInfo(event: any) {
         event?.stopImmediatePropagation();
         await this.Popups.Alert.Info({
             message: "comp-listeditor.sync_info",
+            translate: true,
+        });
+    }
+
+    public async copyInfo(event: any) {
+        event?.stopImmediatePropagation();
+        await this.Popups.Alert.Info({
+            message: "comp-listeditor.copy_info",
             translate: true,
         });
     }

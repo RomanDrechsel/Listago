@@ -12,5 +12,8 @@
     "sync": "Synchroniser la liste avec la montre",
     "sync_info": "Lorsque vous modifiez la liste, par exemple en ajoutant ou en supprimant des éléments, ces changements seront automatiquement transférés en arrière-plan sur votre montre.<br /><br />N'oublie pas que l'espace de stockage de l'application sur ta montre est limité et que la synchronisation risque d'épuiser plus rapidement la batterie de la montre.<br />Ne synchronise pas trop de listes en même temps.",
     "sync_settings": "Pour activer la synchronisation automatique, vous devez activer l'option correspondante dans les paramètres.<br />Voulez-vous aller dans les paramètres?",
-    "delete": "Supprimer la liste"
+    "delete": "Supprimer la liste",
+    "copy": "Créer une copie de la liste",
+    "copy_info": "Lors de la copie, la liste originale n'est pas enregistrée. Une copie de la liste est créée à la place. La nouvelle liste contient les mêmes éléments et paramètres que la liste originale.",
+    "copy_list_suffix": "Copie"
 }

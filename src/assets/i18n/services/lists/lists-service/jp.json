@@ -56,5 +56,8 @@
     "transmit_send_btn": "デバイスに送信",
     "add_moreitems_success": "アイテムが追加されました。",
     "add_moreitems_error": "アイテムを追加できませんでした！",
-    "sync_device_offline": "リストを同期できませんでした。デバイスの準備ができていません！"
+    "sync_device_offline": "リストを同期できませんでした。デバイスの準備ができていません！",
+    "copy_list_confirm": "リスト <strong>{{name}}</strong> のコピーを本当に作成しますか？",
+    "copy_list_success": "リストのコピーが作成されました。",
+    "copy_list_error": "リストのコピーを作成できませんでした。"
 }

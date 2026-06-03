@@ -56,5 +56,8 @@
     "transmit_send_btn": "傳送到裝置",
     "add_moreitems_success": "項目已添加。",
     "add_moreitems_error": "無法添加項目！",
-    "sync_device_offline": "無法同步清單，裝置尚未準備好！"
+    "sync_device_offline": "無法同步清單，裝置尚未準備好！",
+    "copy_list_confirm": "你確定要建立清單 <strong>{{name}}</strong> 的副本嗎？",
+    "copy_list_success": "已建立清單副本。",
+    "copy_list_error": "無法建立清單副本！"
 }

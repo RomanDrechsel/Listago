@@ -56,5 +56,8 @@
     "transmit_send_btn": "Передати на пристрій",
     "add_moreitems_success": "Елемент додано.",
     "add_moreitems_error": "Не вдалося додати елемент!",
-    "sync_device_offline": "Список не вдалося синхронізувати, пристрій не готовий!"
+    "sync_device_offline": "Список не вдалося синхронізувати, пристрій не готовий!",
+    "copy_list_confirm": "Ви дійсно хочете створити копію списку <strong>{{name}}</strong>?",
+    "copy_list_success": "Копію списку створено.",
+    "copy_list_error": "Не вдалося створити копію списку!"
 }

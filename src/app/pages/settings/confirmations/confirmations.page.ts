@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { IonContent, IonItem, IonLabel, IonList, IonNote, IonToggle } from "@ionic/angular/standalone";
@@ -17,6 +16,7 @@ import { PageBase } from "../../page-base";
 })
 export class ConfirmationsPage extends PageBase {
     private _deleteList: boolean = true;
+    private _copyList: boolean = true;
     private _deleteListitem: boolean = true;
     private _transmitList: boolean = true;
     private _emptyList: boolean = true;
@@ -37,6 +37,15 @@ export class ConfirmationsPage extends PageBase {
     public set DeleteList(v: boolean) {
         this._deleteList = v;
         this.Preferences.Set(EPrefProperty.ConfirmDeleteList, v);
+    }
+
+    public get CopyList(): boolean {
+        return this._copyList;
+    }
+
+    public set CopyList(v: boolean) {
+        this._copyList = v;
+        this.Preferences.Set(EPrefProperty.ConfirmCopyList, v);
     }
 
     public get DeleteListitem(): boolean {
@@ -114,6 +123,7 @@ export class ConfirmationsPage extends PageBase {
     public override async ionViewWillEnter() {
         await super.ionViewWillEnter();
         this._deleteList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmDeleteList, true);
+        this._copyList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmCopyList, true);
         this._deleteListitem = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmDeleteListitem, true);
         this._transmitList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmTransmitList, true);
         this._emptyList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmEmptyList, true);
@@ -125,6 +135,10 @@ export class ConfirmationsPage extends PageBase {
 
     public onDeleteListChanged(checked: boolean) {
         this.DeleteList = checked;
+    }
+
+    public onCopyListChanged(checked: boolean) {
+        this.CopyList = checked;
     }
 
     public onDeleteListItemChanged(checked: boolean) {

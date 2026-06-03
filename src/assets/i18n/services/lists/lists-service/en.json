@@ -56,5 +56,8 @@
     "transmit_send_btn": "Send to device",
     "add_moreitems_success": "Item was added.",
     "add_moreitems_error": "Item could not be added!",
-    "sync_device_offline": "The list could not be synced, the device is not ready!"
+    "sync_device_offline": "The list could not be synced, the device is not ready!",
+    "copy_list_confirm": "Do you really want to create a copy of the list <strong>{{name}}</strong>?",
+    "copy_list_success": "A copy of the list has been created.",
+    "copy_list_error": "A copy of the list could not be created!"
 }
