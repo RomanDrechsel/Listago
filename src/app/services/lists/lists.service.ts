@@ -978,7 +978,7 @@ export class ListsService {
      */
     private async copyList(list: List, list_args?: CopyListArgs): Promise<boolean> {
         MainToolbarComponent.ToggleProgressbar(true);
-        const success = await this._backendService.dublicateList({ list: list, changes: list_args });
+        const success = await this._backendService.copyList({ list: list, changes: list_args });
         MainToolbarComponent.ToggleProgressbar(false);
         if (success === false) {
             this._popups.Toast.Error("service-lists.copy_list_error");

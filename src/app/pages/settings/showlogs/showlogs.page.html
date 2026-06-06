@@ -25,8 +25,8 @@
             </ion-fab-button>
         </ion-fab-list>
     </ion-fab>
-    @if (ShowScrollButtons) {
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+    @if (AnimationsEnabled || ShowScrollButtons) {
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start" [class.custom-fab-hidden]="AnimationsEnabled && !ShowScrollButtons">
         <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
             <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
         </ion-fab-button>

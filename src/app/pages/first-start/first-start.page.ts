@@ -1,4 +1,3 @@
-
 import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Browser } from "@capacitor/browser";
@@ -29,7 +28,7 @@ export class FirstStartPage extends PageBase {
     public StartImport?: string;
 
     public get HomepageLink(): string {
-        return this.Config.Homepage;
+        return this._config.Homepage;
     }
 
     public get GarminActive(): boolean {
@@ -37,7 +36,7 @@ export class FirstStartPage extends PageBase {
     }
 
     public get GarminAppname(): string {
-        return this.Config.GarminAppName;
+        return this._config.GarminAppName;
     }
 
     public get FinishButtonText(): string {
@@ -56,7 +55,7 @@ export class FirstStartPage extends PageBase {
     public override async ionViewDidEnter(): Promise<void> {
         await super.ionViewDidEnter();
         this._garminActive = await this.ConnectIQ.IsConnectIQAppInstalled();
-        await this.Preferences.Set(EPrefProperty.GarminConnectIQ, this._garminActive);
+        await this._preferences.Set(EPrefProperty.GarminConnectIQ, this._garminActive);
     }
 
     public override async ionViewWillLeave(): Promise<void> {
@@ -74,7 +73,7 @@ export class FirstStartPage extends PageBase {
 
     public async onGarminChange(check: boolean) {
         this._garminActive = check;
-        await this.Preferences.Set(EPrefProperty.GarminConnectIQ, check);
+        await this._preferences.Set(EPrefProperty.GarminConnectIQ, check);
         if (check) {
             await this.ConnectIQ.Initialize();
         } else {
@@ -104,7 +103,7 @@ export class FirstStartPage extends PageBase {
     }
 
     public async Finish() {
-        await this.Preferences.Set(EPrefProperty.FirstStart, false);
+        await this._preferences.Set(EPrefProperty.FirstStart, false);
         if (this.GarminActive && !this.ConnectIQ.Initialized) {
             if (!(await this.ConnectIQ.Initialize())) {
                 return;
@@ -113,7 +112,7 @@ export class FirstStartPage extends PageBase {
         if (this.StartImport) {
             await this._intents.gotoImportAfterIntent({ importUri: this.StartImport, replaceUrl: true });
         } else {
-            this.NavController.navigateRoot("/lists", { animated: true, replaceUrl: true });
+            this._navController.navigateRoot("/lists", { animated: true, replaceUrl: true });
         }
     }
 
@@ -122,6 +121,6 @@ export class FirstStartPage extends PageBase {
     }
 
     public async openHomepage() {
-        await Browser.open({ url: `https://${this.Config.Homepage}` });
+        await Browser.open({ url: `https://${this._config.Homepage}` });
     }
 }

@@ -20,7 +20,7 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     imports: [IonCheckbox, IonLabel, IonContent, IonText, IonNote, IonItem, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonFab, IonFabButton, CommonModule, TranslocoModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
     providers: [provideTranslocoScope({ scope: "pages/lists/trash-lists-page", alias: "page_trash" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
 })
-export class TrashListsPage extends AnimatedListPageBase {
+export class TrashListsPage extends AnimatedListPageBase<List> {
     public Lists: List[] = [];
     private _trashChangedSubscription?: Subscription;
 
@@ -31,9 +31,9 @@ export class TrashListsPage extends AnimatedListPageBase {
 
     public override async ionViewWillEnter() {
         await super.ionViewWillEnter();
-        this.Lists = await this.ListsService.GetTrash();
+        this.Lists = await this._listsService.GetTrash();
         this._itemsInitialized = true;
-        this._trashChangedSubscription = this.ListsService.onTrashDatasetChanged$.subscribe(lists => {
+        this._trashChangedSubscription = this._listsService.onTrashDatasetChanged$.subscribe(lists => {
             if (this._initialSubscription) {
                 this._initialSubscription = false;
                 return;
@@ -74,7 +74,7 @@ export class TrashListsPage extends AnimatedListPageBase {
     }
 
     public async deleteList(lists: List | List[]): Promise<boolean | undefined> {
-        const success = await this.ListsService.EraseListFromTrash(lists);
+        const success = await this._listsService.EraseListFromTrash(lists);
 
         if (success) {
             this._itemsList?.closeSlidingItems();
@@ -83,14 +83,14 @@ export class TrashListsPage extends AnimatedListPageBase {
     }
 
     public async restoreList(lists: List | List[]): Promise<boolean | undefined> {
-        const success = await this.ListsService.RestoreListFromTrash(lists);
+        const success = await this._listsService.RestoreListFromTrash(lists);
         this._itemsList?.closeSlidingItems();
         return success;
     }
 
     public async emptyTrash(): Promise<boolean> {
         AppComponent.Instance?.CloseMenu();
-        return (await this.ListsService.WipeTrash()) !== false;
+        return (await this._listsService.WipeTrash()) !== false;
     }
 
     public DeletedString(list: List): string {
@@ -102,16 +102,16 @@ export class TrashListsPage extends AnimatedListPageBase {
     }
 
     public isListSelected(list: List): boolean {
-        return this._selectedItems.indexOf(list.Id) >= 0;
+        return this._selectedItems.indexOf(list) >= 0;
     }
 
     public clickOnItem(event: MouseEvent, list: List) {
         if (!this._disableClick && this._editMode) {
             this._disableClick = true;
             if (this.isListSelected(list)) {
-                this._selectedItems = this._selectedItems.filter(l => l != list.Id);
+                this._selectedItems = this._selectedItems.filter(l => !l.equals(list));
             } else {
-                this._selectedItems.push(list.Id);
+                this._selectedItems.push(list);
             }
             setTimeout(() => {
                 this._disableClick = false;
@@ -128,7 +128,7 @@ export class TrashListsPage extends AnimatedListPageBase {
             texts["delete"] = texts["edit-menu.trash-list-delete"];
         } else {
             texts = this.Locale.getTexts(["edit-menu.lists-restore", "edit-menu.trash-lists-delete"], { num: this._selectedItems.length });
-            texts["restore"] = texts["edit-menu.lists-restore"];
+            texts["restore"] = texts["edit-menu.list-restore"];
             texts["delete"] = texts["edit-menu.trash-lists-delete"];
         }
         return [
@@ -137,7 +137,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 text: texts["restore"],
                 click: async () => {
                     this.editMenu?.leaveEditMode();
-                    const restore = await this.restoreList(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
+                    const restore = await this.restoreList(this._selectedItems);
                     if (restore === true) {
                         this._selectedItems = [];
                     } else if (restore === undefined) {
@@ -150,7 +150,7 @@ export class TrashListsPage extends AnimatedListPageBase {
                 text: texts["delete"],
                 click: async () => {
                     this.editMenu?.leaveEditMode();
-                    const del = await this.deleteList(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
+                    const del = await this.deleteList(this._selectedItems);
                     if (del === true) {
                         this._selectedItems = [];
                     } else if (del === undefined) {

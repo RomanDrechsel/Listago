@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import type { SQLiteDBConnection } from "@capacitor-community/sqlite";
 import { Directory, Filesystem } from "@capacitor/filesystem";
+import { HelperUtils } from "src/app/classes/utils/helper-utils";
 import { List, ListToLog } from "src/app/services/lists/list";
 import type { CopyListArgs } from "src/app/services/lists/lists.service";
 import { Logger } from "src/app/services/logging/logger";
@@ -382,8 +383,9 @@ export class ListsSqliteBackendService {
      * @param args the list to dublicate
      * @returns id of the new list, of false if something failed
      */
-    public async dublicateList(args: { list: List; changes?: CopyListArgs }): Promise<false | number> {
+    public async copyList(args: { list: List; changes?: CopyListArgs }): Promise<false | number> {
         const new_list = List.Copy(args.list);
+
         if (args.changes) {
             if (args.changes.name?.length) {
                 new_list.Name = args.changes.name;
@@ -391,9 +393,47 @@ export class ListsSqliteBackendService {
             new_list.SyncDevices = args.changes.sync_devices;
             new_list.Reset = args.changes.reset;
         }
+
+        if (new_list.isPeek) {
+            const items = await this.queryListitems({ list: args.list, trash: false });
+            if (items) {
+                items.map(item => (item.Id = HelperUtils.RandomNegativNumber()));
+            }
+            new_list.Items = items;
+        }
+
+        if (new_list.ItemsInTrash === undefined) {
+            const trash_items = await this.queryListitems({ list: args.list, trash: true });
+            if (trash_items) {
+                trash_items.map(item => (item.Id = HelperUtils.RandomNegativNumber()));
+                new_list.ItemsInTrash = trash_items;
+            }
+        }
+
+        /**
+         * temporary move all virtual items in trash to the items, so they will be created in database by storeList().
+         * They will have deleted > 0 and so moved to trash
+         */
+        const virtual_trash_items = new_list.ItemsInTrash?.filter(item => item.isVirtual);
+        if (virtual_trash_items?.length) {
+            new_list.Items.push(...virtual_trash_items);
+        }
+
         const store = await this.storeList({ list: new_list, force: true });
 
+        if (virtual_trash_items?.length) {
+            new_list.Items = new_list.Items.filter(item => virtual_trash_items.findIndex(i => i === item) < 0);
+        }
+
         if (typeof store === "number") {
+            new_list.Id = store;
+            if (new_list.ItemsInTrash?.length) {
+                const trash = await this.moveListitemsToTrash({ list: store, items: new_list.ItemsInTrash, force: true });
+                if (trash === false) {
+                    Logger.Error(`Could not copy trash listitems from '${args.list.toLog()}' to copy of the list '${new_list.toLog()}'`);
+                }
+            }
+
             return store;
         } else {
             return false;
@@ -411,7 +451,16 @@ export class ListsSqliteBackendService {
         const list_id = args.list instanceof List ? args.list.Id : args.list;
         const item_ids = args.items?.map(i => (typeof i === "number" ? i : i.Id)) || [];
 
-        let query = "UPDATE `listitems` SET `deleted` = ? WHERE `list_id` = ? AND `deleted` IS NULL";
+        /*let non_existing_items: Listitem[] = [];
+        if (args.items) {
+            args.items.forEach(i => {
+                if (i instanceof Listitem && i.isVirtual) non_existing_items.push(i);
+            });
+
+            item_ids.filter(id => non_existing_items.findIndex(i => i.Id === id) < 0);
+        }*/
+
+        let query = "UPDATE `listitems` SET `deleted` = ? WHERE `list_id` = ?";
         if (args.items?.length) {
             query += ` AND \`id\` IN (` + item_ids.map(_ => "?").join(", ") + `)`;
         }
@@ -421,6 +470,9 @@ export class ListsSqliteBackendService {
 
         const ret = await this._sqliteService.Execute(query, [Date.now(), list_id, ...item_ids]);
         if (ret?.changes?.changes) {
+            /* if (non_existing_items.length > 0) {
+
+            }*/
             await this.updateListModified({ list: args.list });
             return ret.changes.changes;
         } else if (!ret?.changes) {

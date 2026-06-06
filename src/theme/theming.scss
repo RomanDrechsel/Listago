@@ -93,11 +93,28 @@ ion-fab {
     margin: 12px;
     --background: var(--ion-color-secondary-contrast);
     fill: var(--ion-color-secondary-contrast);
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transform-origin: center;
+    transition:
+        opacity 200ms ease-in-out,
+        transform 200ms ease-in-out;
+
+    &.custom-fab-hidden {
+        opacity: 0;
+        transform: scale(0.75) translateY(150%);
+        pointer-events: none;
+
+        &.custom-fab-dir-end {
+            transform: scale(0.75) translateX(100%);
+        }
+    }
 
     ion-fab-button {
         --box-shadow: 0 3px 5px -1px rgba(var(--color-shadow-rgb), 0.2), 0 6px 10px 0 rgba(var(--color-shadow-rgb), 0.14), 0 1px 18px 0 rgba(var(--color-shadow-rgb), 0.12);
         --background: var(--ion-color-secondary);
         --color: var(--ion-color-secondary-contrast);
+        --transition: opacity: 1s ease-in-out, transform: 0.4s ease-in-out;
 
         &[data-label] {
             position: relative;

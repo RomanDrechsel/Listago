@@ -80,7 +80,7 @@ export class DevicesPage extends PageBase {
                     }
                 }
             }
-            this.cdr.detectChanges();
+            this._cdr.detectChanges();
         });
     }
 
@@ -113,17 +113,17 @@ export class DevicesPage extends PageBase {
             }
 
             if (DevicesPage.SubmitButton?.submitRoute) {
-                this.NavController.navigateBack(DevicesPage.SubmitButton.submitRoute);
+                this._navController.navigateBack(DevicesPage.SubmitButton.submitRoute);
                 DevicesPage.SubmitButton.submitRoute = undefined;
             } else {
-                this.NavController.back();
+                this._navController.back();
             }
         }
     }
 
     public onDeviceChanged(id: number) {
         this.SelectedDevice = this.Devices.find(d => d.Identifier == id);
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     public onToggle(is_on: boolean) {
@@ -154,7 +154,7 @@ export class DevicesPage extends PageBase {
         }
 
         this.deviceSelect?.writeValue(this.SelectedDevice?.Identifier);
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 }
 

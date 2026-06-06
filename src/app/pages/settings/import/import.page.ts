@@ -106,7 +106,7 @@ export class ImportPage extends PageBase {
     }
 
     public async back() {
-        await this.NavController.navigateBack("settings/im-export");
+        await this._navController.navigateBack("settings/im-export");
     }
 
     public async selectArchive(file?: string): Promise<void> {
@@ -240,21 +240,21 @@ export class ImportPage extends PageBase {
 
             switch (item.key) {
                 case "lists":
-                    result = await this._importer.ImportLists(listener, this._sqliteService, this.ListsService);
+                    result = await this._importer.ImportLists(listener, this._sqliteService, this._listsService);
                     reload_lists_service.push("lists");
                     break;
                 case "trash":
-                    result = await this._importer.ImportTrash(listener, this._sqliteService, this.ListsService);
+                    result = await this._importer.ImportTrash(listener, this._sqliteService, this._listsService);
                     reload_lists_service.push("lists", "trash");
                     break;
                 case "settings":
-                    result = await this._importer.ImportSettings(listener, { preferences: this.Preferences, connectiq: this.ConnectIQ, locale: this.Locale, logger: this.Logger });
+                    result = await this._importer.ImportSettings(listener, { preferences: this._preferences, connectiq: this.ConnectIQ, locale: this.Locale, logger: this.Logger });
                     break;
             }
 
             if (!result) {
                 item.status = "failed";
-                this.Popups.Toast.Error("page_settings_import.import_error");
+                this._popups.Toast.Error("page_settings_import.import_error");
                 this._importError = true;
                 return;
             } else {
@@ -268,7 +268,7 @@ export class ImportPage extends PageBase {
         await this._importer?.CleanUp();
 
         if (reload_lists_service.length > 0) {
-            await this.ListsService.ReloadListsDataset(reload_lists_service.filter((v, i, a) => i == a.indexOf(v)));
+            await this._listsService.ReloadListsDataset(reload_lists_service.filter((v, i, a) => i == a.indexOf(v)));
         }
 
         MainToolbarComponent.ToggleProgressbar(false);
@@ -279,7 +279,7 @@ export class ImportPage extends PageBase {
         if (this._leftPageWhileRunning) {
             ImportDonePopup(this._modalCtrl, { importPage: this });
         } else {
-            this.cdr.detectChanges();
+            this._cdr.detectChanges();
         }
     }
 
@@ -292,7 +292,7 @@ export class ImportPage extends PageBase {
     }
 
     public async importDone() {
-        await this.NavController.navigateBack("lists");
+        await this._navController.navigateBack("lists");
     }
 
     public Report(item_index: ImportKey): string {
@@ -361,7 +361,7 @@ export class ImportPage extends PageBase {
         this._archive = undefined;
         this._importItems = undefined;
         this._importDone = false;
-        this.Popups.Toast.Error("page_settings_import.select_archive_error", undefined, true);
+        this._popups.Toast.Error("page_settings_import.select_archive_error", undefined, true);
     }
 }
 

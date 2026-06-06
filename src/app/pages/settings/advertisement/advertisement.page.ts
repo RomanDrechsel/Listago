@@ -1,4 +1,3 @@
-
 import { Component, ViewChild } from "@angular/core";
 import { Browser } from "@capacitor/browser";
 import { IonContent, IonItem, IonList, IonToggle } from "@ionic/angular/standalone";
@@ -20,7 +19,7 @@ export class AdvertisementPage extends PageBase {
     @ViewChild("adsToggle", { read: IonToggle }) private _adsToggle?: IonToggle;
 
     public get AdvertisementActive(): boolean {
-        return this.Admob.Initialized;
+        return this._admob.Initialized;
     }
 
     public get AdvertisementText(): string {
@@ -43,28 +42,28 @@ export class AdvertisementPage extends PageBase {
             return;
         }
         if (this._adsToggle.checked && this.AdvertisementActive) {
-            const confirm = await this.Popups.Alert.YesNo({
+            const confirm = await this._popups.Alert.YesNo({
                 message: "page_settings_advertisement.deactivate_confirm",
                 translate: true,
             });
             if (confirm) {
-                await this.Admob.Shutdown();
-                this.Preferences.Set(EPrefProperty.AdmobActive, false);
-                this.Popups.Toast.Success("page_settings_advertisement.deactivated_success", undefined, true);
+                await this._admob.Shutdown();
+                this._preferences.Set(EPrefProperty.AdmobActive, false);
+                this._popups.Toast.Success("page_settings_advertisement.deactivated_success", undefined, true);
             }
         } else if (!this._adsToggle.checked && !this.AdvertisementActive) {
-            await this.Admob.Initialize();
-            this.Preferences.Set(EPrefProperty.AdmobActive, true);
-            this.Popups.Toast.Success("page_settings_advertisement.activated_success", undefined, true);
+            await this._admob.Initialize();
+            this._preferences.Set(EPrefProperty.AdmobActive, true);
+            this._popups.Toast.Success("page_settings_advertisement.activated_success", undefined, true);
         }
     }
 
     public async bmc() {
-        await Browser.open({ url: this.Config.BuyMeACoffeeLink });
+        await Browser.open({ url: this._config.BuyMeACoffeeLink });
     }
 
     public async paypal() {
-        const url = this.Locale.CurrentLanguage.locale == "de-DE" ? this.Config.PaypalDELink : this.Config.PaypalLink;
+        const url = this.Locale.CurrentLanguage.locale == "de-DE" ? this._config.PaypalDELink : this._config.PaypalLink;
         await Browser.open({ url: url });
     }
 }

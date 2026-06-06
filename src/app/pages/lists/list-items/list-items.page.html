@@ -84,14 +84,37 @@
             <div [innerHTML]="t('page_listitems.nolist')"></div>
         </div>
     </app-page-empty>
-    } @if(List && ItemsInitialized && ShowAddButton) {
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    } @if (List && ItemsInitialized && (AnimationsEnabled || EditMode)) {
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" [class.custom-fab-hidden]="AnimationsEnabled && !EditMode">
+        @if (EditModeAllItemsLocked) {
+        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('edit-menu.item-unpin') : t('edit-menu.items-unpin', { num: EditModeSelectedItems.length })" (click)="PinItem(EditModeSelectedItems, false)" [disabled]="!EditModeSelectedItems.length">
+            <ion-icon src="/assets/icons/pin_off.svg"></ion-icon>
+        </ion-fab-button>
+        } @else {
+        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('edit-menu.item-pin') : t('edit-menu.items-pin', { num: EditModeSelectedItems.length })" (click)="PinItem(EditModeSelectedItems, true)" [disabled]="!EditModeSelectedItems.length">
+            <ion-icon src="/assets/icons/pin.svg"></ion-icon>
+        </ion-fab-button>
+        } @if (EditmodeAllItemsHidden) {
+        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('edit-menu.item-show') : t('edit-menu.items-show', { num: EditModeSelectedItems.length })" (click)="HideItem(EditModeSelectedItems, false)" [disabled]="!EditModeSelectedItems.length">
+            <ion-icon src="/assets/icons/eye.svg"></ion-icon>
+        </ion-fab-button>
+        }@else {
+        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('edit-menu.item-hide') : t('edit-menu.items-hide', { num: EditModeSelectedItems.length })" (click)="HideItem(EditModeSelectedItems, true)" [disabled]="!EditModeSelectedItems.length">
+            <ion-icon src="/assets/icons/eye_off.svg"></ion-icon>
+        </ion-fab-button>
+        }
+        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('edit-menu.item-delete') : t('edit-menu.items-delete', { num: EditModeSelectedItems.length })" (click)="DeleteItem(EditModeSelectedItems)" [disabled]="!EditModeSelectedItems.length">
+            <ion-icon src="/assets/icons/menu/trash_items.svg"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+    } @if(List && ItemsInitialized && (AnimationsEnabled || ShowAddButton)) {
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="custom-fab-dir-end" [class.custom-fab-hidden]="AnimationsEnabled && !ShowAddButton">
         <ion-fab-button (click)="AddItem()" [ariaLabel]="t('buttons.add')">
             <ion-icon src="./assets/icons/add.svg"></ion-icon>
         </ion-fab-button>
     </ion-fab>
-    } @if(List && ItemsInitialized && List.Items.length > 0 && ShowScrollButtons) {
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+    } @if(List && ItemsInitialized && (AnimationsEnabled || ShowScrollButtons)) {
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start" [class.custom-fab-hidden]="AnimationsEnabled && List.Items.length > 0 && !ShowScrollButtons">
         <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
             <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
         </ion-fab-button>

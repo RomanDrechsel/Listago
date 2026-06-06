@@ -55,12 +55,12 @@ export class LoggingPage extends PageBase {
             } else {
                 text = this.Locale.getText("page_settings_logs.deleteall_confirm_single");
             }
-            if (await this.Popups.Alert.YesNo({ message: text })) {
+            if (await this._popups.Alert.YesNo({ message: text })) {
                 const del = await this.Logger.DeleteLogs(-1);
                 if (del != 1) {
-                    this.Popups.Toast.Success(this.Locale.getText("page_settings_logs.deleteall_done", { count: del }));
+                    this._popups.Toast.Success(this.Locale.getText("page_settings_logs.deleteall_done", { count: del }));
                 } else {
-                    this.Popups.Toast.Success(this.Locale.getText("page_settings_logs.deleteall_done_single"));
+                    this._popups.Toast.Success(this.Locale.getText("page_settings_logs.deleteall_done_single"));
                 }
 
                 this.requestLogsSize();

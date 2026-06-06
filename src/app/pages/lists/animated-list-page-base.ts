@@ -1,14 +1,12 @@
 import type { Animation, IonContentCustomEvent, ScrollDetail } from "@ionic/core";
 import { Subscription } from "rxjs";
 import { CreateListitemAnimation, type ListitemAnimationDirection } from "src/app/animations/listitem.animation";
-import { EPrefProperty } from "../../services/storage/preferences.service";
 import { ListPageBase } from "./list-page-base";
+import type { ListPageSelectedItem } from "./list-page-selected-item";
 
-export abstract class AnimatedListPageBase extends ListPageBase {
+export abstract class AnimatedListPageBase<T extends ListPageSelectedItem> extends ListPageBase<T> {
     protected _initAnimationDone = false;
     protected _animationDirection: ListitemAnimationDirection = "left";
-
-    private _animateItems = true;
 
     private _itemAnimations: Animation[] | undefined;
 
@@ -20,16 +18,9 @@ export abstract class AnimatedListPageBase extends ListPageBase {
 
     public override async ionViewWillEnter() {
         await super.ionViewWillEnter();
-        this._animateItems = await this.Preferences.Get(EPrefProperty.Animations, true);
-        if (this._animateItems == false) {
+        if (this._animationsEnabled == false) {
             this._initAnimationDone = true;
         }
-
-        this._animationSubscription = this.Preferences.onPrefChanged$.subscribe(prop => {
-            if (prop.prop == EPrefProperty.Animations) {
-                this._animateItems = prop.value;
-            }
-        });
     }
 
     public override async ionViewWillLeave() {
@@ -58,7 +49,7 @@ export abstract class AnimatedListPageBase extends ListPageBase {
             this.finishAnimation();
         }
 
-        if (!this._initAnimationDone && this._animateItems) {
+        if (!this._initAnimationDone && this._animationsEnabled) {
             all_items.forEach((el: Element, index: number) => {
                 if (el.classList.contains("animating")) {
                     return;

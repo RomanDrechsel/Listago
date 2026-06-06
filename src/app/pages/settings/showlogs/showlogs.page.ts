@@ -85,7 +85,7 @@ export class ShowlogsPage extends PageBase {
                 const scroll_to_bottom = this._scrollPosition == "bottom" || !this.isScrollable;
                 this.currentLogfile = await this.Logger.GetLogfile(this.currentLogfile?.Filename);
                 if (size != (this.currentLogfile?.Content?.length ?? 0)) {
-                    this.cdr.detectChanges();
+                    this._cdr.detectChanges();
                     if (scroll_to_bottom) {
                         setTimeout(() => {
                             this.ScrollToBottom();
@@ -133,15 +133,15 @@ export class ShowlogsPage extends PageBase {
     public async onDelete() {
         if (this.currentLogfile) {
             const locale = this.Locale.getTexts(["buttons.yes", "buttons.no", "page_settings_showlogs.confirm_delete"], { filename: this.currentLogfile.Filename });
-            await this.Popups.Alert.YesNo({
+            await this._popups.Alert.YesNo({
                 message: locale["page_settings_showlogs.confirm_delete"],
                 button_no: locale["buttons.no"],
                 button_yes: {
                     text: locale["buttons.yes"],
                     handler: async () => {
                         await FileUtils.DeleteFile(this.currentLogfile!.Path);
-                        this.Popups.Toast.Success("page_settings_showlogs.toast_deleted");
-                        this.NavController.navigateBack("settings/logging");
+                        this._popups.Toast.Success("page_settings_showlogs.toast_deleted");
+                        this._navController.navigateBack("settings/logging");
                     },
                 },
             });
@@ -187,7 +187,7 @@ export class ShowlogsPage extends PageBase {
 
     public async ScrollToTop() {
         await this.mainContent?.scrollToTop(300);
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     public async ScrollToBottom() {
@@ -239,7 +239,7 @@ export class ShowlogsPage extends PageBase {
                 });
             waitForMutations();
             this.currentLogfile = await this.Logger.GetLogfile(filename);
-            this.cdr.detectChanges();
+            this._cdr.detectChanges();
             this.ScrollToBottom();
             await new Promise(resolve => {
                 setTimeout(() => {
@@ -249,7 +249,7 @@ export class ShowlogsPage extends PageBase {
             this.ScrollToBottom();
         } else {
             this.currentLogfile = undefined;
-            this.cdr.detectChanges();
+            this._cdr.detectChanges();
         }
     }
 }

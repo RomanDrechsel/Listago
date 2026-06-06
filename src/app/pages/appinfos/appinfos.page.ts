@@ -36,7 +36,7 @@ export class AppinfosPage extends PageBase {
     private readonly _appupdater = inject(AppUpdaterService);
 
     public get Homepage(): string {
-        return this.Config.Homepage;
+        return this._config.Homepage;
     }
 
     public override async ionViewWillEnter() {
@@ -47,7 +47,7 @@ export class AppinfosPage extends PageBase {
             await this.requestStatistics();
         });
 
-        const meta = await this.AppService.AppMetaInfo({ device: true, settings: false, garmin: false, storage: false });
+        const meta = await this._appService.AppMetaInfo({ device: true, settings: false, garmin: false, storage: false });
         this.BundleId = meta.Package?.Name ?? "-";
         this.Appversion = meta.Package?.VersionString ?? "-";
         this.Build = String(meta.Package?.Build ?? "");
@@ -65,16 +65,16 @@ export class AppinfosPage extends PageBase {
     }
 
     public async bmc() {
-        await Browser.open({ url: this.Config.BuyMeACoffeeLink });
+        await Browser.open({ url: this._config.BuyMeACoffeeLink });
     }
 
     public async paypal() {
-        const url = this.Locale.CurrentLanguage.locale == "de-DE" ? this.Config.PaypalDELink : this.Config.PaypalLink;
+        const url = this.Locale.CurrentLanguage.locale == "de-DE" ? this._config.PaypalDELink : this._config.PaypalLink;
         await Browser.open({ url: url });
     }
 
     public async mywebsite() {
-        await Browser.open({ url: `https://${this.Config.Homepage}` });
+        await Browser.open({ url: `https://${this._config.Homepage}` });
     }
 
     public async writeReviewIQ() {

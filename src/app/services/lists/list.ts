@@ -1,8 +1,9 @@
 import { HelperUtils } from "src/app/classes/utils/helper-utils";
+import type { ListPageSelectedItem } from "src/app/pages/lists/list-page-selected-item";
 import { DatabaseType } from "../storage/sqlite/lists/lists-sqlite-backend.service";
 import { Listitem, ListitemModel } from "./listitem";
 
-export class List {
+export class List implements ListPageSelectedItem {
     private _id: number;
     private _name: string;
     private _created: number;

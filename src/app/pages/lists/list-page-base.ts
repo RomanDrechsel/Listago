@@ -6,11 +6,12 @@ import { IonContentCustomEvent, type ScrollDetail } from "@ionic/core";
 import { type EditMenuAction } from "src/app/components/main-toolbar-edit-menu-modal/main-toolbar-edit-menu-modal.component";
 import { MainToolbarListsCustomMenuComponent } from "src/app/components/main-toolbar-lists-custom-menu/main-toolbar-lists-custom-menu.component";
 import { PageBase } from "../page-base";
+import type { ListPageSelectedItem } from "./list-page-selected-item";
 
 @Component({
     template: "",
 })
-export abstract class ListPageBase extends PageBase {
+export abstract class ListPageBase<T extends ListPageSelectedItem> extends PageBase {
     @ViewChild("mainContent", { read: IonContent, static: false }) protected mainContent?: IonContent;
     @ViewChild("mainContent", { read: ElementRef, static: false }) protected mainContentRef?: ElementRef;
     @ViewChild("itemsList", { read: IonList, static: false }) protected _itemsList?: IonList;
@@ -26,7 +27,7 @@ export abstract class ListPageBase extends PageBase {
     protected _initialSubscription = true;
 
     protected _editMode = true;
-    protected _selectedItems: (Number | String)[] = [];
+    protected _selectedItems: T[] = [];
 
     protected _keyboardShow = false;
     private _keyboardShowListener?: PluginListenerHandle;
@@ -67,6 +68,10 @@ export abstract class ListPageBase extends PageBase {
         return this._itemsInitialized && !this._keyboardShow && !this.EditMode;
     }
 
+    public get EditModeSelectedItems(): T[] {
+        return this._editMode ? (this._selectedItems as T[]) : [];
+    }
+
     public override async ionViewWillEnter(): Promise<void> {
         await super.ionViewWillEnter();
         this._editMode = false;
@@ -79,10 +84,6 @@ export abstract class ListPageBase extends PageBase {
             this._keyboardShow = false;
             this.reload();
         });
-    }
-
-    public override async ionViewDidEnter(): Promise<void> {
-        await super.ionViewDidEnter();
     }
 
     public override async ionViewWillLeave(): Promise<void> {
@@ -111,12 +112,12 @@ export abstract class ListPageBase extends PageBase {
 
     public async ScrollToTop() {
         await this.mainContent?.scrollToTop(300);
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     public async ScrollToBottom(instant: boolean = true) {
         await this.mainContent?.scrollToBottom(instant ? 0 : 300);
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     protected abstract getEditMenuActions(): EditMenuAction[];

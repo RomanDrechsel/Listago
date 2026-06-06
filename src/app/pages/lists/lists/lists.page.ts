@@ -20,7 +20,7 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     imports: [IonCheckbox, IonLabel, IonReorderGroup, IonItemOption, IonItemOptions, IonItemSliding, IonIcon, IonFabButton, IonFab, IonItem, IonReorder, IonList, IonContent, MainToolbarComponent, PageAddNewComponent, CommonModule, FormsModule, TranslocoModule, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
     providers: [provideTranslocoScope({ scope: "pages/lists/lists-page", alias: "page_lists" }, { scope: "common/date", alias: "date" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
 })
-export class ListsPage extends AnimatedListPageBase {
+export class ListsPage extends AnimatedListPageBase<List> {
     private _lists: List[] | undefined;
     private _listsSubscription?: Subscription;
 
@@ -35,14 +35,14 @@ export class ListsPage extends AnimatedListPageBase {
 
     public override async ionViewWillEnter(): Promise<void> {
         await super.ionViewWillEnter();
-        this._lists = await this.ListsService.GetLists({ orderBy: "order", orderDir: "ASC" });
+        this._lists = await this._listsService.GetLists({ orderBy: "order", orderDir: "ASC" });
         this._itemsInitialized = true;
-        this._listsSubscription = this.ListsService.onListsChanged$.subscribe(async _ => {
+        this._listsSubscription = this._listsService.onListsChanged$.subscribe(async _ => {
             if (this._initialSubscription) {
                 this._initialSubscription = false;
                 return;
             }
-            this._lists = await this.ListsService.GetLists({ orderBy: "order", orderDir: "ASC" });
+            this._lists = await this._listsService.GetLists({ orderBy: "order", orderDir: "ASC" });
             this._itemsInitialized = true;
             this.onItemsChanged();
         });
@@ -64,7 +64,7 @@ export class ListsPage extends AnimatedListPageBase {
     }
 
     public async addList() {
-        await this.ListsService.NewList();
+        await this._listsService.NewList();
     }
 
     public onSwipeLeft(list: List) {
@@ -74,8 +74,10 @@ export class ListsPage extends AnimatedListPageBase {
 
     public async deleteLists(lists: List | List[]): Promise<boolean | undefined> {
         this._itemsList?.closeSlidingItems();
-        const success = await this.ListsService.DeleteLists(lists);
+        const success = await this._listsService.DeleteLists(lists);
         if (success === true) {
+            this._selectedItems = [];
+            this.EditMode = false;
             this.reload();
         }
         return success;
@@ -83,8 +85,10 @@ export class ListsPage extends AnimatedListPageBase {
 
     public async emptyLists(lists: List | List[]): Promise<boolean | undefined> {
         this._itemsList?.closeSlidingItems();
-        const success = await this.ListsService.EmptyLists(lists);
+        const success = await this._listsService.EmptyLists(lists);
         if (success === true) {
+            this._selectedItems = [];
+            this.EditMode = false;
             this.reload();
         }
         return success;
@@ -92,12 +96,17 @@ export class ListsPage extends AnimatedListPageBase {
 
     public async transmitLists(lists: List | List[]): Promise<boolean | undefined> {
         this._itemsList?.closeSlidingItems();
-        return await this.ListsService.TransferList(lists);
+        const success = await this._listsService.TransferList(lists);
+        if (success === true) {
+            this._selectedItems = [];
+            this.EditMode = false;
+        }
+        return success;
     }
 
     public async editList(event: MouseEvent, list: List) {
         event.stopImmediatePropagation();
-        await this.ListsService.EditList(list);
+        await this._listsService.EditList(list);
     }
 
     public clickOnItem(event: MouseEvent, list: List) {
@@ -105,12 +114,12 @@ export class ListsPage extends AnimatedListPageBase {
             this._disableClick = true;
             if (this._editMode) {
                 if (this.isListSelected(list)) {
-                    this._selectedItems = this._selectedItems.filter(l => l != list.Id);
+                    this._selectedItems = this._selectedItems.filter(l => !l.equals(list));
                 } else {
-                    this._selectedItems.push(list.Id);
+                    this._selectedItems.push(list);
                 }
             } else {
-                this.NavController.navigateForward(`/lists/items/${list.Id}`, { queryParams: { title: list.Name } });
+                this._navController.navigateForward(`/lists/items/${list.Id}`, { queryParams: { title: list.Name } });
             }
             setTimeout(() => {
                 this._disableClick = false;
@@ -120,7 +129,7 @@ export class ListsPage extends AnimatedListPageBase {
     }
 
     public async handleReorder(event: CustomEvent<ItemReorderEventDetail>) {
-        await this.ListsService.ReorderLists(event.detail.complete(this._lists));
+        await this._listsService.ReorderLists(event.detail.complete(this._lists));
         event.stopImmediatePropagation();
     }
 
@@ -129,7 +138,7 @@ export class ListsPage extends AnimatedListPageBase {
     }
 
     public isListSelected(list: List): boolean {
-        return this._selectedItems.indexOf(list.Id) >= 0;
+        return this._selectedItems.indexOf(list) >= 0;
     }
 
     public getEditMenuActions(): EditMenuAction[] {
@@ -152,10 +161,8 @@ export class ListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/menu/devices.svg",
                 click: async () => {
                     this.editMenu?.leaveEditMode();
-                    const transmit = await this.transmitLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
-                    if (transmit === true) {
-                        this._selectedItems = [];
-                    } else if (transmit === undefined) {
+                    const transmit = await this.transmitLists(this._selectedItems);
+                    if (transmit === undefined) {
                         this.editMenu?.enterEditMode();
                     }
                 },
@@ -165,10 +172,8 @@ export class ListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/menu/empty.svg",
                 click: async () => {
                     this.editMenu?.leaveEditMode();
-                    const empty = await this.emptyLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
-                    if (empty === true) {
-                        this._selectedItems = [];
-                    } else if (empty === undefined) {
+                    const empty = await this.emptyLists(this._selectedItems);
+                    if (empty === undefined) {
                         this.editMenu?.enterEditMode();
                     }
                 },
@@ -178,10 +183,8 @@ export class ListsPage extends AnimatedListPageBase {
                 icon: "/assets/icons/trash.svg",
                 click: async () => {
                     this.editMenu?.leaveEditMode();
-                    const del = await this.deleteLists(this.Lists.filter(l => this._selectedItems.indexOf(l.Id) >= 0));
-                    if (del === true) {
-                        this._selectedItems = [];
-                    } else if (del === undefined) {
+                    const del = await this.deleteLists(this._selectedItems);
+                    if (del === undefined) {
                         this.editMenu?.enterEditMode();
                     }
                 },

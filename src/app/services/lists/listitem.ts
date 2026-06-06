@@ -1,7 +1,8 @@
 import { HelperUtils } from "src/app/classes/utils/helper-utils";
+import type { ListPageSelectedItem } from "src/app/pages/lists/list-page-selected-item";
 import type { DatabaseType } from "../storage/sqlite/lists/lists-sqlite-backend.service";
 
-export class Listitem {
+export class Listitem implements ListPageSelectedItem {
     private _id: number;
     private _order: number;
     private _created: number;
@@ -215,7 +216,7 @@ export class Listitem {
      * @param other the other listitem or undefined
      * @returns are the objects equal
      */
-    public equals(other: Listitem): boolean {
+    public equals(other: Listitem | null | undefined): boolean {
         if (!other) {
             return false;
         }

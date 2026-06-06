@@ -29,7 +29,7 @@ export class ExportPage extends PageBase {
     private _exportItems: ExportItem[];
     private _exporter?: BackendExporter;
     private _exportArchive?: string;
-    private readonly _listsService: ListsSqliteBackendService = inject(ListsSqliteBackendService);
+    private readonly _listsServiceBackend: ListsSqliteBackendService = inject(ListsSqliteBackendService);
     private readonly _sqliteService: SqliteService = inject(SqliteService);
 
     public get ExportItems(): ExportItem[] | undefined {
@@ -131,7 +131,7 @@ export class ExportPage extends PageBase {
     }
 
     public async done() {
-        this.NavController.back();
+        this._navController.back();
     }
 
     public async stopExport() {
@@ -161,7 +161,7 @@ export class ExportPage extends PageBase {
             switch (item.key) {
                 case "lists":
                     result = await this._exporter.ExportLists(
-                        this._listsService,
+                        this._listsServiceBackend,
                         ProgressListenerFactory(done => {
                             item.done = done;
                         }),
@@ -169,7 +169,7 @@ export class ExportPage extends PageBase {
                     break;
                 case "trash":
                     result = await this._exporter.ExportTrash(
-                        this._listsService,
+                        this._listsServiceBackend,
                         this._sqliteService,
                         ProgressListenerFactory(done => {
                             item.done = done;
@@ -177,7 +177,7 @@ export class ExportPage extends PageBase {
                     );
                     break;
                 case "settings":
-                    result = await this._exporter.ExportSettings(this.Preferences);
+                    result = await this._exporter.ExportSettings(this._preferences);
                     if (result) {
                         item.done = 1;
                     }
@@ -225,7 +225,7 @@ export class ExportPage extends PageBase {
         });
         await this._exporter?.Stop();
         this._exporter = undefined;
-        await this.Popups.Toast.Error("page_settings_export.export_error", undefined, true);
+        await this._popups.Toast.Error("page_settings_export.export_error", undefined, true);
     }
 }
 

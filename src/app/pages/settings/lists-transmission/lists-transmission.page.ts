@@ -1,4 +1,3 @@
-
 import { Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
@@ -34,7 +33,7 @@ export class ListsTransmissionPage extends PageBase {
 
     public set OpenAppOnTransmit(v: boolean) {
         this._openAppOnTransfer = v;
-        this.Preferences.Set(EPrefProperty.OpenAppOnTransmit, v);
+        this._preferences.Set(EPrefProperty.OpenAppOnTransmit, v);
     }
 
     public get DeleteListOnDevice(): boolean {
@@ -43,7 +42,7 @@ export class ListsTransmissionPage extends PageBase {
 
     public set DeleteListOnDevice(v: boolean) {
         this._deleteListOnDevice = v;
-        this.Preferences.Set(EPrefProperty.DeleteListOnDevice, v);
+        this._preferences.Set(EPrefProperty.DeleteListOnDevice, v);
     }
 
     public get SyncListOnDevice(): boolean {
@@ -52,7 +51,7 @@ export class ListsTransmissionPage extends PageBase {
 
     public set SyncListOnDevice(v: boolean) {
         this._syncListOnDevice = v;
-        this.Preferences.Set(EPrefProperty.SyncListOnDevice, v);
+        this._preferences.Set(EPrefProperty.SyncListOnDevice, v);
         if (!v) {
             this.confirmRemoveSync();
         }
@@ -64,7 +63,7 @@ export class ListsTransmissionPage extends PageBase {
 
     public set SupportGarminConnectIQ(v: boolean) {
         this._garminConnectIQ = v;
-        this.Preferences.Set(EPrefProperty.GarminConnectIQ, v);
+        this._preferences.Set(EPrefProperty.GarminConnectIQ, v);
         if (v) {
             this.ConnectIQ.Initialize();
         } else {
@@ -73,10 +72,10 @@ export class ListsTransmissionPage extends PageBase {
     }
 
     public override async ionViewWillEnter() {
-        this._openAppOnTransfer = await this.Preferences.Get<boolean>(EPrefProperty.OpenAppOnTransmit, false);
-        this._deleteListOnDevice = await this.Preferences.Get<boolean>(EPrefProperty.DeleteListOnDevice, false);
-        this._syncListOnDevice = await this.Preferences.Get<boolean>(EPrefProperty.SyncListOnDevice, false);
-        this._garminConnectIQ = await this.Preferences.Get<boolean>(EPrefProperty.GarminConnectIQ, true);
+        this._openAppOnTransfer = await this._preferences.Get<boolean>(EPrefProperty.OpenAppOnTransmit, false);
+        this._deleteListOnDevice = await this._preferences.Get<boolean>(EPrefProperty.DeleteListOnDevice, false);
+        this._syncListOnDevice = await this._preferences.Get<boolean>(EPrefProperty.SyncListOnDevice, false);
+        this._garminConnectIQ = await this._preferences.Get<boolean>(EPrefProperty.GarminConnectIQ, true);
     }
 
     public override async ionViewDidEnter(): Promise<void> {
@@ -103,7 +102,7 @@ export class ListsTransmissionPage extends PageBase {
 
         if (checked && this._listToSync) {
             (this._syncList?.nativeElement as HTMLElement)?.classList.remove("attract-attention");
-            await this.ListsService.SyncList({ list: this._listToSync, force_if_sync_is_disabled: true });
+            await this._listsService.SyncList({ list: this._listToSync, force_if_sync_is_disabled: true });
         }
     }
 
@@ -112,8 +111,8 @@ export class ListsTransmissionPage extends PageBase {
     }
 
     private async confirmRemoveSync() {
-        if (await this.Popups.Alert.YesNo({ message: "page_lists_transmission.synclist_disable", header: "page_lists_transmission.synclist_disable_title", translate: true })) {
-            await this.ListsService.PurgeAllSyncs();
+        if (await this._popups.Alert.YesNo({ message: "page_lists_transmission.synclist_disable", header: "page_lists_transmission.synclist_disable_title", translate: true })) {
+            await this._listsService.PurgeAllSyncs();
         }
     }
 

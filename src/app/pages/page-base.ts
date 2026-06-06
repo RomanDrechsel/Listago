@@ -12,7 +12,7 @@ import { ListsService } from "../services/lists/lists.service";
 import { LocalizationService } from "../services/localization/localization.service";
 import { LoggingService } from "../services/logging/logging.service";
 import { PopupsService } from "../services/popups/popups.service";
-import { PreferencesService } from "../services/storage/preferences.service";
+import { EPrefProperty, PreferencesService } from "../services/storage/preferences.service";
 
 @Component({
     template: "",
@@ -20,20 +20,27 @@ import { PreferencesService } from "../services/storage/preferences.service";
 })
 export abstract class PageBase {
     @ViewChild(MainToolbarComponent, { static: false }) private _mainToolbar?: MainToolbarComponent;
-    protected readonly Popups = inject(PopupsService);
-    protected readonly ConnectIQ = inject(ConnectIQService);
-    protected readonly ListsService = inject(ListsService);
-    protected readonly Locale = inject(LocalizationService);
-    protected readonly Logger = inject(LoggingService);
-    protected readonly Preferences = inject(PreferencesService);
-    protected readonly NavController = inject(NavController);
-    protected readonly AppService = inject(AppService);
-    protected readonly Admob = inject(AdmobService);
-    protected readonly Config = inject(ConfigService);
-    protected readonly cdr = inject(ChangeDetectorRef);
+    public readonly Locale = inject(LocalizationService);
+    public readonly Logger = inject(LoggingService);
+    public readonly ConnectIQ = inject(ConnectIQService);
+    protected readonly _popups = inject(PopupsService);
+    protected readonly _listsService = inject(ListsService);
+    protected readonly _preferences = inject(PreferencesService);
+    protected readonly _navController = inject(NavController);
+    protected readonly _appService = inject(AppService);
+    protected readonly _admob = inject(AdmobService);
+    protected readonly _config = inject(ConfigService);
+    protected readonly _cdr = inject(ChangeDetectorRef);
 
     private _deviceChangedSubscription?: Subscription;
     private _onlineDevices: number = 0;
+
+    protected _animationsEnabled: boolean = false;
+    private _preferencesSubscription?: Subscription = undefined;
+
+    public get AnimationsEnabled(): boolean {
+        return this._animationsEnabled;
+    }
 
     public async ionViewWillEnter() {
         this._deviceChangedSubscription = this.ConnectIQ.onDeviceChanged$.subscribe(async () => {
@@ -43,6 +50,14 @@ export abstract class PageBase {
             }
         });
         AppComponent?.Instance?.setToolbar(this._mainToolbar);
+
+        this._preferencesSubscription = this._preferences.onPrefChanged$.subscribe(async pref => {
+            if (pref.prop === EPrefProperty.Animations) {
+                this._animationsEnabled = pref.value as boolean;
+            }
+            await this.onPreferencesChanged(pref);
+        });
+        this._animationsEnabled = await this._preferences.Get(EPrefProperty.Animations, true);
     }
 
     public async ionViewDidEnter() {
@@ -52,6 +67,8 @@ export abstract class PageBase {
     public async ionViewWillLeave() {
         this._deviceChangedSubscription?.unsubscribe();
         this._deviceChangedSubscription = undefined;
+        this._preferencesSubscription?.unsubscribe();
+        this._preferencesSubscription = undefined;
     }
 
     public async ionViewDidLeave() {}
@@ -63,6 +80,8 @@ export abstract class PageBase {
     protected async reload() {
         /* else, scroll buttons won't be shown */
         await new Promise(resolve => setTimeout(resolve, 1));
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
+
+    protected async onPreferencesChanged(_: { prop: EPrefProperty; value: any }) {}
 }

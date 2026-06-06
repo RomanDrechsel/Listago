@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, ElementRef, inject, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IonContent, IonFab, IonFabButton, IonIcon, IonSelect, IonSelectOption, IonText, ScrollDetail, SelectCustomEvent } from "@ionic/angular/standalone";
@@ -79,7 +78,7 @@ export class ShowWatchLogsPage extends PageBase {
             }
         }
         this.DeviceLog = undefined;
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
         this.ScrollToBottom();
     }
 
@@ -101,12 +100,12 @@ export class ShowWatchLogsPage extends PageBase {
 
     public async ScrollToTop() {
         await this.mainContent?.scrollToTop(300);
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     public async ScrollToBottom(instant: boolean = true) {
         await this.mainContent?.scrollToBottom(instant ? 0 : 300);
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 
     private async loadDevices() {
@@ -124,6 +123,6 @@ export class ShowWatchLogsPage extends PageBase {
         if (this.Device && !this.DeviceLog) {
             await this.loadLog();
         }
-        this.cdr.detectChanges();
+        this._cdr.detectChanges();
     }
 }

@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { IonContent, IonItem, IonLabel, IonList, IonNote, IonSelect, IonSelectOption, IonToggle } from "@ionic/angular/standalone";
 import { provideTranslocoScope, TranslocoModule } from "@jsverse/transloco";
@@ -21,7 +20,7 @@ export class TrashSettingsPage extends PageBase {
     private _keepInStock: KeepInTrash.Enum = KeepInTrash.Enum.LastEntries;
 
     public set UseTrash(value: boolean) {
-        this.Preferences.Set(EPrefProperty.TrashLists, value);
+        this._preferences.Set(EPrefProperty.TrashLists, value);
         this._useTrash = value;
     }
 
@@ -30,7 +29,7 @@ export class TrashSettingsPage extends PageBase {
     }
 
     public set UseTrashListitems(value: boolean) {
-        this.Preferences.Set(EPrefProperty.TrashListitems, value);
+        this._preferences.Set(EPrefProperty.TrashListitems, value);
         this._useTrashListitems = value;
     }
 
@@ -40,7 +39,7 @@ export class TrashSettingsPage extends PageBase {
 
     public set KeepInStock(value: number) {
         value = KeepInTrash.FromNumber(value) as number;
-        this.Preferences.Set(EPrefProperty.TrashKeepinStock, value);
+        this._preferences.Set(EPrefProperty.TrashKeepinStock, value);
         this._keepInStock = value;
     }
 
@@ -50,23 +49,23 @@ export class TrashSettingsPage extends PageBase {
 
     public override async ionViewWillEnter() {
         await super.ionViewWillEnter();
-        this._useTrash = await this.Preferences.Get<boolean>(EPrefProperty.TrashLists, this.UseTrash);
-        this._useTrashListitems = await this.Preferences.Get<boolean>(EPrefProperty.TrashListitems, this.UseTrashListitems);
-        this._keepInStock = KeepInTrash.FromNumber(await this.Preferences.Get<number>(EPrefProperty.TrashKeepinStock, this._keepInStock));
-        this.cdr.detectChanges();
+        this._useTrash = await this._preferences.Get<boolean>(EPrefProperty.TrashLists, this.UseTrash);
+        this._useTrashListitems = await this._preferences.Get<boolean>(EPrefProperty.TrashListitems, this.UseTrashListitems);
+        this._keepInStock = KeepInTrash.FromNumber(await this._preferences.Get<number>(EPrefProperty.TrashKeepinStock, this._keepInStock));
+        this._cdr.detectChanges();
     }
 
     public async onUseTrashChanged(checked: boolean) {
         this.UseTrash = checked;
         if (!checked) {
-            await this.ListsService.WipeTrash(false, true);
+            await this._listsService.WipeTrash(false, true);
         }
     }
 
     public async onUseTrashListitemsChanged(checked: boolean) {
         this.UseTrashListitems = checked;
         if (!checked) {
-            await this.ListsService.WipeListitemTrash(false, true);
+            await this._listsService.WipeListitemTrash(false, true);
         }
     }
 

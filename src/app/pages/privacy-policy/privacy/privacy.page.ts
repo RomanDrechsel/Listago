@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -17,6 +16,6 @@ import { PageBase } from "../../page-base";
 })
 export class PrivacyPage extends PageBase {
     public async admob_consent_form() {
-        await this.Admob.RequestConsent();
+        await this._admob.RequestConsent();
     }
 }

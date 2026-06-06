@@ -20,11 +20,11 @@
 
         <!-- animations -->
         <ion-item lines="full">
-            <ion-label (click)="onAnimationsChanged(!UseAnimations)">
+            <ion-label (click)="onAnimationsChanged(!AnimationsEnabled)">
                 <div class="text" [innerHTML]="t('page_settings.animations')"></div>
                 <ion-note [innerHTML]="t('page_settings.animations_note')"></ion-note>
             </ion-label>
-            <ion-toggle [checked]="UseAnimations" (ionChange)="onAnimationsChanged($event.target.checked)" slot="end"></ion-toggle>
+            <ion-toggle [checked]="AnimationsEnabled" (ionChange)="onAnimationsChanged($event.target.checked)" slot="end"></ion-toggle>
         </ion-item>
 
         <!-- transmission settings -->
