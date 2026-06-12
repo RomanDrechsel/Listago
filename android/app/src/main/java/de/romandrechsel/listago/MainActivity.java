@@ -31,6 +31,7 @@ import de.romandrechsel.listago.logging.Logger;
 import de.romandrechsel.listago.share.SharePlugin;
 import de.romandrechsel.listago.sysinfo.SysInfoPlugin;
 import de.romandrechsel.listago.utils.FileUtils;
+import de.romandrechsel.listago.zip.ZipPlugin;
 
 public class MainActivity extends BridgeActivity
 {
@@ -52,7 +53,8 @@ public class MainActivity extends BridgeActivity
             ConnectIQPlugin.class,
             SysInfoPlugin.class,
             SharePlugin.class,
-            AppUpdatePlugin.class
+            AppUpdatePlugin.class,
+            ZipPlugin.class
         ));
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
@@ -115,6 +117,7 @@ public class MainActivity extends BridgeActivity
         this._configurationChangedListeners.add(listener);
     }
 
+    @Nullable
     private SysInfoPlugin GetSysInfoPlugin()
     {
         if (this.getBridge() != null)
