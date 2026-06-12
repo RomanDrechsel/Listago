@@ -118,6 +118,11 @@ public class DeviceInfo implements ConnectIQ.IQDeviceEventListener, ConnectIQ.IQ
                                 Logger.Error(TAG, "Could not register for ConnectIQ app events for device " + DeviceInfo.this + ", invalid state", ex);
                                 DeviceInfo.this.setState(DeviceState.InvalidState);
                             }
+                            catch (ServiceUnavailableException ex)
+                            {
+                                Logger.Error(TAG, "Could not register for ConnectIQ app events for device " + DeviceInfo.this + ", service unavailble", ex);
+                                DeviceInfo.this.setState(DeviceState.ServiceUnavailable);
+                            }
                         }
                     }
 
