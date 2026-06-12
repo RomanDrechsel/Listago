@@ -3,11 +3,13 @@ package de.romandrechsel.listago.sysinfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -24,11 +26,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import de.romandrechsel.listago.MainActivity;
 import de.romandrechsel.listago.logging.Logger;
 
 @CapacitorPlugin(name = "SysInfo")
 public class SysInfoPlugin extends Plugin
 {
+    @Override
+    public void load()
+    {
+        super.load();
+
+        MainActivity activity = (MainActivity) this.getActivity();
+        if (activity != null)
+        {
+            activity.addConfigurationChangedListener((this::onConfigurationChanged));
+        }
+    }
+
     public static class InitialAction
     {
         public InitialAction(String action, Map<String, Object> payload)
@@ -43,10 +58,22 @@ public class SysInfoPlugin extends Plugin
 
     private static final String TAG = "SysInfoPlugin";
 
+    @Nullable
     private Boolean _isNightMode = null;
     private Boolean _appIsReady = false;
     private Intent _pendingIntent = null;
     private ArrayList<InitialAction> _initActions = null;
+
+    @PluginMethod
+    public void DisplayDensity(PluginCall call)
+    {
+        Context context = this.getContext();
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        float density = metrics.density;
+        JSObject ret = new JSObject();
+        ret.put("density", density);
+        call.resolve(ret);
+    }
 
     @PluginMethod
     public void NightMode(PluginCall call)
@@ -119,21 +146,6 @@ public class SysInfoPlugin extends Plugin
             this._initActions = null;
         }
         call.resolve(ret);
-    }
-
-    public void SetNightMode(@NonNull Boolean isNightMode, boolean force)
-    {
-        if (force || this._isNightMode != isNightMode)
-        {
-            if (this._isNightMode != null)
-            {
-                JSObject data = new JSObject();
-                data.put("isNightMode", isNightMode);
-                data.put("silent", !force);
-                this.notifyListeners("NIGHTMODE", data);
-            }
-            this._isNightMode = isNightMode;
-        }
     }
 
     public void handleIntent(Intent intent)
@@ -238,10 +250,30 @@ public class SysInfoPlugin extends Plugin
         this._initActions.add(action);
     }
 
-    private float getDisplayDensity()
+    public void onConfigurationChanged(@Nullable Configuration config)
     {
-        Context context = this.getContext();
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return metrics.density;
+        if (config == null)
+        {
+            config = this.getContext().getResources().getConfiguration();
+        }
+
+        boolean isNightMode;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+        {
+            isNightMode = config.isNightModeActive();
+        }
+        else
+        {
+            int currentNightMode = config.uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+        }
+
+        if (isNightMode != Boolean.TRUE.equals(this._isNightMode))
+        {
+            JSObject data = new JSObject();
+            data.put("isNightMode", isNightMode);
+            this.notifyListeners("NIGHTMODE", data);
+            this._isNightMode = isNightMode;
+        }
     }
 }

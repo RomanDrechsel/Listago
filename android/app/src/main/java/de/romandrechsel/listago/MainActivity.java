@@ -6,11 +6,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
 import android.webkit.WebView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.PluginHandle;
@@ -19,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.romandrechsel.listago.appupdate.AppUpdatePlugin;
@@ -27,13 +31,19 @@ import de.romandrechsel.listago.logging.Logger;
 import de.romandrechsel.listago.share.SharePlugin;
 import de.romandrechsel.listago.sysinfo.SysInfoPlugin;
 import de.romandrechsel.listago.utils.FileUtils;
-import de.romandrechsel.listago.zip.ZipPlugin;
 
 public class MainActivity extends BridgeActivity
 {
     private Intent _pendingIntent;
     private static final String TAG = "MainActivity";
     private ArrayList<SysInfoPlugin.InitialAction> _initActions = null;
+
+    public interface onConfigurationChangedListener
+    {
+        void onConfigurationChanged(Configuration newConfig);
+    }
+
+    public List<onConfigurationChangedListener> _configurationChangedListeners = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -42,8 +52,7 @@ public class MainActivity extends BridgeActivity
             ConnectIQPlugin.class,
             SysInfoPlugin.class,
             SharePlugin.class,
-            AppUpdatePlugin.class,
-            ZipPlugin.class
+            AppUpdatePlugin.class
         ));
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
@@ -54,19 +63,11 @@ public class MainActivity extends BridgeActivity
     public void onStart()
     {
         super.onStart();
-
-        WebView webView = this.getBridge().getWebView();
-        if (webView != null)
-        {
-            webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
-            webView.setVerticalScrollBarEnabled(true);
-        }
+        this.configure();
 
         SysInfoPlugin plugin = this.GetSysInfoPlugin();
         if (plugin != null)
         {
-            int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            plugin.SetNightMode(currentNightMode == Configuration.UI_MODE_NIGHT_YES, true);
             if (this._initActions != null)
             {
                 for (SysInfoPlugin.InitialAction action : this._initActions)
@@ -84,6 +85,13 @@ public class MainActivity extends BridgeActivity
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        this.configure();
+    }
+
+    @Override
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
@@ -95,25 +103,18 @@ public class MainActivity extends BridgeActivity
     public void onConfigurationChanged(Configuration newConfig)
     {
         super.onConfigurationChanged(newConfig);
-        boolean isNightMode;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-        {
-            isNightMode = getResources().getConfiguration().isNightModeActive();
-        }
-        else
-        {
-            int currentNightMode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES;
-        }
 
-        SysInfoPlugin plugin = this.GetSysInfoPlugin();
-        if (plugin != null)
+        for (onConfigurationChangedListener listener : this._configurationChangedListeners)
         {
-            plugin.SetNightMode(isNightMode, false);
+            listener.onConfigurationChanged(newConfig);
         }
     }
 
-    @Nullable
+    public void addConfigurationChangedListener(onConfigurationChangedListener listener)
+    {
+        this._configurationChangedListeners.add(listener);
+    }
+
     private SysInfoPlugin GetSysInfoPlugin()
     {
         if (this.getBridge() != null)
@@ -222,6 +223,29 @@ public class MainActivity extends BridgeActivity
                     this._initActions.add(action);
                 }
             }
+        }
+    }
+
+    private void configure()
+    {
+        Window window = getWindow();
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
+        insetsController.setAppearanceLightStatusBars(false);
+
+        EdgeToEdge.enable(this);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+        WebView webView = this.getBridge().getWebView();
+        if (webView != null)
+        {
+            webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
+            webView.setVerticalScrollBarEnabled(true);
+        }
+
+        SysInfoPlugin plugin = this.GetSysInfoPlugin();
+        if (plugin != null)
+        {
+            plugin.onConfigurationChanged(null);
         }
     }
 }
