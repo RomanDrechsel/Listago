@@ -5,5 +5,9 @@
     "deleted": "Supprimé : {{date}}",
     "empty": "La corbeille est vide.",
     "loading": "La corbeille est en cours de chargement...",
-    "error": "Impossible de charger la corbeille !"
+    "error": "Impossible de charger la corbeille !",
+    "editmode-list-restore": "Restaurer la liste",
+    "editmode-lists-restore": "Restaurer {{num}} listes",
+    "editmode-trash-list-delete": "Supprimer définitivement la liste",
+    "editmode-trash-lists-delete": "Supprimer définitivement {{num}} listes"
 }

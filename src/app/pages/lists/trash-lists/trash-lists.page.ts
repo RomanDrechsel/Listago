@@ -18,7 +18,7 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     templateUrl: "./trash-lists.page.html",
     styleUrls: ["./trash-lists.page.scss"],
     imports: [IonCheckbox, IonLabel, IonContent, IonText, IonNote, IonItem, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonFab, IonFabButton, CommonModule, TranslocoModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
-    providers: [provideTranslocoScope({ scope: "pages/lists/trash-lists-page", alias: "page_trash" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
+    providers: [provideTranslocoScope({ scope: "pages/lists/trash-lists-page", alias: "page_trash" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class TrashListsPage extends AnimatedListPageBase<List> {
     public Lists: List[] = [];
@@ -123,13 +123,13 @@ export class TrashListsPage extends AnimatedListPageBase<List> {
     protected override getEditMenuActions(): EditMenuAction[] {
         let texts: Translation = {};
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getTexts(["edit-menu.list-restore", "edit-menu.trash-list-delete"]);
-            texts["restore"] = texts["edit-menu.list-restore"];
-            texts["delete"] = texts["edit-menu.trash-list-delete"];
+            texts = this.Locale.getTexts(["page_trash.editmode-list-restore", "page_trash.editmode-trash-list-delete"]);
+            texts["restore"] = texts["page_trash.editmode-list-restore"];
+            texts["delete"] = texts["page_trash.editmode-trash-list-delete"];
         } else {
-            texts = this.Locale.getTexts(["edit-menu.lists-restore", "edit-menu.trash-lists-delete"], { num: this._selectedItems.length });
-            texts["restore"] = texts["edit-menu.list-restore"];
-            texts["delete"] = texts["edit-menu.trash-lists-delete"];
+            texts = this.Locale.getTexts(["page_trash.editmode-lists-restore", "page_trash.editmode-trash-lists-delete"], { num: this._selectedItems.length });
+            texts["restore"] = texts["page_trash.editmode-list-restore"];
+            texts["delete"] = texts["page_trash.editmode-trash-lists-delete"];
         }
         return [
             {

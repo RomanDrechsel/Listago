@@ -36,7 +36,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set DeleteList(v: boolean) {
         this._deleteList = v;
-        this.Preferences.Set(EPrefProperty.ConfirmDeleteList, v);
+        this._preferences.Set(EPrefProperty.ConfirmDeleteList, v);
     }
 
     public get CopyList(): boolean {
@@ -45,7 +45,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set CopyList(v: boolean) {
         this._copyList = v;
-        this.Preferences.Set(EPrefProperty.ConfirmCopyList, v);
+        this._preferences.Set(EPrefProperty.ConfirmCopyList, v);
     }
 
     public get DeleteListitem(): boolean {
@@ -54,7 +54,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set DeleteListitem(v: boolean) {
         this._deleteListitem = v;
-        this.Preferences.Set(EPrefProperty.ConfirmDeleteListitem, v);
+        this._preferences.Set(EPrefProperty.ConfirmDeleteListitem, v);
     }
 
     public get EmptyList(): boolean {
@@ -63,7 +63,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set EmptyList(v: boolean) {
         this._emptyList = v;
-        this.Preferences.Set(EPrefProperty.ConfirmEmptyList, v);
+        this._preferences.Set(EPrefProperty.ConfirmEmptyList, v);
     }
 
     public get TransmitList(): boolean {
@@ -72,7 +72,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set TransmitList(v: boolean) {
         this._transmitList = v;
-        this.Preferences.Set(EPrefProperty.ConfirmTransmitList, v);
+        this._preferences.Set(EPrefProperty.ConfirmTransmitList, v);
     }
 
     public get EraseList(): boolean {
@@ -81,7 +81,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set EraseList(v: boolean) {
         this._eraseList = v;
-        this.Preferences.Set(EPrefProperty.ConfirmEraseList, v);
+        this._preferences.Set(EPrefProperty.ConfirmEraseList, v);
     }
 
     public get EraseListitem(): boolean {
@@ -90,7 +90,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set EraseListitem(v: boolean) {
         this._eraseListitem = v;
-        this.Preferences.Set(EPrefProperty.ConfirmEraseListitem, v);
+        this._preferences.Set(EPrefProperty.ConfirmEraseListitem, v);
     }
 
     public get EmptyTrash(): boolean {
@@ -99,7 +99,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set EmptyTrash(v: boolean) {
         this._emptyTrash = v;
-        this.Preferences.Set(EPrefProperty.ConfirmEmptyTrash, v);
+        this._preferences.Set(EPrefProperty.ConfirmEmptyTrash, v);
     }
 
     public get RestoreList(): boolean {
@@ -108,7 +108,7 @@ export class ConfirmationsPage extends PageBase {
 
     public set RestoreList(v: boolean) {
         this._restoreList = v;
-        this.Preferences.Set(EPrefProperty.ConfirmRestoreList, v);
+        this._preferences.Set(EPrefProperty.ConfirmRestoreList, v);
     }
 
     public get RestoreListitem(): boolean {
@@ -117,20 +117,20 @@ export class ConfirmationsPage extends PageBase {
 
     public set RestoreListitem(v: boolean) {
         this._restoreListitem = v;
-        this.Preferences.Set(EPrefProperty.ConfirmRestoreListitem, v);
+        this._preferences.Set(EPrefProperty.ConfirmRestoreListitem, v);
     }
 
     public override async ionViewWillEnter() {
         await super.ionViewWillEnter();
-        this._deleteList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmDeleteList, true);
-        this._copyList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmCopyList, true);
-        this._deleteListitem = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmDeleteListitem, true);
-        this._transmitList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmTransmitList, true);
-        this._emptyList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmEmptyList, true);
-        this._eraseList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmEraseList, true);
-        this._restoreList = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmRestoreList, true);
-        this._restoreListitem = await this.Preferences.Get<boolean>(EPrefProperty.ConfirmRestoreListitem, true);
-        this.cdr.detectChanges();
+        this._deleteList = await this._preferences.Get<boolean>(EPrefProperty.ConfirmDeleteList, true);
+        this._copyList = await this._preferences.Get<boolean>(EPrefProperty.ConfirmCopyList, true);
+        this._deleteListitem = await this._preferences.Get<boolean>(EPrefProperty.ConfirmDeleteListitem, true);
+        this._transmitList = await this._preferences.Get<boolean>(EPrefProperty.ConfirmTransmitList, true);
+        this._emptyList = await this._preferences.Get<boolean>(EPrefProperty.ConfirmEmptyList, true);
+        this._eraseList = await this._preferences.Get<boolean>(EPrefProperty.ConfirmEraseList, true);
+        this._restoreList = await this._preferences.Get<boolean>(EPrefProperty.ConfirmRestoreList, true);
+        this._restoreListitem = await this._preferences.Get<boolean>(EPrefProperty.ConfirmRestoreListitem, true);
+        this._cdr.detectChanges();
     }
 
     public onDeleteListChanged(checked: boolean) {

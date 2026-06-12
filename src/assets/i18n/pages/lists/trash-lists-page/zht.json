@@ -5,5 +5,9 @@
     "deleted": "已刪除: {{date}}",
     "empty": "垃圾桶是空的。",
     "loading": "回收站正在加載...",
-    "error": "無法載入回收桶！"
+    "error": "無法載入回收桶！",
+    "editmode-trash-item-restore": "還原清單項目",
+    "editmode-trash-items-restore": "還原 {{num}} 個清單項目",
+    "editmode-trash-item-delete": "永久刪除清單項目",
+    "editmode-trash-items-delete": "永久刪除 {{num}} 個清單項目"
 }

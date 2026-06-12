@@ -4,5 +4,9 @@
     "erase": "Cancella",
     "restore": "Ripristina",
     "loading": "Il cestino sta caricando...",
-    "error": "Impossibile caricare il cestino!"
+    "error": "Impossibile caricare il cestino!",
+    "editmode-trash-item-restore": "Ripristina elemento della lista",
+    "editmode-trash-items-restore": "Ripristina {{num}} elementi della lista",
+    "editmode-trash-item-delete": "Elimina definitivamente elemento della lista",
+    "editmode-trash-items-delete": "Elimina definitivamente {{num}} elementi della lista"
 }

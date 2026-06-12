@@ -9,5 +9,15 @@
     "unlock": "Unlock",
     "nolist": "Something went wrong :(<br /><br />The list can not be displayed.",
     "add_new_hint": "Create a new item in the list.",
-    "quickadd": "Add new item..."
+    "quickadd": "Add new item...",
+    "editmode-item-pin": "Pin list item",
+    "editmode-item-unpin": "Unpin list item",
+    "editmode-items-pin": "Pin {{num}} list items",
+    "editmode-items-unpin": "Unpin {{num}} list items",
+    "editmode-item-hide": "Hide list item",
+    "editmode-item-show": "Show list item",
+    "editmode-items-hide": "Hide {{num}} list items",
+    "editmode-items-show": "Show {{num}} list items",
+    "editmode-item-delete": "Delete list item",
+    "editmode-items-delete": "Delete {{num}} list items"
 }

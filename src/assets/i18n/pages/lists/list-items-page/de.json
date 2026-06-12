@@ -9,5 +9,15 @@
     "unlock": "Entsperren",
     "nolist": "Etwas ist schiefgelaufen :(<br /><br />Die Liste kann nicht angezeigt werden.",
     "add_new_hint": "Lege einen neuen Punkt in der Liste an.",
-    "quickadd": "Neuen Punkt anlegen..."
+    "quickadd": "Neuen Punkt anlegen...",
+    "editmode-item-pin": "Listenpunkt sperren",
+    "editmode-item-unpin": "Listenpunkt entsperren",
+    "editmode-items-pin": "{{num}} Listenpunkte sperren",
+    "editmode-items-unpin": "{{num}} Listenpunkte entsperren",
+    "editmode-item-hide": "Listenpunkt verstecken",
+    "editmode-item-show": "Listenpunkt anzeigen",
+    "editmode-items-hide": "{{num}} Listenpunkte verstecken",
+    "editmode-items-show": "{{num}} Listenpunkte anzeigen",
+    "editmode-item-delete": "Listenpunkt löschen",
+    "editmode-items-delete": "{{num}} Listenpunkte löschen"
 }

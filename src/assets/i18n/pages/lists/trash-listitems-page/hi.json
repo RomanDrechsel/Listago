@@ -4,5 +4,9 @@
     "erase": "मिटाएँ",
     "restore": "पुनः स्थापित करें",
     "loading": "कचरा पात्र लोड हो रहा है...",
-    "error": "कचरा लोड नहीं किया जा सका!"
+    "error": "कचरा लोड नहीं किया जा सका!",
+    "editmode-trash-item-restore": "सूची आइटम पुनर्स्थापित करें",
+    "editmode-trash-items-restore": "{{num}} सूची आइटम पुनर्स्थापित करें",
+    "editmode-trash-item-delete": "सूची आइटम को स्थायी रूप से हटाएं",
+    "editmode-trash-items-delete": "{{num}} सूची आइटम को स्थायी रूप से हटाएं"
 }

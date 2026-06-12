@@ -4,5 +4,11 @@
     "upload": "Transférer",
     "updated": "Dernière modification : {{date}}",
     "add_new_hint": "Créer une nouvelle liste.",
-    "loading": "Les listes sont chargées..."
+    "loading": "Les listes sont chargées...",
+    "editmode-list-transmit": "Transmettre la liste",
+    "editmode-lists-transmit": "Transmettre {{num}} listes",
+    "editmode-list-empty": "Vider la liste",
+    "editmode-lists-empty": "Vider {{num}} listes",
+    "editmode-list-delete": "Supprimer la liste",
+    "editmode-lists-delete": "Supprimer {{num}} listes"
 }

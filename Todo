@@ -1,7 +1,5 @@
-WIP: Editmode - Fabs
-- WIP: move locale pieces from mail-toolbar-edit-menu-modal to page files
-BUG: list Trash -> custom menu -> locale missing
 BUG: remove multple lists from trash -> toast locale missing
+BUG: when entering edit-mode -> close sliding of items
 TODO: Notes support
 TEST: in-app update
 TEST: import from lists

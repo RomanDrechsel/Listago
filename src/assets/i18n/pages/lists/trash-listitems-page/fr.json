@@ -4,5 +4,9 @@
     "loading": "La corbeille est en cours de chargement...",
     "error": "Impossible de charger la corbeille !",
     "erase": "Supprimer",
-    "restore": "Restaurer"
+    "restore": "Restaurer",
+    "editmode-trash-item-restore": "Restaurer l’élément de la liste",
+    "editmode-trash-items-restore": "Restaurer {{num}} éléments de la liste",
+    "editmode-trash-item-delete": "Supprimer définitivement l’élément de la liste",
+    "editmode-trash-items-delete": "Supprimer définitivement {{num}} éléments de la liste"
 }

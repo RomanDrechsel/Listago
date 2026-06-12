@@ -18,7 +18,7 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     templateUrl: "./lists.page.html",
     styleUrls: ["./lists.page.scss"],
     imports: [IonCheckbox, IonLabel, IonReorderGroup, IonItemOption, IonItemOptions, IonItemSliding, IonIcon, IonFabButton, IonFab, IonItem, IonReorder, IonList, IonContent, MainToolbarComponent, PageAddNewComponent, CommonModule, FormsModule, TranslocoModule, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
-    providers: [provideTranslocoScope({ scope: "pages/lists/lists-page", alias: "page_lists" }, { scope: "common/date", alias: "date" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
+    providers: [provideTranslocoScope({ scope: "pages/lists/lists-page", alias: "page_lists" }, { scope: "common/date", alias: "date" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ListsPage extends AnimatedListPageBase<List> {
     private _lists: List[] | undefined;
@@ -144,15 +144,15 @@ export class ListsPage extends AnimatedListPageBase<List> {
     public getEditMenuActions(): EditMenuAction[] {
         let texts: Translation = {};
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getTexts(["edit-menu.list-transmit", "edit-menu.list-empty", "edit-menu.list-delete"]);
-            texts["transmit"] = texts["edit-menu.list-transmit"];
-            texts["delete"] = texts["edit-menu.list-delete"];
-            texts["empty"] = texts["edit-menu.list-empty"];
+            texts = this.Locale.getTexts(["page_lists.editmode-list-transmit", "page_lists.editmode-list-empty", "page_lists.editmode-list-delete"]);
+            texts["transmit"] = texts["page_lists.editmode-list-transmit"];
+            texts["delete"] = texts["page_lists.editmode-list-delete"];
+            texts["empty"] = texts["page_lists.editmode-list-empty"];
         } else {
-            texts = this.Locale.getTexts(["edit-menu.lists-transmit", "edit-menu.lists-empty", "edit-menu.lists-delete"], { num: this._selectedItems.length });
-            texts["transmit"] = texts["edit-menu.lists-transmit"];
-            texts["delete"] = texts["edit-menu.lists-delete"];
-            texts["empty"] = texts["edit-menu.lists-empty"];
+            texts = this.Locale.getTexts(["page_lists.editmode-lists-transmit", "page_lists.editmode-lists-empty", "page_lists.editmode-lists-delete"], { num: this._selectedItems.length });
+            texts["transmit"] = texts["page_lists.editmode-lists-transmit"];
+            texts["delete"] = texts["page_lists.editmode-lists-delete"];
+            texts["empty"] = texts["page_lists.editmode-lists-empty"];
         }
 
         return [

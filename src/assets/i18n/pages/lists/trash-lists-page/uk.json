@@ -5,5 +5,9 @@
     "deleted": "вилучено: {{date}}",
     "empty": "Корзина пуста.",
     "loading": "Корзина завантажується...",
-    "error": "Не вдалося завантажити кошик!"
+    "error": "Не вдалося завантажити кошик!",
+    "editmode-list-restore": "Відновити список",
+    "editmode-lists-restore": "Відновити {{num}} списків",
+    "editmode-trash-list-delete": "Остаточно видалити список",
+    "editmode-trash-lists-delete": "Остаточно видалити {{num}} списків"
 }

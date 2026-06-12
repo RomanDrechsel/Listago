@@ -139,9 +139,11 @@ export class BackendExporter {
             const trashMap = new Map<number, ListitemModel[]>();
 
             for (const model of models) {
-                const array = trashMap.get(model.list_id) ?? [];
-                array.push(model);
-                trashMap.set(model.list_id, array);
+                if (model.list_id) {
+                    const array = trashMap.get(model.list_id) ?? [];
+                    array.push(model);
+                    trashMap.set(model.list_id, array);
+                }
             }
 
             for (const [list_id, models] of trashMap.entries()) {

@@ -9,5 +9,15 @@
     "unlock": "解鎖",
     "nolist": "出現錯誤 :(<br /><br />無法顯示清單。",
     "add_new_hint": "在清單中創建一個新項目。",
-    "quickadd": "建立新的列表元素..."
+    "quickadd": "建立新的列表元素...",
+    "editmode-item-pin": "釘選清單項目",
+    "editmode-item-unpin": "取消釘選清單項目",
+    "editmode-items-pin": "釘選 {{num}} 個清單項目",
+    "editmode-items-unpin": "取消釘選 {{num}} 個清單項目",
+    "editmode-item-hide": "隱藏清單項目",
+    "editmode-item-show": "顯示清單項目",
+    "editmode-items-hide": "隱藏 {{num}} 個清單項目",
+    "editmode-items-show": "顯示 {{num}} 個清單項目",
+    "editmode-item-delete": "刪除清單項目",
+    "editmode-items-delete": "刪除 {{num}} 個清單項目"
 }

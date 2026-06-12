@@ -9,5 +9,15 @@
     "unlock": "Розблокувати",
     "nolist": "Щось пішло не так :(<br /><br />Список не може бути показаний.",
     "add_new_hint": "Додати новий пункт у список.",
-    "quickadd": "Створити новий елемент списку..."
+    "quickadd": "Створити новий елемент списку...",
+    "editmode-item-pin": "Закріпити елемент списку",
+    "editmode-item-unpin": "Відкріпити елемент списку",
+    "editmode-items-pin": "Закріпити {{num}} елементів списку",
+    "editmode-items-unpin": "Відкріпити {{num}} елементів списку",
+    "editmode-item-hide": "Приховати елемент списку",
+    "editmode-item-show": "Показати елемент списку",
+    "editmode-items-hide": "Приховати {{num}} елементів списку",
+    "editmode-items-show": "Показати {{num}} елементів списку",
+    "editmode-item-delete": "Видалити елемент списку",
+    "editmode-items-delete": "Видалити {{num}} елементів списку"
 }

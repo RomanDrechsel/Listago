@@ -5,5 +5,9 @@
     "deleted": "gelöscht: {{date}}",
     "empty": "Der Papierkorb ist leer.",
     "loading": "Der Papierkorb wird geladen...",
-    "error": "Der Papierkorb konnte nicht geladen werden!"
+    "error": "Der Papierkorb konnte nicht geladen werden!",
+    "editmode-list-restore": "Liste wiederherstellen",
+    "editmode-lists-restore": "{{num}} Listen wiederherstellen",
+    "editmode-trash-list-delete": "Liste entgültig löschen",
+    "editmode-trash-lists-delete": "{{num}} Listen entgültig löschen"
 }

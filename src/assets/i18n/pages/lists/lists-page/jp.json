@@ -4,5 +4,11 @@
     "upload": "転送",
     "updated": "最終更新日: {{date}}",
     "add_new_hint": "新しいリストを作成します。",
-    "loading": "リストを読み込んでいます…"
+    "loading": "リストを読み込んでいます…",
+    "editmode-list-transmit": "リストを送信",
+    "editmode-lists-transmit": "{{num}} 個のリストを送信",
+    "editmode-list-empty": "リストを空にする",
+    "editmode-lists-empty": "{{num}} 個のリストを空にする",
+    "editmode-list-delete": "リストを削除",
+    "editmode-lists-delete": "{{num}} 個のリストを削除"
 }

@@ -4,5 +4,9 @@
     "erase": "削除",
     "restore": "復元",
     "loading": "ごみ箱を読み込んでいます…",
-    "error": "ゴミ箱を読み込めませんでした！"
+    "error": "ゴミ箱を読み込めませんでした！",
+    "editmode-trash-item-restore": "リスト項目を復元",
+    "editmode-trash-items-restore": "{{num}} 個のリスト項目を復元",
+    "editmode-trash-item-delete": "リスト項目を完全に削除",
+    "editmode-trash-items-delete": "{{num}} 個のリスト項目を完全に削除"
 }

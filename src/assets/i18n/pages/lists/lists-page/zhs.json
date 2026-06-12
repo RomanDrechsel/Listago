@@ -4,5 +4,11 @@
     "upload": "传输",
     "updated": "最后修改：{{date}}",
     "add_new_hint": "新建一个列表。",
-    "loading": "列表正在加载..."
+    "loading": "列表正在加载...",
+    "editmode-list-transmit": "传输列表",
+    "editmode-lists-transmit": "传输 {{num}} 个列表",
+    "editmode-list-empty": "清空列表",
+    "editmode-lists-empty": "清空 {{num}} 个列表",
+    "editmode-list-delete": "删除列表",
+    "editmode-lists-delete": "删除 {{num}} 个列表"
 }

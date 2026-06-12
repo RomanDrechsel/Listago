@@ -5,5 +5,9 @@
     "deleted": "删除时间：{{date}}",
     "empty": "回收站为空。",
     "loading": "回收站正在加载...",
-    "error": "无法加载回收站！"
+    "error": "无法加载回收站！",
+    "editmode-list-restore": "恢复列表",
+    "editmode-lists-restore": "恢复 {{num}} 个列表",
+    "editmode-trash-list-delete": "永久删除列表",
+    "editmode-trash-lists-delete": "永久删除 {{num}} 个列表"
 }

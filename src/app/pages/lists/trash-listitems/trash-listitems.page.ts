@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { IonCheckbox, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonText } from "@ionic/angular/standalone";
 import { provideTranslocoScope, type Translation, TranslocoModule } from "@jsverse/transloco";
@@ -18,9 +18,8 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     selector: "app-trash-listitems",
     templateUrl: "./trash-listitems.page.html",
     styleUrls: ["./trash-listitems.page.scss"],
-    changeDetection: ChangeDetectionStrategy.Default,
     imports: [IonCheckbox, IonLabel, IonText, IonItem, IonIcon, IonItemOption, IonItemOptions, IonItemSliding, IonList, IonContent, CommonModule, IonFab, IonFabButton, TranslocoModule, MainToolbarComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
-    providers: [provideTranslocoScope({ scope: "pages/lists/trash-listitems-page", alias: "page_trashitem" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
+    providers: [provideTranslocoScope({ scope: "pages/lists/trash-listitems-page", alias: "page_trashitem" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class TrashListitemsPage extends AnimatedListPageBase<Listitem> {
     public _trashItems?: Listitem[] = undefined;
@@ -145,13 +144,13 @@ export class TrashListitemsPage extends AnimatedListPageBase<Listitem> {
     protected override getEditMenuActions(): EditMenuAction[] {
         let texts: Translation = {};
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getTexts(["edit-menu.trash-item-restore", "edit-menu.trash-item-delete"]);
-            texts["restore"] = texts["edit-menu.trash-item-restore"];
-            texts["delete"] = texts["edit-menu.trash-item-delete"];
+            texts = this.Locale.getTexts(["page_trashitem.editmode-trash-item-restore", "page_trashitem.editmode-trash-item-delete"]);
+            texts["restore"] = texts["page_trashitem.editmode-trash-item-restore"];
+            texts["delete"] = texts["page_trashitem.editmode-trash-item-delete"];
         } else {
-            texts = this.Locale.getTexts(["edit-menu.trash-items-restore", "edit-menu.trash-items-delete"], { num: this._selectedItems.length });
-            texts["restore"] = texts["edit-menu.trash-items-restore"];
-            texts["delete"] = texts["edit-menu.trash-items-delete"];
+            texts = this.Locale.getTexts(["page_trashitem.editmode-trash-items-restore", "page_trashitem.editmode-trash-items-delete"], { num: this._selectedItems.length });
+            texts["restore"] = texts["page_trashitem.editmode-trash-items-restore"];
+            texts["delete"] = texts["page_trashitem.editmode-trash-items-delete"];
         }
         return [
             {

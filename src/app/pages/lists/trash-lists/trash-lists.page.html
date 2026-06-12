@@ -44,10 +44,10 @@
     </div>
     @if (AnimationsEnabled || EditMode) {
     <ion-fab vertical="bottom" horizontal="end" slot="fixed" [class.custom-fab-hidden]="AnimationsEnabled && !EditMode">
-        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('edit-menu.list-restore') : t('edit-menu.list-restore', { num: EditModeSelectedItems.length })" (click)="restoreList(EditModeSelectedItems)" [disabled]="!EditModeSelectedItems.length">
+        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('page_trash.editmode-list-restore') : t('page_trash.editmode-list-restore', { num: EditModeSelectedItems.length })" (click)="restoreList(EditModeSelectedItems)" [disabled]="!EditModeSelectedItems.length">
             <ion-icon src="/assets/icons/undo.svg"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('edit-menu.trash-list-delete') : t('edit-menu.trash-lists-delete', { num: EditModeSelectedItems.length })" (click)="deleteList(EditModeSelectedItems)" [disabled]="!EditModeSelectedItems.length">
+        <ion-fab-button [ariaLabel]="EditModeSelectedItems.length == 1 ? t('page_trash.editmode-trash-list-delete') : t('page_trash.editmode-trash-lists-delete', { num: EditModeSelectedItems.length })" (click)="deleteList(EditModeSelectedItems)" [disabled]="!EditModeSelectedItems.length">
             <ion-icon src="/assets/icons/trash.svg"></ion-icon>
         </ion-fab-button>
     </ion-fab>

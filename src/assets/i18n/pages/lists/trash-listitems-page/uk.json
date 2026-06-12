@@ -4,5 +4,9 @@
     "loading": "Корзина завантажується...",
     "error": "Не вдалося завантажити кошик!",
     "erase": "Видалити",
-    "restore": "Відновити"
+    "restore": "Відновити",
+    "editmode-trash-item-restore": "Відновити елемент списку",
+    "editmode-trash-items-restore": "Відновити {{num}} елементів списку",
+    "editmode-trash-item-delete": "Остаточно видалити елемент списку",
+    "editmode-trash-items-delete": "Остаточно видалити {{num}} елементів списку"
 }

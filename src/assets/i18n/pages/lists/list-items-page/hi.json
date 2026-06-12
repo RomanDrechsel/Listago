@@ -9,5 +9,15 @@
     "unlock": "अनलॉक करें",
     "nolist": "कुछ गड़बड़ हो गई :(<br /><br />सूची प्रदर्शित नहीं की जा सकती।",
     "add_new_hint": "सूची में एक नया आइटम जोड़ें।",
-    "quickadd": "नई सूची आइटम जोड़ें..."
+    "quickadd": "नई सूची आइटम जोड़ें...",
+    "editmode-item-pin": "सूची आइटम पिन करें",
+    "editmode-item-unpin": "सूची आइटम अनपिन करें",
+    "editmode-items-pin": "{{num}} सूची आइटम पिन करें",
+    "editmode-items-unpin": "{{num}} सूची आइटम अनपिन करें",
+    "editmode-item-hide": "सूची आइटम छुपाएं",
+    "editmode-item-show": "सूची आइटम दिखाएं",
+    "editmode-items-hide": "{{num}} सूची आइटम छुपाएं",
+    "editmode-items-show": "{{num}} सूची आइटम दिखाएं",
+    "editmode-item-delete": "सूची आइटम हटाएं",
+    "editmode-items-delete": "{{num}} सूची आइटम हटाएं"
 }

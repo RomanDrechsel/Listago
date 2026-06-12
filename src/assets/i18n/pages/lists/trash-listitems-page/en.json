@@ -4,5 +4,9 @@
     "loading": "The trash is being loaded...",
     "error": "The trash could not be loaded!",
     "erase": "Erase",
-    "restore": "Restore"
+    "restore": "Restore",
+    "editmode-trash-item-restore": "Restore list item",
+    "editmode-trash-items-restore": "Restore {{num}} list items",
+    "editmode-trash-item-delete": "Permanently delete list item",
+    "editmode-trash-items-delete": "Permanently delete {{num}} list items"
 }

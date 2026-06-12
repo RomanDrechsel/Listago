@@ -9,5 +9,15 @@
     "unlock": "ロック解除",
     "nolist": "エラーが発生しました :(<br /><br />リストを表示できません。",
     "add_new_hint": "リストに新しい項目を追加します。",
-    "quickadd": "新しいリスト項目を作成..."
+    "quickadd": "新しいリスト項目を作成...",
+    "editmode-item-pin": "リスト項目を固定",
+    "editmode-item-unpin": "リスト項目の固定を解除",
+    "editmode-items-pin": "{{num}} 個のリスト項目を固定",
+    "editmode-items-unpin": "{{num}} 個のリスト項目の固定を解除",
+    "editmode-item-hide": "リスト項目を非表示",
+    "editmode-item-show": "リスト項目を表示",
+    "editmode-items-hide": "{{num}} 個のリスト項目を非表示",
+    "editmode-items-show": "{{num}} 個のリスト項目を表示",
+    "editmode-item-delete": "リスト項目を削除",
+    "editmode-items-delete": "{{num}} 個のリスト項目を削除"
 }

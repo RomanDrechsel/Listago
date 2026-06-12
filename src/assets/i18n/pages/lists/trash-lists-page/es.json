@@ -5,5 +5,9 @@
     "deleted": "Eliminado: {{date}}",
     "empty": "La papelera está vacía.",
     "loading": "Se carga la papelera de reciclaje...",
-    "error": "¡No se pudo cargar la papelera!"
+    "error": "¡No se pudo cargar la papelera!",
+    "editmode-list-restore": "Restaurar lista",
+    "editmode-lists-restore": "Restaurar {{num}} listas",
+    "editmode-trash-list-delete": "Eliminar lista permanentemente",
+    "editmode-trash-lists-delete": "Eliminar {{num}} listas permanentemente"
 }

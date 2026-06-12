@@ -9,5 +9,15 @@
     "unlock": "Sblocca",
     "nolist": "Qualcosa è andato storto :(<br /><br />La lista non può essere visualizzata.",
     "add_new_hint": "Aggiungi un nuovo elemento alla lista.",
-    "quickadd": "Creare un nuovo elemento..."
+    "quickadd": "Creare un nuovo elemento...",
+    "editmode-item-pin": "Fissa elemento della lista",
+    "editmode-item-unpin": "Sblocca elemento della lista",
+    "editmode-items-pin": "Fissa {{num}} elementi della lista",
+    "editmode-items-unpin": "Sblocca {{num}} elementi della lista",
+    "editmode-item-hide": "Nascondi elemento della lista",
+    "editmode-item-show": "Mostra elemento della lista",
+    "editmode-items-hide": "Nascondi {{num}} elementi della lista",
+    "editmode-items-show": "Mostra {{num}} elementi della lista",
+    "editmode-item-delete": "Elimina elemento della lista",
+    "editmode-items-delete": "Elimina {{num}} elementi della lista"
 }

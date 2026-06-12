@@ -4,5 +4,11 @@
     "upload": "Subir",
     "updated": "Última actualización: {{date}}",
     "add_new_hint": "Crear nueva lista.",
-    "loading": "Se cargan las listas..."
+    "loading": "Se cargan las listas...",
+    "editmode-list-transmit": "Transmitir lista",
+    "editmode-lists-transmit": "Transmitir {{num}} listas",
+    "editmode-list-empty": "Vaciar lista",
+    "editmode-lists-empty": "Vaciar {{num}} listas",
+    "editmode-list-delete": "Eliminar lista",
+    "editmode-lists-delete": "Eliminar {{num}} listas"
 }

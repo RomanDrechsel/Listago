@@ -4,5 +4,9 @@
     "loading": "回收站正在加载...",
     "error": "无法加载回收站！",
     "erase": "删除",
-    "restore": "恢复"
+    "restore": "恢复",
+    "editmode-trash-item-restore": "恢复列表项",
+    "editmode-trash-items-restore": "恢复 {{num}} 个列表项",
+    "editmode-trash-item-delete": "永久删除列表项",
+    "editmode-trash-items-delete": "永久删除 {{num}} 个列表项"
 }

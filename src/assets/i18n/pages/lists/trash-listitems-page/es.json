@@ -4,5 +4,9 @@
     "loading": "Se carga la papelera de reciclaje...",
     "error": "¡No se pudo cargar la papelera!",
     "erase": "Eliminar",
-    "restore": "Restaurar"
+    "restore": "Restaurar",
+    "editmode-trash-item-restore": "Restaurar elemento de la lista",
+    "editmode-trash-items-restore": "Restaurar {{num}} elementos de la lista",
+    "editmode-trash-item-delete": "Eliminar elemento de la lista permanentemente",
+    "editmode-trash-items-delete": "Eliminar {{num}} elementos de la lista permanentemente"
 }

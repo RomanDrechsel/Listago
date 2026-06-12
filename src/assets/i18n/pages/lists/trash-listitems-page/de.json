@@ -4,5 +4,9 @@
     "loading": "Der Papierkorb wird geladen...",
     "error": "Der Papierkorb konnte nicht geladen werden!",
     "erase": "Entfernen",
-    "restore": "Wiederherstellen"
+    "restore": "Wiederherstellen",
+    "editmode-trash-item-restore": "Listenpunkt wiederherstellen",
+    "editmode-trash-items-restore": "{{num}} Listenpunkte wiederherstellen",
+    "editmode-trash-item-delete": "Listenpunkt entgültig löschen",
+    "editmode-trash-items-delete": "{{num}} Listenpunkte endgültig löschen"
 }

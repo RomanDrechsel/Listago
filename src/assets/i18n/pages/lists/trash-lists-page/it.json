@@ -5,5 +5,9 @@
     "deleted": "cancellato: {{date}}",
     "empty": "Il cestino è vuoto.",
     "loading": "Il cestino sta caricando...",
-    "error": "Impossibile caricare il cestino!"
+    "error": "Impossibile caricare il cestino!",
+    "editmode-list-restore": "Ripristina lista",
+    "editmode-lists-restore": "Ripristina {{num}} liste",
+    "editmode-trash-list-delete": "Elimina definitivamente la lista",
+    "editmode-trash-lists-delete": "Elimina definitivamente {{num}} liste"
 }

@@ -5,5 +5,9 @@
     "deleted": "削除日: {{date}}",
     "empty": "ゴミ箱は空です。",
     "loading": "ごみ箱を読み込んでいます…",
-    "error": "ゴミ箱を読み込めませんでした！"
+    "error": "ゴミ箱を読み込めませんでした！",
+    "editmode-list-restore": "リストを復元",
+    "editmode-lists-restore": "{{num}} 個のリストを復元",
+    "editmode-trash-list-delete": "リストを完全に削除",
+    "editmode-trash-lists-delete": "{{num}} 個のリストを完全に削除"
 }

@@ -4,5 +4,11 @@
     "upload": "Transmit",
     "updated": "last update: {{date}}",
     "add_new_hint": "Create a new list.",
-    "loading": "Lists are being loaded..."
+    "loading": "Lists are being loaded...",
+    "editmode-list-transmit": "Transmit list",
+    "editmode-lists-transmit": "Transmit {{num}} lists",
+    "editmode-list-empty": "Empty list",
+    "editmode-lists-empty": "Empty {{num}} lists",
+    "editmode-list-delete": "Delete list",
+    "editmode-lists-delete": "Delete {{num}} lists"
 }

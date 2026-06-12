@@ -22,7 +22,7 @@ import { AnimatedListPageBase } from "../animated-list-page-base";
     templateUrl: "./list-items.page.html",
     styleUrls: ["./list-items.page.scss"],
     imports: [IonLabel, IonCheckbox, IonButton, IonTextarea, IonFabButton, IonFab, IonReorder, IonItem, IonItemOptions, IonItemSliding, IonIcon, IonItemOption, IonReorderGroup, IonList, IonContent, CommonModule, FormsModule, TranslocoModule, MainToolbarComponent, PageAddNewComponent, PageEmptyComponent, MainToolbarListsCustomMenuComponent],
-    providers: [provideTranslocoScope({ scope: "pages/lists/list-items-page", alias: "page_listitems" }, { scope: "common/buttons", alias: "buttons" }, { scope: "pages/lists/mail-toolbar-edit-menu-modal", alias: "edit-menu" })],
+    providers: [provideTranslocoScope({ scope: "pages/lists/list-items-page", alias: "page_listitems" }, { scope: "common/buttons", alias: "buttons" })],
 })
 export class ListItemsPage extends AnimatedListPageBase<Listitem> {
     @ViewChild("quickAdd", { read: IonTextarea, static: false }) private quickAdd?: IonTextarea;
@@ -55,11 +55,11 @@ export class ListItemsPage extends AnimatedListPageBase<Listitem> {
     }
 
     public get EditModeAllItemsLocked(): boolean {
-        return this._list != undefined && this._list.Items.find(i => !i.Locked) === undefined;
+        return this._selectedItems.find(i => !i.Locked) === undefined;
     }
 
     public get EditmodeAllItemsHidden(): boolean {
-        return this._list != undefined && this._list?.Items.find(i => !i.Hidden) === undefined;
+        return this._selectedItems.find(i => !i.Hidden) === undefined;
     }
 
     constructor() {
@@ -281,15 +281,15 @@ export class ListItemsPage extends AnimatedListPageBase<Listitem> {
 
         let texts: Translation = {};
         if (this._selectedItems.length == 1) {
-            texts = this.Locale.getTexts(["edit-menu.item-pin", "edit-menu.item-unpin", "edit-menu.item-hide", "edit-menu.item-show", "edit-menu.item-delete"]);
-            texts["pin"] = lock_items ? texts["edit-menu.item-pin"] : texts["edit-menu.item-unpin"];
-            texts["hide"] = hide_items ? texts["edit-menu.item-hide"] : texts["edit-menu.item-show"];
-            texts["delete"] = texts["edit-menu.item-delete"];
+            texts = this.Locale.getTexts(["page_listitems.editmode-item-pin", "page_listitems.editmode-item-unpin", "page_listitems.editmode-item-hide", "page_listitems.editmode-item-show", "page_listitems.editmode-item-delete"]);
+            texts["pin"] = lock_items ? texts["page_listitems.editmode-item-pin"] : texts["page_listitems.editmode-item-unpin"];
+            texts["hide"] = hide_items ? texts["page_listitems.editmode-item-hide"] : texts["page_listitems.editmode-item-show"];
+            texts["delete"] = texts["page_listitems.editmode-item-delete"];
         } else {
-            texts = this.Locale.getTexts(["edit-menu.items-pin", "edit-menu.items-unpin", "edit-menu.items-hide", "edit-menu.items-show", "edit-menu.items-delete"], { num: this._selectedItems.length });
-            texts["pin"] = lock_items ? texts["edit-menu.items-pin"] : texts["edit-menu.items-unpin"];
-            texts["hide"] = hide_items ? texts["edit-menu.items-hide"] : texts["edit-menu.items-show"];
-            texts["delete"] = texts["edit-menu.items-delete"];
+            texts = this.Locale.getTexts(["page_listitems.editmode-items-pin", "page_listitems.editmode-items-unpin", "page_listitems.editmode-items-hide", "page_listitems.editmode-items-show", "page_listitems.editmode-items-delete"], { num: this._selectedItems.length });
+            texts["pin"] = lock_items ? texts["page_listitems.editmode-items-pin"] : texts["page_listitems.editmode-items-unpin"];
+            texts["hide"] = hide_items ? texts["page_listitems.editmode-items-hide"] : texts["page_listitems.editmode-items-show"];
+            texts["delete"] = texts["page_listitems.editmode-items-delete"];
         }
 
         return [

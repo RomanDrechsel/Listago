@@ -4,5 +4,11 @@
     "upload": "स्थानांतरित करें",
     "updated": "अंतिम बदलाव: {{date}}",
     "add_new_hint": "नई सूची बनाएं।",
-    "loading": "सूचियाँ लोड हो रही हैं..."
+    "loading": "सूचियाँ लोड हो रही हैं...",
+    "editmode-list-transmit": "सूची स्थानांतरित करें",
+    "editmode-lists-transmit": "{{num}} सूचियाँ स्थानांतरित करें",
+    "editmode-list-empty": "सूची खाली करें",
+    "editmode-lists-empty": "{{num}} सूचियाँ खाली करें",
+    "editmode-list-delete": "सूची हटाएं",
+    "editmode-lists-delete": "{{num}} सूचियाँ हटाएं"
 }

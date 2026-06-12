@@ -4,5 +4,9 @@
     "erase": "移除",
     "restore": "恢復",
     "loading": "回收站正在加載...",
-    "error": "無法載入回收桶！"
+    "error": "無法載入回收桶！",
+    "editmode-list-restore": "還原清單",
+    "editmode-lists-restore": "還原 {{num}} 個清單",
+    "editmode-trash-list-delete": "永久刪除清單",
+    "editmode-trash-lists-delete": "永久刪除 {{num}} 個清單"
 }

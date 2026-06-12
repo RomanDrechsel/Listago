@@ -5,5 +5,9 @@
     "deleted": "deleted: {{date}}",
     "empty": "The trash is empty.",
     "loading": "The trash is being loaded...",
-    "error": "The trash could not be loaded!"
+    "error": "The trash could not be loaded!",
+    "editmode-list-restore": "Restore list",
+    "editmode-lists-restore": "Restore {{num}} lists",
+    "editmode-trash-list-delete": "Permanently delete list",
+    "editmode-trash-lists-delete": "Permanently delete {{num}} lists"
 }

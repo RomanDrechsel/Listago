@@ -4,5 +4,11 @@
     "upload": "Перенести",
     "updated": "Останнє оновлення: {{date}}",
     "add_new_hint": "Додати новий список.",
-    "loading": "Списки завантажуються..."
+    "loading": "Списки завантажуються...",
+    "editmode-list-transmit": "Передати список",
+    "editmode-lists-transmit": "Передати {{num}} списків",
+    "editmode-list-empty": "Очистити список",
+    "editmode-lists-empty": "Очистити {{num}} списків",
+    "editmode-list-delete": "Видалити список",
+    "editmode-lists-delete": "Видалити {{num}} списків"
 }

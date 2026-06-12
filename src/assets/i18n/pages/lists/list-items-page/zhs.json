@@ -9,5 +9,15 @@
     "unlock": "解锁",
     "nolist": "出了点问题:(<br /><br />无法显示列表。",
     "add_new_hint": "在列表中添加新项。",
-    "quickadd": "创建新的列表元素..."
+    "quickadd": "创建新的列表元素...",
+    "editmode-item-pin": "固定列表项",
+    "editmode-item-unpin": "取消固定列表项",
+    "editmode-items-pin": "固定 {{num}} 个列表项",
+    "editmode-items-unpin": "取消固定 {{num}} 个列表项",
+    "editmode-item-hide": "隐藏列表项",
+    "editmode-item-show": "显示列表项",
+    "editmode-items-hide": "隐藏 {{num}} 个列表项",
+    "editmode-items-show": "显示 {{num}} 个列表项",
+    "editmode-item-delete": "删除列表项",
+    "editmode-items-delete": "删除 {{num}} 个列表项"
 }
