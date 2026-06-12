@@ -97,7 +97,7 @@ export class AppService {
 
         await this.handleNightmode((await SysInfo.NightMode()).isNightMode);
         SysInfo.addListener<NightModeEventArgs>("NIGHTMODE", (data: NightModeEventArgs) => {
-            this.handleNightmode(data.isNightMode, data.silent);
+            this.handleNightmode(data.isNightMode);
         });
 
         await Locale.Initialize(this._locale);
@@ -286,10 +286,8 @@ export class AppService {
         this._logger.Debug(`App initialization completed`);
     }
 
-    private async handleNightmode(isNightMode?: boolean, silent: boolean = false) {
-        if (!silent) {
-            this._logger.Debug(`NightMode set to '${isNightMode}'`);
-        }
+    private async handleNightmode(isNightMode?: boolean) {
+        this._logger.Debug(`NightMode set to '${isNightMode}'`);
         const color = isNightMode === true ? "#002794" : "#0050d8";
         await SystemBars.setStyle({ style: SystemBarsStyle.Dark });
         await EdgeToEdge.setNavigationBarColor({ color: color });
