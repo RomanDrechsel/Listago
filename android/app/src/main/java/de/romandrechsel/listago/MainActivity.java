@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.romandrechsel.listago.admob.AdmobPlugin;
 import de.romandrechsel.listago.appupdate.AppUpdatePlugin;
 import de.romandrechsel.listago.garmin.ConnectIQPlugin;
 import de.romandrechsel.listago.logging.Logger;
@@ -50,6 +51,7 @@ public class MainActivity extends BridgeActivity
     public void onCreate(Bundle savedInstanceState)
     {
         this.registerPlugins(Arrays.asList(
+            AdmobPlugin.class,
             ConnectIQPlugin.class,
             SysInfoPlugin.class,
             SharePlugin.class,

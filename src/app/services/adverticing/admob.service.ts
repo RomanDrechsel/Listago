@@ -4,6 +4,7 @@ import { AdMob, AdMobBannerSize, AdmobConsentDebugGeography, AdmobConsentInfo, A
 import type { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
 import type { Subscription } from "rxjs";
+import Admob from "src/app/plugins/admob/admob";
 import { environment } from "../../../environments/environment";
 import { Logger } from "../logging/logger";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
@@ -19,8 +20,6 @@ export class AdmobService {
     /** last height of the banner in px */
     public static BannerHeight: number = 56;
 
-    private _isInitialized: boolean = false;
-
     private readonly _preferences = inject(PreferencesService);
     private readonly _http = inject(HttpClient);
     private _keyboardUpListerner?: PluginListenerHandle;
@@ -31,19 +30,19 @@ export class AdmobService {
     private _admobBannerClosedListener?: PluginListenerHandle;
     private _preferencesSubscription?: Subscription;
 
-    public get Initialized(): boolean {
-        return this._isInitialized;
-    }
-
     public async Initialize() {
-        this._isInitialized = false;
         AdmobService.BannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, AdmobService.BannerHeight);
         await this.resizeContainer(AdmobService.BannerHeight);
 
-        await AdMob.initialize({
+        const initResult = await Admob.Initialize({
             initializeForTesting: environment.publicRelease !== true,
             testingDevices: ["1EEF966BEC6747BF8ABBCDF00F9E7426"],
         });
+
+        if (!initResult.initialized) {
+            Logger.Error(`Admob initialization failed`, initResult);
+            return;
+        }
 
         await this.RequestConsent(false);
 
