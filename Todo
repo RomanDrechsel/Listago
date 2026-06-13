@@ -1,5 +1,5 @@
-BUG: remove multple lists from trash -> toast locale missing
-BUG: when entering edit-mode -> close sliding of items
+WIP: when entering edit-mode -> close sliding of items
+TODO: remove StatusBar Plugin??
 TODO: Notes support
 TEST: in-app update
 TEST: import from lists
