@@ -38,6 +38,9 @@ export abstract class ListPageBase<T extends ListPageSelectedItem> extends PageB
     }
 
     public set EditMode(val: boolean) {
+        if (val) {
+            this._itemsList?.closeSlidingItems();
+        }
         this._editMode = val;
     }
 
