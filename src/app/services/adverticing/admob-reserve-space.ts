@@ -20,7 +20,7 @@ export class AdmobReserveSpace {
         }
 
         document.documentElement.style.setProperty("--admob-placeholder-height", `${height}px`);
-        AdmobService.BannerHeight = height;
+        AdmobService.AdmobBannerHeight = height;
     }
 
     public static async SetAdmobText(http: HttpClient): Promise<void> {

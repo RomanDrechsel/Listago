@@ -1,10 +1,19 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { AdMob, AdMobBannerSize, AdmobConsentDebugGeography, AdmobConsentInfo, AdmobConsentRequestOptions, AdmobConsentStatus, BannerAdOptions, BannerAdPluginEvents, BannerAdPosition, BannerAdSize } from "@capacitor-community/admob";
 import type { PluginListenerHandle } from "@capacitor/core";
 import { Keyboard, KeyboardInfo } from "@capacitor/keyboard";
 import type { Subscription } from "rxjs";
-import Admob from "src/app/plugins/admob/admob";
+import { AdmobPluginEvents } from "src/app/plugins/admob/admib-plugin-events";
+import AdMob from "src/app/plugins/admob/admob";
+import { AdmobBannerClosedEventArgs } from "src/app/plugins/admob/admob-banner-closed-event-args";
+import { AdmobBannerFailedToLoadEventArgs } from "src/app/plugins/admob/admob-banner-failed-to-load-event-args";
+import { AdmobBannerLoadedEventArgs } from "src/app/plugins/admob/admob-banner-loaded-event-args";
+import { AdmobBannerNewOrientationEventArgs } from "src/app/plugins/admob/admob-banner-new-orientation-event-args";
+import { AdmobBannerSize } from "src/app/plugins/admob/admob-banner-size";
+import { AdmobBannerSizeChangedEventArgs } from "src/app/plugins/admob/admob-banner-size-changed-event-args";
+import { AdmobBannerOptions } from "src/app/plugins/admob/admob-banner.options";
+import { AdmobConsentInfoResult } from "src/app/plugins/admob/admob-consent-info-result";
+import { AdmobStateResult } from "src/app/plugins/admob/admob-state-result";
 import { environment } from "../../../environments/environment";
 import { Logger } from "../logging/logger";
 import { EPrefProperty, PreferencesService } from "../storage/preferences.service";
@@ -14,63 +23,75 @@ import { AdmobReserveSpace } from "./admob-reserve-space";
     providedIn: "root",
 })
 export class AdmobService {
-    /** is the banner currently shown */
-    private _bannerIsShown: boolean = false;
-
-    /** last height of the banner in px */
-    public static BannerHeight: number = 56;
+    public AdmobInitialized: boolean = false;
+    /** last size of the banner in px */
+    public static AdmobBannerHeight: number = 56;
 
     private readonly _preferences = inject(PreferencesService);
     private readonly _http = inject(HttpClient);
     private _keyboardUpListerner?: PluginListenerHandle;
     private _keyboardDownListener?: PluginListenerHandle;
-    private _admobBannerLoadedListener?: PluginListenerHandle;
-    private _admobBannerChangedListener?: PluginListenerHandle;
-    private _admobBannerFailedListener?: PluginListenerHandle;
-    private _admobBannerClosedListener?: PluginListenerHandle;
+    private _admobListeners: PluginListenerHandle[] = [];
     private _preferencesSubscription?: Subscription;
 
-    public async Initialize() {
-        AdmobService.BannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, AdmobService.BannerHeight);
-        await this.resizeContainer(AdmobService.BannerHeight);
+    private readonly _adId = "ca-app-pub-4693945059643494/6924249345";
 
-        const initResult = await Admob.Initialize({
+    /**
+     * found in logcat near "This device is not registered as a test device."
+     */
+    private readonly _testDeviceId = "";
+
+    public async Initialize() {
+        AdmobService.AdmobBannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, AdmobService.AdmobBannerHeight);
+        await this.resizeAdMobPlaceholder(AdmobService.AdmobBannerHeight);
+
+        const initResult = await AdMob.Initialize({
             initializeForTesting: environment.publicRelease !== true,
             testingDevices: ["1EEF966BEC6747BF8ABBCDF00F9E7426"],
+            timeout: 30,
         });
 
         if (!initResult.initialized) {
+            this.AdmobInitialized = false;
             Logger.Error(`Admob initialization failed`, initResult);
             return;
         }
 
+        this.AdmobInitialized = true;
+
         await this.RequestConsent(false);
 
-        this._admobBannerLoadedListener = await AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
-            Logger.Debug(`Admob banner loaded`);
-            this._bannerIsShown = true;
-        });
+        this._admobListeners.push(
+            await AdMob.addListener(AdmobPluginEvents.BannerLoaded, (args: AdmobBannerLoadedEventArgs) => {
+                Logger.Debug(`Admob banner loaded: `, args);
+            }),
+        );
 
-        this._admobBannerChangedListener = await AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: AdMobBannerSize) => {
-            if (size.height > 0) {
-                this._bannerIsShown = true;
-            } else {
-                this._bannerIsShown = false;
-            }
-            this.resizeContainer(size.height);
-        });
+        this._admobListeners.push(
+            await AdMob.addListener(AdmobPluginEvents.BannerSizeChanged, (args: AdmobBannerSizeChangedEventArgs) => {
+                this.resizeAdMobPlaceholder(args.height);
+            }),
+        );
 
-        this._admobBannerFailedListener = await AdMob.addListener(BannerAdPluginEvents.FailedToLoad, (error: any) => {
-            Logger.Error(`Admob banner error: `, error);
-            this._bannerIsShown = false;
-            this.resizeContainer(0);
-        });
+        this._admobListeners.push(
+            await AdMob.addListener(AdmobPluginEvents.BannerFailedToLoad, (args: AdmobBannerFailedToLoadEventArgs) => {
+                Logger.Error(`Admob banner failed to load: `, args);
+                this.resizeAdMobPlaceholder(0);
+            }),
+        );
 
-        this._admobBannerClosedListener = await AdMob.addListener(BannerAdPluginEvents.Closed, () => {
-            Logger.Debug(`Admob banner closed`);
-            this._bannerIsShown = false;
-            this.resizeContainer(0);
-        });
+        this._admobListeners.push(
+            await AdMob.addListener(AdmobPluginEvents.BannerClosed, (args: AdmobBannerClosedEventArgs) => {
+                Logger.Debug(`Admob banner closed: `, args);
+                this.resizeAdMobPlaceholder(0);
+            }),
+        );
+
+        this._admobListeners.push(
+            await AdMob.addListener(AdmobPluginEvents.BannerNewOrientation, (args: AdmobBannerNewOrientationEventArgs) => {
+                Logger.Debug(`Admob banner reloaded, due to device orientation change from '${args.oldOrientation}' to '${args.newOrientation}'`);
+            }),
+        );
 
         if (environment.publicRelease === true) {
             Logger.Debug(`Admob initialized`);
@@ -87,25 +108,17 @@ export class AdmobService {
         this._keyboardUpListerner = await Keyboard.addListener("keyboardWillShow", info => this.onKeyboardShow(info));
         this._keyboardDownListener = await Keyboard.addListener("keyboardWillHide", () => this.onKeyboardHide());
 
-        this._isInitialized = true;
-
-        await this.ShowBanner();
+        await this.RequestNewBanner();
     }
 
     public async Shutdown(): Promise<void> {
-        await this.HideBanner();
-        this._keyboardDownListener?.remove();
-        this._keyboardDownListener = undefined;
-        this._keyboardUpListerner?.remove();
-        this._keyboardUpListerner = undefined;
-        this._admobBannerChangedListener?.remove();
-        this._admobBannerChangedListener = undefined;
-        this._admobBannerClosedListener?.remove();
-        this._admobBannerClosedListener = undefined;
-        this._admobBannerFailedListener?.remove();
-        this._admobBannerFailedListener = undefined;
-        this._admobBannerLoadedListener?.remove();
-        this._admobBannerLoadedListener = undefined;
+        await this.DestroyBanner();
+
+        for (const listener of this._admobListeners) {
+            listener.remove();
+        }
+        this._admobListeners = [];
+
         this._preferencesSubscription?.unsubscribe();
         this._preferencesSubscription = undefined;
 
@@ -114,30 +127,28 @@ export class AdmobService {
         } else {
             Logger.Notice(`Admob test mode shut down`);
         }
-
-        this._isInitialized = false;
+        this.AdmobInitialized = false;
     }
 
     /**
-     * Shows the Admob banner if it's not already shown.
+     * Shows the Admob banner, destorying the old one if it exists.
      */
-    public async ShowBanner(): Promise<void> {
-        if (this._bannerIsShown === false) {
-            const options: BannerAdOptions = {
-                adId: "ca-app-pub-4693945059643494/6924249345",
-                adSize: BannerAdSize.ADAPTIVE_BANNER,
-                position: BannerAdPosition.BOTTOM_CENTER,
-                margin: 0,
-                isTesting: environment.publicRelease !== true,
-                //npa: true
-            };
-            console.log("DEBUG", options);
-            try {
-                await AdMob.removeBanner();
-                await AdMob.showBanner(options);
-            } catch {
-                await AdMob.resumeBanner();
-            }
+    public async RequestNewBanner(): Promise<void> {
+        const admobState = await this.getState();
+        if (!admobState.isAdMobInitialized || !admobState.areBannersAllowed) {
+            await this.DestroyBanner();
+            return;
+        }
+        const options: AdmobBannerOptions = {
+            adId: this._adId,
+            gravity: "BOTTOM",
+            isTesting: environment.publicRelease !== true,
+        };
+
+        try {
+            await AdMob.RequestNewBanner(options);
+        } catch (ex: any) {
+            Logger.Error(`Could not request new AdMob banner: `, ex);
         }
     }
 
@@ -145,52 +156,73 @@ export class AdmobService {
      * Hides the Admob banner if it's currently shown.
      */
     public async HideBanner(): Promise<void> {
-        if (this._bannerIsShown === true) {
-            await AdMob.hideBanner();
+        const admobState = await this.getState();
+        if (!admobState.isAdMobInitialized) {
+            await this.DestroyBanner();
+            return;
         }
-        this._bannerIsShown = false;
-        this.resizeContainer(0);
+
+        try {
+            await AdMob.HideBanner();
+        } catch {}
+        this.resizeAdMobPlaceholder(0);
     }
 
     /**
-     * Requests consent for personalized advertising.     *
-     * @param reset_consent If true, forces the consent form to be shown even if it's not required.
+     * Resumes the banner
+     */
+    private async ResumeBanner() {
+        const admobState = await this.getState();
+        if (!admobState.isAdMobInitialized || !admobState.areBannersAllowed) {
+            await this.DestroyBanner();
+            return;
+        }
+
+        try {
+            await AdMob.ResumeBanner();
+            this.resizeAdMobPlaceholder(AdmobService.AdmobBannerHeight);
+        } catch {
+            this.resizeAdMobPlaceholder(0);
+            await this.RequestNewBanner();
+        }
+    }
+
+    /**
+     * Removes the AdMob banner, not just hide it
+     */
+    public async DestroyBanner(): Promise<void> {
+        await AdMob.DestroyBanner();
+        this.resizeAdMobPlaceholder(0);
+    }
+
+    /**
+     * Requests consent for personalized advertising.
+     * @param resetConsent If true, forces the consent form to be shown even if it's not required.
      * @returns true if consent is obtained or not required, false otherwise.
      */
-    public async RequestConsent(reset_consent: boolean = true): Promise<boolean> {
+    public async RequestConsent(resetConsent: boolean = true): Promise<boolean> {
         try {
-            const authorizationStatus = (await AdMob.trackingAuthorizationStatus()).status;
-            Logger.Debug(`Admob tracking authorization status: ${authorizationStatus}`);
-
-            if (authorizationStatus === "notDetermined" || reset_consent) {
-                await AdMob.requestTrackingAuthorization();
+            if (resetConsent) {
+                await AdMob.ResetConsentInfo();
             }
 
-            if ((await AdMob.trackingAuthorizationStatus()).status == "authorized") {
-                let consentInfo = await this.getConsentStatus();
-                if (consentInfo.status == AdmobConsentStatus.NOT_REQUIRED) {
-                    Logger.Debug(`Admob constent status: ${consentInfo.status}`);
-                } else {
-                    const before = consentInfo.status;
-                    if (consentInfo.isConsentFormAvailable && (consentInfo.status === AdmobConsentStatus.REQUIRED || reset_consent)) {
-                        Logger.Debug(`Show Admob ConsentForm...`);
-                        if (reset_consent) {
-                            await AdMob.resetConsentInfo();
-                            return this.RequestConsent(false);
-                        }
-                        consentInfo = await AdMob.showConsentForm();
-                    }
-                    if (before !== consentInfo.status) {
-                        Logger.Debug(`Admob consent status changed: ${before} -> ${consentInfo.status}`);
-                    }
-                }
+            const consentInfo = await this.getConsentStatus();
+            const consentInfoForm = await AdMob.LoadAndShowConsentFormIfRequired();
+            Logger.Debug(`AdMob constent info: ${consentInfo}`);
 
-                return consentInfo.status === AdmobConsentStatus.OBTAINED || consentInfo.status === AdmobConsentStatus.NOT_REQUIRED;
-            } else {
-                return false;
+            if (consentInfo.status !== consentInfoForm.status) {
+                Logger.Notice(`Admob consent status changed: ${consentInfo.status} -> ${consentInfoForm.status}`);
             }
-        } catch (e) {
-            Logger.Error(`Could not check Admob tracking authorization status: `, e);
+
+            if (consentInfo.canRequestAds && !consentInfoForm.canRequestAds) {
+                Logger.Important(`Unfortunately no AdMob banners are allowed to present, due to users consent settings.`, consentInfoForm.canRequestAds);
+            } else if (!consentInfo.canRequestAds && consentInfoForm.canRequestAds) {
+                Logger.Important(`Fortunately AdMob banners are now allowed to present, due to users consent settings.`, consentInfoForm);
+            }
+
+            return consentInfo.canRequestAds;
+        } catch (error) {
+            Logger.Error(`Could not request Admob consent: `, error);
             return false;
         }
     }
@@ -200,15 +232,16 @@ export class AdmobService {
      *
      * @returns  object containing the current consent status.
      */
-    public async getConsentStatus(): Promise<AdmobConsentInfo> {
-        let options: AdmobConsentRequestOptions = {};
-        if (environment.publicRelease !== true) {
-            options = {
-                debugGeography: AdmobConsentDebugGeography.EEA,
-                testDeviceIdentifiers: ["83906043-1167-4ca6-8f7c-10ca1ad1abe1"],
-            };
-        }
-        return AdMob.requestConsentInfo(options);
+    public async getConsentStatus(): Promise<AdmobConsentInfoResult> {
+        return AdMob.RequestConsentInfo({ debug: environment.publicRelease !== true, testDeviceId: this._testDeviceId });
+    }
+
+    /**
+     * returns the state of the AdMob plugin
+     * @returns state information of the AdMob plugin
+     */
+    public async getState(): Promise<AdmobStateResult> {
+        return AdMob.GetState();
     }
 
     /**
@@ -223,29 +256,23 @@ export class AdmobService {
      * show the ad, if the keyboard is closed
      */
     private async onKeyboardHide(): Promise<void> {
-        await this.resumeBanner();
-    }
-
-    /** resumes the banner */
-    private async resumeBanner() {
-        await AdMob.resumeBanner();
-        this._bannerIsShown = true;
-        this.resizeContainer(AdmobService.BannerHeight);
+        await this.ResumeBanner();
     }
 
     /**
      * resizes the space for the banner
      * @param height banner height in px
      */
-    private async resizeContainer(height: number) {
+    private async resizeAdMobPlaceholder(size: AdmobBannerSize | number) {
+        const height = typeof size === "number" ? size : size.height;
         if (height > 0) {
-            if (AdmobService.BannerHeight !== height) {
+            if (AdmobService.AdmobBannerHeight !== height) {
                 Logger.Debug(`Admob banner height changed to ${height}px`);
-                AdmobService.BannerHeight = height;
+                AdmobService.AdmobBannerHeight = height;
                 this._preferences.Set(EPrefProperty.AdmobBannerHeight, height);
             }
         }
         await AdmobReserveSpace.SetAdmobHeight(height);
-        await AdmobReserveSpace.ToggleContent(!this._bannerIsShown);
+        await AdmobReserveSpace.ToggleContent(height > 0);
     }
 }

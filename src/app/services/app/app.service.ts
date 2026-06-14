@@ -8,6 +8,8 @@ import { SplashScreen } from "@capacitor/splash-screen";
 import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
 import { Platform } from "@ionic/angular";
 import { TranslocoPersistTranslations } from "@jsverse/transloco-persist-translations";
+import { AdmobConsentInfoResult } from "src/app/plugins/admob/admob-consent-info-result";
+import { AdmobStateResult } from "src/app/plugins/admob/admob-state-result";
 import type { NightModeEventArgs } from "src/app/plugins/sysinfo/event-args/night-mode-event-args";
 import SysInfo from "src/app/plugins/sysinfo/sys-info";
 import { environment } from "../../../environments/environment";
@@ -194,8 +196,8 @@ export class AppService {
                 LogMode: this._logger.LogLevelShort,
                 AppLanguage: this._locale.CurrentLanguage.locale,
                 AdmobStatus: {
-                    Initialized: this._admob.Initialized,
-                    Status: await this._admob.getConsentStatus(),
+                    PluginState: await this._admob.getState(),
+                    ConsentState: await this._admob.getConsentStatus(),
                 },
             };
         }
@@ -300,8 +302,8 @@ export declare type AppMetaInfo = {
         LogMode: string;
         AppLanguage: string;
         AdmobStatus: {
-            Initialized: boolean;
-            Status: any;
+            PluginState: AdmobStateResult;
+            ConsentState: AdmobConsentInfoResult;
         };
     };
     Device?: {

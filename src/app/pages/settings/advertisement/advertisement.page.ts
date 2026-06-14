@@ -19,7 +19,7 @@ export class AdvertisementPage extends PageBase {
     @ViewChild("adsToggle", { read: IonToggle }) private _adsToggle?: IonToggle;
 
     public get AdvertisementActive(): boolean {
-        return this._admob.Initialized;
+        return this._admob.AdmobInitialized;
     }
 
     public get AdvertisementText(): string {

@@ -1,10 +1,12 @@
 package de.romandrechsel.listago.admob;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -27,6 +29,10 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.ump.ConsentDebugSettings;
+import com.google.android.ump.ConsentInformation;
+import com.google.android.ump.ConsentRequestParameters;
+import com.google.android.ump.UserMessagingPlatform;
 
 import org.json.JSONException;
 
@@ -34,18 +40,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import de.romandrechsel.listago.MainActivity;
 import de.romandrechsel.listago.logging.Logger;
 
 @CapacitorPlugin(name = "AdMob")
 public class AdmobPlugin extends Plugin
 {
     private static final String TAG = "AdmobPlugin";
+    @Nullable
     private FrameLayout bannerContainer;
+    @Nullable
     private AdView adView;
     private boolean isInitialized = false;
     private boolean isBannerPresented = false;
+    private boolean isBannerLoaded = false;
+    @Nullable
+    private ConsentInformation consentInformation;
 
     private final int defaultInitializationTimeout = 30;
+    private String lastAdId = null;
+    private Boolean lastIsTesting = null;
+    private Integer lastGravity = null;
+    private Integer lastOrientation = null;
+
+    @Override
+    public void load()
+    {
+        super.load();
+        MainActivity activity = (MainActivity) this.getActivity();
+        if (activity != null)
+        {
+            activity.addConfigurationChangedListener(this::onConfigurationChanged);
+        }
+    }
 
     @PluginMethod
     public void Initialize(PluginCall call)
@@ -122,10 +149,12 @@ public class AdmobPlugin extends Plugin
                 }
             });
         });
+
+        this.lastOrientation = activity.getResources().getConfiguration().orientation;
     }
 
     @PluginMethod
-    public void ShowBanner(PluginCall call)
+    public void RequestNewBanner(PluginCall call)
     {
         String adId = call.getString("adId");
         Boolean jsIsTesting = call.getBoolean("isTesting", false);
@@ -144,100 +173,21 @@ public class AdmobPlugin extends Plugin
             adId = "ca-app-pub-3940256099942544/6300978111";
         }
 
-        Activity activity = this.getActivity();
-        String finalAdId = adId;
-        activity.runOnUiThread(() ->
-        {
-            try
-            {
-                this.removeBannerInternal();
-
-                this.bannerContainer = new FrameLayout(activity);
-                this.bannerContainer.setClipToPadding(false);
-
-                FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                containerParams.gravity = bannerGravity | Gravity.CENTER_HORIZONTAL;
-
-                ViewGroup rootView = activity.findViewById(android.R.id.content);
-                rootView.addView(this.bannerContainer, containerParams);
-
-                this.applySystemBarInsets(activity);
-
-                this.adView = new AdView(activity);
-                this.adView.setAdUnitId(finalAdId);
-
-                AdSize adSize = this.getAnchoredAdaptiveBannerSize(activity);
-                this.adView.setAdSize(adSize);
-
-                FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                adParams.gravity = Gravity.CENTER;
-
-                this.bannerContainer.addView(this.adView, adParams);
-
-                long startTime = System.currentTimeMillis();
-
-                this.adView.setAdListener(new AdListener()
-                {
-                    @Override
-                    public void onAdLoaded()
-                    {
-                        AdmobPlugin.this.isBannerPresented = true;
-                        JSObject loaded = new JSObject();
-                        loaded.put("adId", finalAdId);
-                        loaded.put("isTesting", isTesting);
-                        loaded.put("duration", System.currentTimeMillis() - startTime);
-                        AdmobPlugin.this.notifyListeners("bannerLoaded", loaded);
-                        AdmobPlugin.this.notifyBannerSize(AdmobPlugin.this.adView.getAdSize(), activity);
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError)
-                    {
-                        JSObject error = new JSObject();
-                        error.put("adId", finalAdId);
-                        error.put("isTesting", isTesting);
-                        error.put("duration", System.currentTimeMillis() - startTime);
-                        error.put("code", loadAdError.getCode());
-                        error.put("message", loadAdError.getMessage());
-                        error.put("domain", loadAdError.getDomain());
-
-                        AdmobPlugin.this.notifyListeners("bannerFailedToLoad", error);
-                        AdmobPlugin.this.notifyBannerSize(new AdSize(0, 0), activity);
-                    }
-
-                    @Override
-                    public void onAdClosed()
-                    {
-                        JSObject closed = new JSObject();
-                        closed.put("adId", finalAdId);
-                        closed.put("isTesting", isTesting);
-                        closed.put("duration", System.currentTimeMillis() - startTime);
-                        AdmobPlugin.this.notifyListeners("bannerClosed", closed);
-                        AdmobPlugin.this.notifyBannerSize(new AdSize(0, 0), activity);
-                    }
-                });
-
-                AdRequest request = new AdRequest.Builder().build();
-                this.adView.loadAd(request);
-                call.resolve();
-            }
-            catch (Exception e)
-            {
-                Logger.Error(TAG, "Could not show AdMob banner: ", e);
-                call.reject("Could not show banner", e);
-            }
-        });
+        this.lastAdId = adId;
+        this.lastIsTesting = isTesting;
+        this.lastGravity = bannerGravity;
+        this.requestNewBannerInternal(adId, isTesting, bannerGravity, call, false);
     }
 
     @PluginMethod
     public void HideBanner(PluginCall call)
     {
+        if (this.bannerContainer == null)
+        {
+            call.reject("No AdMob banner to hide.");
+            return;
+        }
+
         Activity activity = this.getActivity();
         activity.runOnUiThread(() ->
         {
@@ -255,7 +205,13 @@ public class AdmobPlugin extends Plugin
     @PluginMethod
     public void ResumeBanner(PluginCall call)
     {
-        Activity activity = getActivity();
+        if (this.bannerContainer == null)
+        {
+            call.reject("No AdMob banner to resume.");
+            return;
+        }
+
+        Activity activity = this.getActivity();
 
         activity.runOnUiThread(() ->
         {
@@ -275,7 +231,7 @@ public class AdmobPlugin extends Plugin
     }
 
     @PluginMethod
-    public void RemoveBanner(PluginCall call)
+    public void DestroyBanner(PluginCall call)
     {
         Activity activity = getActivity();
 
@@ -292,8 +248,122 @@ public class AdmobPlugin extends Plugin
     {
         JSObject status = new JSObject();
         status.put("isAdMobInitialized", this.isInitialized);
+        status.put("areBannersAllowed", this.consentInformation != null && this.consentInformation.canRequestAds());
         status.put("isBannerPresented", this.isBannerPresented);
+        status.put("isBannerLoaded", this.adView != null && this.isBannerLoaded);
         call.resolve(status);
+    }
+
+    @PluginMethod
+    public void RequestConsentInfo(PluginCall call)
+    {
+        Activity activity = getActivity();
+
+        Boolean debug = call.getBoolean("debug", false);
+        String testDeviceId = call.getString("testDeviceId");
+
+        ConsentRequestParameters.Builder paramsBuilder = new ConsentRequestParameters.Builder();
+
+        if (Boolean.TRUE.equals(debug))
+        {
+            ConsentDebugSettings.Builder debugBuilder = new ConsentDebugSettings.Builder(activity).setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA);
+
+            if (testDeviceId != null && !testDeviceId.isEmpty())
+            {
+                debugBuilder.addTestDeviceHashedId(testDeviceId);
+            }
+
+            paramsBuilder.setConsentDebugSettings(debugBuilder.build());
+        }
+
+        this.consentInformation = UserMessagingPlatform.getConsentInformation(activity);
+
+        activity.runOnUiThread(() ->
+        {
+            this.consentInformation.requestConsentInfoUpdate(
+                activity,
+                paramsBuilder.build(),
+                () ->
+                {
+                    JSObject result = new JSObject();
+                    result.put("canRequestAds", consentInformation.canRequestAds());
+                    result.put("privacyOptionsRequired", consentInformation.getPrivacyOptionsRequirementStatus() == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
+                    result.put("status", consentInformation.getConsentStatus());
+                    call.resolve(result);
+                },
+                formError ->
+                {
+                    call.reject(formError.getMessage());
+                }
+            );
+        });
+    }
+
+    @PluginMethod
+    public void LoadAndShowConsentFormIfRequired(PluginCall call)
+    {
+        Activity activity = getActivity();
+
+        activity.runOnUiThread(() ->
+        {
+            UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                activity,
+                formError ->
+                {
+                    if (formError != null)
+                    {
+                        Logger.Error(TAG, "Could not show consent form: ", formError);
+                        call.reject(formError.getMessage());
+                        return;
+                    }
+
+                    ConsentInformation info = UserMessagingPlatform.getConsentInformation(activity);
+
+                    JSObject result = new JSObject();
+                    result.put("canRequestAds", info.canRequestAds());
+                    result.put("status", info.getConsentStatus());
+                    result.put("privacyOptionsRequired", info.getPrivacyOptionsRequirementStatus() == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
+
+                    call.resolve(result);
+                }
+            );
+        });
+    }
+
+    @PluginMethod
+    public void ResetConsentInfo(PluginCall call)
+    {
+        Activity activity = getActivity();
+
+        activity.runOnUiThread(() ->
+        {
+            UserMessagingPlatform.getConsentInformation(activity).reset();
+            call.resolve();
+        });
+    }
+
+    @PluginMethod
+    public void ShowPrivacyOptionsForm(PluginCall call)
+    {
+        Activity activity = getActivity();
+
+        activity.runOnUiThread(() ->
+        {
+            UserMessagingPlatform.showPrivacyOptionsForm(
+                activity,
+                formError ->
+                {
+                    if (formError != null)
+                    {
+                        Logger.Error(TAG, "Could not show privacy options form: ", formError);
+                        call.reject(formError.getMessage());
+                        return;
+                    }
+
+                    call.resolve();
+                }
+            );
+        });
     }
 
     private void removeBannerInternal()
@@ -318,8 +388,120 @@ public class AdmobPlugin extends Plugin
         this.isBannerPresented = false;
     }
 
+    private void requestNewBannerInternal(String adId, Boolean isTesting, int gravity, @Nullable PluginCall call, @Nullable Boolean hideView)
+    {
+        Activity activity = this.getActivity();
+        activity.runOnUiThread(() ->
+        {
+            try
+            {
+                this.removeBannerInternal();
+
+                this.bannerContainer = new FrameLayout(activity);
+                this.bannerContainer.setClipToPadding(false);
+                if (Boolean.TRUE.equals(hideView))
+                {
+                    this.bannerContainer.setVisibility(View.INVISIBLE);
+                }
+
+                FrameLayout.LayoutParams containerParams = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                containerParams.gravity = gravity | Gravity.CENTER_HORIZONTAL;
+
+                ViewGroup rootView = activity.findViewById(android.R.id.content);
+                rootView.addView(this.bannerContainer, containerParams);
+
+                this.applySystemBarInsets(activity);
+
+                this.adView = new AdView(activity);
+                this.adView.setAdUnitId(adId);
+
+                AdSize adSize = this.getAnchoredAdaptiveBannerSize(activity);
+                this.adView.setAdSize(adSize);
+
+                FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                adParams.gravity = Gravity.CENTER;
+
+                this.bannerContainer.addView(this.adView, adParams);
+
+                long startTime = System.currentTimeMillis();
+
+                this.adView.setAdListener(new AdListener()
+                {
+                    @Override
+                    public void onAdLoaded()
+                    {
+                        AdmobPlugin.this.isBannerLoaded = true;
+                        AdmobPlugin.this.isBannerPresented = true;
+                        JSObject loaded = new JSObject();
+                        loaded.put("adId", adId);
+                        loaded.put("isTesting", isTesting);
+                        loaded.put("duration", System.currentTimeMillis() - startTime);
+                        AdmobPlugin.this.notifyListeners("bannerLoaded", loaded);
+                        AdmobPlugin.this.notifyBannerSize(AdmobPlugin.this.adView.getAdSize(), activity);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError)
+                    {
+                        AdmobPlugin.this.isBannerLoaded = false;
+                        JSObject error = new JSObject();
+                        error.put("adId", adId);
+                        error.put("isTesting", isTesting);
+                        error.put("duration", System.currentTimeMillis() - startTime);
+                        error.put("code", loadAdError.getCode());
+                        error.put("message", loadAdError.getMessage());
+                        error.put("domain", loadAdError.getDomain());
+
+                        AdmobPlugin.this.notifyListeners("bannerFailedToLoad", error);
+                        AdmobPlugin.this.notifyBannerSize(new AdSize(0, 0), activity);
+                    }
+
+                    @Override
+                    public void onAdClosed()
+                    {
+                        AdmobPlugin.this.isBannerLoaded = false;
+                        JSObject closed = new JSObject();
+                        closed.put("adId", adId);
+                        closed.put("isTesting", isTesting);
+                        closed.put("duration", System.currentTimeMillis() - startTime);
+                        AdmobPlugin.this.notifyListeners("bannerClosed", closed);
+                        AdmobPlugin.this.notifyBannerSize(new AdSize(0, 0), activity);
+                    }
+                });
+
+                AdRequest request = new AdRequest.Builder().build();
+                this.adView.loadAd(request);
+                if (call != null)
+                {
+                    call.resolve();
+                }
+            }
+            catch (Exception e)
+            {
+                AdmobPlugin.this.isBannerLoaded = false;
+                AdmobPlugin.this.isBannerPresented = false;
+                Logger.Error(TAG, "Could not show AdMob banner: ", e);
+                if (call != null)
+                {
+                    call.reject("Could not show banner", e);
+                }
+            }
+        });
+    }
+
     private void applySystemBarInsets(Activity activity)
     {
+        if (this.bannerContainer == null)
+        {
+            return;
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(this.bannerContainer, (view, windowInsets) ->
         {
             Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
@@ -350,9 +532,39 @@ public class AdmobPlugin extends Plugin
     private void notifyBannerSize(@Nullable AdSize adsize, @Nullable Activity activity)
     {
         int height = (adsize == null || activity == null) ? 0 : adsize.getHeightInPixels(activity);
+        if (height > 0)
+        {
+            DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
+            height = Math.round(height / metrics.density);
+        }
         JSObject size = new JSObject();
         size.put("height", Math.max(height, 0));
         size.put("width", adView != null ? adView.getWidth() : 0);
         this.notifyListeners("bannerSizeChanged", size);
+    }
+
+    private void onConfigurationChanged(Configuration newConfig)
+    {
+        if (newConfig.orientation == this.lastOrientation)
+        {
+            return;
+        }
+
+        if (!this.isInitialized || this.adView == null || this.bannerContainer == null || this.lastAdId == null || this.lastIsTesting == null || this.lastGravity == null || !this.isBannerLoaded)
+        {
+            return;
+        }
+
+        this.getActivity().runOnUiThread(() ->
+        {
+            JSObject reload = new JSObject();
+            reload.put("oldOrientation", this.lastOrientation == Configuration.ORIENTATION_PORTRAIT ? "PORTRAIT" : "LANDSCAPE");
+            reload.put("newOrientation", newConfig.orientation == Configuration.ORIENTATION_PORTRAIT ? "PORTRAIT" : "LANDSCAPE");
+            this.notifyListeners("bannerNewOrientation", reload);
+
+            boolean wasVisible = this.bannerContainer.getVisibility() == android.view.View.VISIBLE;
+            this.requestNewBannerInternal(this.lastAdId, this.lastIsTesting, this.lastGravity, null, !wasVisible);
+        });
+        this.lastOrientation = newConfig.orientation;
     }
 }
