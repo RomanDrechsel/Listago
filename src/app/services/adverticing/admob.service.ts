@@ -24,9 +24,7 @@ import { AdmobReserveSpace } from "./admob-reserve-space";
 })
 export class AdmobService {
     public AdmobInitialized: boolean = false;
-    /** last size of the banner in px */
-    public static AdmobBannerHeight: number = 56;
-
+    private _lastBannerHeight = 56;
     private readonly _preferences = inject(PreferencesService);
     private readonly _http = inject(HttpClient);
     private _keyboardUpListerner?: PluginListenerHandle;
@@ -42,8 +40,10 @@ export class AdmobService {
     private readonly _testDeviceId = "";
 
     public async Initialize() {
-        AdmobService.AdmobBannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, AdmobService.AdmobBannerHeight);
-        await this.resizeAdMobPlaceholder(AdmobService.AdmobBannerHeight);
+        this._lastBannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, this._lastBannerHeight);
+        await this.resizeAdMobPlaceholder(this._lastBannerHeight);
+        await AdmobReserveSpace.ToggleContent(true);
+        await AdmobReserveSpace.SetAdmobText(this._http);
 
         const initResult = await AdMob.Initialize({
             initializeForTesting: environment.publicRelease !== true,
@@ -64,6 +64,7 @@ export class AdmobService {
         this._admobListeners.push(
             await AdMob.addListener(AdmobPluginEvents.BannerLoaded, (args: AdmobBannerLoadedEventArgs) => {
                 Logger.Debug(`Admob banner loaded: `, args);
+                AdmobReserveSpace.ToggleContent(false);
             }),
         );
 
@@ -76,6 +77,7 @@ export class AdmobService {
         this._admobListeners.push(
             await AdMob.addListener(AdmobPluginEvents.BannerFailedToLoad, (args: AdmobBannerFailedToLoadEventArgs) => {
                 Logger.Error(`Admob banner failed to load: `, args);
+                AdmobReserveSpace.ToggleContent(true);
                 this.resizeAdMobPlaceholder(0);
             }),
         );
@@ -84,6 +86,7 @@ export class AdmobService {
             await AdMob.addListener(AdmobPluginEvents.BannerClosed, (args: AdmobBannerClosedEventArgs) => {
                 Logger.Debug(`Admob banner closed: `, args);
                 this.resizeAdMobPlaceholder(0);
+                AdmobReserveSpace.ToggleContent(true);
             }),
         );
 
@@ -113,6 +116,8 @@ export class AdmobService {
 
     public async Shutdown(): Promise<void> {
         await this.DestroyBanner();
+        this.resizeAdMobPlaceholder(0);
+        AdmobReserveSpace.ToggleContent(true);
 
         for (const listener of this._admobListeners) {
             listener.remove();
@@ -121,6 +126,10 @@ export class AdmobService {
 
         this._preferencesSubscription?.unsubscribe();
         this._preferencesSubscription = undefined;
+        this._keyboardDownListener?.remove();
+        this._keyboardDownListener = undefined;
+        this._keyboardUpListerner?.remove();
+        this._keyboardUpListerner = undefined;
 
         if (environment.publicRelease === true) {
             Logger.Notice(`Admob shut down`);
@@ -180,7 +189,7 @@ export class AdmobService {
 
         try {
             await AdMob.ResumeBanner();
-            this.resizeAdMobPlaceholder(AdmobService.AdmobBannerHeight);
+            this.resizeAdMobPlaceholder(this._lastBannerHeight);
         } catch {
             this.resizeAdMobPlaceholder(0);
             await this.RequestNewBanner();
@@ -266,13 +275,9 @@ export class AdmobService {
     private async resizeAdMobPlaceholder(size: AdmobBannerSize | number) {
         const height = typeof size === "number" ? size : size.height;
         if (height > 0) {
-            if (AdmobService.AdmobBannerHeight !== height) {
-                Logger.Debug(`Admob banner height changed to ${height}px`);
-                AdmobService.AdmobBannerHeight = height;
-                this._preferences.Set(EPrefProperty.AdmobBannerHeight, height);
-            }
+            this._lastBannerHeight = height;
+            this._preferences.Set(EPrefProperty.AdmobBannerHeight, height);
         }
         await AdmobReserveSpace.SetAdmobHeight(height);
-        await AdmobReserveSpace.ToggleContent(height > 0);
     }
 }

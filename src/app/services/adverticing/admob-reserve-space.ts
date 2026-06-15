@@ -1,10 +1,14 @@
 import type { HttpClient } from "@angular/common/http";
 import { Preferences } from "@capacitor/preferences";
 import { firstValueFrom } from "rxjs";
+import { Logger } from "../logging/logger";
 import { EPrefProperty } from "../storage/preferences.service";
-import { AdmobService } from "./admob.service";
 
 export class AdmobReserveSpace {
+    public static get AdmobPlaceholderHeight(): number {
+        return parseInt(document.documentElement.style.getPropertyValue("--admob-placeholder-height"));
+    }
+
     private static get _bannerPlaceholder(): HTMLElement | null {
         return document.getElementById("admob-placeholder") as HTMLElement | null;
     }
@@ -19,8 +23,12 @@ export class AdmobReserveSpace {
             }
         }
 
+        const oldheight = AdmobReserveSpace.AdmobPlaceholderHeight;
+        if (oldheight != height) {
+            Logger.Debug(`AdMob banner height changed from ${oldheight}px to ${height}px`);
+        }
+
         document.documentElement.style.setProperty("--admob-placeholder-height", `${height}px`);
-        AdmobService.AdmobBannerHeight = height;
     }
 
     public static async SetAdmobText(http: HttpClient): Promise<void> {

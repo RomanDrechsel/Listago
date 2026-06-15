@@ -90,6 +90,9 @@ ion-button {
 }
 
 ion-fab {
+    flex-direction: row;
+    gap: 0.5em;
+    display: flex;
     margin: 12px;
     --background: var(--ion-color-secondary-contrast);
     fill: var(--ion-color-secondary-contrast);

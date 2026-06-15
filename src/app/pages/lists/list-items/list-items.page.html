@@ -114,7 +114,7 @@
         </ion-fab-button>
     </ion-fab>
     } @if(List && ItemsInitialized && (AnimationsEnabled || ShowScrollButtons)) {
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start" [class.custom-fab-hidden]="AnimationsEnabled && List.Items.length > 0 && !ShowScrollButtons">
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start" [class.custom-fab-hidden]="List.Items.length <= 0 || !ShowScrollButtons">
         <ion-fab-button (click)="ScrollToTop()" [disabled]="DisableScrollToTop">
             <ion-icon src="./assets/icons/to-top.svg"></ion-icon>
         </ion-fab-button>

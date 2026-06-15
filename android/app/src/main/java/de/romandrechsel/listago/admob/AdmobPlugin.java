@@ -418,7 +418,8 @@ public class AdmobPlugin extends Plugin
                 this.adView = new AdView(activity);
                 this.adView.setAdUnitId(adId);
 
-                AdSize adSize = this.getAnchoredAdaptiveBannerSize(activity);
+                //AdSize adSize = this.getAnchoredAdaptiveBannerSize(activity);
+                AdSize adSize = AdSize.BANNER;
                 this.adView.setAdSize(adSize);
 
                 FrameLayout.LayoutParams adParams = new FrameLayout.LayoutParams(
@@ -531,15 +532,25 @@ public class AdmobPlugin extends Plugin
 
     private void notifyBannerSize(@Nullable AdSize adsize, @Nullable Activity activity)
     {
-        int height = (adsize == null || activity == null) ? 0 : adsize.getHeightInPixels(activity);
-        if (height > 0)
+        int height = 0;
+        int width = 0;
+        if (adsize != null && activity != null)
         {
             DisplayMetrics metrics = activity.getResources().getDisplayMetrics();
-            height = Math.round(height / metrics.density);
+            height = adsize.getHeightInPixels(activity);
+            width = adsize.getWidthInPixels(activity);
+            if (height > 0)
+            {
+                height = Math.round(height / metrics.density);
+            }
+            if (width > 0)
+            {
+                width = Math.round(width / metrics.density);
+            }
         }
         JSObject size = new JSObject();
         size.put("height", Math.max(height, 0));
-        size.put("width", adView != null ? adView.getWidth() : 0);
+        size.put("width", Math.max(width, 0));
         this.notifyListeners("bannerSizeChanged", size);
     }
 

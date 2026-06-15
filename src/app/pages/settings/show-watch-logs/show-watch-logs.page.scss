@@ -26,10 +26,6 @@
 }
 
 ion-fab {
-    flex-direction: row;
-    gap: 1em;
-    display: flex;
-
     ion-fab-button {
         ion-icon {
             &.to-bottom {

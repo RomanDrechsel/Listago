@@ -7,12 +7,16 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.getcapacitor.BridgeActivity;
@@ -61,6 +65,28 @@ public class MainActivity extends BridgeActivity
         this.handleAppUpdate();
         super.onCreate(savedInstanceState);
         this.handleIntent(this.getIntent());
+
+        /* Keyboard padding fix */
+        final int[] lastPaddingBottom = new int[1];
+        View rootView = this.getWindow().getDecorView().findViewById(android.R.id.content);
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (view, insets) ->
+        {
+            Insets imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime());
+
+            view.setPadding(
+                view.getPaddingLeft(),
+                view.getPaddingTop(),
+                view.getPaddingRight(),
+                imeInsets.bottom > 0 ? imeInsets.bottom : lastPaddingBottom[0]
+            );
+
+            if (imeInsets.bottom <= 0)
+            {
+                lastPaddingBottom[0] = view.getPaddingBottom();
+            }
+
+            return insets;
+        });
     }
 
     @Override
