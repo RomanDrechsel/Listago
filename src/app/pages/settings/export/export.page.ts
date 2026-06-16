@@ -139,7 +139,7 @@ export class ExportPage extends PageBase {
     }
 
     public async exportToZip() {
-        this._exportItems.forEach((i, key) => {
+        this._exportItems.forEach(i => {
             if (i.status != "disabled") {
                 i.status = "enabled";
             }

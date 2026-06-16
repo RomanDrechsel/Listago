@@ -354,8 +354,6 @@ export class ListsImporter {
         }
 
         if (json.items) {
-            const items: ListitemModel[] = [];
-
             let list_id = -1;
             if (json.id) {
                 list_id = json.id;

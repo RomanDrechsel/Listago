@@ -36,7 +36,7 @@ export class TransactionListener extends TimeoutListener<DeviceMessageEventArgs>
     }
 
     protected async Callback(obj: DeviceMessageEventArgs): Promise<void> {
-        const message = new ConnectIQDeviceMessage(obj, this._service);
+        const message = new ConnectIQDeviceMessage(obj);
         if (message.Device.equals(this._device) && message.Message?.tid) {
             const tid = Number(message.Message.tid);
             if (!Number.isNaN(tid) && tid === this._tid) {

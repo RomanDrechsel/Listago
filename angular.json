@@ -119,13 +119,16 @@
                             "optimization": true,
                             "extractLicenses": true,
                             "sourceMap": false,
-                            "namedChunks": false
+                            "namedChunks": false,
+                            "aot": true
                         },
                         "screenshots": {
+                            "outputHashing": "all",
                             "optimization": true,
-                            "extractLicenses": false,
+                            "extractLicenses": true,
                             "sourceMap": true,
                             "namedChunks": true,
+                            "aot": true,
                             "fileReplacements": [
                                 {
                                     "replace": "src/environments/environment.ts",

@@ -1,5 +1,4 @@
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
-import { Buffer } from "buffer";
 import { Logger } from "../../services/logging/logger";
 import { StringUtils } from "./string-utils";
 
@@ -144,37 +143,6 @@ export namespace FileUtils {
     }
 
     /**
-     * returns all files in the directory
-     * @param args configuration arguments
-     * @returns array of File objects
-     */
-    export async function GetFiles(args: { path: string; dir?: Directory; pattern?: string | RegExp; with_data?: boolean }): Promise<File[]> {
-        try {
-            const ret: File[] = [];
-            const files = await Filesystem.readdir({ path: args.path, directory: args.dir });
-            for (let i = 0; i < files.files.length; i++) {
-                const f = files.files[i];
-                if (f.type != "file") {
-                    continue;
-                }
-                if (!args.pattern || (typeof args.pattern == "string" && f.name.includes(args.pattern)) || (args.pattern instanceof RegExp && args.pattern.test(f.name))) {
-                    let file = await GetFileStat(f.uri);
-                    if (args.with_data === true) {
-                        file = await GetFile(file);
-                    }
-                    if (file.Exists) {
-                        ret.push(file);
-                    }
-                }
-            }
-
-            return ret;
-        } catch {
-            return [];
-        }
-    }
-
-    /**
      * deletes all files in a directory
      * @param path path to the directory
      * @param dir Capacitor-directory
@@ -292,7 +260,12 @@ export namespace FileUtils {
         public Filename;
         public Content: string | undefined = undefined;
 
-        constructor(public Path: string, public Size: number = -1, public Created: number = -1, public Modified: number = -1) {
+        constructor(
+            public Path: string,
+            public Size: number = -1,
+            public Created: number = -1,
+            public Modified: number = -1,
+        ) {
             let filename = this.Path.split("/").pop();
             this.Filename = filename ? filename : this.Path;
         }
@@ -320,16 +293,6 @@ export namespace FileUtils {
                     this.Content = String(fileRes.data);
                 }
             }
-        }
-
-        public async Base64Content(): Promise<string | undefined> {
-            if (!this.Content) {
-                await this.ReadContent();
-            }
-            if (this.Content) {
-                return Buffer.from(this.Content).toString("base64");
-            }
-            return undefined;
         }
 
         /**

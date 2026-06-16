@@ -1,5 +1,5 @@
 export type AdmobConsentInfoResult = {
     canRequestAds: boolean;
     privacyOptionsRequired: boolean;
-    status: number;
+    status: "REQUIRED" | "NOT_REQUIRED" | "OBTAINED" | "UNKNOWN" | "ERROR";
 };

@@ -21,7 +21,7 @@ export class DeviceLogsListener extends ConnectIQListener<DeviceMessageEventArgs
     }
 
     protected async Callback(obj: DeviceMessageEventArgs): Promise<void> {
-        const data = new ConnectIQDeviceMessage(obj, this._service);
+        const data = new ConnectIQDeviceMessage(obj);
         if (data.Message.type && data.Message.type == "logs") {
             let logs: string[] = [];
             Object.entries(data.Message).forEach(([key, value]) => {

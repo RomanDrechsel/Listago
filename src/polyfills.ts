@@ -42,8 +42,12 @@
  *
  */
 
+/*
+//npm i array-flat-polyfill
 import "array-flat-polyfill";
+//npm i globalthis
 import "globalthis/auto";
+*/
 
 import "./zone-flags";
 

@@ -21,7 +21,7 @@ export class DeviceErrorReportListener extends ConnectIQListener<DeviceMessageEv
     }
 
     protected override async Callback(obj: DeviceMessageEventArgs): Promise<void> {
-        const data = new ConnectIQDeviceMessage(obj, this._service);
+        const data = new ConnectIQDeviceMessage(obj);
         if (data.Message.type && data.Message.type == "reportError") {
             let logreport = ["", "===========", `Received error report from device ${data.Device}:`];
             logreport.push("===========", "");

@@ -358,7 +358,7 @@ export class ConnectIQService {
                 let timeout_listeners = false;
                 const listeners = Array.from(this._watchListeners.entries());
                 for (let i = 0; i < listeners.length; i++) {
-                    const [key, value] = listeners[i];
+                    const [_, value] = listeners[i];
                     for (let j = 0; j < value.length; j++) {
                         const l = value[j];
                         if (l instanceof TimeoutListener) {

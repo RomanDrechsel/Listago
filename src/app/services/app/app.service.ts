@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, isDevMode } from "@angular/core";
 import { App } from "@capacitor/app";
-import { Capacitor, SystemBars, SystemBarsStyle } from "@capacitor/core";
+import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
 import { Preferences } from "@capacitor/preferences";
 import { SplashScreen } from "@capacitor/splash-screen";
@@ -291,7 +291,7 @@ export class AppService {
     private async handleNightmode(isNightMode?: boolean) {
         this._logger.Debug(`NightMode set to '${isNightMode}'`);
         const color = isNightMode === true ? "#002794" : "#0050d8";
-        await SystemBars.setStyle({ style: SystemBarsStyle.Dark });
+        //await SystemBars.setStyle({ style: SystemBarsStyle.Dark });
         await EdgeToEdge.setNavigationBarColor({ color: color });
         await EdgeToEdge.setStatusBarColor({ color: color });
     }

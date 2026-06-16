@@ -318,7 +318,6 @@ export class LoggingService {
      */
     public async ListLogfiles(from: number, to: number): Promise<FileInfo[]> {
         try {
-            let ret: FileInfo[] = [];
             let files = (await Filesystem.readdir({ path: LoggingService.LogPath, directory: LoggingService.LogDirectory })).files;
             files = files.filter(f => (f.ctime ?? f.mtime) >= from && (f.ctime ?? f.mtime) <= to);
             files.sort((a, b) => b.mtime - a.mtime);

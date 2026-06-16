@@ -259,18 +259,22 @@ public class MainActivity extends BridgeActivity
 
     private void configure()
     {
+        EdgeToEdge.enable(this);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         Window window = getWindow();
         WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(window, window.getDecorView());
         insetsController.setAppearanceLightStatusBars(false);
-
-        EdgeToEdge.enable(this);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        insetsController.setAppearanceLightNavigationBars(false);
 
         WebView webView = this.getBridge().getWebView();
         if (webView != null)
         {
             webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
             webView.setVerticalScrollBarEnabled(true);
+            webView.setHorizontalScrollBarEnabled(false);
+            webView.setScrollbarFadingEnabled(true);
+            webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         }
 
         SysInfoPlugin plugin = this.GetSysInfoPlugin();

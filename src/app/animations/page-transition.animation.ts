@@ -1,7 +1,7 @@
 import { Animation, AnimationController } from "@ionic/angular/standalone";
 import { PreferencesService } from "../services/storage/preferences.service";
 
-export const PageTransitionAnimation = (baseEl: HTMLElement, opts?: any): Animation => {
+export const PageTransitionAnimation = (_: HTMLElement, opts?: any): Animation => {
     const animationCtrl = new AnimationController();
     const PageTransitionAnimationDuration = 270;
     if (opts && PreferencesService.Animations) {

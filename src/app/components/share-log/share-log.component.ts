@@ -1,4 +1,3 @@
-
 import { ChangeDetectionStrategy, Component, inject, ViewChild } from "@angular/core";
 import { FileOpener } from "@capacitor-community/file-opener";
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
@@ -150,7 +149,7 @@ export const ShareLogfile = async function (modalController: ModalController, pa
     });
     modal.present();
 
-    const { data, role } = await modal.onWillDismiss();
+    const { data: _data, role } = await modal.onWillDismiss();
 
     if (role === "confirm") {
         return true;

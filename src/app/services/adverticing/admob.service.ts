@@ -24,7 +24,7 @@ import { AdmobReserveSpace } from "./admob-reserve-space";
 })
 export class AdmobService {
     public AdmobInitialized: boolean = false;
-    private _lastBannerHeight = 56;
+    private _lastBannerHeight = 50;
     private readonly _preferences = inject(PreferencesService);
     private readonly _http = inject(HttpClient);
     private _keyboardUpListerner?: PluginListenerHandle;
@@ -32,12 +32,15 @@ export class AdmobService {
     private _admobListeners: PluginListenerHandle[] = [];
     private _preferencesSubscription?: Subscription;
 
+    /**
+     * AdMob adId for banner, found on AdMob page
+     */
     private readonly _adId = "ca-app-pub-4693945059643494/6924249345";
 
     /**
      * found in logcat near "This device is not registered as a test device."
      */
-    private readonly _testDeviceId = "";
+    private readonly _testDeviceId = "1EEF966BEC6747BF8ABBCDF00F9E7426";
 
     public async Initialize() {
         this._lastBannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, this._lastBannerHeight);
@@ -47,7 +50,7 @@ export class AdmobService {
 
         const initResult = await AdMob.Initialize({
             initializeForTesting: environment.publicRelease !== true,
-            testingDevices: ["1EEF966BEC6747BF8ABBCDF00F9E7426"],
+            testingDevices: environment.publicRelease !== true ? [this._testDeviceId] : [],
             timeout: 30,
         });
 

@@ -2,17 +2,17 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-      "outDir": "./out-tsc/app",
-      "types": [],
-      "target": "ES2022",
-      "module": "ESNext",
-      "moduleResolution": "bundler",
-      "sourceMap": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "skipLibCheck": true,
-      "strict": false,
-      "downlevelIteration": true
+        "outDir": "./out-tsc/app",
+        "types": [],
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "sourceMap": true,
+        "emitDecoratorMetadata": false,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "downlevelIteration": true
     },
     "files": ["src/main.ts", "src/polyfills.ts"],
     "include": ["src/**/*.d.ts"]

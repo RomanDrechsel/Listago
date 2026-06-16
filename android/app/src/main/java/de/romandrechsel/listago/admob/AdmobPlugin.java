@@ -288,7 +288,7 @@ public class AdmobPlugin extends Plugin
                     JSObject result = new JSObject();
                     result.put("canRequestAds", consentInformation.canRequestAds());
                     result.put("privacyOptionsRequired", consentInformation.getPrivacyOptionsRequirementStatus() == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
-                    result.put("status", consentInformation.getConsentStatus());
+                    result.put("status", this.convertConsentStatus(consentInformation.getConsentStatus()));
                     call.resolve(result);
                 },
                 formError ->
@@ -321,7 +321,7 @@ public class AdmobPlugin extends Plugin
 
                     JSObject result = new JSObject();
                     result.put("canRequestAds", info.canRequestAds());
-                    result.put("status", info.getConsentStatus());
+                    result.put("status", this.convertConsentStatus(info.getConsentStatus()));
                     result.put("privacyOptionsRequired", info.getPrivacyOptionsRequirementStatus() == ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED);
 
                     call.resolve(result);
@@ -577,5 +577,22 @@ public class AdmobPlugin extends Plugin
             this.requestNewBannerInternal(this.lastAdId, this.lastIsTesting, this.lastGravity, null, !wasVisible);
         });
         this.lastOrientation = newConfig.orientation;
+    }
+
+    private String convertConsentStatus(int status)
+    {
+        switch (status)
+        {
+            case ConsentInformation.ConsentStatus.REQUIRED:
+                return "REQUIRED";
+            case ConsentInformation.ConsentStatus.NOT_REQUIRED:
+                return "NOT_REQUIRED";
+            case ConsentInformation.ConsentStatus.OBTAINED:
+                return "OBTAINED";
+            case ConsentInformation.ConsentStatus.UNKNOWN:
+                return "UNKNOWN";
+            default:
+                return "EROR";
+        }
     }
 }

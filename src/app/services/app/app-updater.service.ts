@@ -114,7 +114,7 @@ export class AppUpdaterService {
         this._updateRunning = true;
         listener?.updateStatus();
         if (this._updateInfo.flexibleUpdateAllowed) {
-            const handler = await AppUpdate.addListener("onFlexibleUpdateStateChange", (state: AppUpdateFlexibleStatus) => {
+            await AppUpdate.addListener("onFlexibleUpdateStateChange", (state: AppUpdateFlexibleStatus) => {
                 let reopen = false;
                 if (state.installStatus == AppUpdateFlexibleInstallStatus.Canceled) {
                     Logger.Notice(`Flexible update '${this.AvailableVersion}' was canceled by the user`);

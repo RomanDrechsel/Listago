@@ -40,6 +40,20 @@ ion-app.ion-page {
     bottom: calc(var(--safe-area-inset-bottom, 0px) + var(--admob-placeholder-height, 0px));
 }
 
+ion-content {
+    &::part(scroll) {
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    }
+}
+
 ion-list {
     &.list-md {
         padding-top: 0;

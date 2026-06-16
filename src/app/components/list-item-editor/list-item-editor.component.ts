@@ -1,4 +1,3 @@
-
 import { Component, inject, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Keyboard } from "@capacitor/keyboard";
@@ -56,7 +55,10 @@ export class ListItemEditorComponent {
         }
     }
 
-    constructor(private modalCtrl: ModalController, formbuilder: FormBuilder) {
+    constructor(
+        private modalCtrl: ModalController,
+        formbuilder: FormBuilder,
+    ) {
         this.Form = formbuilder.group({
             item: ["", [Validators.required]],
             note: [""],
@@ -204,7 +206,7 @@ export const ListItemEditorMultiple = async function (modalController: ModalCont
     });
     modal.present();
 
-    const { data, role } = await modal.onWillDismiss();
+    const { data } = await modal.onWillDismiss();
     return data;
 };
 

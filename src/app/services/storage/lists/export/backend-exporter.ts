@@ -222,6 +222,7 @@ export class ProgressListener {
     }
 
     protected onProgress(done: number): Promise<void> {
+        this._done = done;
         return Promise.resolve();
     }
 }
