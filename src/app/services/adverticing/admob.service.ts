@@ -40,7 +40,7 @@ export class AdmobService {
     /**
      * found in logcat near "This device is not registered as a test device."
      */
-    private readonly _testDeviceId = "1EEF966BEC6747BF8ABBCDF00F9E7426";
+    private readonly _testDeviceId = "CF8B33417A6AA8A363A16381EAF2CE0F";
 
     public async Initialize() {
         this._lastBannerHeight = await this._preferences.Get(EPrefProperty.AdmobBannerHeight, this._lastBannerHeight);
