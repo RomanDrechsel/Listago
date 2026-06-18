@@ -73,8 +73,9 @@ export class TrashListitemsPage extends AnimatedListPageBase<Listitem> {
             if (trash && ((trash instanceof List && this._listUuid == trash.Id) || trash == this._listUuid)) {
                 this._trashItems = await this._listsService.GetListitemTrash(this._listUuid, false);
                 this._itemsInitialized = true;
-                this.onItemsChanged();
                 AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
+                await this.reload();
+                await this.onItemsChanged();
             }
         });
     }

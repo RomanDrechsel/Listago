@@ -19,7 +19,7 @@ export class ConnectIQService {
     private onDeviceChangedSubject = new BehaviorSubject<ConnectIQDevice | undefined>(undefined);
     public onDeviceChanged$ = this.onDeviceChangedSubject.asObservable();
 
-    public set AlwaysTransmitToDevice(device: ConnectIQDevice | undefined) {}
+    public set AlwaysTransmitToDevice(_device: ConnectIQDevice | undefined) {}
 
     public get AlwaysTransmitToDevice(): ConnectIQDevice | undefined {
         return undefined;
@@ -33,14 +33,14 @@ export class ConnectIQService {
         return true;
     }
 
-    public async Initialize(obj?: { simulator?: boolean; debug_app?: boolean }): Promise<boolean> {
+    public async Initialize(_obj?: { simulator?: boolean; debug_app?: boolean }): Promise<boolean> {
         await this.getDevices();
         return true;
     }
 
     public async Shutdown() {}
 
-    public async getDevices(force_load: boolean = false): Promise<ConnectIQDevice[]> {
+    public async getDevices(_force_load: boolean = false): Promise<ConnectIQDevice[]> {
         return [
             new ConnectIQDevice({
                 id: 123456789,
@@ -50,41 +50,35 @@ export class ConnectIQService {
         ];
     }
 
-    public async GetDevice(id: number): Promise<ConnectIQDevice | undefined> {
+    public async GetDevice(_id: number): Promise<ConnectIQDevice | undefined> {
         return (await this.getDevices())[0] ?? undefined;
     }
 
-    public async GetDefaultDevice(args?: { only_ready?: boolean; select_device_if_undefined?: boolean; btn_text?: string }): Promise<ConnectIQDevice | undefined> {
+    public async GetDefaultDevice(_args?: { only_ready?: boolean; select_device_if_undefined?: boolean; btn_text?: string }): Promise<ConnectIQDevice | undefined> {
         return undefined;
     }
 
     public async openStore() {}
 
-    public async openApp(device?: ConnectIQDevice, show_toast?: boolean): Promise<boolean> {
+    public async openApp(_device?: ConnectIQDevice, _show_toast?: boolean): Promise<boolean> {
         return true;
     }
 
-    public async SendToDevice(obj: { device?: ConnectIQDevice | number; messageType: ConnectIQMessageType; data: any; response_callback?: (message?: ConnectIQDeviceMessage) => Promise<void>; timeout?: number }): Promise<number | boolean> {
+    public async SendToDevice(_obj: { device?: ConnectIQDevice | number; messageType: ConnectIQMessageType; data: any; response_callback?: (message?: ConnectIQDeviceMessage) => Promise<void>; timeout?: number }): Promise<number | boolean> {
         return 1;
     }
 
-    public async SendToDeviceTransaction(obj: { device?: ConnectIQDevice | number; messageType: ConnectIQMessageType; data?: any; timeout?: number }): Promise<ConnectIQDeviceMessage | undefined> {
+    public async SendToDeviceTransaction(_obj: { device?: ConnectIQDevice | number; messageType: ConnectIQMessageType; data?: any; timeout?: number }): Promise<ConnectIQDeviceMessage | undefined> {
         return undefined;
     }
 
-    public CancelRequest(tid: number) {}
+    public CancelRequest(_tid: number) {}
 
-    public async addListener(listener: ConnectIQListener<any>) {}
+    public async addListener(_item_successlistener: ConnectIQListener<any>) {}
 
-    public async removeListener(listener: ConnectIQListener<any>): Promise<boolean> {
+    public async removeListener(_listener: ConnectIQListener<any>): Promise<boolean> {
         return true;
     }
 
-    public async UpdateDevice(device_args: DeviceEventArgs) {}
-
-    private async checkDeviceVersion(device: DeviceEventArgs) {}
-
-    private async calcOnlineDevices(devices: ConnectIQDevice[] | undefined = undefined): Promise<number> {
-        return 0;
-    }
+    public async UpdateDevice(_device_args: DeviceEventArgs) {}
 }

@@ -38,7 +38,7 @@ export class ListsService {
         });
     }
 
-    public async GetLists(args?: { orderBy?: ListsOrder; orderDir?: ListsOrderDirection }): Promise<List[]> {
+    public async GetLists(_args?: { orderBy?: ListsOrder; orderDir?: ListsOrderDirection }): Promise<List[]> {
         if (this.Locale.CurrentLanguage.localeFile == "de") {
             return [
                 new List({ id: 1, name: "Wocheneinkäufe", modified: Date.now() - 3456 * 1000, created: Date.now(), order: 0 }, undefined, 9),
@@ -104,7 +104,7 @@ export class ListsService {
         return [];
     }
 
-    public async GetListitemTrash(id: number | List): Promise<Listitem[] | undefined> {
+    public async GetListitemTrash(_id: number | List): Promise<Listitem[] | undefined> {
         return [];
     }
 
@@ -112,77 +112,77 @@ export class ListsService {
         await ListEditor(this.ModalCtrl, {});
     }
 
-    public async EditList(list: List): Promise<boolean | undefined> {
+    public async EditList(_list: List): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async DeleteLists(lists: List | List[], no_prompt: boolean = false): Promise<boolean | undefined> {
+    public async DeleteLists(_lists: List | List[], _no_prompt: boolean = false): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async EmptyLists(lists: List | List[], force: boolean = false): Promise<boolean | undefined> {
+    public async EmptyLists(_lists: List | List[], _force: boolean = false): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async ReorderLists(lists: List[]): Promise<void> {}
+    public async ReorderLists(_lists: List[]): Promise<void> {}
 
-    public async NewListitem(list: List): Promise<boolean | undefined> {
+    public async NewListitem(_list: List): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async AddNewListitem(list: List, args: { item: string; order?: number; locked?: boolean; hidden?: boolean }): Promise<boolean> {
+    public async AddNewListitem(_list: List, _args: { item: string; order?: number; locked?: boolean; hidden?: boolean }): Promise<boolean> {
         return false;
     }
 
-    public async EditListitem(list: List, item: Listitem): Promise<boolean | undefined> {
+    public async EditListitem(_list: List, _item: Listitem): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async DeleteListitem(list: List, items: Listitem | Listitem[], no_prompt: boolean = false, keep_locked: boolean = true): Promise<boolean | undefined> {
+    public async DeleteListitem(_list: List, _items: Listitem | Listitem[], _no_prompt: boolean = false, _keep_locked: boolean = true): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async EraseListitemFromTrash(trash: List, items: Listitem | Listitem[]): Promise<boolean | undefined> {
+    public async EraseListitemFromTrash(_trash: List, _items: Listitem | Listitem[]): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async WipeTrash(no_prompt: boolean = false, prompt_anyway: boolean = false): Promise<boolean | undefined> {
+    public async WipeTrash(_no_prompt: boolean = false, _prompt_anyway: boolean = false): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async WipeListitemTrash(no_prompt: boolean = false, prompt_anyway: boolean = false): Promise<boolean | undefined> {
+    public async WipeListitemTrash(_no_prompt: boolean = false, _prompt_anyway: boolean = false): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async EmptyListitemTrash(trash: List): Promise<boolean | undefined> {
+    public async EmptyListitemTrash(_trash: List): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async ToggleHiddenListitem(list: List, items: Listitem | Listitem[], hide: boolean | undefined = undefined): Promise<boolean | undefined> {
+    public async ToggleHiddenListitem(_list: List, _items: Listitem | Listitem[], _hide: boolean | undefined = undefined): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async ToggleLockListitem(list: List, items: Listitem | Listitem[], pin: boolean | undefined = undefined): Promise<boolean | undefined> {
+    public async ToggleLockListitem(_list: List, _items: Listitem | Listitem[], _pin: boolean | undefined = undefined): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async EraseListFromTrash(lists: List | List[], force: boolean = false): Promise<boolean | undefined> {
+    public async EraseListFromTrash(_lists: List | List[], _force: boolean = false): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async RestoreListFromTrash(lists: List | List[]): Promise<boolean | undefined> {
+    public async RestoreListFromTrash(_lists: List | List[]): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async RestoreListitemFromTrash(trash: List, items: Listitem | Listitem[]): Promise<boolean | undefined> {
+    public async RestoreListitemFromTrash(_trash: List, _items: Listitem | Listitem[]): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async StoreList(list: List, force: boolean = false, fire_event: boolean = true, progressbar: boolean = true): Promise<boolean | undefined> {
+    public async StoreList(_list: List, _force: boolean = false, _fire_event: boolean = true, _progressbar: boolean = true): Promise<boolean | undefined> {
         return undefined;
     }
 
-    public async TransferList(lists?: List | List[] | string | number, device?: ConnectIQDevice | number): Promise<boolean | undefined> {
+    public async TransferList(_lists?: List | List[] | string | number, _device?: ConnectIQDevice | number): Promise<boolean | undefined> {
         return undefined;
     }
 
@@ -190,15 +190,15 @@ export class ListsService {
 
     public async PurgeAllSyncs(): Promise<void> {}
 
-    public async createNewList(args: { name: string; order?: number; sync?: ListSyncDevice[]; reset?: ListReset }): Promise<List> {
+    public async createNewList(_args: { name: string; order?: number; sync?: ListSyncDevice[]; reset?: ListReset }): Promise<List> {
         return new List({ name: "dummy", created: Date.now(), modified: Date.now(), order: 0 });
     }
 
-    public async createNewListitem(list: List | number, args: { item: string; note?: string; order?: number; hidden?: boolean; locked?: boolean }): Promise<Listitem> {
+    public async createNewListitem(_list: List | number, _args: { item: string; note?: string; order?: number; hidden?: boolean; locked?: boolean }): Promise<Listitem> {
         return new Listitem({ id: -1, list_id: 1, item: "dummy", order: 0, created: Date.now(), modified: Date.now() });
     }
 
-    public async SyncList(obj: { list: List | number; force_if_sync_is_disabled?: boolean }): Promise<void> {}
+    public async SyncList(_obj: { list: List | number; force_if_sync_is_disabled?: boolean }): Promise<void> {}
 
-    public async ReloadListsDataset(datasets?: ("lists" | "trash")[]): Promise<void> {}
+    public async ReloadListsDataset(_datasets?: ("lists" | "trash")[]): Promise<void> {}
 }

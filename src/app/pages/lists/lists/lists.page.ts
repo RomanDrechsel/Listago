@@ -44,7 +44,8 @@ export class ListsPage extends AnimatedListPageBase<List> {
             }
             this._lists = await this._listsService.GetLists({ orderBy: "order", orderDir: "ASC" });
             this._itemsInitialized = true;
-            this.onItemsChanged();
+            await this.reload();
+            await this.onItemsChanged();
         });
         this.onItemsChanged();
     }

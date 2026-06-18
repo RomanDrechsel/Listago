@@ -42,8 +42,9 @@ export class TrashListsPage extends AnimatedListPageBase<List> {
             if (lists) {
                 this.Lists = this.Lists.sort((a, b) => b.Deleted - a.Deleted);
                 this._itemsInitialized = true;
-                this.onItemsChanged();
                 AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
+                this.reload();
+                this.onItemsChanged();
             }
         });
         this.onItemsChanged();

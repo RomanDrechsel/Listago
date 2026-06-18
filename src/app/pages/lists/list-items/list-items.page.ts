@@ -99,7 +99,8 @@ export class ListItemsPage extends AnimatedListPageBase<Listitem> {
                 this._list = list;
                 AppComponent.Instance?.setAppPages(this.ModifyMainMenu());
                 this._itemsInitialized = true;
-                this.onItemsChanged();
+                await this.reload();
+                await this.onItemsChanged();
             }
         });
 
